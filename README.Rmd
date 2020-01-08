@@ -1,0 +1,30 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+# cmapplot
+
+This R package provides themes and color scales for [`ggplot2`](https://github.com/tidyverse/ggplot2), based on Chicago Metropolitan Agency for Planning (CMAP) design guidelines.
+
+## Installation
+
+Run the following:
+
+```{r}
+# install.packages("devtools")
+devtools::install_github("CMAP-REPOS/cmapplot")
+```
+
+```{r}
+library(cmapplot)
+```
