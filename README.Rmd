@@ -8,6 +8,7 @@ output: github_document
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
+  tidy = TRUE,
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
@@ -20,11 +21,11 @@ This R package provides themes and color scales for [`ggplot2`](https://github.c
 
 Run the following:
 
-```{r}
+```{r eval=FALSE, message=FALSE, warning=FALSE, eval=FALSE}
 # install.packages("devtools")
 devtools::install_github("CMAP-REPOS/cmapplot")
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE, eval=FALSE}
 library(cmapplot)
 ```
