@@ -1,7 +1,8 @@
 #' Add CMAP theme to ggplot chart
 
-style_cmap <- function() {
-  font <- "Whitney"
+theme_cmap <- function() {
+  windowsFonts(`Whitney Book` = "TT Whitney Book")
+  font <- "Whitney Book"
 
   ggplot2::theme(
 
