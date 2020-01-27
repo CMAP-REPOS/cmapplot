@@ -1,7 +1,7 @@
 # this file includes sample ggplot code to visualize the various sample datasets included in the package.
 
-library(tidyverse)
-library(cmapplot)
+require(tidyverse)
+require(cmapplot)
 
 
 # A bar chart
