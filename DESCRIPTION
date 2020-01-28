@@ -15,3 +15,4 @@ Suggests:
     testthat
 Imports: 
     ggplot2
+RoxygenNote: 7.0.2
