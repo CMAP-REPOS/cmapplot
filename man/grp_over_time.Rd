@@ -22,4 +22,11 @@ grp_over_time
 \description{
 A test dataset containing real GRP data for the CMAP region.
 }
+\examples{
+# a time-series line chart
+ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
+  geom_line() +
+  theme_cmap()
+
+}
 \keyword{datasets}

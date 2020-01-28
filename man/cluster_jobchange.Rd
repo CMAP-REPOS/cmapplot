@@ -22,4 +22,13 @@ cluster_jobchange
 A test dataset containing 2001-17 job change and other data for the 22 specialized traded clusters
 analyzed in the CMAP Traded Clusters report.
 }
+\examples{
+# A bar chart
+ggplot(cluster_jobchange, aes(x = reorder(name, jobchange), y = jobchange, fill = category)) +
+  geom_col() +
+  coord_flip() +
+  cmapplot::theme_cmap()
+
+
+}
 \keyword{datasets}

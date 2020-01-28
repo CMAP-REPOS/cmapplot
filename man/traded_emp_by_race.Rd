@@ -21,4 +21,13 @@ traded_emp_by_race
 \description{
 A test dataset containing the percentage breakdowns of the working population employed in traded clusters, by race.
 }
+\examples{
+# a stacked bar chart
+filter(traded_emp_by_race, variable \%in\% c("SpecializedTraded", "UnspecializedTraded")) \%>\%
+  ggplot(aes(x = reorder(Race, -value), y = value, fill = variable)) +
+  geom_col(position = position_stack(reverse = TRUE)) +
+  scale_y_continuous(labels = scales::percent) +
+  theme_cmap()
+
+}
 \keyword{datasets}

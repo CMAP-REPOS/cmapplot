@@ -20,4 +20,12 @@ economy_basic
 \description{
 A test dataset containing count of jobs, earnings, and establishments in the Chicago region in both 2001 and 2017.
 }
+\examples{
+# a grouped and stacked bar chart (via `interaction()`)
+ggplot(economy_basic, aes(x = interaction(year, variable), y = value, fill = sector)) +
+  geom_col(position = "fill") +
+  scale_y_continuous(labels = scales::percent) +
+  theme_cmap()
+
+}
 \keyword{datasets}

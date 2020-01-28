@@ -20,4 +20,11 @@ pop_and_laborforce_by_age
 \description{
 A test dataset containing percentage breakdowns of the population and labor force by various age buckets in 2010 and 2017.
 }
+\examples{
+# a grouped and stacked bar chart (via `interaction()`)
+ggplot(pop_and_laborforce_by_age, aes(x = interaction(year, variable), y = value, fill = age)) +
+  geom_col(position = position_stack(reverse = TRUE)) +
+  theme_cmap()
+
+}
 \keyword{datasets}

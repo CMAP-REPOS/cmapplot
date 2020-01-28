@@ -13,11 +13,12 @@
 #'
 #' @source from https://www.nber.org/cycles/NBER%20chronology.xlsx
 #'
-#' @section Code to generate:
-#' \code{
+#' @examples
+#' # Use this code to generate an updated recessions dataframe:
+#'
 #' recessions <- read_excel(temp.file, skip = 2) %>%
-#' # drop end matter
-#' slice(1:(n()-7)) %>%
+#'  # drop end matter
+#'  slice(1:(n()-7)) %>%
 #'  # drop first row trough
 #'  slice(-1) %>%
 #'  as_tibble() %>%
@@ -31,7 +32,6 @@
 #'    start_date =  as.Date(str_replace(start_char, " ", " 1, "), format = "%B %d, %Y"),
 #'    end_date =  as.Date(str_replace(end_char, " ", " 1, "), format = "%B %d, %Y")) %>%
 #'  select(-3:-8)
-#'  }
 #'
 "recessions"
 
@@ -53,6 +53,14 @@
 #' }
 #' @source CMAP traded clusters report
 #'
+#' @examples
+#' # A bar chart
+#' ggplot(cluster_jobchange, aes(x = reorder(name, jobchange), y = jobchange, fill = category)) +
+#'   geom_col() +
+#'   coord_flip() +
+#'   cmapplot::theme_cmap()
+#'
+#'
 "cluster_jobchange"
 
 
@@ -68,6 +76,13 @@
 #'    \item{value}{Int. The value indicated as described by the other columns}
 #' }
 #' @source CMAP traded clusters report
+#'
+#' @examples
+#' # a grouped and stacked bar chart (via `interaction()`)
+#' ggplot(economy_basic, aes(x = interaction(year, variable), y = value, fill = sector)) +
+#'   geom_col(position = "fill") +
+#'   scale_y_continuous(labels = scales::percent) +
+#'   theme_cmap()
 #'
 "economy_basic"
 
@@ -87,6 +102,12 @@
 #' }
 #' @source CMAP traded clusters report
 #'
+#' @examples
+#' # a time-series line chart
+#' ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
+#'   geom_line() +
+#'   theme_cmap()
+#'
 "grp_over_time"
 
 
@@ -102,6 +123,11 @@
 #' }
 #' @source CMAP traded clusters report
 #'
+#' @examples
+#' # a non-time-series line chart
+#' ggplot(percentile_wages, aes(x = percentile, y = wage, color = cluster)) +
+#'   geom_line() +
+#'   theme_cmap()
 "percentile_wages"
 
 
@@ -118,6 +144,12 @@
 #'    \item{value}{Double. The value indicated by the other variables.}
 #' }
 #' @source CMAP traded clusters report
+#'
+#' @examples
+#' # a grouped and stacked bar chart (via `interaction()`)
+#' ggplot(pop_and_laborforce_by_age, aes(x = interaction(year, variable), y = value, fill = age)) +
+#'   geom_col(position = position_stack(reverse = TRUE)) +
+#'   theme_cmap()
 #'
 "pop_and_laborforce_by_age"
 
@@ -137,5 +169,13 @@
 #'    \item{value}{Double. The value indicated by the other variables.}
 #' }
 #' @source CMAP traded clusters report
+#'
+#' @examples
+#' # a stacked bar chart
+#' filter(traded_emp_by_race, variable %in% c("SpecializedTraded", "UnspecializedTraded")) %>%
+#'   ggplot(aes(x = reorder(Race, -value), y = value, fill = variable)) +
+#'   geom_col(position = position_stack(reverse = TRUE)) +
+#'   scale_y_continuous(labels = scales::percent) +
+#'   theme_cmap()
 #'
 "traded_emp_by_race"
