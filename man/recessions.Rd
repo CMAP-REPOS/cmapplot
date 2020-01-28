@@ -6,11 +6,12 @@
 \title{A list of all recessions in American history}
 \format{A tibble. 33 rows and 4 variables:
 \describe{
-   \item{peak, trough}{Chr. Easily readable labels for the beginning and end of the recession}
-   \item{recession_start, recession_end}{Double. Dates expressed as years, with decimels referring to months. Need to improve this.}
+   \item{start_char, end_char}{Chr. Easily readable labels for the beginning and end of the recession}
+   \item{start_int, end_int}{Double. Dates expressed as years, with decimels referring to months. (e.g. April = 4/12 = .333)}
+   \item{start_date, end_date}{Date. Dates expressed in R datetime format, using the first day of the specified month.}
 }}
 \source{
-Update this.
+from https://www.nber.org/cycles/NBER%20chronology.xlsx
 }
 \usage{
 recessions
@@ -20,4 +21,26 @@ An internal dataset containing a list of all recessions in American history, as 
 the National Bureau of Economic Research (NBER). As future recessions occur, this file will
 need to be updated using the script below.
 }
+\section{Code to generate}{
+
+\code{
+recessions <- read_excel(temp.file, skip = 2) %>% \n
+# drop end matter
+slice(1:(n()-7)) %>%
+ # drop first row trough
+ slice(-1) %>%
+ as_tibble() %>%
+ # rename character values
+ rename(start_char = 1, end_char = 2) %>%
+ mutate(
+   # numeric values expressed as months since January 1800
+   start_int = `Peak month number`/12 + 1800,
+   end_int = `Trough month number`/12 + 1800,
+   # convert to R date
+   start_date =  as.Date(str_replace(start_char, " ", " 1, "), format = "%B %d, %Y"),
+   end_date =  as.Date(str_replace(end_char, " ", " 1, "), format = "%B %d, %Y")) %>%
+ select(-3:-8)
+ }
+}
+
 \keyword{datasets}
