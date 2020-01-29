@@ -1,5 +1,5 @@
 #' Add CMAP theme to ggplot chart
-
+#'
 #' @export
 theme_cmap <- function() {
   windowsFonts(`Whitney Book` = "TT Whitney Book")
