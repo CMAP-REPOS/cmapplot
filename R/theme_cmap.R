@@ -2,7 +2,7 @@
 #'
 #' @export
 theme_cmap <- function() {
-  windowsFonts(
+  grDevices::windowsFonts(
     `Whitney Medium` = "TT Whitney Medium",
     `Whitney Book` = "TT Whitney Book",
     `Whitney Semibold` = "TT Whitney Semibold"
