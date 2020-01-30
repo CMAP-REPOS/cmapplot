@@ -5,8 +5,9 @@
 #       cmap_fill_race(white = "factorname", african_american = "factorname",
 #                      etc....)
 #
-#   need an offical "other" color -- ask Nancy
-#     non-white color needed?
+#   Other: grey or purple?
+#
+#   Include specific other groups? Does our data typically have them?
 #
 ###############################################################################
 
@@ -16,35 +17,35 @@ library(ggplot2)
 # Fill aesthetic
 cmap_fill_race <- function(white, african_american, hispanic, asian, other) {
 
-  race_palette <- c(
-    wht = "#72A6E5",
-    blk = "#8CE572",
-    hisp = "#CCA600",
-    asn = "#CC2F00",
-    oth = "#6200CC"
-  )
-
-  if(!missing(white)){
-    names(race_palette)[1] <- white
-  }
-
-  if(!missing(african_american)){
-    names(race_palette)[2] <- african_american
-  }
-
-  if(!missing(hispanic)){
-    names(race_palette)[3] <- hispanic
-  }
-
-  if(!missing(asian)){
-    names(race_palette)[4] <- asian
-  }
-
-  if(!missing(other)){
-    names(race_palette)[5] <- other
-  }
-
-  scale_fill_manual(values = race_palette)
+    race_palette <- c(
+        wht = "#72A6E5",
+        blk = "#8CE572",
+        hisp = "#CCA600",
+        asn = "#CC2F00",
+        oth = "#8a9ea8"     # or "#c9a7ef" (purple)
+    )
+  
+    if(!missing(white)){
+        names(race_palette)[1] <- white
+    }
+  
+    if(!missing(african_american)){
+        names(race_palette)[2] <- african_american
+    }
+  
+    if(!missing(hispanic)){
+        names(race_palette)[3] <- hispanic
+    }
+  
+    if(!missing(asian)){
+        names(race_palette)[4] <- asian
+    }
+  
+    if(!missing(other)){
+        names(race_palette)[5] <- other
+    }
+  
+    scale_fill_manual(values = race_palette)
 
 }
 
@@ -52,35 +53,35 @@ cmap_fill_race <- function(white, african_american, hispanic, asian, other) {
 # Color aesthetic
 cmap_color_race <- function(white, african_american, hispanic, asian, other) {
 
-  race_palette <- c(
-    wht = "#72A6E5",
-    blk = "#8CE572",
-    hisp = "#CCA600",
-    asn = "#CC2F00",
-    oth = "#6200CC"
-  )
-
-  if(!missing(white)){
-    names(race_palette)[1] <- white
-  }
-
-  if(!missing(african_american)){
-    names(race_palette)[2] <- african_american
-  }
-
-  if(!missing(hispanic)){
-    names(race_palette)[3] <- hispanic
-  }
-
-  if(!missing(asian)){
-    names(race_palette)[4] <- asian
-  }
-
-  if(!missing(other)){
-    names(race_palette)[5] <- other
-  }
-
-  scale_color_manual(values = race_palette)
+    race_palette <- c(
+        wht = "#72A6E5",
+        blk = "#8CE572",
+        hisp = "#CCA600",
+        asn = "#CC2F00",
+        oth = "#6200CC"
+    )
+  
+    if(!missing(white)){
+        names(race_palette)[1] <- white
+    }
+  
+    if(!missing(african_american)){
+        names(race_palette)[2] <- african_american
+    }
+  
+    if(!missing(hispanic)){
+        names(race_palette)[3] <- hispanic
+    }
+  
+    if(!missing(asian)){
+        names(race_palette)[4] <- asian
+    }
+  
+    if(!missing(other)){
+        names(race_palette)[5] <- other
+    }
+  
+    scale_color_manual(values = race_palette)
 }
 
 # account for posh spelling differences
