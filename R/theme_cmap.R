@@ -2,25 +2,16 @@
 #'
 #' @export
 theme_cmap <- function() {
-  grDevices::windowsFonts(
-    `Whitney Medium` = "TT Whitney Medium",
-    `Whitney Book` = "TT Whitney Book",
-    `Whitney Semibold` = "TT Whitney Semibold"
-  )
-  font_main <- "Whitney Medium"
-  font_note <- "Whitney Book"
-  font_title <- "Whitney Semibold"
-
   ggplot2::theme(
 
     #Text format:
     #This sets the font, size, type and colour of text for the chart's title
-    plot.title = ggplot2::element_text(family=font_title,
+    plot.title = ggplot2::element_text(family=pkg.globals$font_title,
                                        size=28,
                                        face="bold",
                                        color="#222222"),
     #This sets the font, size, type and colour of text for the chart's subtitle, as well as setting a margin between the title and the subtitle
-    plot.subtitle = ggplot2::element_text(family=font_title,
+    plot.subtitle = ggplot2::element_text(family=pkg.globals$font_title,
                                           size=22,
                                           margin=ggplot2::margin(9,0,9,0)),
     plot.caption = ggplot2::element_blank(),
@@ -33,14 +24,14 @@ theme_cmap <- function() {
     legend.background = ggplot2::element_blank(),
     legend.title = ggplot2::element_blank(),
     legend.key = ggplot2::element_blank(),
-    legend.text = ggplot2::element_text(family=font_main,
+    legend.text = ggplot2::element_text(family=pkg.globals$font_main,
                                         size=18,
                                         color="#222222"),
 
     #Axis format
     #This sets the text font, size and colour for the axis test, as well as setting the margins and removes lines and ticks. In some cases, axis lines and axis ticks are things we would want to have in the chart - the cookbook shows examples of how to do so.
     axis.title = ggplot2::element_blank(),
-    axis.text = ggplot2::element_text(family=font_main,
+    axis.text = ggplot2::element_text(family=pkg.globals$font_main,
                                       size=18,
                                       color="#222222"),
     axis.text.x = ggplot2::element_text(margin=ggplot2::margin(5, b = 10)),
@@ -62,3 +53,10 @@ theme_cmap <- function() {
     strip.text = ggplot2::element_text(size  = 22,  hjust = 0)
   )
 }
+
+
+# ### TEST PLOT ###
+# ggplot(ggplot2::diamonds) +
+#   geom_point(aes(x=carat, y=price, color=cut), alpha=0.25) +
+#   labs(title="Diamond price by weight", x="Weight (carat)", y="Price (dollars)") +
+#   theme_cmap()
