@@ -31,7 +31,6 @@ library(tidyverse)
 temp.file <- paste(tempfile(),".xlsx",sep = "")
 download.file("https://www.nber.org/cycles/NBER\%20chronology.xlsx", temp.file, mode = "wb")
 
-
 recessions <- read_excel(temp.file, skip = 2) \%>\%
   # drop end matter
   slice(1:(n()-7)) \%>\%

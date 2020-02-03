@@ -23,7 +23,6 @@
 #' temp.file <- paste(tempfile(),".xlsx",sep = "")
 #' download.file("https://www.nber.org/cycles/NBER%20chronology.xlsx", temp.file, mode = "wb")
 #'
-#'
 #' recessions <- read_excel(temp.file, skip = 2) %>%
 #'   # drop end matter
 #'   slice(1:(n()-7)) %>%
@@ -43,8 +42,6 @@
 #'}
 #'
 "recessions"
-
-
 
 
 #' Job change in CMAP region by cluster, 2001-17
@@ -137,7 +134,6 @@
 "percentile_wages"
 
 
-
 #' Population and Labor Force by Age
 #'
 #' A test dataset containing percentage breakdowns of the population and labor force by various age buckets in 2010 and 2017.
@@ -159,7 +155,6 @@
 "pop_and_laborforce_by_age"
 
 
-
 #' Traded employment by race
 #'
 #' A test dataset containing the percentage breakdowns of the working population employed in traded clusters, by race.
@@ -178,8 +173,11 @@
 #' @examples
 #' # a stacked bar chart
 #' \dontshow{library(dplyr)}
-#' filter(traded_emp_by_race, variable %in% c("SpecializedTraded", "UnspecializedTraded")) %>%
-#'   ggplot(aes(x = reorder(Race, -value), y = value, fill = variable)) +
+#' df <- dplyr::filter(
+#'   traded_emp_by_race,
+#'   variable %in% c("SpecializedTraded", "UnspecializedTraded")
+#' )
+#' ggplot(df, aes(x = reorder(Race, -value), y = value, fill = variable)) +
 #'   geom_col(position = position_stack(reverse = TRUE)) +
 #'   scale_y_continuous(labels = scales::percent)
 #'
