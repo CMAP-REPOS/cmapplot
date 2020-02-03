@@ -16,6 +16,7 @@ Depends:
 Suggests: 
     testthat
 Imports: 
+    grid,
     dplyr,
     grDevices
 RoxygenNote: 7.0.2
