@@ -16,22 +16,31 @@
 #' @examples
 #' # Use this code to generate an updated recessions dataframe:
 #'
+#' \dontrun{
+#' library(RCurl)
+#' library(readxl)
+#' library(tidyverse)
+#' temp.file <- paste(tempfile(),".xlsx",sep = "")
+#' download.file("https://www.nber.org/cycles/NBER%20chronology.xlsx", temp.file, mode = "wb")
+#'
+#'
 #' recessions <- read_excel(temp.file, skip = 2) %>%
-#'  # drop end matter
-#'  slice(1:(n()-7)) %>%
-#'  # drop first row trough
-#'  slice(-1) %>%
-#'  as_tibble() %>%
-#'  # rename character values
-#'  rename(start_char = 1, end_char = 2) %>%
-#'  mutate(
+#'   # drop end matter
+#'   slice(1:(n()-7)) %>%
+#'   # drop first row trough
+#'   slice(-1) %>%
+#'   as_tibble() %>%
+#'   # rename character values
+#'   rename(start_char = 1, end_char = 2) %>%
+#'   mutate(
 #'    # numeric values expressed as months since January 1800
-#'    start_int = `Peak month number`/12 + 1800,
-#'    end_int = `Trough month number`/12 + 1800,
-#'    # convert to R date
-#'    start_date =  as.Date(str_replace(start_char, " ", " 1, "), format = "%B %d, %Y"),
-#'    end_date =  as.Date(str_replace(end_char, " ", " 1, "), format = "%B %d, %Y")) %>%
-#'  select(-3:-8)
+#'     start_int = `Peak month number`/12 + 1800,
+#'     end_int = `Trough month number`/12 + 1800,
+#'     # convert to R date
+#'     start_date =  as.Date(str_replace(start_char, " ", " 1, "), format = "%B %d, %Y"),
+#'     end_date =  as.Date(str_replace(end_char, " ", " 1, "), format = "%B %d, %Y")) %>%
+#'   select(-3:-8)s
+#'}
 #'
 "recessions"
 
@@ -57,8 +66,8 @@
 #' # A bar chart
 #' ggplot(cluster_jobchange, aes(x = reorder(name, jobchange), y = jobchange, fill = category)) +
 #'   geom_col() +
-#'   coord_flip() +
-#'   cmapplot::theme_cmap()
+#'   coord_flip()
+#'
 #'
 "cluster_jobchange"
 
@@ -80,8 +89,7 @@
 #' # a grouped and stacked bar chart (via `interaction()`)
 #' ggplot(economy_basic, aes(x = interaction(year, variable), y = value, fill = sector)) +
 #'   geom_col(position = "fill") +
-#'   scale_y_continuous(labels = scales::percent) +
-#'   theme_cmap()
+#'   scale_y_continuous(labels = scales::percent)
 #'
 "economy_basic"
 
@@ -104,8 +112,7 @@
 #' @examples
 #' # a time-series line chart
 #' ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
-#'   geom_line() +
-#'   theme_cmap()
+#'   geom_line()
 #'
 "grp_over_time"
 
@@ -125,8 +132,8 @@
 #' @examples
 #' # a non-time-series line chart
 #' ggplot(percentile_wages, aes(x = percentile, y = wage, color = cluster)) +
-#'   geom_line() +
-#'   theme_cmap()
+#'   geom_line()
+#'
 "percentile_wages"
 
 
@@ -147,8 +154,7 @@
 #' @examples
 #' # a grouped and stacked bar chart (via `interaction()`)
 #' ggplot(pop_and_laborforce_by_age, aes(x = interaction(year, variable), y = value, fill = age)) +
-#'   geom_col(position = position_stack(reverse = TRUE)) +
-#'   theme_cmap()
+#'   geom_col(position = position_stack(reverse = TRUE))
 #'
 "pop_and_laborforce_by_age"
 
@@ -171,10 +177,10 @@
 #'
 #' @examples
 #' # a stacked bar chart
+#' \dontshow{library(dplyr)}
 #' filter(traded_emp_by_race, variable %in% c("SpecializedTraded", "UnspecializedTraded")) %>%
 #'   ggplot(aes(x = reorder(Race, -value), y = value, fill = variable)) +
 #'   geom_col(position = position_stack(reverse = TRUE)) +
-#'   scale_y_continuous(labels = scales::percent) +
-#'   theme_cmap()
+#'   scale_y_continuous(labels = scales::percent)
 #'
 "traded_emp_by_race"

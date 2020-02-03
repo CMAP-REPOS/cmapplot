@@ -24,22 +24,31 @@ need to be updated using the script below.
 \examples{
 # Use this code to generate an updated recessions dataframe:
 
+\dontrun{
+library(RCurl)
+library(readxl)
+library(tidyverse)
+temp.file <- paste(tempfile(),".xlsx",sep = "")
+download.file("https://www.nber.org/cycles/NBER\%20chronology.xlsx", temp.file, mode = "wb")
+
+
 recessions <- read_excel(temp.file, skip = 2) \%>\%
- # drop end matter
- slice(1:(n()-7)) \%>\%
- # drop first row trough
- slice(-1) \%>\%
- as_tibble() \%>\%
- # rename character values
- rename(start_char = 1, end_char = 2) \%>\%
- mutate(
+  # drop end matter
+  slice(1:(n()-7)) \%>\%
+  # drop first row trough
+  slice(-1) \%>\%
+  as_tibble() \%>\%
+  # rename character values
+  rename(start_char = 1, end_char = 2) \%>\%
+  mutate(
    # numeric values expressed as months since January 1800
-   start_int = `Peak month number`/12 + 1800,
-   end_int = `Trough month number`/12 + 1800,
-   # convert to R date
-   start_date =  as.Date(str_replace(start_char, " ", " 1, "), format = "\%B \%d, \%Y"),
-   end_date =  as.Date(str_replace(end_char, " ", " 1, "), format = "\%B \%d, \%Y")) \%>\%
- select(-3:-8)
+    start_int = `Peak month number`/12 + 1800,
+    end_int = `Trough month number`/12 + 1800,
+    # convert to R date
+    start_date =  as.Date(str_replace(start_char, " ", " 1, "), format = "\%B \%d, \%Y"),
+    end_date =  as.Date(str_replace(end_char, " ", " 1, "), format = "\%B \%d, \%Y")) \%>\%
+  select(-3:-8)s
+}
 
 }
 \keyword{datasets}

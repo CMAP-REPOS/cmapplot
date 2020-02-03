@@ -23,11 +23,11 @@ A test dataset containing the percentage breakdowns of the working population em
 }
 \examples{
 # a stacked bar chart
+\dontshow{library(dplyr)}
 filter(traded_emp_by_race, variable \%in\% c("SpecializedTraded", "UnspecializedTraded")) \%>\%
   ggplot(aes(x = reorder(Race, -value), y = value, fill = variable)) +
   geom_col(position = position_stack(reverse = TRUE)) +
-  scale_y_continuous(labels = scales::percent) +
-  theme_cmap()
+  scale_y_continuous(labels = scales::percent)
 
 }
 \keyword{datasets}

@@ -22,7 +22,7 @@ A test dataset containing the 10th, 25th, 50th, 75th, and 90th percentile wage b
 \examples{
 # a non-time-series line chart
 ggplot(percentile_wages, aes(x = percentile, y = wage, color = cluster)) +
-  geom_line() +
-  theme_cmap()
+  geom_line()
+
 }
 \keyword{datasets}
