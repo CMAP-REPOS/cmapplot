@@ -11,8 +11,12 @@ Description: Provides themes and color scales for 'ggplot2', based on Chicago Me
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Depends:
+    ggplot2
 Suggests: 
     testthat
 Imports: 
-    ggplot2
+    grid,
+    dplyr,
+    grDevices
 RoxygenNote: 7.0.2
