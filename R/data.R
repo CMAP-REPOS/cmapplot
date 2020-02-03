@@ -54,13 +54,11 @@
 #' @source CMAP traded clusters report
 #'
 #' @examples
-#' \dontrun{
 #' # A bar chart
 #' ggplot(cluster_jobchange, aes(x = reorder(name, jobchange), y = jobchange, fill = category)) +
 #'   geom_col() +
 #'   coord_flip() +
 #'   cmapplot::theme_cmap()
-#' }
 #'
 "cluster_jobchange"
 
