@@ -18,5 +18,7 @@ Suggests:
 Imports: 
     grid,
     dplyr,
-    grDevices
+    grDevices,
+    svglite,
+    ggpubr
 RoxygenNote: 7.0.2
