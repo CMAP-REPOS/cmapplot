@@ -98,7 +98,7 @@ GeomTextLast <- ggproto(
       gp = gpar(
         col = alpha(data$colour, data$alpha),
         fontsize = data$size * .pt,
-        fontfamily = pkg.globals$font_label, #data$family,
+        fontfamily = cmapplot_globals$font_label, #data$family,
         fontface = data$fontface,
         lineheight = data$lineheight
       ),
@@ -128,9 +128,10 @@ just_dir <- function(x, tol = 0.001) {
 
 
 # ### TEST PLOT ###
-# ggplot(data.frame(year=2000:2020, var=runif(21)), aes(x=year, y=var, label=sprintf("%.1f%%", 100*var))) +
+# df <- data.frame(year=2010:2020, var=runif(22), byvar=c(rep("A", 11), rep("B", 11)))
+# ggplot(df, aes(x=year, y=var, color=byvar, label=sprintf("%.1f%%", 100*var))) +
 #   geom_line() +
-#   labs(title="Random line") +
+#   labs(title="Random lines") +
 #   scale_y_continuous("Percentage of absolutely nothing", labels=scales::percent) +
 #   scale_x_continuous("Year", expand=expand_scale(mult=c(0.05, 0.10))) +  # Expand x-axis to accomodate label
 #   geom_text_lastonly()
