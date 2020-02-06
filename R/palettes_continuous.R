@@ -18,37 +18,63 @@
 #' A sample of comms-approved colors arranged into palettes
 #'
 #' @examples
-#' viz_palette(cmap_gradients$teal_gradient)
+#' viz_gradient(cmap_gradients$red_purple)
 #'
 #' @export
 cmap_gradients <- list(
 
-    red_gradient = c("#3f0000", "#660000", "#8c0000", "#ac0000", "#cc0000",
-                     "#d83636", "#e57272", "#efa7a7", "#f8dfdf"),
+    orange_red = c("#f8ebdf", "#d88236", "#8c0000", "#3f0000"),
 
-    orange_gradient = c("#3f1d00", "#662f00", "#8c4100", "#ac5000", "#cc5f00",
-                        "#d88236", "#e5a872", "#efc9a7", "#f8ebdf"),
+    red_gradient = c("#f8dfdf", "#cc0000", "#3f0000"),
 
-    gold_gradient = c("#3f3400", "#665300", "#8c7200", "#ac8c00", "#cca600",
-                      "#d8ba36", "#e5d072", "#efe1a7", "#f8f4df"),
+    orange_gradient = c("#f8ebdf", "#cc5f00", "#3f1d00"),
 
-    green_gradient = c("#263f00", "#3d6600", '#548c00', "#67ac00", "#7acc00",
-                       "#97d836", "#b7e572", "#d2efa7", "#eef8df"),
+    yellow_orange = c("#f8f4df", "#cca600", "#cc5f00", "#662f00"),
 
-    teal_gradient = c("#003f3a", "#00665c", "#008c7e", "#00ac9c", "#00ccb8",
-                      "#36d8ca", "#72e5db", "#a7efe8", "#dff8f6"),
+    yellow_gradient = c("#f8f4df", "#cca600", "#3f3400"),
 
-    blue_gradient = c("#00303f", "#004e66", "#006b8c", "#0084ac", "#009ccc",
-                      "#36b2d8", "#72cae5", "#a7deef", "#dff2f8"),
+    yellow_green = c("#f8f4df", "#e5e172", "#b4cc00", "#698c00", "#263f00"),
 
-    purple_gradient = c("#1e003f", "#310066", "#44008c", "#5300ac", "#6300cc",
-                        "#8436d8", "#aa72e5", "#c9a7ef", "#ebdff8"),
+    green_gradient = c("#eef8df", "#7acc00", "#263f00"),
 
-    grey_gradient = c("#000000", "#181f22", "#2f3d44", "#475c66", "#5e7a87",
-                      "#6d8692", "#7b929d", "#8a9ea8", "#9daab3",
-                      "#a7b5be", "#b5c1c8", "#c3cdd3", "#d2d9de",
-                      "#dbe1e4", "#e3e8eb", "#ecf0f2", "#f5f7f8")
+    green_teal = c("#eef8df", "#8de572", "#00cc1f", "#008c4b", "#003f3a"),
+
+    teal_gradient = c("#dff8f6", "#00ccb8", "#003f3a"),
+
+    teal_blue = c("#dff8f6", "#36d8ca", "#00becc", "#0084ac", "#00303f"),
+
+    blue_gradient = c("#dff2f8", "#009ccc", "#00303f"),
+
+    blue_purple = c("#dff2f8", "#72a6e5", "#5300ac", "#310066"),
+
+    purple_gradient = c("#ebdff8", "#6300cc", "#1e003f"),
+
+    red_purple = c("#f8dfdf", "#e57272", "#77008c", "#310066"),
+
+    grey_gradient = c("#e3e8eb", "#7b929d", "#000000")
 )
+
+
+#' Visualize CMAP color gradients
+#'
+#' Displays 25 interpolated colors from the cmap continuous palettes.
+#' Modeled after viz_palette from the \href{https://github.com/ropenscilabs/ochRe}{ochRe package}
+#'
+#' @param pal = select from cmap_gradients list
+#' @param ttl = display title (optional)
+#'
+#' @examples
+#' viz_gradient(cmap_gradients$orange_red)
+#'
+#' @export
+viz_gradient <- function(pal, ttl = deparse(substitute(pal))) {
+
+    pal_func <- colorRampPalette(pal)
+
+    image(seq_len(25), 1, as.matrix(seq_len(25)), col = pal_func(25),
+          main = paste0(ttl, " (", length(pal), " colours in palette, 25 displayed)"),
+          xlab = "", ylab = "", xaxt = "n", yaxt = "n",  bty = "n")
+}
 
 
 #' Continuous palette prep function

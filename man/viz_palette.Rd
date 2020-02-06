@@ -14,7 +14,7 @@ viz_palette(pal, ttl = deparse(substitute(pal)), num = length(pal))
 \item{num}{numeric, the number of colours to display}
 }
 \description{
-directly from ochRe package: github.com/ropenscilabs/ochRe
+Directly from the \href{https://github.com/ropenscilabs/ochRe}{ochRe package}
 }
 \examples{
 viz_palette(cmap_palettes$mobility)

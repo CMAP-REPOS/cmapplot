@@ -4,7 +4,7 @@
 \name{cmap_palettes}
 \alias{cmap_palettes}
 \title{CMAP discrete color palettes}
-\format{An object of class \code{list} of length 5.}
+\format{An object of class \code{list} of length 6.}
 \usage{
 cmap_palettes
 }

@@ -9,10 +9,6 @@
 ###############################################################################
 
 
-# Modeled after ochRe palette package
-    # https://github.com/ropenscilabs/ochRe/blob/master/R
-
-
 #' CMAP discrete color palettes
 #'
 #' A sample of comms-approved colors arranged into palettes
@@ -28,11 +24,11 @@
 #' @export
 cmap_palettes <- list(
 
-    prosperity = c("gold"       = "#CCA600",
-                   "brown"      = "#8C4100",
-                   "cream"      = "#F8F4DF",
+    prosperity = c("brown"      = "#662f00",
                    "light gold" = "#E5D072",
-                   "purple"     = "#C9A7EF"),
+                   "royal purple" = "#44008c",
+                   "green"      = "#c8e572",
+                   "lilac"      = "#C9A7EF"),
 
     community = c("burnt orange" = "#CC5F00",
                   "cream"        = "#F8EBDF",
@@ -40,29 +36,39 @@ cmap_palettes <- list(
                   "lime green"   = "#D2EFA7",
                   "peach"        = "#E5A872"),
 
-    environment = c("neon green"     = "#7ACC00",
-                    "sky blue"       = "#A7DEEF",
-                    "lightest green" = "#D2EFA7",
-                    "purple"         = "#43008C",
-                    "lime green"     = "#B7E572"),
+    environment = c("dark teal"  = "#00665c",
+                    "lime green" = "#B7E572",
+                    "plum"       = "#3f0030",
+                    "light teal" = "#36d8ca",
+                    "dark blue"  = "#006b8c"),
 
-    governance = c("blue"     = "#009CCC",
-                   "olive"    = "#8C7200",
-                   "ice"      = "#DFF2F8",
-                   "peach"    = "#EFC8A7",
-                   "sky blue" = "#72CAE5"),
+    governance = c("blue"          = "#006b8c",
+                   "pink"          = "#efa7a7",
+                   "brown"         = "#8c4100",
+                   "marina trench" = "#00303f",
+                   "gold"          = "#cca600",
+                   "ice"           = "#a7efe8"),
 
-    mobility = c("purple"       = "#6200CC",
-                 "lilac"        = "#EBDFF8",
-                 "green"        = "#548C00",
-                 "sand"         = "#EFE1A7",
-                 "light purple" = "#AA72E5")
+    mobility = c("fire engine"             = "#8c0000",
+                 "elementary school floor" = "#e5bd72",
+                 "sky blue"                = "#a7efe8",
+                 "cta sign grey"           = "#6d8692",
+                 "warm blue"               = "#0084ac",
+                 "salmon"                  = "#efa7a7"),
+
+    legislation = c("blue"        = "#00becc",
+                    "orange"      = "#cc5f00",
+                    "maroon"      = "#3f0e00",
+                    "gold"        = "#cca600",
+                    "navy"        = "#003f8c",
+                    "kelly green" = "#67ac00")
+
 )
 
 
 #' Print palette for reference
 #'
-#' directly from ochRe package: github.com/ropenscilabs/ochRe
+#' Directly from the \href{https://github.com/ropenscilabs/ochRe}{ochRe package}
 #'
 #' @param pal character, vector of (hexadecimal) colours representing a palette
 #' @param ttl character, title to be displayed (the name of the palette)
