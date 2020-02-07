@@ -38,89 +38,59 @@ library(cmapplot)
 devtools::load_all()
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, out.height="40%", out.width="50%"}
 viz_palette(cmap_palettes$environment)
-```
-
-```{r echo=FALSE}
 viz_palette(cmap_palettes$governance)
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, out.height="40%", out.width="50%"}
 viz_palette(cmap_palettes$mobility)
-```
-
-```{r echo=FALSE}
 viz_palette(cmap_palettes$legislation)
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, out.height="40%", out.width="50%"}
 viz_palette(cmap_palettes$prosperity)
-```
-
-```{r echo=FALSE}
 viz_palette(cmap_palettes$community)
 ```
 
 
 # Continuous palettes
 
-```{r echo=FALSE}
+```{r echo=FALSE, out.height="40%", out.width="50%"}
 viz_gradient(cmap_gradients$red_gradient)
-```
-
-```{r echo=FALSE}
 viz_gradient(cmap_gradients$orange_red)
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, out.height="40%", out.width="50%"}
 viz_gradient(cmap_gradients$orange_gradient)
-```
-
-```{r echo=FALSE}
 viz_gradient(cmap_gradients$yellow_orange)
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, out.height="40%", out.width="50%"}
 viz_gradient(cmap_gradients$yellow_gradient)
-```
-
-```{r echo=FALSE}
 viz_gradient(cmap_gradients$yellow_green)
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, out.height="40%", out.width="50%"}
 viz_gradient(cmap_gradients$green_gradient)
-```
-
-```{r echo=FALSE}
 viz_gradient(cmap_gradients$green_teal)
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, out.height="40%", out.width="50%"}
 viz_gradient(cmap_gradients$teal_gradient)
-```
-
-```{r echo=FALSE}
 viz_gradient(cmap_gradients$teal_blue)
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, out.height="40%", out.width="50%"}
 viz_gradient(cmap_gradients$blue_gradient)
-```
-
-```{r echo=FALSE}
 viz_gradient(cmap_gradients$blue_purple)
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, out.height="40%", out.width="50%"}
 viz_gradient(cmap_gradients$purple_gradient)
-```
-
-```{r echo=FALSE}
 viz_gradient(cmap_gradients$red_purple)
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, out.height="40%", out.width="50%"}
 viz_gradient(cmap_gradients$grey_gradient)
 ```

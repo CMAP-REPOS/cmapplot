@@ -31,10 +31,10 @@ cmap_palettes <- list(
                    "lilac"      = "#C9A7EF"),
 
     community = c("burnt orange" = "#CC5F00",
-                  "cream"        = "#F8EBDF",
                   "blue"         = "#006B8C",
+                  "peach"        = "#E5A872",
                   "lime green"   = "#D2EFA7",
-                  "peach"        = "#E5A872"),
+                  "brown"        = "#662f00"),
 
     environment = c("dark teal"  = "#00665c",
                     "lime green" = "#B7E572",

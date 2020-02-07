@@ -71,8 +71,8 @@ viz_gradient <- function(pal, ttl = deparse(substitute(pal))) {
 
     pal_func <- colorRampPalette(pal)
 
-    image(seq_len(25), 1, as.matrix(seq_len(25)), col = pal_func(25),
-          main = paste0(ttl, " (", length(pal), " colours in palette, 25 displayed)"),
+    image(seq_len(30), 1, as.matrix(seq_len(30)), col = pal_func(30),
+          main = ttl,
           xlab = "", ylab = "", xaxt = "n", yaxt = "n",  bty = "n")
 }
 
