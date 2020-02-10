@@ -61,7 +61,14 @@ cmap_palettes <- list(
                     "maroon"      = "#3f0e00",
                     "gold"        = "#cca600",
                     "navy"        = "#003f8c",
-                    "kelly green" = "#67ac00")
+                    "kelly green" = "#67ac00"),
+
+    friday = c("navy"                        = "#00093f",
+               "gold"                        = "#ac8c00",
+               "dark grey"                   = "#475c66",
+               "I don't like sand"           = "#e5d072",
+               "sword that killed my father" = "#b5c1c8",
+               "my favorite blue"            = "#006b8c")
 
 )
 

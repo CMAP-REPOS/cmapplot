@@ -28,9 +28,9 @@ library(cmapplot)
 
 <img src="man/figures/README-unnamed-chunk-7-1.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-7-2.png" width="50%" height="40%" />
 
-# Continuous palettes
+<img src="man/figures/README-unnamed-chunk-8-1.png" width="50%" height="40%" />
 
-<img src="man/figures/README-unnamed-chunk-8-1.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-8-2.png" width="50%" height="40%" />
+# Continuous palettes
 
 <img src="man/figures/README-unnamed-chunk-9-1.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-9-2.png" width="50%" height="40%" />
 
@@ -44,4 +44,6 @@ library(cmapplot)
 
 <img src="man/figures/README-unnamed-chunk-14-1.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-14-2.png" width="50%" height="40%" />
 
-<img src="man/figures/README-unnamed-chunk-15-1.png" width="50%" height="40%" />
+<img src="man/figures/README-unnamed-chunk-15-1.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-15-2.png" width="50%" height="40%" />
+
+<img src="man/figures/README-unnamed-chunk-16-1.png" width="50%" height="40%" />

@@ -53,6 +53,10 @@ viz_palette(cmap_palettes$prosperity)
 viz_palette(cmap_palettes$community)
 ```
 
+```{r echo=FALSE, out.height="40%", out.width="50%"}
+viz_palette(cmap_palettes$friday)
+```
+
 
 # Continuous palettes
 
