@@ -1,18 +1,3 @@
-###############################################################################
-#
-# Continuous palettes
-#
-#       Short palettes or long? (5 or 9 colors?)
-#
-#       diagonal along the color guide? Mix hues a little?
-#
-#       easier naming conventions?
-#
-#       * Add plot examples
-#
-###############################################################################
-
-
 #' CMAP continuous color palettes
 #'
 #' A sample of comms-approved colors arranged into palettes
@@ -100,15 +85,23 @@ cmap_pal_gradient <- function(palette = "red_gradient",
 #'
 #' Pick the function depending on the aesthetic of your ggplot object (fill or color)
 #'
-#' @param palette Choose from 'cmap_palettes' list
+#' @param palette Choose from 'cmap_gradients' list
 #' @param reverse Logical; reverse color order?
+#'
+#' @examples
+#' library(dplyr)
+#' grp_over_time %>%
+#'    filter(cluster=="Biopharmaceuticals") %>%
+#'       ggplot(., aes(x = year, y = realgrp, color = realgrp)) +
+#'       geom_line() +
+#'       cmap_color_continuous(palette = "red_purple")
 #'
 #' @export
 cmap_fill_continuous <- function(palette = "red_gradient",
                                  reverse = FALSE) {
 
     scale_fill_gradientn(colours = cmap_pal_gradient(palette,
-                                                     reverse = reverse, ...)(256))
+                                                     reverse = reverse)(256))
 }
 
 
@@ -118,10 +111,9 @@ cmap_color_continuous <- function(palette = "red_gradient",
                                   reverse = FALSE) {
 
     scale_colour_gradientn(colours = cmap_pal_gradient(palette,
-                                                       reverse = reverse, ...)(256))
+                                                       reverse = reverse)(256))
 }
 
 #' @rdname cmap_fill_continuous
 #' @export
 cmap_colour_continuous <- cmap_color_continuous
-

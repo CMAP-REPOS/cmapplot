@@ -25,16 +25,16 @@ cmap_colour_race(white, african_american, hispanic, asian, other)
 }
 \description{
 Pick the function depending on the aesthetic of your ggplot object (fill or color).
-Specify your dataset's unique race factor names (as strings) in the arguments.
+Specify your dataset's unique race factor names (as case-sensitive strings) in the arguments.
 All categories are optional in case your dataset does not have all of them.
 }
 \examples{
-#library(tidyverse)
-#traded_emp_by_race \%>\%
-#    filter(Race!="Regional average" & Race!="Other") \%>\%
-#    ggplot(.) +
-#    geom_col(aes(x = variable, y = value, fill = Race)) +
-#    cmap_fill_race(white = "White", african_american = "Black",
-#                   hispanic = "Hispanic", asian = "Asian")
+library(dplyr)
+traded_emp_by_race \%>\%
+    filter(Race!="Regional average" & Race!="Other") \%>\%
+    ggplot(.) +
+    geom_col(aes(x = variable, y = value, fill = Race)) +
+    cmap_fill_race(white = "White", african_american = "Black",
+                   hispanic = "Hispanic", asian = "Asian")
 
 }

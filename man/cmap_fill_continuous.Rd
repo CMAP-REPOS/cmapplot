@@ -13,10 +13,19 @@ cmap_color_continuous(palette = "red_gradient", reverse = FALSE)
 cmap_colour_continuous(palette = "red_gradient", reverse = FALSE)
 }
 \arguments{
-\item{palette}{Choose from 'cmap_palettes' list}
+\item{palette}{Choose from 'cmap_gradients' list}
 
 \item{reverse}{Logical; reverse color order?}
 }
 \description{
 Pick the function depending on the aesthetic of your ggplot object (fill or color)
+}
+\examples{
+library(dplyr)
+grp_over_time \%>\%
+   filter(cluster=="Biopharmaceuticals") \%>\%
+      ggplot(., aes(x = year, y = realgrp, color = realgrp)) +
+      geom_line() +
+      cmap_color_continuous(palette = "red_purple")
+
 }

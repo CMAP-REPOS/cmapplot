@@ -1,14 +1,3 @@
-###############################################################################
-
-# Concerns:
-
-# Consistency for group colors across multiple charts within report
-
-# Colors for peer city comparisons: vibrant blue for Chicago, grey for all else
-
-###############################################################################
-
-
 #' CMAP discrete color palettes
 #'
 #' A sample of comms-approved colors arranged into palettes
