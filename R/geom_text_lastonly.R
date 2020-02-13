@@ -30,13 +30,14 @@
 #' @export
 geom_text_lastonly <- function(mapping = NULL, data = NULL,
                       stat = "identity", position = NULL,
+                      family=cmapplot_globals$font_label,
                       ...,
                       parse = FALSE,
                       nudge_x = 0.25,
                       nudge_y = 0,
                       check_overlap = FALSE,
                       na.rm = FALSE,
-                      show.legend = NA,
+                      show.legend = FALSE,
                       inherit.aes = TRUE)
 {
   if (is.null(position)) {
