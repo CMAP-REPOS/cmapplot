@@ -23,6 +23,7 @@
 cmapplot_globals <- new.env(parent=emptyenv())  # An environment for storing any global variables
 
 grDevices::windowsFonts(
+  sans = "Whitney Medium",  # Override the default font (Arial)
   font_reg = "Whitney Medium",
   font_lite = "Whitney Book",
   font_sbold = "Whitney Semibold"
