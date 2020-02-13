@@ -30,7 +30,6 @@
 #' @export
 geom_text_lastonly <- function(mapping = NULL, data = NULL,
                       stat = "identity", position = NULL,
-                      family=cmapplot_globals$font_label,
                       ...,
                       parse = FALSE,
                       nudge_x = 0.25,
