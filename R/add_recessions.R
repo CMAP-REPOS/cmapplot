@@ -2,23 +2,30 @@
 #' https://cran.r-project.org/web/packages/ggplot2/vignettes/extending-ggplot2.html
 #' @export
 add_recessions <- function(min = 2000, max = 2010, fill = "#e3e8eb", alpha = 1, text = TRUE, text_nudge_x = .2){
-  list(geom_rect(data = filter(recessions, end_int > min & start_int < max),
-            inherit.aes = FALSE,
-            mapping = aes(xmin = start_int, xmax=end_int, ymin=-Inf, ymax=+Inf),
-            fill = fill, alpha = alpha),
-       geom_text(filter(recessions, end_int > min & start_int < max),
-           inherit.aes = FALSE,
-           mapping = aes(x = end_int, y = +Inf, label = "Recession   ", angle = 90, hjust = "right"),
-           nudge_x = text_nudge_x)
-       )
+  # build rectangles
+  elements <- geom_rect(data = filter(recessions, end_int > min & start_int < max),
+                          inherit.aes = FALSE,
+                          mapping = aes(xmin = start_int, xmax=end_int, ymin=-Inf, ymax=+Inf),
+                          fill = fill, alpha = alpha)
+
+  # build annotations
+  annotations <- geom_text(filter(recessions, end_int > min & start_int < max),
+                      inherit.aes = FALSE,
+                      mapping = aes(x = end_int, y = +Inf, label = "Recession   ", angle = 90, hjust = "right"),
+                      nudge_x = text_nudge_x)
+
+  # add annotations if called for
+  if(text){
+    elements <- list(elements, annotations)
+  }
+
+  # return final elements
+  return(elements)
 }
 
 
-ggplot(data = filter(time_series, date >= 2000 & date <= 2010), aes(x = date, y = var)) +
-  add_recessions(min = 2000, text = TRUE) + geom_line() + scale_x_continuous("Year", breaks = integer_breaks(n = 5)) + theme_cmap()
 
-
-#' Add recessions to time series as background rectangles
+#' clean up axis breaks where n = desired number of ticks.
 #' from https://joshuacook.netlify.com/post/integer-values-ggplot-axis/
 #' @export
 integer_breaks <- function(n = 5, ...) {
@@ -34,6 +41,9 @@ integer_breaks <- function(n = 5, ...) {
 
 
 time_series <- tibble(date = 1800:2020, var = rnorm(221))
+
+ggplot(data = filter(time_series, date >= 2000 & date <= 2010), aes(x = date, y = var)) +
+  add_recessions(min = 2000, text = TRUE) + geom_line() + scale_x_continuous("Year", breaks = integer_breaks(n = 5)) + theme_cmap()
 
 
 
