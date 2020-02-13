@@ -46,3 +46,5 @@ check_cmap_fonts <- function() {
   graphics::text(1, 1, "font_label", cex=4)
 }
 #check_cmap_fonts()
+
+ggplot2::update_geom_defaults("text", list(family=cmapplot_globals$font_main))
