@@ -5,6 +5,9 @@ theme_cmap <- function() {
   ggplot2::theme(
 
     #Text format:
+    #This sets the default font family
+    text = ggplot2::element_text(family=cmapplot_globals$font_main),
+
     #This sets the font, size, type and colour of text for the chart's title
     plot.title = ggplot2::element_text(family=cmapplot_globals$font_title,
                                        size=28,
