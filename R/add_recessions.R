@@ -1,7 +1,10 @@
 #' Add recessions to time series as background rectangles
 #' https://cran.r-project.org/web/packages/ggplot2/vignettes/extending-ggplot2.html
+#' Note: color approximates #e3e8eb. hex code and alpha calculated with help from
+#' https://stackoverflow.com/questions/6672374/convert-rgb-to-rgba-over-white
+#'
 #' @export
-add_recessions <- function(min = 2000, max = 2010, fill = "#e3e8eb", alpha = 1, text = TRUE, text_nudge_x = .2){
+add_recessions <- function(min = 2000, max = 2010, fill = "#002d49", alpha = 0.11, text = TRUE, text_nudge_x = .2){
   # build rectangles
   elements <- geom_rect(data = filter(recessions, end_int > min & start_int < max),
                           inherit.aes = FALSE,
@@ -40,10 +43,9 @@ integer_breaks <- function(n = 5, ...) {
 
 
 
-time_series <- tibble(date = 1800:2020, var = rnorm(221))
-
-ggplot(data = filter(time_series, date >= 2000 & date <= 2010), aes(x = date, y = var)) +
-  add_recessions(min = 2000, text = TRUE) + geom_line() + scale_x_continuous("Year", breaks = integer_breaks(n = 5)) + theme_cmap()
+# time_series <- tibble(date = 1800:2020, var = rnorm(221))
+ ggplot(data = filter(time_series, date >= 2000 & date <= 2010), aes(x = date, y = var)) +
+   add_recessions(min = 2000, text = TRUE) + geom_line() + scale_x_continuous("Year", breaks = integer_breaks(n = 5)) + theme_cmap()
 
 
 
