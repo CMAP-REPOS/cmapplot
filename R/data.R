@@ -33,8 +33,8 @@
 #'   rename(start_char = 1, end_char = 2) %>%
 #'   mutate(
 #'    # numeric values expressed as months since January 1800
-#'     start_int = `Peak month number`/12 + 1800,
-#'     end_int = `Trough month number`/12 + 1800,
+#'     start_int = (`Peak month number`-1)/12 + 1800,
+#'     end_int = (`Trough month number`-1)/12 + 1800,
 #'     # convert to R date
 #'     start_date =  as.Date(str_replace(start_char, " ", " 1, "), format = "%B %d, %Y"),
 #'     end_date =  as.Date(str_replace(end_char, " ", " 1, "), format = "%B %d, %Y")) %>%
