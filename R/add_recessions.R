@@ -4,21 +4,46 @@
 #' https://stackoverflow.com/questions/6672374/convert-rgb-to-rgba-over-white
 #'
 #' @export
-add_recessions <- function(min = 2000, max = 2010, fill = "#002d49", alpha = 0.11, text = TRUE, text_nudge_x = .2){
+add_recessions <- function(min = 2000, max = 2010, xdata = c("int", "date"), fill = "#002d49", alpha = 0.11, text = TRUE, text_nudge_x = .2){
+
+  # handle multiple constructions of `xdata`
+  if (xdata %in% c("i", "int", "integer", "integers")){
+    xdata <- "int"
+  } else if (xdata %in% c("d", "date", "dates")){
+    xdata <- "date"
+  } else{
+    stop("Incorrect `xdata` specified", call. = FALSE)
+  }
+
+  # construct recessions dataset for this geom
+  recessions2 <- recessions %>%
+    # remove recessions outside of range
+    filter(end_int > min & start_int < max) %>%
+    # if `min` or `max` fall in  middle of a recession, modify recession to end at specified term
+    mutate(start_int = if_else(start_int < min, min, start_int),
+           end_int = if_else(end_int > max, max, end_int),
+           start_date = as.Date(lubridate::date_decimal(start_int)),
+           end_date = as.Date(lubridate::date_decimal(end_int))) %>%
+    # select the best data type (int or date format)
+    select(ends_with(xdata)) %>%
+    # rename variables so they are easy to call below
+    set_names(c("start", "end"))
+
   # build rectangles
-  elements <- geom_rect(data = filter(recessions, end_int > min & start_int < max),
+  elements <- geom_rect(data = recessions2,
                           inherit.aes = FALSE,
-                          mapping = aes(xmin = start_int, xmax=end_int, ymin=-Inf, ymax=+Inf),
+                          mapping = aes(xmin = start, xmax=end, ymin=-Inf, ymax=+Inf),
                           fill = fill, alpha = alpha)
 
-  # build annotations
-  annotations <- geom_text(filter(recessions, end_int > min & start_int < max),
-                      inherit.aes = FALSE,
-                      mapping = aes(x = end_int, y = +Inf, label = "Recession   ", angle = 90, hjust = "right"),
-                      nudge_x = text_nudge_x)
-
-  # add annotations if called for
+  # if text annotations are called for:
   if(text){
+    # build annotations
+    annotations <- geom_text(data = recessions2,
+                             inherit.aes = FALSE,
+                             mapping = aes(x = end, y = +Inf, label = "Recession   ", angle = 90, hjust = "right"),
+                             nudge_x = text_nudge_x)
+
+    # add annotations
     elements <- list(elements, annotations)
   }
 
@@ -43,11 +68,19 @@ integer_breaks <- function(n = 5, ...) {
 
 
 
-# time_series <- tibble(date = 1800:2020, var = rnorm(221))
- ggplot(data = filter(time_series, date >= 2000 & date <= 2010), aes(x = date, y = var)) +
-   add_recessions(min = 2000, text = TRUE) + geom_line() + scale_x_continuous("Year", breaks = integer_breaks(n = 5)) + theme_cmap()
+time_series <- tibble(date = 1800:2020, var = rnorm(221))
 
+time_series2 <- tibble(date = lubridate::date_decimal(time_series$date),
+                       var = time_series$var)
 
+ggplot(data =
+         #filter(time_series, date >= 1931 & date <= 1951),
+         filter(time_series2, date >= lubridate::ymd("2000-01-01") & date <= lubridate::ymd("2010-01-01")),
+       aes(x = date, y = var)) +
+  add_recessions(min = 1931, max = 1951, xdata = "date", text = TRUE) + geom_line() + scale_x_continuous("Year", breaks = integer_breaks(n = 6)) + theme_cmap()
+
+# to do:
+# build documentation. add legend handling. move annotations into if statement. allow date or int.
 
 
 # resourceS:

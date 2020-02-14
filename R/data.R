@@ -38,7 +38,7 @@
 #'     # convert to R date
 #'     start_date =  as.Date(str_replace(start_char, " ", " 1, "), format = "%B %d, %Y"),
 #'     end_date =  as.Date(str_replace(end_char, " ", " 1, "), format = "%B %d, %Y")) %>%
-#'   select(-3:-8)s
+#'   select(-3:-8)
 #'}
 #'
 "recessions"
