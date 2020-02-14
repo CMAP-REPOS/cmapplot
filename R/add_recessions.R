@@ -19,7 +19,7 @@ add_recessions <- function(min = 2000, max = 2010, xdata = c("int", "date"), fil
   recessions2 <- recessions %>%
     # remove recessions outside of range
     filter(end_int > min & start_int < max) %>%
-    # if `min` or `max` fall in  middle of a recession, modify recession to end at specified term
+    # if `min` or `max` fall in  middle of a recession, modify recession to end at specified term. Then, rebuild dates from ints
     mutate(start_int = if_else(start_int < min, min, start_int),
            end_int = if_else(end_int > max, max, end_int),
            start_date = as.Date(lubridate::date_decimal(start_int)),
@@ -31,9 +31,9 @@ add_recessions <- function(min = 2000, max = 2010, xdata = c("int", "date"), fil
 
   # build rectangles
   elements <- geom_rect(data = recessions2,
-                          inherit.aes = FALSE,
-                          mapping = aes(xmin = start, xmax=end, ymin=-Inf, ymax=+Inf),
-                          fill = fill, alpha = alpha)
+                        inherit.aes = FALSE,
+                        mapping = aes(xmin = start, xmax=end, ymin=-Inf, ymax=+Inf),
+                        fill = fill, alpha = alpha)
 
   # if text annotations are called for:
   if(text){
@@ -68,19 +68,24 @@ integer_breaks <- function(n = 5, ...) {
 
 
 
-time_series <- tibble(date = 1800:2020, var = rnorm(221))
+# time_series <- tibble(date = 1800:2020, var = rnorm(221), var2 = rnorm(221)) %>%
+#   pivot_longer(cols = starts_with("var"),
+#                names_to = "var")
+#
+# time_series2 <- tibble(date = as.Date(lubridate::date_decimal(time_series$date)),
+#                         var = time_series$var)
+#
+# ggplot(data =
+#          filter(time_series, date >= 1931 & date <= 1951),
+#          #filter(time_series2, date >= lubridate::ymd("1931-01-01") & date <= lubridate::ymd("1951-01-01")),
+#        aes(x = date, y = value, color = var)) +
+#   add_recessions(min = 1931, max = 1951, xdata = "int", text = TRUE) +
+#   geom_line() +
+#   #scale_x_date() +
+#   scale_x_continuous("Year", breaks = integer_breaks(n = 6)) +
+#   theme_cmap()
 
-time_series2 <- tibble(date = lubridate::date_decimal(time_series$date),
-                       var = time_series$var)
 
-ggplot(data =
-         #filter(time_series, date >= 1931 & date <= 1951),
-         filter(time_series2, date >= lubridate::ymd("2000-01-01") & date <= lubridate::ymd("2010-01-01")),
-       aes(x = date, y = var)) +
-  add_recessions(min = 1931, max = 1951, xdata = "date", text = TRUE) + geom_line() + scale_x_continuous("Year", breaks = integer_breaks(n = 6)) + theme_cmap()
-
-# to do:
-# build documentation. add legend handling. move annotations into if statement. allow date or int.
 
 
 # resourceS:
