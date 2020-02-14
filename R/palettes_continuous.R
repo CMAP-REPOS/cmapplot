@@ -8,13 +8,13 @@
 #' @export
 cmap_gradients <- list(
 
-    orange_red = c("#f8ebdf", "#d88236", "#8c0000", "#3f0000"),
+    orange_red = c("#f8ebdf", "#e59a72", "#cc3000", "#8c1000", "#3f0000"),
 
     red_gradient = c("#f8dfdf", "#cc0000", "#3f0000"),
 
-    orange_gradient = c("#f8ebdf", "#cc5f00", "#3f1d00"),
+    orange_gradient = c("#f8ebdf", "#efc9a7", "#e5a872", "#d88236", "#cc5f00", "#ac5000", "#8c4100", "#662f00", "#3f1d00"),
 
-    yellow_orange = c("#f8f4df", "#cca600", "#cc5f00", "#662f00"),
+    yellow_orange = c("#f8f4df", "#e5c672", "#cc8200", "#8c4100", "#3f1d00"),
 
     yellow_gradient = c("#f8f4df", "#cca600", "#3f3400"),
 
@@ -54,7 +54,7 @@ cmap_gradients <- list(
 #' @export
 viz_gradient <- function(pal, ttl = deparse(substitute(pal))) {
 
-    pal_func <- colorRampPalette(pal)
+    pal_func <- colorRampPalette(pal, space="Lab")
 
     image(seq_len(30), 1, as.matrix(seq_len(30)), col = pal_func(30),
           main = ttl,
