@@ -68,22 +68,29 @@ integer_breaks <- function(n = 5, ...) {
 
 
 
-# time_series <- tibble(date = 1800:2020, var = rnorm(221), var2 = rnorm(221)) %>%
+# time_series <- tibble(date_dec = 1800:2020, var = rnorm(221), var2 = rnorm(221)) %>%
 #   pivot_longer(cols = starts_with("var"),
-#                names_to = "var")
+#                names_to = "var") %>%
+#   mutate(date_date = as.Date(lubridate::date_decimal(date_dec))) %>%
+#   select(date_dec, date_date, var, value)
 #
-# time_series2 <- tibble(date = as.Date(lubridate::date_decimal(time_series$date)),
-#                         var = time_series$var)
 #
-# ggplot(data =
-#          filter(time_series, date >= 1931 & date <= 1951),
-#          #filter(time_series2, date >= lubridate::ymd("1931-01-01") & date <= lubridate::ymd("1951-01-01")),
-#        aes(x = date, y = value, color = var)) +
-#   add_recessions(min = 1931, max = 1951, xdata = "int", text = TRUE) +
+# # INTEGER
+# ggplot(data = filter(time_series, date_dec >= 2000 & date_dec <= 2019),
+#        mapping = aes(x = date_dec, y = value, color = var)) +
+#   add_recessions(min = 2000, max = 2019, xdata = "int", text = TRUE) +
 #   geom_line() +
-#   #scale_x_date() +
 #   scale_x_continuous("Year", breaks = integer_breaks(n = 6)) +
 #   theme_cmap()
+#
+# # DATE
+# ggplot(data = filter(time_series, date_dec >= 2000 & date_dec <= 2019),
+#        mapping = aes(x = date_date, y = value, color = var)) +
+#   add_recessions(min = 2000, max = 2019, xdata = "date", text = TRUE) +
+#   geom_line() +
+#   scale_x_date() +
+#   theme_cmap()
+
 
 
 
