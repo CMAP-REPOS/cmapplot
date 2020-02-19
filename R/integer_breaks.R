@@ -4,8 +4,6 @@
 #' generate good breaks for the x or y axis of a ggplot. Borrowed with respect
 #' from \url{https://joshuacook.netlify.com/post/integer-values-ggplot-axis/}
 #'
-#' @usage scale_x_continuous(breaks = integer_breaks(n = 5))
-#'
 #' @param n Numeric, desired number of breaks.
 #' @param ... other arguments passed on to \code{\link[base]{pretty}}
 #'

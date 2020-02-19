@@ -4,7 +4,7 @@
 \alias{integer_breaks}
 \title{clean up integer axis breaks}
 \usage{
-scale_x_continuous(breaks = integer_breaks(n = 5))
+integer_breaks(n = 5, ...)
 }
 \arguments{
 \item{n}{Numeric, desired number of breaks.}

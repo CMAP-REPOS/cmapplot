@@ -5,7 +5,7 @@
 \title{Add recessions to time series graphs}
 \usage{
 add_recessions(min = 2000, max = 2010, xdata = c("int", "date"), text
-  = TRUE, text_nudge_x = .2, fill = "#181f22", alpha = 0.1)
+  = TRUE, text_nudge_x = .2, fill = "#002d49", alpha = 0.11)
 }
 \arguments{
 \item{min}{Numeric, the year of the earliest recession to display.}

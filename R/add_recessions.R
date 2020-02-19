@@ -6,7 +6,7 @@
 #' "recession" near each rect.
 #'
 #' @usage add_recessions(min = 2000, max = 2010, xdata = c("int", "date"), text
-#'   = TRUE, text_nudge_x = .2, fill = "#181f22", alpha = 0.1)
+#'   = TRUE, text_nudge_x = .2, fill = "#002d49", alpha = 0.11)
 #'
 #' @param min Numeric, the year of the earliest recession to display.
 #' @param max Numeric, the year of the latest recession to display.
@@ -87,7 +87,7 @@
 #'
 #' @export
 add_recessions <- function(min = 2000, max = 2010, xdata = c("int", "date"),
-                           text = TRUE, text_nudge_x = 0.2, fill = "#181f22", alpha = 0.1) {
+                           text = TRUE, text_nudge_x = 0.2, fill = "#002d49", alpha = 0.11) {
 
   # handle multiple constructions of `xdata`
   if (xdata %in% c("i", "int", "integer", "integers")) {
