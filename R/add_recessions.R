@@ -6,7 +6,7 @@
 #' "recession" near each rect.
 #'
 #' @usage add_recessions(min = 2000, max = 2010, xdata = c("int", "date"), text
-#'   = TRUE, text_nudge_x = .2, fill = "#002d49", alpha = 0.11)
+#'   = TRUE, text_nudge_x = .2, fill = "#181f22", alpha = 0.1)
 #'
 #' @param min Numeric, the year of the earliest recession to display.
 #' @param max Numeric, the year of the latest recession to display.
@@ -33,16 +33,12 @@
 #'   hints found here:
 #'   \url{https://stackoverflow.com/questions/6672374/convert-rgb-to-rgba-over-white}.
 #'
-#' @import dplyr
-#' @importFrom lubridate date_decimal
-#'
-#'
 #' @examples
-#' grp_goods <- dplyr::mutate(dplyr::filter(grp_over_time, grp_over_time, category == "Goods-Producing"), year2 = as.Date(date_decimal(year)))
+#' grp_goods <- dplyr::filter(grp_over_time, category == "Goods-Producing")
+#' grp_goods <- dplyr::mutate(grp_goods, year2 = as.Date(lubridate::date_decimal(year)))
 #'
 #' # INTEGER X AXIS:
-#' ggplot(data = grp_goods,
-#' mapping = aes(x = year, y = realgrp, color = cluster)) +
+#' ggplot(data = grp_goods, mapping = aes(x = year, y = realgrp, color = cluster)) +
 #'   add_recessions(min = 2007, max = 2019, xdata = "int", text = TRUE) +
 #'   geom_line() +
 #'   scale_x_continuous("Year") +
@@ -90,44 +86,49 @@
 #' \url{https://cran.r-project.org/web/packages/ggplot2/vignettes/extending-ggplot2.html}
 #'
 #' @export
-add_recessions <- function(min = 2000, max = 2010, xdata = c("int", "date"), text = TRUE, text_nudge_x = .2, fill = "#002d49", alpha = 0.11){
+add_recessions <- function(min = 2000, max = 2010, xdata = c("int", "date"),
+                           text = TRUE, text_nudge_x = 0.2, fill = "#181f22", alpha = 0.1) {
 
   # handle multiple constructions of `xdata`
-  if (xdata %in% c("i", "int", "integer", "integers")){
+  if (xdata %in% c("i", "int", "integer", "integers")) {
     xdata <- "int"
-  } else if (xdata %in% c("d", "date", "dates")){
+  } else if (xdata %in% c("d", "date", "dates")) {
     xdata <- "date"
-  } else{
+  } else {
     stop("Incorrect `xdata` specified", call. = FALSE)
   }
 
-  # construct recessions dataset for this geom
-  recessions2 <- recessions %>%
-    # remove recessions outside of range
-    filter(end_int > min & start_int < max) %>%
-    # if `min` or `max` fall in  middle of a recession, modify recession to end at specified term. Then, rebuild dates from ints
-    mutate(start_int = if_else(start_int < min, min, start_int),
-           end_int = if_else(end_int > max, max, end_int),
-           start_date = as.Date(lubridate::date_decimal(start_int)),
-           end_date = as.Date(lubridate::date_decimal(end_int))) %>%
-    # select the best data type (int or date format)
-    select(ends_with(xdata)) %>%
-    # rename variables so they are easy to call below
-    set_names(c("start", "end"))
+  # construct recessions dataset for this geom:
+  # - remove recessions outside of range
+  recessions2 <- dplyr::filter(cmapplot::recessions, end_int > min & start_int < max)
+  # - if `min` or `max` fall in  middle of a recession, modify recession to
+  #   end at specified term. Then, rebuild dates from ints
+  recessions2 <- dplyr::mutate(recessions2,
+    start_int = if_else(start_int < min, min, start_int),
+    end_int = if_else(end_int > max, max, end_int),
+    start_date = as.Date(lubridate::date_decimal(start_int)),
+    end_date = as.Date(lubridate::date_decimal(end_int))
+  )
+  # - select the best data type (int or date format)
+  recessions2 <- dplyr::select(recessions2, ends_with(xdata))
+  # - rename variables so they are easy to call below
+  names(recessions2) <- c("start", "end")
 
   # build rectangles
   elements <- geom_rect(data = recessions2,
                         inherit.aes = FALSE,
-                        mapping = aes(xmin = start, xmax=end, ymin=-Inf, ymax=+Inf),
+                        mapping = aes(xmin = start, xmax = end, ymin = -Inf, ymax = +Inf),
                         fill = fill, alpha = alpha)
 
   # if text annotations are called for:
-  if(text){
+  if (text) {
     # build annotations
     annotations <- geom_text(data = recessions2,
                              inherit.aes = FALSE,
-                             mapping = aes(x = end, y = +Inf, label = "Recession   ", angle = 90, hjust = "right"),
-                             nudge_x = text_nudge_x)
+                             mapping = aes(x = end, y = +Inf),
+                             label = "    Recession    ", angle = 270,
+                             hjust = "left", vjust = "bottom",
+                             position = position_nudge(x = text_nudge_x, y = 0))
 
     # add annotations
     elements <- list(elements, annotations)
@@ -136,7 +137,3 @@ add_recessions <- function(min = 2000, max = 2010, xdata = c("int", "date"), tex
   # return final elements
   return(elements)
 }
-
-
-
-

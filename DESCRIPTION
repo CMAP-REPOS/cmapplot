@@ -19,5 +19,6 @@ Imports:
     grid,
     dplyr,
     grDevices,
-    lubridate
+    lubridate,
+    scales
 RoxygenNote: 7.0.2

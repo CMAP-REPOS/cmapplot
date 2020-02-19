@@ -2,7 +2,7 @@
 % Please edit documentation in R/geom_text_lastonly.R
 \name{geom_text_lastonly}
 \alias{geom_text_lastonly}
-\title{Label the last point(s) on a plot. Code mostly copied fromgeom_text source.}
+\title{Text (Last Only)}
 \usage{
 geom_text_lastonly(
   mapping = NULL,

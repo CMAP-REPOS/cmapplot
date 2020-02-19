@@ -5,7 +5,7 @@
 \title{Add recessions to time series graphs}
 \usage{
 add_recessions(min = 2000, max = 2010, xdata = c("int", "date"), text
-  = TRUE, text_nudge_x = .2, fill = "#002d49", alpha = 0.11)
+  = TRUE, text_nudge_x = .2, fill = "#181f22", alpha = 0.1)
 }
 \arguments{
 \item{min}{Numeric, the year of the earliest recession to display.}
@@ -48,11 +48,11 @@ recessions to a plot. It will either return a single \code{geom_rect} geom or
 }
 
 \examples{
-grp_goods <- dplyr::mutate(dplyr::filter(grp_over_time, grp_over_time, category == "Goods-Producing"), year2 = as.Date(date_decimal(year)))
+grp_goods <- dplyr::filter(grp_over_time, category == "Goods-Producing")
+grp_goods <- dplyr::mutate(grp_goods, year2 = as.Date(lubridate::date_decimal(year)))
 
 # INTEGER X AXIS:
-ggplot(data = grp_goods,
-mapping = aes(x = year, y = realgrp, color = cluster)) +
+ggplot(data = grp_goods, mapping = aes(x = year, y = realgrp, color = cluster)) +
   add_recessions(min = 2007, max = 2019, xdata = "int", text = TRUE) +
   geom_line() +
   scale_x_continuous("Year") +
