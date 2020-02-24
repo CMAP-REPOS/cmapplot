@@ -87,14 +87,10 @@ viz_gradient(cmap_gradients$teal_blue)
 
 ```{r echo=FALSE, out.height="40%", out.width="50%"}
 viz_gradient(cmap_gradients$blue_gradient)
-viz_gradient(cmap_gradients$blue_purple)
-```
-
-```{r echo=FALSE, out.height="40%", out.width="50%"}
 viz_gradient(cmap_gradients$purple_gradient)
-viz_gradient(cmap_gradients$red_purple)
 ```
 
 ```{r echo=FALSE, out.height="40%", out.width="50%"}
+viz_gradient(cmap_gradients$red_purple)
 viz_gradient(cmap_gradients$grey_gradient)
 ```

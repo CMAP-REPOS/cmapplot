@@ -8,35 +8,45 @@
 #' @export
 cmap_gradients <- list(
 
-    orange_red = c("#f8ebdf", "#e59a72", "#cc3000", "#8c1000", "#3f0000"),
+    red_gradient = c("#f8dfdf", "#efa7a7", "#e57272", "#d83636", "#cc0000",
+                     "#ac0000", "#8c0000", "#660000", "#3f0000"),
 
-    red_gradient = c("#f8dfdf", "#cc0000", "#3f0000"),
+    orange_red = c("#f8ebdf", "#e59a72", "#cc2f00", "#8c1000", "#3f0000"),
 
-    orange_gradient = c("#f8ebdf", "#efc9a7", "#e5a872", "#d88236", "#cc5f00", "#ac5000", "#8c4100", "#662f00", "#3f1d00"),
+    orange_gradient = c("#f8ebdf", "#efc9a7", "#e5a872", "#d88136", "#cc5f00",
+                        "#ac5000", "#8c4100", "#662f00", "#3f1d00"),
 
-    yellow_orange = c("#f8f4df", "#e5c672", "#cc8200", "#8c4100", "#3f1d00"),
+    yellow_orange = c("#f8f4df", "#e5c672", "#cc8200", "#8c4d00", "#3f1d00"),
 
-    yellow_gradient = c("#f8f4df", "#cca600", "#3f3400"),
+    yellow_gradient = c("#f8f4df", "#efe1a7", "#e5d072", "#d8ba36", "#cca600",
+                        "#ac8c00", "#8c7200", "#665300", "#3f3400"),
 
-    yellow_green = c("#f8f4df", "#e5e172", "#b4cc00", "#698c00", "#263f00"),
+    yellow_green = c("#f8f4df", "#e5e172", "#b5cc00", "#688c00", "#263f00"),
 
-    green_gradient = c("#eef8df", "#7acc00", "#263f00"),
+    green_gradient = c("#eef8df", "#d2efa7", "#b7e572", "#97d836", "#7acc00",
+                       "#67ac00", "#548c00", "#3d6600", "#263f00"),
 
-    green_teal = c("#eef8df", "#8de572", "#00cc1f", "#008c4b", "#003f3a"),
+    green_teal = c("#eef8df", "#8ce572", "#00cc1f", "#008c4a", "#003f3a"),
 
-    teal_gradient = c("#dff8f6", "#00ccb8", "#003f3a"),
+    teal_gradient = c("#dff8f6", "#a7efe8", "#72e5db", "#36d8ca", "#00ccb9",
+                      "#00ac9c", "#008c7f", "#00665c", "#003f3a"),
 
-    teal_blue = c("#dff8f6", "#36d8ca", "#00becc", "#0084ac", "#00303f"),
+    teal_blue = c("#dff8f6", "#72e5e4", "#00bdcc", "#00768c", "#00303f"),
 
-    blue_gradient = c("#dff2f8", "#009ccc", "#00303f"),
+    blue_gradient = c("#dff2f8", "#a7deef", "#72cae5", "#36b2d8", "#009ccc",
+                      "#0084ac", "#006b8c", "#004e66", "#00303f"),
 
-    blue_purple = c("#dff2f8", "#72a6e5", "#5300ac", "#310066"),
+    # blue_purple = c("#dff2f8", "#72a6e5", "#001bcc", "#17008c", "#1e003f"),
 
-    purple_gradient = c("#ebdff8", "#6300cc", "#1e003f"),
+    purple_gradient = c("#ebdff8", "#c9a7ef", "#aa72e5", "#8436d8", "#6200cc",
+                        "#5300ac", "#43008c", "#310066", "#1e003f"),
 
-    red_purple = c("#f8dfdf", "#e57272", "#77008c", "#310066"),
+    red_purple = c("#f8dfdf", "#e5729e", "#cc009a", "#78008c", "#1e003f"),
 
-    grey_gradient = c("#e3e8eb", "#7b929d", "#000000")
+    grey_gradient = c("#f5f7f8", "#ecf0f2", "#e3e8eb", "#dbe1e4", "#d2d9de",
+                      "#c3cdd3", "#b5c1c8", "#a7b5be", "#9daab3", "#8a9ea8",
+                      "#7b929d", "#6d8692", "#5e7a87", "#475c66", "#2f3d44",
+                      "#181f22", "#000000")
 )
 
 

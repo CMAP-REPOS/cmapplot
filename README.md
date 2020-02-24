@@ -45,5 +45,3 @@ library(cmapplot)
 <img src="man/figures/README-unnamed-chunk-14-1.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-14-2.png" width="50%" height="40%" />
 
 <img src="man/figures/README-unnamed-chunk-15-1.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-15-2.png" width="50%" height="40%" />
-
-<img src="man/figures/README-unnamed-chunk-16-1.png" width="50%" height="40%" />
