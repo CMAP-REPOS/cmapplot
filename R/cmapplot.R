@@ -15,7 +15,8 @@
 #'
 #' @name cmapplot
 #' @docType package
-#' @import ggplot2 dplyr grid grDevices graphics
+#' @import ggplot2 dplyr grid scales grDevices graphics
+#' @importFrom lubridate date_decimal
 #' @keywords internal
 "_PACKAGE"
 
