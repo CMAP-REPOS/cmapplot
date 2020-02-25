@@ -15,8 +15,7 @@
 #'
 #' @name cmapplot
 #' @docType package
-#' @import ggplot2 dplyr grid scales
-#' @importFrom grDevices windowsFonts
+#' @import ggplot2 dplyr grid scales grDevices graphics
 #' @importFrom lubridate date_decimal
 #' @keywords internal
 "_PACKAGE"
