@@ -13,20 +13,20 @@
 #' @export
 cmap_palettes <- list(
 
-    prosperity = c("brown"      = "#662f00",
-                   "light gold" = "#E5D072",
+    prosperity = c("brown"        = "#662f00",
+                   "light gold"   = "#e5d072",
                    "royal purple" = "#44008c",
-                   "green"      = "#c8e572",
-                   "lilac"      = "#C9A7EF"),
+                   "green"        = "#c8e572",
+                   "lilac"        = "#c9a7ef"),
 
-    community = c("burnt orange" = "#CC5F00",
-                  "blue"         = "#006B8C",
-                  "peach"        = "#E5A872",
-                  "lime green"   = "#D2EFA7",
+    community = c("burnt orange" = "#cc5f00",
+                  "blue"         = "#006b8c",
+                  "peach"        = "#e5a872",
+                  "lime green"   = "#d2efa7",
                   "brown"        = "#662f00"),
 
     environment = c("dark teal"  = "#00665c",
-                    "lime green" = "#B7E572",
+                    "lime green" = "#b7e572",
                     "plum"       = "#3f0030",
                     "light teal" = "#36d8ca",
                     "dark blue"  = "#006b8c"),
