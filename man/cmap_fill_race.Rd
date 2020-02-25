@@ -6,16 +6,16 @@
 \alias{cmap_colour_race}
 \title{Apply official CMAP race/ethnicity chart colors to ggplot2}
 \usage{
-cmap_fill_race(white, african_american, hispanic, asian, other)
+cmap_fill_race(white, black, hispanic, asian, other)
 
-cmap_color_race(white, african_american, hispanic, asian, other)
+cmap_color_race(white, black, hispanic, asian, other)
 
-cmap_colour_race(white, african_american, hispanic, asian, other)
+cmap_colour_race(white, black, hispanic, asian, other)
 }
 \arguments{
 \item{white}{White/Caucasian}
 
-\item{african_american}{Black/African American}
+\item{black}{Black/African American}
 
 \item{hispanic}{Hispanic/Latino}
 
@@ -34,7 +34,7 @@ traded_emp_by_race \%>\%
     filter(Race!="Regional average" & Race!="Other") \%>\%
     ggplot(.) +
     geom_col(aes(x = variable, y = value, fill = Race)) +
-    cmap_fill_race(white = "White", african_american = "Black",
+    cmap_fill_race(white = "White", black = "Black",
                    hispanic = "Hispanic", asian = "Asian")
 
 }

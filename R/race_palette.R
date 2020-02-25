@@ -5,7 +5,7 @@
 #' All categories are optional in case your dataset does not have all of them.
 #'
 #' @param white White/Caucasian
-#' @param african_american Black/African American
+#' @param black Black/African American
 #' @param hispanic Hispanic/Latino
 #' @param asian Asian
 #' @param other Other
@@ -16,17 +16,17 @@
 #'     filter(Race!="Regional average" & Race!="Other") %>%
 #'     ggplot(.) +
 #'     geom_col(aes(x = variable, y = value, fill = Race)) +
-#'     cmap_fill_race(white = "White", african_american = "Black",
+#'     cmap_fill_race(white = "White", black = "Black",
 #'                    hispanic = "Hispanic", asian = "Asian")
 #'
 #' @export
-cmap_fill_race <- function(white, african_american, hispanic, asian, other) {
+cmap_fill_race <- function(white, black, hispanic, asian, other) {
 
     race_palette <- c(
-        wht  = "#72A6E5",
-        blk  = "#8CE572",
-        hisp = "#CCA600",
-        asn  = "#CC2F00",
+        wht  = "#72a6e5",
+        blk  = "#8de572",
+        hisp = "#cca600",
+        asn  = "#cc3000",
         oth  = "#8a9ea8"
     )
 
@@ -34,8 +34,8 @@ cmap_fill_race <- function(white, african_american, hispanic, asian, other) {
         names(race_palette)[1] <- white
     }
 
-    if(!missing(african_american)){
-        names(race_palette)[2] <- african_american
+    if(!missing(black)){
+        names(race_palette)[2] <- black
     }
 
     if(!missing(hispanic)){
@@ -57,13 +57,13 @@ cmap_fill_race <- function(white, african_american, hispanic, asian, other) {
 
 #' @rdname cmap_fill_race
 #' @export
-cmap_color_race <- function(white, african_american, hispanic, asian, other) {
+cmap_color_race <- function(white, black, hispanic, asian, other) {
 
     race_palette <- c(
-        wht  = "#72A6E5",
-        blk  = "#8CE572",
-        hisp = "#CCA600",
-        asn  = "#CC2F00",
+        wht  = "#72a6e5",
+        blk  = "#8de572",
+        hisp = "#cca600",
+        asn  = "#cc3000",
         oth  = "#8a9ea8"
     )
 
@@ -71,8 +71,8 @@ cmap_color_race <- function(white, african_american, hispanic, asian, other) {
         names(race_palette)[1] <- white
     }
 
-    if(!missing(african_american)){
-        names(race_palette)[2] <- african_american
+    if(!missing(black)){
+        names(race_palette)[2] <- black
     }
 
     if(!missing(hispanic)){
