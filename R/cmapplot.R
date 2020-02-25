@@ -15,8 +15,7 @@
 #'
 #' @name cmapplot
 #' @docType package
-#' @import ggplot2 dplyr grid
-#' @importFrom grDevices windowsFonts
+#' @import ggplot2 dplyr grid grDevices graphics
 #' @keywords internal
 "_PACKAGE"
 

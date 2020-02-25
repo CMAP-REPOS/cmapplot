@@ -63,12 +63,10 @@ cmap_gradients <- list(
 #'
 #' @export
 viz_gradient <- function(pal, ttl = deparse(substitute(pal))) {
-
-    pal_func <- colorRampPalette(pal, space="Lab")
-
-    image(seq_len(30), 1, as.matrix(seq_len(30)), col = pal_func(30),
-          main = ttl,
-          xlab = "", ylab = "", xaxt = "n", yaxt = "n",  bty = "n")
+    pal_func <- grDevices::colorRampPalette(pal, space = "Lab")
+    graphics::image(seq_len(30), 1, as.matrix(seq_len(30)), col = pal_func(30),
+                    main = ttl, xlab = "", ylab = "",
+                    xaxt = "n", yaxt = "n",  bty = "n")
 }
 
 
@@ -78,16 +76,12 @@ viz_gradient <- function(pal, ttl = deparse(substitute(pal))) {
 #' @param reverse Logical; reverse color order?
 #'
 #' @export
-cmap_pal_gradient <- function(palette = "red_gradient",
-                              reverse = FALSE) {
-
+cmap_pal_continuous <- function(palette = "red_gradient", reverse = FALSE) {
     pal <- cmap_gradients[[palette]]
-
     if (reverse) {
         pal <- rev(pal)
     }
-
-    return(colorRampPalette(pal))
+    return(grDevices::colorRampPalette(pal))
 }
 
 
@@ -107,21 +101,18 @@ cmap_pal_gradient <- function(palette = "red_gradient",
 #'       cmap_color_continuous(palette = "red_purple")
 #'
 #' @export
-cmap_fill_continuous <- function(palette = "red_gradient",
-                                 reverse = FALSE) {
-
-    scale_fill_gradientn(colours = cmap_pal_gradient(palette,
-                                                     reverse = reverse)(256))
+cmap_fill_continuous <- function(palette = "red_gradient", reverse = FALSE) {
+    ggplot2::scale_fill_gradientn(
+        colours = cmap_pal_continuous(palette, reverse = reverse)(256)
+    )
 }
-
 
 #' @rdname cmap_fill_continuous
 #' @export
-cmap_color_continuous <- function(palette = "red_gradient",
-                                  reverse = FALSE) {
-
-    scale_colour_gradientn(colours = cmap_pal_gradient(palette,
-                                                       reverse = reverse)(256))
+cmap_color_continuous <- function(palette = "red_gradient", reverse = FALSE) {
+    ggplot2::scale_colour_gradientn(
+        colours = cmap_pal_continuous(palette, reverse = reverse)(256)
+    )
 }
 
 #' @rdname cmap_fill_continuous

@@ -50,7 +50,7 @@ cmap_fill_race <- function(white, black, hispanic, asian, other) {
         names(race_palette)[5] <- other
     }
 
-    scale_fill_manual(values = race_palette)
+    ggplot2::scale_fill_manual(values = race_palette)
 
 }
 
@@ -87,7 +87,7 @@ cmap_color_race <- function(white, black, hispanic, asian, other) {
         names(race_palette)[5] <- other
     }
 
-    scale_color_manual(values = race_palette)
+    ggplot2::scale_color_manual(values = race_palette)
 }
 
 #' @rdname cmap_fill_race
