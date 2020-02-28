@@ -99,7 +99,7 @@ GeomTextLast <- ggproto(
         col = alpha(data$colour, data$alpha),
         fontsize = data$size * .pt,
         fontfamily = cmapplot_globals$font_label, #data$family,
-        fontface = data$fontface,
+        fontface = cmapplot_globals$font_label_face, #data$fontface,
         lineheight = data$lineheight
       ),
       check.overlap = check_overlap

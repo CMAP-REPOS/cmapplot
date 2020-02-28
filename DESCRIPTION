@@ -16,9 +16,11 @@ Depends:
 Suggests: 
     testthat
 Imports: 
-    grid,
     dplyr,
+    graphics,
     grDevices,
+    grid,
     lubridate,
-    scales
+    scales,
+    sysfonts
 RoxygenNote: 7.0.2

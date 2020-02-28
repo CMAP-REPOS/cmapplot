@@ -15,7 +15,7 @@ geom_text_lastonly(
   nudge_y = 0,
   check_overlap = FALSE,
   na.rm = FALSE,
-  show.legend = NA,
+  show.legend = FALSE,
   inherit.aes = TRUE
 )
 }
