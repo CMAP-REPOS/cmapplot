@@ -12,6 +12,11 @@
 #'
 #' Code was mostly copied from `ggplot2::geom_text()`'s source.
 #'
+#' @usage geom_text_lastonly(mapping = NULL, data = NULL,
+#'   stat = "identity", position = NULL, ..., parse = FALSE,
+#'   nudge_x = 0.25, nudge_y = 0, check_overlap = FALSE,
+#'   na.rm = FALSE, show.legend = FALSE, inherit.aes = TRUE)
+#'
 #' @inheritParams ggplot2::layer
 #' @inheritParams ggplot2::geom_point
 #' @param parse If `TRUE`, the labels will be parsed into expressions and
@@ -26,6 +31,25 @@
 #'   same layer will not be plotted. `check_overlap` happens at draw time and in
 #'   the order of the data. Therefore data should be arranged by the label
 #'   column before calling `geom_label()` or `geom_text()`.
+#'
+#' @examples
+#' df <- data.frame(year=2010:2020, var=runif(22), byvar=c(rep("A", 11), rep("B", 11)))
+#'
+#' # Without label formatting or x-axis expansion
+#' ggplot(df, aes(x=year, y=var, color=byvar)) +
+#'   geom_line() +
+#'   labs(title="Random lines") +
+#'   scale_y_continuous("Percentage of absolutely nothing") +
+#'   scale_x_continuous("Year") +
+#'   geom_text_lastonly()
+#'
+#' # With label formatting and x-axis expansion
+#' ggplot(df, aes(x=year, y=var, color=byvar, label=sprintf("%.1f%%", 100*var))) +
+#'   geom_line() +
+#'   labs(title="Random lines") +
+#'   scale_y_continuous("Percentage of absolutely nothing", labels=scales::percent) +
+#'   scale_x_continuous("Year", expand=expand_scale(mult=c(0.05, 0.10))) +
+#'   geom_text_lastonly()
 #'
 #' @export
 geom_text_lastonly <- function(mapping = NULL, data = NULL,
@@ -66,18 +90,26 @@ geom_text_lastonly <- function(mapping = NULL, data = NULL,
 #' @export
 GeomTextLast <- ggproto(
   "GeomTextLast", Geom,
-  required_aes = c("x", "y", "label"),
+  required_aes = c("x", "y"), #, "label"),
 
   default_aes = aes(
     colour = "black", size = 3.88, angle = 0, hjust = 0, vjust = 0.5,
-    alpha = NA, family = "", fontface = 1, lineheight = 1.2
+    alpha = NA, family = "", fontface = 1, lineheight = 1.2,
+    label = NA
   ),
 
   draw_panel = function(data, panel_params, coord, parse = FALSE,
                         na.rm = FALSE, check_overlap = FALSE) {
+    # Filter labeled dataset to include maximum x-value only
     x_max <- max(unique(data$x))
     data <- data[data$x == x_max,]
-    lab <- data$label
+
+    # Use y-var as label if not otherwise specified
+    if (!is.na(data$label[[1]])) {
+      lab <- data$label
+    } else {
+      lab <- data$y
+    }
     if (parse) {
       lab <- parse_safe(as.character(lab))
     }
@@ -125,13 +157,3 @@ just_dir <- function(x, tol = 0.001) {
   out[x > 0.5 + tol] <- 3L
   out
 }
-
-
-# ### TEST PLOT ###
-# df <- data.frame(year=2010:2020, var=runif(22), byvar=c(rep("A", 11), rep("B", 11)))
-# ggplot(df, aes(x=year, y=var, color=byvar, label=sprintf("%.1f%%", 100*var))) +
-#   geom_line() +
-#   labs(title="Random lines") +
-#   scale_y_continuous("Percentage of absolutely nothing", labels=scales::percent) +
-#   scale_x_continuous("Year", expand=expand_scale(mult=c(0.05, 0.10))) +  # Expand x-axis to accomodate label
-#   geom_text_lastonly()

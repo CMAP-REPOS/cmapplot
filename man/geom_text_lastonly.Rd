@@ -4,20 +4,10 @@
 \alias{geom_text_lastonly}
 \title{Text (Last Only)}
 \usage{
-geom_text_lastonly(
-  mapping = NULL,
-  data = NULL,
-  stat = "identity",
-  position = NULL,
-  ...,
-  parse = FALSE,
-  nudge_x = 0.25,
-  nudge_y = 0,
-  check_overlap = FALSE,
-  na.rm = FALSE,
-  show.legend = NA,
-  inherit.aes = TRUE
-)
+geom_text_lastonly(mapping = NULL, data = NULL,
+  stat = "identity", position = NULL, ..., parse = FALSE,
+  nudge_x = 0.25, nudge_y = 0, check_overlap = FALSE,
+  na.rm = FALSE, show.legend = FALSE, inherit.aes = TRUE)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2:aes]{aes()}} or
@@ -91,4 +81,24 @@ and may be partially cut off by the plot limits, unless the `x` scale is
 expanded, e.g. with `scale_x_continuous(expand=expand_scale(mult=0.10))`.
 
 Code was mostly copied from `ggplot2::geom_text()`'s source.
+}
+\examples{
+df <- data.frame(year=2010:2020, var=runif(22), byvar=c(rep("A", 11), rep("B", 11)))
+
+# Without label formatting or x-axis expansion
+ggplot(df, aes(x=year, y=var, color=byvar)) +
+  geom_line() +
+  labs(title="Random lines") +
+  scale_y_continuous("Percentage of absolutely nothing") +
+  scale_x_continuous("Year") +
+  geom_text_lastonly()
+
+# With label formatting and x-axis expansion
+ggplot(df, aes(x=year, y=var, color=byvar, label=sprintf("\%.1f\%\%", 100*var))) +
+  geom_line() +
+  labs(title="Random lines") +
+  scale_y_continuous("Percentage of absolutely nothing", labels=scales::percent) +
+  scale_x_continuous("Year", expand=expand_scale(mult=c(0.05, 0.10))) +
+  geom_text_lastonly()
+
 }
