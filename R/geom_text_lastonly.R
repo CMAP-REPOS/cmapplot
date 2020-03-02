@@ -1,4 +1,31 @@
-#' Label the last point(s) on a plot. Code mostly copied fromgeom_text source.
+#' Text (Last Only)
+#'
+#' Label only the last point(s) on a plot. `geom_text_lastonly()` can be used
+#' instead of `ggplot2::geom_text()` when only the last point(s) should be
+#' labeled. This is accomplished by identifying the maximum value of `x` in
+#' `data` and applying afilter to omit records where `x` is less than the
+#' maximum.
+#'
+#' Labels are automatically placed to the right of the final point,
+#' and may be partially cut off by the plot limits, unless the `x` scale is
+#' expanded, e.g. with `scale_x_continuous(expand=expand_scale(mult=0.10))`.
+#'
+#' Code was mostly copied from `ggplot2::geom_text()`'s source.
+#'
+#' @inheritParams ggplot2::layer
+#' @inheritParams ggplot2::geom_point
+#' @param parse If `TRUE`, the labels will be parsed into expressions and
+#'   displayed as described in `?plotmath`.
+#' @param nudge_x,nudge_y Horizontal and vertical adjustment to nudge labels by.
+#'   Useful for offsetting text from points, particularly on discrete scales.
+#'   Cannot be jointy specified with `position`.
+#' @param position Position adjustment, either as a string, or the result of
+#'  a call to a position adjustment function. Cannot be jointy specified with
+#'  `nudge_x` or `nudge_y`.
+#' @param check_overlap If `TRUE`, text that overlaps previous text in the
+#'   same layer will not be plotted. `check_overlap` happens at draw time and in
+#'   the order of the data. Therefore data should be arranged by the label
+#'   column before calling `geom_label()` or `geom_text()`.
 #'
 #' @export
 geom_text_lastonly <- function(mapping = NULL, data = NULL,
@@ -33,6 +60,9 @@ geom_text_lastonly <- function(mapping = NULL, data = NULL,
   )
 }
 
+#' @rdname ggplot2-ggproto
+#' @format NULL
+#' @usage NULL
 #' @export
 GeomTextLast <- ggproto(
   "GeomTextLast", Geom,
@@ -68,7 +98,7 @@ GeomTextLast <- ggproto(
       gp = gpar(
         col = alpha(data$colour, data$alpha),
         fontsize = data$size * .pt,
-        fontfamily = data$family,
+        fontfamily = cmapplot_globals$font_label, #data$family,
         fontface = data$fontface,
         lineheight = data$lineheight
       ),
@@ -98,13 +128,10 @@ just_dir <- function(x, tol = 0.001) {
 
 
 # ### TEST PLOT ###
-# windowsFonts(`Whitney Semibold` = "TT Whitney Semibold")
-# font_label <- "Whitney Semibold"
-# df = data.frame(year=2000:2020, var=runif(21))
-# ggplot(df,aes(x=year, y=var, label=sprintf("%.1f%%", 100*var))) +
-#  ggtitle("Random line") +
-#  scale_x_continuous("Year", expand=expand_scale(mult=c(0.05, 0.10))) +  # Expand x-axis to accomodate label
-#  scale_y_continuous("Percentage of absolutely nothing", labels=scales::percent) +
-#  geom_line(size=1) +
-#  theme_cmap() +
-#  geom_text_lastonly(family=font_label)  # Specify font
+# df <- data.frame(year=2010:2020, var=runif(22), byvar=c(rep("A", 11), rep("B", 11)))
+# ggplot(df, aes(x=year, y=var, color=byvar, label=sprintf("%.1f%%", 100*var))) +
+#   geom_line() +
+#   labs(title="Random lines") +
+#   scale_y_continuous("Percentage of absolutely nothing", labels=scales::percent) +
+#   scale_x_continuous("Year", expand=expand_scale(mult=c(0.05, 0.10))) +  # Expand x-axis to accomodate label
+#   geom_text_lastonly()
