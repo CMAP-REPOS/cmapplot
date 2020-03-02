@@ -52,7 +52,7 @@ Cannot be jointy specified with `position`.}
 \item{check_overlap}{If `TRUE`, text that overlaps previous text in the
 same layer will not be plotted. `check_overlap` happens at draw time and in
 the order of the data. Therefore data should be arranged by the label
-column before calling `geom_label()` or `geom_text()`.}
+column before calling `geom_text_lastonly()`.}
 
 \item{na.rm}{If \code{FALSE}, the default, missing values are removed with
 a warning. If \code{TRUE}, missing values are silently removed.}
@@ -69,18 +69,18 @@ that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
 }
 \description{
-Label only the last point(s) on a plot. `geom_text_lastonly()` can be used
-instead of `ggplot2::geom_text()` when only the last point(s) should be
-labeled. This is accomplished by identifying the maximum value of `x` in
-`data` and applying afilter to omit records where `x` is less than the
+Label only the last point(s) on a plot. \code{geom_text_lastonly()} can be used
+instead of \code{ggplot2::geom_text()} when only the last point(s) should be
+labeled. This is accomplished by identifying the maximum value of \code{x} in
+\code{data} and applying a filter to omit records where \code{x} is less than the
 maximum.
 }
 \details{
 Labels are automatically placed to the right of the final point,
-and may be partially cut off by the plot limits, unless the `x` scale is
-expanded, e.g. with `scale_x_continuous(expand=expand_scale(mult=0.10))`.
+and may be partially cut off by the plot limits, unless the \code{x} scale is
+expanded, e.g. with \code{scale_x_continuous(expand=expand_scale(mult=0.10))}.
 
-Code was mostly copied from `ggplot2::geom_text()`'s source.
+Code was mostly copied from \code{ggplot2::geom_text()}'s source.
 }
 \examples{
 df <- data.frame(year=2010:2020, var=runif(22), byvar=c(rep("A", 11), rep("B", 11)))
