@@ -7,7 +7,8 @@
 geom_text_lastonly(mapping = NULL, data = NULL,
   stat = "identity", position = NULL, ..., parse = FALSE,
   nudge_x = 0.25, nudge_y = 0, check_overlap = FALSE,
-  na.rm = FALSE, show.legend = FALSE, inherit.aes = TRUE)
+  na.rm = FALSE, show.legend = FALSE, inherit.aes = TRUE,
+  add_points = FALSE)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2:aes]{aes()}} or
@@ -35,24 +36,24 @@ layer, as a string.}
 
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function. Cannot be jointy specified with
-`nudge_x` or `nudge_y`.}
+\code{nudge_x} or \code{nudge_y}.}
 
 \item{...}{Other arguments passed on to \code{\link[ggplot2:layer]{layer()}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{colour = "red"} or \code{size = 3}. They may also be parameters
 to the paired geom/stat.}
 
-\item{parse}{If `TRUE`, the labels will be parsed into expressions and
-displayed as described in `?plotmath`.}
+\item{parse}{If \code{TRUE}, the labels will be parsed into expressions and
+displayed as described in \code{?plotmath}.}
 
 \item{nudge_x, nudge_y}{Horizontal and vertical adjustment to nudge labels by.
 Useful for offsetting text from points, particularly on discrete scales.
-Cannot be jointy specified with `position`.}
+Cannot be jointy specified with \code{position}.}
 
-\item{check_overlap}{If `TRUE`, text that overlaps previous text in the
-same layer will not be plotted. `check_overlap` happens at draw time and in
+\item{check_overlap}{If \code{TRUE}, text that overlaps previous text in the
+same layer will not be plotted. \code{check_overlap} happens at draw time and in
 the order of the data. Therefore data should be arranged by the label
-column before calling `geom_text_lastonly()`.}
+column before calling \code{geom_text_lastonly()}.}
 
 \item{na.rm}{If \code{FALSE}, the default, missing values are removed with
 a warning. If \code{TRUE}, missing values are silently removed.}
@@ -67,6 +68,9 @@ display.}
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
+
+\item{add_points}{If \code{TRUE}, points will be added to the plot (for the labeled
+data only).}
 }
 \description{
 Label only the last point(s) on a plot. \code{geom_text_lastonly()} can be used
@@ -80,12 +84,13 @@ Labels are automatically placed to the right of the final point,
 and may be partially cut off by the plot limits, unless the \code{x} scale is
 expanded, e.g. with \code{scale_x_continuous(expand=expand_scale(mult=0.10))}.
 
-Code was mostly copied from \code{ggplot2::geom_text()}'s source.
+Code was mostly copied from the source of \code{ggplot2::geom_text()} and
+\code{ggplot2::geom_point()}.
 }
 \examples{
 df <- data.frame(year=2010:2020, var=runif(22), byvar=c(rep("A", 11), rep("B", 11)))
 
-# Without label formatting or x-axis expansion
+# Without points, label formatting or x-axis expansion
 ggplot(df, aes(x=year, y=var, color=byvar)) +
   geom_line() +
   labs(title="Random lines") +
@@ -93,12 +98,12 @@ ggplot(df, aes(x=year, y=var, color=byvar)) +
   scale_x_continuous("Year") +
   geom_text_lastonly()
 
-# With label formatting and x-axis expansion
+# With points, label formatting and x-axis expansion
 ggplot(df, aes(x=year, y=var, color=byvar, label=sprintf("\%.1f\%\%", 100*var))) +
   geom_line() +
   labs(title="Random lines") +
   scale_y_continuous("Percentage of absolutely nothing", labels=scales::percent) +
   scale_x_continuous("Year", expand=expand_scale(mult=c(0.05, 0.10))) +
-  geom_text_lastonly()
+  geom_text_lastonly(add_points=TRUE)
 
 }
