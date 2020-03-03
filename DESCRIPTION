@@ -19,11 +19,6 @@ Imports:
     grid,
     dplyr,
     grDevices,
-<<<<<<< HEAD
-    svglite,
-    ggpubr
-=======
     lubridate,
     scales
->>>>>>> 7c9d3eebfcbe5416535e3e0aad0af23d3e3b1df3
 RoxygenNote: 7.0.2
