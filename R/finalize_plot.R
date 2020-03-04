@@ -41,11 +41,7 @@ save_plot <- function (plot_grid, save_filepath, type, height=NA) {
 
 
 create_title_block <- function (title, subtitle) {
-  title_block <- grid::grobTree(grid::linesGrob(x = grid::unit(c(0,1), "npc"),
-                                                y = grid::unit(c(0.997,0.997), "npc"),
-                                                gp=grid::gpar(col='black',
-                                                              lwd=3)
-                                                ),
+  title_block <- grid::grobTree(
                                 grid::textGrob(title,
                                                x = 0.1, hjust = 0, vjust = 1, y=0.97,
                                                gp = grid::gpar(fontsize=17,
@@ -79,13 +75,13 @@ draw_plot <- function(title,
                           gp=grid::gpar(col='black',
                                         lwd=3))
 
-  newplot <- ggpubr::ggarrange(line, myplot,
-                    ncol=1, nrow=2,
-                    heights = c(0.045,1))
+  bottom <- ggpubr::ggarrange(side, myplot,
+                    ncol=2, nrow=1,
+                    widths = c(1, 2.9))
 
-  plot_grid <- ggpubr::ggarrange(side, newplot,
-                    ncol = 2, nrow = 1,
-                    widths = c(1,2.9))
+  plot_grid <- ggpubr::ggarrange(line, bottom,
+                    ncol = 1, nrow = 2,
+                    heights = c(0.045,1))
 
   return(plot_grid)
 }
