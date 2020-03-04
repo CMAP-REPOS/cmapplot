@@ -3,9 +3,6 @@
 #' @export
 theme_cmap <- function() {
   ggplot2::theme(
-<<<<<<< HEAD
-=======
-
     #Text format:
     #This sets the default font family
     text = ggplot2::element_text(family=cmapplot_globals$font_main),
@@ -23,7 +20,6 @@ theme_cmap <- function() {
     plot.caption = ggplot2::element_blank(),
     #This leaves the caption text element empty, because it is set elsewhere in the finalise plot function
 
->>>>>>> c276d4a5a324b844694f175e81c6b02dcc15522e
     #Legend format
     #This sets the position and alignment of the legend, removes a title and backround for it and sets the requirements for any text within the legend. The legend may often need some more manual tweaking when it comes to its exact position based on the plot coordinates.
     legend.position = "top",
@@ -33,24 +29,16 @@ theme_cmap <- function() {
     legend.title = ggplot2::element_blank(),
     legend.key = ggplot2::element_blank(),
     legend.text = ggplot2::element_text(family=cmapplot_globals$font_main,
-<<<<<<< HEAD
                                         size=14,
-=======
                                         face=cmapplot_globals$font_main_face,
-                                        size=18,
->>>>>>> c276d4a5a324b844694f175e81c6b02dcc15522e
                                         color="#222222"),
 
     #Axis format
     #This sets the text font, size and colour for the axis test, as well as setting the margins and removes lines and ticks. In some cases, axis lines and axis ticks are things we would want to have in the chart - the cookbook shows examples of how to do so.
     axis.title = ggplot2::element_blank(),
     axis.text = ggplot2::element_text(family=cmapplot_globals$font_main,
-<<<<<<< HEAD
                                       size=14,
-=======
                                       face=cmapplot_globals$font_main_face,
-                                      size=18,
->>>>>>> c276d4a5a324b844694f175e81c6b02dcc15522e
                                       color="#222222"),
     axis.text.x = ggplot2::element_text(margin=ggplot2::margin(t = 5, r= 30, b = 10, l= 5),
                                         angle=45, vjust=0.5),
