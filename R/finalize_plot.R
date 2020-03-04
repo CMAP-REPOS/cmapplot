@@ -77,7 +77,7 @@ draw_plot <- function(title,
 
   bottom <- ggpubr::ggarrange(side, myplot,
                     ncol=2, nrow=1,
-                    widths = c(1, 2.9))
+                    widths = c(1, 2.6))
 
   plot_grid <- ggpubr::ggarrange(line, bottom,
                     ncol = 1, nrow = 2,
@@ -105,6 +105,7 @@ stpieces <- stringi::stri_wrap(subtitle, 28, cost_exponent=2, whitespace_only=TR
 subtitlebreak <- stringi::stri_paste_list(list(stpieces), sep="\n")
 
 
+windows(width=(670/72))
 draw_plot(titlebreak, subtitlebreak)
 # save_plot(plot_grid, "C:/Users/sbuchhorn/desktop/gg/ggtest1.tiff", type='word', height=500)
 
