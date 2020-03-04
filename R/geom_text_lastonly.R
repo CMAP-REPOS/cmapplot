@@ -36,7 +36,7 @@ geom_text_lastonly <- function(mapping = NULL, data = NULL,
                       nudge_y = 0,
                       check_overlap = FALSE,
                       na.rm = FALSE,
-                      show.legend = NA,
+                      show.legend = FALSE,
                       inherit.aes = TRUE)
 {
   if (is.null(position)) {
@@ -99,7 +99,7 @@ GeomTextLast <- ggproto(
         col = alpha(data$colour, data$alpha),
         fontsize = data$size * .pt,
         fontfamily = cmapplot_globals$font_label, #data$family,
-        fontface = data$fontface,
+        fontface = cmapplot_globals$font_label_face, #data$fontface,
         lineheight = data$lineheight
       ),
       check.overlap = check_overlap
