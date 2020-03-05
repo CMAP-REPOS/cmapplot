@@ -35,7 +35,7 @@ library(cmapplot)
 ## Examples
 
 For testing, the `cmap_plot` package contains a variety of sample datasets. Each dataset has a man file that can be queried for additional details. Datasets currently included are:
-```{r include = FALSE}
+```{r echo = FALSE}
 
 library(stringr)
 

@@ -24,6 +24,13 @@ For testing, the `cmap_plot` package contains a variety of sample
 datasets. Each dataset has a man file that can be queried for additional
 details. Datasets currently included are:
 
+    #>  cluster_jobchange
+    #>  economy_basic
+    #>  grp_over_time
+    #>  percentile_wages
+    #>  pop_and_laborforce_by_age
+    #>  traded_emp_by_race
+
 The following provided code uses the sample datasets to produce
 publishable or near-publishable graphics:
 
