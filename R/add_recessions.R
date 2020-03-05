@@ -88,6 +88,8 @@
 #' @export
 add_recessions <- function(min = 2000, max = 2010, xdata = c("int", "date"),
                            text = TRUE, text_nudge_x = 0.2, fill = "#002d49", alpha = 0.11) {
+  # Bind local variables to function
+  start <- end <- end_int <- start_int <- NULL
 
   # handle multiple constructions of `xdata`
   if (xdata %in% c("i", "int", "integer", "integers")) {
