@@ -17,10 +17,12 @@ Suggests:
     testthat
 Imports: 
     dplyr,
+    glue,
     graphics,
     grDevices,
     grid,
     lubridate,
+    rlang,
     scales,
     sysfonts
 RoxygenNote: 7.0.2
