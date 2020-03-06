@@ -2,41 +2,115 @@
 output: github_document
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   tidy = TRUE,
-  fig.path = "man/figures/README-",
-  out.width = "100%"
+  fig.path = "man/figures/README-"
 )
+
+devtools::load_all()
+library(tidyverse)
 ```
+
 # cmapplot
 
 This R package provides themes and color scales for [`ggplot2`](https://github.com/tidyverse/ggplot2), based on Chicago Metropolitan Agency for Planning (CMAP) design guidelines.
+
 
 ## Installation
 
 Run the following:
 
-```{r eval=FALSE, message=FALSE, warning=FALSE, eval=FALSE}
+```{r eval=FALSE, message=FALSE, warning=FALSE}
 # install.packages("devtools")
 devtools::install_github("CMAP-REPOS/cmapplot")
-```
-
-```{r message=FALSE, warning=FALSE, eval=FALSE}
+# then load the package as you would any other
 library(cmapplot)
 ```
 
 
-# Discrete palettes
+## Examples
 
-```{r include=FALSE}
-library(cmapplot)
-devtools::load_all()
+For testing, the `cmapplot` package contains a variety of sample datasets. Each dataset has a man file that can be queried for additional details. Datasets currently included are:
+```{r echo = FALSE}
+library(stringr)
+cat("",
+    dir(path = "data/", pattern = "\\.RData$") %>% 
+      str_replace(".RData$", "") %>% 
+      .[.!="recessions"] %>% 
+      paste(collapse = "\n "))
 ```
+
+The following provided code uses the sample datasets to produce publishable or near-publishable graphics:
+```{r eval=TRUE}
+# A bar chart
+ggplot(cluster_jobchange, aes(x = reorder(name, jobchange), y = jobchange, fill = category)) +
+  geom_col() +
+  coord_flip() +
+  theme_cmap()
+```
+
+```{r eval=TRUE}
+# a stacked bar chart
+filter(traded_emp_by_race, variable %in% c("SpecializedTraded", "UnspecializedTraded")) %>%
+ggplot(aes(x = reorder(Race, -value), y = value, fill = variable)) +
+  geom_col(position = position_stack(reverse = TRUE)) +
+  scale_y_continuous(labels = scales::percent) +
+  theme_cmap()
+```
+
+```{r eval=TRUE}
+# a grouped and stacked bar chart (via `interaction()`)
+ggplot(pop_and_laborforce_by_age, aes(x = interaction(year, variable), y = value, fill = age)) +
+  geom_col(position = position_stack(reverse = TRUE)) +
+  coord_flip() +
+  theme_cmap()
+```
+
+```{r eval=TRUE}
+# a grouped and stacked bar chart (via `interaction()`)
+ggplot(economy_basic, aes(x = interaction(year, variable), y = value, fill = sector)) +
+  geom_col(position = "fill") +
+  scale_y_continuous(labels = scales::percent) +
+  coord_flip() +
+  theme_cmap()
+```
+
+```{r eval=TRUE}
+# a non-time-series line chart
+ggplot(percentile_wages, aes(x = percentile, y = wage, color = cluster)) +
+  geom_line() +
+  theme_cmap()
+```
+
+```{r eval=TRUE}
+# a time-series line chart
+ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
+  geom_line() +
+  geom_text_lastonly(add_points=TRUE) +
+  theme_cmap()
+
+```
+
+
+## Using CMAP palettes in R ggplot
+
+Palettes based on the CMAP color palette can be applied directly to ggplot graphics. The package contains both discrete and continuous color palettes. Each type of palette can be applied to either the color or fill attributes of a ggplot.
+
+### Discrete palettes
+
+Add discrete palettes by adding either a `cmap_fill_discrete` or `cmap_color_discrete` object to a ggplot. Note that discrete palettes will automatically interpolate additional colors if the dataset has more colors than the palette. This can be helpful but is not ideal for finished graphics.
+
+```{r eval=TRUE}
+ggplot(percentile_wages, aes(x = percentile, y = wage, color = cluster)) +
+  geom_line() +
+  theme_cmap() +
+  cmap_color_discrete(palette = "prosperity")
+```
+
+The following gradients are available:
 
 ```{r echo=FALSE, out.height="40%", out.width="50%"}
 viz_palette(cmap_palettes$environment)
@@ -58,7 +132,21 @@ viz_palette(cmap_palettes$friday)
 ```
 
 
-# Continuous palettes
+### Continuous palettes
+
+Add continuous palettes by adding either a `cmap_fill_continuous` or `cmap_color_continuous` object to a ggplot. As in:
+
+```{r eval=TRUE}
+percentile_wages %>% 
+  filter(cluster %in% c("Biopharmaceuticals", "Hospitality and Tourism", "Paper and Packaging")) %>% 
+  ggplot(aes(x = cluster, y = wage, color = percentile)) +
+    geom_point(size=5) +
+    coord_flip() +
+    theme_cmap() +
+    cmap_color_continuous(palette = "red_purple")
+```
+
+The following gradients are available:
 
 ```{r echo=FALSE, out.height="40%", out.width="50%"}
 viz_gradient(cmap_gradients$red_gradient)
@@ -92,5 +180,6 @@ viz_gradient(cmap_gradients$purple_gradient)
 
 ```{r echo=FALSE, out.height="40%", out.width="50%"}
 viz_gradient(cmap_gradients$red_purple)
-viz_gradient(cmap_gradients$grey_gradient)
+viz_gradient(cmap_gradients$gray_gradient)
 ```
+  
