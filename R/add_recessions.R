@@ -116,25 +116,23 @@ add_recessions <- function(min = 2000, max = 2010, xdata = c("int", "date"),
   # - rename variables so they are easy to call below
   names(recessions2) <- c("start", "end")
 
-  # build rectangles
-  elements <- geom_rect(data = recessions2,
-                        inherit.aes = FALSE,
-                        mapping = aes(xmin = start, xmax = end, ymin = -Inf, ymax = +Inf),
-                        fill = fill, alpha = alpha)
 
-  # if text annotations are called for:
-  if (text) {
-    # build annotations
-    annotations <- geom_text(data = recessions2,
-                             inherit.aes = FALSE,
-                             mapping = aes(x = end, y = +Inf),
-                             label = "    Recession    ", angle = 270,
-                             hjust = "left", vjust = "bottom",
-                             position = position_nudge(x = text_nudge_x, y = 0))
-
-    # add annotations
-    elements <- list(elements, annotations)
-  }
+  elements <- list(
+    # build rectangles
+    geom_rect(data = recessions2,
+              inherit.aes = FALSE,
+              mapping = aes(xmin = start, xmax = end, ymin = -Inf, ymax = +Inf),
+              fill = fill, alpha = alpha),
+    # if text annotations are called for, build annotations
+    if (text) {
+      geom_text(data = recessions2,
+                inherit.aes = FALSE,
+                mapping = aes(x = end, y = +Inf),
+                label = "    Recession    ", angle = 270,
+                hjust = "left", vjust = "bottom",
+                position = position_nudge(x = text_nudge_x, y = 0))
+    }
+  )
 
   # return final elements
   return(elements)
