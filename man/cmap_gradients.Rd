@@ -4,7 +4,7 @@
 \name{cmap_gradients}
 \alias{cmap_gradients}
 \title{CMAP continuous color palettes}
-\format{An object of class \code{list} of length 15.}
+\format{An object of class \code{list} of length 23.}
 \usage{
 cmap_gradients
 }
@@ -12,7 +12,7 @@ cmap_gradients
 A sample of comms-approved colors arranged into palettes
 }
 \examples{
-viz_gradient(cmap_gradients$red_purple)
+viz_gradient(cmap_gradients$seq_red_purple)
 
 }
 \keyword{datasets}
