@@ -12,7 +12,7 @@ cmap_gradients
 A sample of comms-approved colors arranged into palettes
 }
 \examples{
-viz_gradient(cmap_gradients$multi_red_purple)
+viz_gradient(cmap_gradients$seq_red_purple)
 
 }
 \keyword{datasets}

@@ -26,6 +26,6 @@ grp_over_time \%>\%
   filter(cluster=="Biopharmaceuticals") \%>\%
   ggplot(aes(x = year, y = realgrp, color = realgrp)) +
     geom_line() +
-    cmap_color_continuous(palette = "multi_red_purple")
+    cmap_color_continuous(palette = "seq_red_purple")
 
 }

@@ -136,19 +136,15 @@ percentile_wages %>%
     scale_y_continuous(labels = scales::dollar) +
     coord_flip() +
     theme_cmap() +
-    cmap_color_continuous(palette = "multi_red_purple")
+    cmap_color_continuous(palette = "seq_red_purple")
 ```
 
 ![](man/figures/README-unnamed-chunk-12-1.png)<!-- -->
 
-#### Single-hue sequential gradients
+#### Single and multi-hue sequential gradients
 
-<img src="man/figures/README-unnamed-chunk-13-1.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-2.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-3.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-4.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-5.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-6.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-7.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-8.png" width="50%" height="40%" />
-
-#### Multi-hue sequential gradients
-
-<img src="man/figures/README-unnamed-chunk-14-1.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-14-2.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-14-3.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-14-4.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-14-5.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-14-6.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-14-7.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-14-8.png" width="50%" height="40%" />
+<img src="man/figures/README-unnamed-chunk-13-1.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-2.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-3.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-4.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-5.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-6.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-7.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-8.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-9.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-10.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-11.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-12.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-13.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-14.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-15.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-16.png" width="50%" height="40%" />
 
 #### Multi-hue diverging gradients
 
-<img src="man/figures/README-unnamed-chunk-15-1.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-15-2.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-15-3.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-15-4.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-15-5.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-15-6.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-15-7.png" width="50%" height="40%" />
+<img src="man/figures/README-unnamed-chunk-14-1.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-14-2.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-14-3.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-14-4.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-14-5.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-14-6.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-14-7.png" width="50%" height="40%" />

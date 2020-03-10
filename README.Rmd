@@ -130,22 +130,14 @@ percentile_wages %>%
     scale_y_continuous(labels = scales::dollar) +
     coord_flip() +
     theme_cmap() +
-    cmap_color_continuous(palette = "multi_red_purple")
+    cmap_color_continuous(palette = "seq_red_purple")
 ```
 
-#### Single-hue sequential gradients
+#### Single and multi-hue sequential gradients
 
 ```{r echo=FALSE, out.height="40%", out.width="50%"}
 cmap_gradients %>% 
   keep(str_detect(names(.), "^seq")) %>% 
-  walk2(., names(.), viz_gradient)
-```
-
-#### Multi-hue sequential gradients
-
-```{r echo=FALSE, out.height="40%", out.width="50%"}
-cmap_gradients %>% 
-  keep(str_detect(names(.), "^multi")) %>% 
   walk2(., names(.), viz_gradient)
 ```
 
