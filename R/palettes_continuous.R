@@ -3,7 +3,7 @@
 #' A sample of comms-approved colors arranged into palettes
 #'
 #' @examples
-#' viz_gradient(cmap_gradients$seq_red_purple)
+#' viz_gradient(cmap_gradients$multi_red_purple)
 #'
 #' @export
 cmap_gradients <- list(
@@ -27,21 +27,21 @@ cmap_gradients <- list(
                   "#8a9ea8", "#7b929d", "#6d8692", "#5e7a87", "#475c66", "#2f3d44"),
 
     # Multi-hue sequential gradients
-    seq_yellow_orange_red = c("#efe1a7", "#e5bd72", "#d88236", "#cc3000", "#8c0000"),
+    multi_yellow_orange_red = c("#efe1a7", "#e5bd72", "#d88236", "#cc3000", "#8c0000"),
 
-    seq_green_teal_blue = c("#d2efa7", "#72e584", "#00ccb8", "#00838c", "#004e66"),
+    multi_green_teal_blue = c("#d2efa7", "#72e584", "#00ccb8", "#00838c", "#004e66"),
 
-    seq_orange_red = c("#efc9a7", "#e59a72", "#cc3000", "#8c1000", "#660000"),
+    multi_orange_red = c("#efc9a7", "#e59a72", "#cc3000", "#8c1000", "#660000"),
 
-    seq_yellow_orange = c("#efe1a7", "#e5c672", "#cc8200", "#8c4100", "#662f00"),
+    multi_yellow_orange = c("#efe1a7", "#e5c672", "#cc8200", "#8c4100", "#662f00"),
 
-    seq_yellow_green = c("#f8f4df", "#e5e172", "#b4cc00", "#698c00", "#3d6600"),
+    multi_yellow_green = c("#f8f4df", "#e5e172", "#b4cc00", "#698c00", "#3d6600"),
 
-    seq_green_teal = c("#d2efa7", "#8de572", "#00cc1f", "#008c4b", "#00665c"),
+    multi_green_teal = c("#d2efa7", "#8de572", "#00cc1f", "#008c4b", "#00665c"),
 
-    seq_teal_blue = c("#a7efe8", "#72e5e3", "#00becc", "#00778c", "#004e66"),
+    multi_teal_blue = c("#a7efe8", "#72e5e3", "#00becc", "#00778c", "#004e66"),
 
-    seq_red_purple = c("#efa7a7", "#e5729e", "#cc0099", "#77008c", "#310066"),
+    multi_red_purple = c("#efa7a7", "#e5729e", "#cc0099", "#77008c", "#310066"),
 
 
     # Multi-hue diverging gradients
@@ -78,7 +78,7 @@ cmap_gradients <- list(
 #' @param ttl = display title (optional)
 #'
 #' @examples
-#' viz_gradient(cmap_gradients$seq_orange_red)
+#' viz_gradient(cmap_gradients$multi_orange_red)
 #'
 #' @export
 viz_gradient <- function(pal, ttl = deparse(substitute(pal))) {
@@ -117,7 +117,7 @@ cmap_pal_continuous <- function(palette = "seq_reds", reverse = FALSE) {
 #'   filter(cluster=="Biopharmaceuticals") %>%
 #'   ggplot(aes(x = year, y = realgrp, color = realgrp)) +
 #'     geom_line() +
-#'     cmap_color_continuous(palette = "seq_red_purple")
+#'     cmap_color_continuous(palette = "multi_red_purple")
 #'
 #' @export
 cmap_fill_continuous <- function(palette = "seq_reds", reverse = FALSE) {

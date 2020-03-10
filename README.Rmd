@@ -114,13 +114,7 @@ ggplot(percentile_wages, aes(x = percentile, y = wage, color = cluster)) +
 The following gradients are available:
 
 ```{r echo=FALSE, out.height="40%", out.width="50%"}
-viz_palette(cmap_palettes$environment)
-viz_palette(cmap_palettes$governance)
-viz_palette(cmap_palettes$mobility)
-viz_palette(cmap_palettes$legislation)
-viz_palette(cmap_palettes$prosperity)
-viz_palette(cmap_palettes$community)
-viz_palette(cmap_palettes$friday)
+walk2(cmap_palettes, names(cmap_palettes), viz_palette)
 ```
 
 
@@ -136,43 +130,30 @@ percentile_wages %>%
     scale_y_continuous(labels = scales::dollar) +
     coord_flip() +
     theme_cmap() +
-    cmap_color_continuous(palette = "seq_red_purple")
+    cmap_color_continuous(palette = "multi_red_purple")
 ```
 
 #### Single-hue sequential gradients
 
 ```{r echo=FALSE, out.height="40%", out.width="50%"}
-viz_gradient(cmap_gradients$seq_reds)
-viz_gradient(cmap_gradients$seq_oranges)
-viz_gradient(cmap_gradients$seq_yellows)
-viz_gradient(cmap_gradients$seq_greens)
-viz_gradient(cmap_gradients$seq_teals)
-viz_gradient(cmap_gradients$seq_blues)
-viz_gradient(cmap_gradients$seq_purples)
-viz_gradient(cmap_gradients$seq_grays)
+cmap_gradients %>% 
+  keep(str_detect(names(.), "^seq")) %>% 
+  walk2(., names(.), viz_gradient)
 ```
 
 #### Multi-hue sequential gradients
 
 ```{r echo=FALSE, out.height="40%", out.width="50%"}
-viz_gradient(cmap_gradients$seq_yellow_orange_red)
-viz_gradient(cmap_gradients$seq_green_teal_blue)
-viz_gradient(cmap_gradients$seq_yellow_orange)
-viz_gradient(cmap_gradients$seq_orange_red)
-viz_gradient(cmap_gradients$seq_red_purple)
-viz_gradient(cmap_gradients$seq_yellow_green)
-viz_gradient(cmap_gradients$seq_green_teal)
-viz_gradient(cmap_gradients$seq_teal_blue)
+cmap_gradients %>% 
+  keep(str_detect(names(.), "^multi")) %>% 
+  walk2(., names(.), viz_gradient)
 ```
 
 #### Multi-hue diverging gradients
 
 ```{r echo=FALSE, out.height="40%", out.width="50%"}
-viz_gradient(cmap_gradients$div_yellow_purple)
-viz_gradient(cmap_gradients$div_orange_blue)
-viz_gradient(cmap_gradients$div_red_teal)
-viz_gradient(cmap_gradients$div_purple_green)
-viz_gradient(cmap_gradients$div_blue_yellow)
-viz_gradient(cmap_gradients$div_teal_orange)
-viz_gradient(cmap_gradients$div_green_red)
+cmap_gradients %>% 
+  keep(str_detect(names(.), "^div")) %>% 
+  walk2(., names(.), viz_gradient)
+
 ```

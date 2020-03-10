@@ -136,7 +136,7 @@ percentile_wages %>%
     scale_y_continuous(labels = scales::dollar) +
     coord_flip() +
     theme_cmap() +
-    cmap_color_continuous(palette = "seq_red_purple")
+    cmap_color_continuous(palette = "multi_red_purple")
 ```
 
 ![](man/figures/README-unnamed-chunk-12-1.png)<!-- -->
