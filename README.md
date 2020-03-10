@@ -121,7 +121,7 @@ ggplot(percentile_wages, aes(x = percentile, y = wage, color = cluster)) +
 
 The following gradients are available:
 
-<img src="man/figures/README-unnamed-chunk-11-1.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-11-2.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-11-3.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-11-4.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-11-5.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-11-6.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-11-7.png" width="50%" height="40%" />
+<img src="man/figures/README-unnamed-chunk-11-1.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-11-2.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-11-3.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-11-4.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-11-5.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-11-6.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-11-7.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-11-8.png" width="50%" height="40%" />
 
 ### Continuous palettes
 
