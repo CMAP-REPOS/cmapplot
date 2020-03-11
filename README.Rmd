@@ -133,7 +133,7 @@ percentile_wages %>%
     cmap_color_continuous(palette = "seq_red_purple")
 ```
 
-#### Single and multi-hue sequential gradients
+#### Sequential gradients (single- and multi-hue)
 
 ```{r echo=FALSE, out.height="40%", out.width="50%"}
 cmap_gradients %>% 
@@ -141,11 +141,10 @@ cmap_gradients %>%
   walk2(., names(.), viz_gradient)
 ```
 
-#### Multi-hue diverging gradients
+#### Diverging gradients
 
 ```{r echo=FALSE, out.height="40%", out.width="50%"}
 cmap_gradients %>% 
   keep(str_detect(names(.), "^div")) %>% 
   walk2(., names(.), viz_gradient)
-
 ```

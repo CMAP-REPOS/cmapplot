@@ -13,6 +13,12 @@
 #' @export
 cmap_palettes <- list(
 
+    race = c(white    = "#72a6e5",
+             black    = "#8de572",
+             hispanic = "#cca600",
+             asian    = "#cc3000",
+             other    = "#8a9ea8"),
+
     prosperity = c("#662f00", "#e5d072", "#44008c", "#c8e572", "#c9a7ef"),
 
     community = c("#cc5f00", "#006b8c", "#e5a872", "#d2efa7", "#662f00"),
@@ -25,13 +31,7 @@ cmap_palettes <- list(
 
     legislation = c("#00becc", "#cc5f00", "#3f0e00", "#cca600", "#003f8c", "#67ac00"),
 
-    friday = c("#00093f", "#ac8c00", "#475c66", "#e5d072", "#b5c1c8", "#006b8c"),
-
-    race = c(white    = "#72a6e5",
-              black    = "#8de572",
-              hispanic = "#cca600",
-              asian    = "#cc3000",
-              other    = "#8a9ea8")
+    friday = c("#00093f", "#ac8c00", "#475c66", "#e5d072", "#b5c1c8", "#006b8c")
 
 )
 

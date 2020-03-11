@@ -45,9 +45,6 @@ cmap_gradients <- list(
 
 
     # Multi-hue diverging gradients
-    div_green_red = c("#548c00", "#67ac00", "#7acc00", "#97d836", "#b7e572", "#e3e8eb",
-                      "#e57272", "#d83636", "#cc0000", "#8c0000", "#660000"),
-
     div_yellow_purple = c("#8c7200", "#ac8c00", "#cca600", "#d8ba36", "#e5d072", "#e3e8eb",
                           "#aa72e5", "#8436d8", "#6300cc", "#5300ac", "#44008c"),
 
@@ -64,7 +61,10 @@ cmap_gradients <- list(
                         "#e5d072", "#d8ba36", "#cca600", "#ac8c00", "#8c7200"),
 
     div_teal_orange = c("#008c7e", "#00ac9c", "#00ccb8", "#36d8ca", "#72e5db", "#e3e8eb",
-                        "#e5a872", "#d88236", "#cc5f00", "#ac5000", "#8c4100")
+                        "#e5a872", "#d88236", "#cc5f00", "#ac5000", "#8c4100"),
+
+    div_green_red = c("#548c00", "#67ac00", "#7acc00", "#97d836", "#b7e572", "#e3e8eb",
+                      "#e57272", "#d83636", "#cc0000", "#8c0000", "#660000")
 
 )
 
