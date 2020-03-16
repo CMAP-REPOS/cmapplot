@@ -73,37 +73,38 @@ geom_text_lastonly <- function(mapping = NULL, data = NULL,
     position_pt <- position_identity()
   }
 
-  elements <- layer(
-    data = data,
-    mapping = mapping,
-    stat = stat,
-    geom = GeomTextLast,
-    position = position_lab,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    params = list(
-      parse = parse,
-      check_overlap = check_overlap,
-      na.rm = na.rm,
-      ...
-    )
-  )
-  if (add_points == TRUE) {
-    points <- layer(
+  elements <- list(
+    layer(
       data = data,
       mapping = mapping,
       stat = stat,
-      geom = GeomPointLast,
-      position = position_pt,
+      geom = GeomTextLast,
+      position = position_lab,
       show.legend = show.legend,
       inherit.aes = inherit.aes,
       params = list(
+        parse = parse,
+        check_overlap = check_overlap,
         na.rm = na.rm,
         ...
       )
-    )
-    elements <- list(points, elements)
-  }
+    ),
+    if (add_points) {
+      layer(
+        data = data,
+        mapping = mapping,
+        stat = stat,
+        geom = GeomPointLast,
+        position = position_pt,
+        show.legend = show.legend,
+        inherit.aes = inherit.aes,
+        params = list(
+          na.rm = na.rm,
+          ...
+        )
+      )}
+  )
+
   return(elements)
 }
 
