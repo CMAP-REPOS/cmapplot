@@ -13,51 +13,25 @@
 #' @export
 cmap_palettes <- list(
 
-    prosperity = c("brown"        = "#662f00",
-                   "light gold"   = "#e5d072",
-                   "royal purple" = "#44008c",
-                   "green"        = "#c8e572",
-                   "lilac"        = "#c9a7ef"),
+    race = c(white    = "#72a6e5",
+             black    = "#8de572",
+             hispanic = "#cca600",
+             asian    = "#cc3000",
+             other    = "#8a9ea8"),
 
-    community = c("burnt orange" = "#cc5f00",
-                  "blue"         = "#006b8c",
-                  "peach"        = "#e5a872",
-                  "lime green"   = "#d2efa7",
-                  "brown"        = "#662f00"),
+    prosperity = c("#662f00", "#e5d072", "#44008c", "#c8e572", "#c9a7ef"),
 
-    environment = c("dark teal"  = "#00665c",
-                    "lime green" = "#b7e572",
-                    "plum"       = "#3f0030",
-                    "light teal" = "#36d8ca",
-                    "dark blue"  = "#006b8c"),
+    community = c("#cc5f00", "#006b8c", "#e5a872", "#d2efa7", "#662f00"),
 
-    governance = c("blue"          = "#006b8c",
-                   "pink"          = "#efa7a7",
-                   "brown"         = "#8c4100",
-                   "marina trench" = "#00303f",
-                   "gold"          = "#cca600",
-                   "ice"           = "#a7efe8"),
+    environment = c("#00665c", "#b7e572", "#3f0030",  "#36d8ca", "#006b8c"),
 
-    mobility = c("fire engine"             = "#8c0000",
-                 "elementary school floor" = "#e5bd72",
-                 "sky blue"                = "#a7efe8",
-                 "cta sign grey"           = "#6d8692",
-                 "warm blue"               = "#0084ac",
-                 "salmon"                  = "#efa7a7"),
+    governance = c("#006b8c", "#efa7a7", "#8c4100", "#00303f", "#cca600", "#a7efe8"),
 
-    legislation = c("blue"        = "#00becc",
-                    "orange"      = "#cc5f00",
-                    "maroon"      = "#3f0e00",
-                    "gold"        = "#cca600",
-                    "navy"        = "#003f8c",
-                    "kelly green" = "#67ac00"),
+    mobility = c("#8c0000", "#e5bd72", "#a7efe8", "#6d8692", "#0084ac", "#efa7a7"),
 
-    friday = c("navy"                        = "#00093f",
-               "gold"                        = "#ac8c00",
-               "dark grey"                   = "#475c66",
-               "I don't like sand"           = "#e5d072",
-               "sword that killed my father" = "#b5c1c8",
-               "my favorite blue"            = "#006b8c")
+    legislation = c("#00becc", "#cc5f00", "#3f0e00", "#cca600", "#003f8c", "#67ac00"),
+
+    friday = c("#00093f", "#ac8c00", "#475c66", "#e5d072", "#b5c1c8", "#006b8c")
 
 )
 

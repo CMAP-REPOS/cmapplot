@@ -4,7 +4,7 @@
 \alias{cmap_pal_continuous}
 \title{Continuous palette prep function}
 \usage{
-cmap_pal_continuous(palette = "red_gradient", reverse = FALSE)
+cmap_pal_continuous(palette = "seq_reds", reverse = FALSE)
 }
 \arguments{
 \item{palette}{Choose from 'cmap_gradients' list}
