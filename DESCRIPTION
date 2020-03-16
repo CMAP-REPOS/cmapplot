@@ -13,7 +13,7 @@ Encoding: UTF-8
 LazyData: true
 Depends:
     ggplot2
-Suggests: 
+Suggests:
     testthat
 Imports: 
     dplyr,

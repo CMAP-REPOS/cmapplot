@@ -42,6 +42,7 @@ if (.Platform$OS.type == "windows") {
       font_sbold = "Whitney Semibold"
     )
   } else {
+    warning("Whitney is not installed on this PC, so CMAP theme will default to Calibri")
     grDevices::windowsFonts(
       sans = "Calibri",  # Override the default font (Arial)
       font_reg = "Calibri",
@@ -69,8 +70,10 @@ if (.Platform$OS.type == "windows") {
 } else {
 
   # Assume no Whitney or Calibri on non-Windows (i.e. non-work) computers
+  warning("CMAP theme will default to Arial on non-Windows platforms")
+
   grDevices::X11Fonts(
-    sans = X11Fonts()$Arial  # Just give in and use Arial for everything :(
+    sans = grDevices::X11Fonts()$Arial  # Just give in and use Arial for everything :(
    )
 
   cmapplot_globals$font_main <- "sans"  # "medium" weight for in-body text and x/y axis
