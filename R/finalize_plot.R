@@ -23,13 +23,12 @@
 #'
 #' myplot <- ggplot(economy_basic, aes(x = interaction(year, variable), y = value, fill = sector)) +
 #'   geom_col(position = "fill") +
-#'   scale_y_continuous(labels = scales::percent) +
-#'   theme_cmap()
+#'   scale_y_continuous(labels = scales::percent) + theme_cmap()
 #'
 #'
-#' draw_plot(myplot,title, subtitle, action='save', save_filepath="C:/Users/sbuchhorn/Desktop/gg/test1", type='web')
-#'
-#'
+#' draw_plot(myplot,title, subtitle, action='view', newwindow=TRUE)
+
+
 
 save_plot <- function (plot_grid, save_filepath, type, height=NA) {
   # use 72 px/in conversion
@@ -109,7 +108,7 @@ draw_plot <- function(plot,
 
   # word wrap
   if (autowrap == TRUE){
-    tpieces <- stringi::stri_wrap(lt2, titlewraplen, cost_exponent=2, whitespace_only=TRUE)
+    tpieces <- stringi::stri_wrap(title, titlewraplen, cost_exponent=2, whitespace_only=TRUE)
     titlebreak <- stringi::stri_paste_list(list(tpieces), sep="\n")
     stpieces <- stringi::stri_wrap(subtitle, subtitlewraplen, cost_exponent=2, whitespace_only=TRUE)
     subtitlebreak <- stringi::stri_paste_list(list(stpieces), sep="\n")
@@ -137,8 +136,13 @@ draw_plot <- function(plot,
 
   if (action=='view') {
     if (newwindow==TRUE) {
-      windows(width=(width_pixels/72))
-      return(plot_grid)
+      if (.Platform$OS.type == "windows") {
+        windows(width=(width_pixels/72))
+        return(plot_grid)
+      } else {
+        dev.new(width=(width_pixels/72))
+        return(plot_grid)
+      }
     }
     if (newwindow==FALSE) {
       return(plot_grid)
