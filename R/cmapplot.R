@@ -33,26 +33,35 @@ cmapplot_globals$use_whitney = length(whitney_fonts$family) == 3
 rm(all_fonts)
 rm(whitney_fonts)
 
-if (cmapplot_globals$use_whitney) {
-  grDevices::windowsFonts(
-    sans = "Whitney Medium",  # Override the default font (Arial)
-    font_reg = "Whitney Medium",
-    font_lite = "Whitney Book",
-    font_sbold = "Whitney Semibold"
-  )
+
+if (.Platform$OS.type == "windows") {
+  if (cmapplot_globals$use_whitney) {
+    grDevices::windowsFonts(
+      sans = "Whitney Medium",  # Override the default font (Arial)
+      font_reg = "Whitney Medium",
+      font_lite = "Whitney Book",
+      font_sbold = "Whitney Semibold"
+    )
+  } else {
+    grDevices::windowsFonts(
+      sans = "Calibri",  # Override the default font (Arial)
+      font_reg = "Calibri",
+      font_lite = "Calibri Light",
+      font_sbold = "Calibri"
+    )
+  }
 } else {
-  grDevices::windowsFonts(
-    sans = "Calibri",  # Override the default font (Arial)
-    font_reg = "Calibri",
-    font_lite = "Calibri Light",
-    font_sbold = "Calibri"
-  )
+  warning('Fonts will not load correctly on Mac')
+  sans = "Arial"
+  font_reg = "Arial"
+  font_lite = "Arial"
+  font_sbold = "Arial"
 }
 
-cmapplot_globals$font_main <- "font_reg"  # "medium" weight for in-body text and x/y axis
-cmapplot_globals$font_note <- "font_lite"  # "book" weight for notes and sources
-cmapplot_globals$font_title <- "font_sbold"  # "semibold" weight for title
-cmapplot_globals$font_label <- "font_sbold"  # "semibold" weight also for labels
+cmapplot_globals$font_main <- font_reg  # "medium" weight for in-body text and x/y axis
+cmapplot_globals$font_note <- font_lite  # "book" weight for notes and sources
+cmapplot_globals$font_title <- font_sbold  # "semibold" weight for title
+cmapplot_globals$font_label <- font_sbold  # "semibold" weight also for labels
 if (cmapplot_globals$use_whitney) {
   cmapplot_globals$font_main_face <- "plain"
   cmapplot_globals$font_note_face <- "plain"
