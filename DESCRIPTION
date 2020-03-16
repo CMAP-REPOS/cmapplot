@@ -23,6 +23,5 @@ Imports:
     grid,
     lubridate,
     rlang,
-    scales,
-    sysfonts
+    scales
 RoxygenNote: 7.0.2
