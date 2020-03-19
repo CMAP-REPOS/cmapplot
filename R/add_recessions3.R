@@ -1,17 +1,22 @@
-# this is an attempt at modifying geom_rect files
+# attempt at modifying geom_rect
 
+#' @export
+#' @rdname geom_tile
 geom_recessions <- function(mapping = NULL, data = NULL,
                       stat = "identity", position = "identity",
                       ...,
                       linejoin = "mitre",
                       na.rm = FALSE,
                       show.legend = NA,
-                      inherit.aes = TRUE) {
+                      inherit.aes = FALSE) {
+
+  print(data)
+
   layer(
     data = data,
     mapping = mapping,
     stat = stat,
-    geom = GeomRecessions,
+    geom = GeomRect,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -23,11 +28,15 @@ geom_recessions <- function(mapping = NULL, data = NULL,
   )
 }
 
-
+#' @rdname ggplot2-ggproto
+#' @format NULL
+#' @usage NULL
+#' @export
 GeomRecessions <- ggproto("GeomRecessions", Geom,
-                    default_aes = aes(colour = NA, fill = "#002d49", alpha = 0.11, ymin = -Inf, ymax = +Inf),
+                    default_aes = aes(colour = NA, fill = "grey35", size = 0.5, linetype = 1,
+                                      alpha = NA),
 
-                    #required_aes = c("xmin", "xmax", "ymin", "ymax"),
+                    required_aes = c("xmin", "xmax", "ymin", "ymax"),
 
                     draw_panel = function(self, data, panel_params, coord, linejoin = "mitre") {
                       if (!coord$is_linear()) {
@@ -69,6 +78,7 @@ GeomRecessions <- ggproto("GeomRecessions", Geom,
 )
 
 
+
 # Convert rectangle to polygon
 # Useful for non-Cartesian coordinate systems where it's easy to work purely in
 # terms of locations, rather than locations and dimensions. Note that, though
@@ -82,3 +92,14 @@ rect_to_poly <- function(xmin, xmax, ymin, ymax) {
     x = c(xmin, xmax, xmax, xmin, xmin)
   ))
 }
+
+
+load("~/GitHub/cmapplot/data/grp_over_time.RData")
+load("~/GitHub/cmapplot/data/recessions.RData")
+
+ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
+  geom_line() +
+  geom_recessions(mapping = aes(xmin = start_int, xmax = end_int, ymin = -Inf, ymax = +Inf))
+  theme_minimal()
+
+# help!
