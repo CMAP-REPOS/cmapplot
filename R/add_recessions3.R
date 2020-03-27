@@ -26,34 +26,32 @@ geom_recessions <- function(mapping = NULL, data = NULL,
   )
 }
 
-filter_recessions <- function(min, max, xformat){
-  print(xformat)
-  print(min)
-  print(max)
-  # first, remove recessions outside of range
-  recessions2 <- dplyr::filter(cmapplot::recessions, end_int > min & start_int < max)
 
-  # second, if `min` or `max` fall in  middle of a recession, modify recession to
-  # end at specified term.
+filter_recessions <- function(min, max, xformat){
+
+  # filter recessions correctly, based on xformat
+  if (xformat == "numeric"){
+    recessions2 <- dplyr::rename(recessions, end = end_int, start = start_int)
+  } else if (xformat == "date"){
+    recessions2 <- dplyr::rename(recessions, end = end_date, start = start_date)
+  } else {
+    warning("geom_recessions currently only supports x axes in the numeric and date formats. Using numeric")
+    recessions2 <- dplyr::rename(recessions, end = end_int, start = start_int)
+  }
+
+  # Remove recessions outside of range
+  recessions2 <- dplyr::filter(recessions2, end > min & start < max)
+
+  # If `min` or `max` fall in  middle of a recession, modify recession to end at specified term.
   # Simultaneously, rename and add variables for geom_rect.
   recessions2 <- dplyr::transmute(recessions2,
-                                  xmin = if_else(start_int < min, min, start_int),
-                                  xmax = if_else(end_int > max, max, end_int),
+                                  xmin = if_else(start < min, min, as.numeric(start)),
+                                  xmax = if_else(end > max, max, as.numeric(end)),
                                   ymin = -Inf,
                                   ymax = Inf,
                                   PANEL = 1,
                                   group = -1
                                   )
-
-  #  If x axis data is in date format, convert xmin and xmax to dates
-  if (xformat == "date"){
-    recessions2 <- dplyr::mutate(recessions2,
-                                 xmin1 = lubridate::date_decimal(xmin),
-                                 xmax1 = lubridate::date_decimal(xmax)
-                            )
-  }
-
-  print(recessions2)
 
   return(recessions2)
 }
@@ -65,8 +63,6 @@ filter_recessions <- function(min, max, xformat){
 #' @export
 GeomRecessions <- ggproto("GeomRecessions", Geom,
                     default_aes = aes(colour = NA, fill = "#002d49", alpha = 0.11, size = 0.5, linetype = 1, xformat = NULL),
-
-                    #required_aes = c("xmin", "xmax"),
 
                     # replace `data` with `recessions`, filtered by `data`
                     setup_data = function(data, params) {
