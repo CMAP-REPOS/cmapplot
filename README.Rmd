@@ -90,7 +90,10 @@ ggplot(percentile_wages, aes(x = percentile, y = wage, color = cluster)) +
 ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
   geom_line() +
   geom_text_lastonly(add_points = TRUE) +
-  theme_cmap()
+  theme_cmap()  +
+  geom_hline(yintercept = 0, 
+             color = "black",
+             size = 1)
 
 ```
 

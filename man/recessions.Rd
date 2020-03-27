@@ -4,12 +4,14 @@
 \name{recessions}
 \alias{recessions}
 \title{A list of all recessions in American history}
-\format{A tibble. 33 rows and 4 variables:
+\format{
+A tibble. 33 rows and 4 variables:
 \describe{
    \item{start_char, end_char}{Chr. Easily readable labels for the beginning and end of the recession}
    \item{start_int, end_int}{Double. Dates expressed as years, with decimels referring to months. (e.g. April = 4/12 = .333)}
    \item{start_date, end_date}{Date. Dates expressed in R datetime format, using the first day of the specified month.}
-}}
+}
+}
 \source{
 from https://www.nber.org/cycles/NBER%20chronology.xlsx
 }
