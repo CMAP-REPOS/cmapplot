@@ -8,15 +8,13 @@ geom_recessions <- function(mapping = NULL, data = NULL,
                       linejoin = "mitre",
                       na.rm = FALSE,
                       show.legend = NA,
-                      inherit.aes = FALSE) {
-
-  print(data)
+                      inherit.aes = TRUE) {
 
   layer(
     data = data,
     mapping = mapping,
     stat = stat,
-    geom = GeomRect,
+    geom = GeomRecessions,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -28,17 +26,59 @@ geom_recessions <- function(mapping = NULL, data = NULL,
   )
 }
 
+filter_recessions <- function(min, max, xformat){
+  print(xformat)
+  print(min)
+  print(max)
+  # first, remove recessions outside of range
+  recessions2 <- dplyr::filter(cmapplot::recessions, end_int > min & start_int < max)
+
+  # second, if `min` or `max` fall in  middle of a recession, modify recession to
+  # end at specified term.
+  # Simultaneously, rename and add variables for geom_rect.
+  recessions2 <- dplyr::transmute(recessions2,
+                                  xmin = if_else(start_int < min, min, start_int),
+                                  xmax = if_else(end_int > max, max, end_int),
+                                  ymin = -Inf,
+                                  ymax = Inf,
+                                  PANEL = 1,
+                                  group = -1
+                                  )
+
+  #  If x axis data is in date format, convert xmin and xmax to dates
+  if (xformat == "date"){
+    recessions2 <- dplyr::mutate(recessions2,
+                                 xmin1 = lubridate::date_decimal(xmin),
+                                 xmax1 = lubridate::date_decimal(xmax)
+                            )
+  }
+
+  print(recessions2)
+
+  return(recessions2)
+}
+
+
 #' @rdname ggplot2-ggproto
 #' @format NULL
 #' @usage NULL
 #' @export
 GeomRecessions <- ggproto("GeomRecessions", Geom,
-                    default_aes = aes(colour = NA, fill = "grey35", size = 0.5, linetype = 1,
-                                      alpha = NA),
+                    default_aes = aes(colour = NA, fill = "#002d49", alpha = 0.11, size = 0.5, linetype = 1, xformat = NULL),
 
-                    required_aes = c("xmin", "xmax", "ymin", "ymax"),
+                    #required_aes = c("xmin", "xmax"),
+
+                    # replace `data` with `recessions`, filtered by `data`
+                    setup_data = function(data, params) {
+
+                      if (is.null(params$xformat)) params$xformat <- "numeric"
+
+                      filter_recessions(min = min(data$x), max = max(data$x), xformat = params$xformat)
+                    },
+
 
                     draw_panel = function(self, data, panel_params, coord, linejoin = "mitre") {
+
                       if (!coord$is_linear()) {
                         aesthetics <- setdiff(
                           names(data), c("x", "y", "xmin", "xmax", "ymin", "ymax")
@@ -78,28 +118,29 @@ GeomRecessions <- ggproto("GeomRecessions", Geom,
 )
 
 
+ggplot(grp_goods, aes(x = year, y = realgrp, color = cluster)) +
+  geom_recessions(xformat = "numeric") +
+  geom_line() +
+  theme_minimal()
 
-# Convert rectangle to polygon
-# Useful for non-Cartesian coordinate systems where it's easy to work purely in
-# terms of locations, rather than locations and dimensions. Note that, though
-# `polygonGrob()` expects an open form, closed form is needed for correct
-# munching (c.f. https://github.com/tidyverse/ggplot2/issues/3037#issuecomment-458406857).
-#
-# @keyword internal
-rect_to_poly <- function(xmin, xmax, ymin, ymax) {
-  new_data_frame(list(
-    y = c(ymax, ymax, ymin, ymin, ymax),
-    x = c(xmin, xmax, xmax, xmin, xmin)
-  ))
-}
+
+ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
+  geom_recessions() +
+  geom_line() +
+  theme_minimal()
+
+
+
+
 
 
 load("~/GitHub/cmapplot/data/grp_over_time.RData")
 load("~/GitHub/cmapplot/data/recessions.RData")
 
-ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
-  geom_line() +
-  geom_recessions(mapping = aes(xmin = start_int, xmax = end_int, ymin = -Inf, ymax = +Inf))
+
+
+ggplot(recessions) +
+  geom_recessions(aes(xmin = start_int, xmax = end_int, ymin = 0, ymax = 1)) +
   theme_minimal()
 
 # help!
