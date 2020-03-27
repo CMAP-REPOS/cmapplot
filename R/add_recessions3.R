@@ -31,7 +31,7 @@ filter_recessions <- function(min, max, xformat){
 
   # filter recessions correctly, based on xformat
   if (xformat == "numeric"){
-    recessions2 <- dplyr::rename(recessions, end = end_int, start = start_int)
+    recessions2 <- dplyr::rename(recessions, end = end_num, start = start_num)
   } else if (xformat == "date"){
     recessions2 <- dplyr::rename(recessions, end = end_date, start = start_date)
   } else {
@@ -118,25 +118,14 @@ ggplot(grp_goods, aes(x = year, y = realgrp, color = cluster)) +
   geom_recessions(xformat = "numeric") +
   geom_line() +
   theme_minimal()
-
-
-ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
-  geom_recessions() +
-  geom_line() +
-  theme_minimal()
-
-
-
+#
+#
+# ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
+#   geom_recessions() +
+#   geom_line() +
+#   theme_minimal()
 
 
 
-load("~/GitHub/cmapplot/data/grp_over_time.RData")
-load("~/GitHub/cmapplot/data/recessions.RData")
 
 
-
-ggplot(recessions) +
-  geom_recessions(aes(xmin = start_int, xmax = end_int, ymin = 0, ymax = 1)) +
-  theme_minimal()
-
-# help!

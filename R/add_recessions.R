@@ -101,8 +101,10 @@ add_recessions <- function(min = 2000, max = 2010, xdata = c("int", "date"),
   }
 
   # construct recessions dataset for this geom:
+  # - adjust recessions$start_num and $end_num back to `int` to reflect old usage
+  recessions2 <- dplyr::rename(cmapplot::recessions, start_int = start_num, end_int = end_num)
   # - remove recessions outside of range
-  recessions2 <- dplyr::filter(cmapplot::recessions, end_int > min & start_int < max)
+  recessions2 <- dplyr::filter(recessions2, end_int > min & start_int < max)
   # - if `min` or `max` fall in  middle of a recession, modify recession to
   #   end at specified term. Then, rebuild dates from ints
   recessions2 <- dplyr::mutate(recessions2,
