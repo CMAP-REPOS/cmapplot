@@ -7,7 +7,7 @@ geom_recessions <- function(mapping = NULL, data = NULL,
                       ...,
                       linejoin = "mitre",
                       na.rm = FALSE,
-                      show.legend = NA,
+                      show.legend = FALSE,
                       inherit.aes = TRUE) {
 
   layer(
@@ -66,13 +66,14 @@ GeomRecessions <- ggproto("GeomRecessions", Geom,
 
                     # replace `data` with `recessions`, filtered by `data`
                     setup_data = function(data, params) {
-
+                      # set default xformat to numeric if user does not set it
                       if (is.null(params$xformat)) params$xformat <- "numeric"
 
+                      #filter recessions based on date parameters from `data` and return it. This overwrites `data`.
                       filter_recessions(min = min(data$x), max = max(data$x), xformat = params$xformat)
                     },
 
-
+                    # remainder untouched from `geom_rect`:
                     draw_panel = function(self, data, panel_params, coord, linejoin = "mitre") {
 
                       if (!coord$is_linear()) {
@@ -114,10 +115,59 @@ GeomRecessions <- ggproto("GeomRecessions", Geom,
 )
 
 
-ggplot(grp_goods, aes(x = year, y = realgrp, color = cluster)) +
-  geom_recessions(xformat = "numeric") +
-  geom_line() +
-  theme_minimal()
+#' #' @rdname ggplot2-ggproto
+#' #' @format NULL
+#' #' @usage NULL
+#' #' @export
+#' GeomRecessionsText <- ggproto("GeomRecessionsText", Geom,
+#'                     required_aes = c("x", "y", "label"),
+#'
+#'                     default_aes = aes(
+#'                       colour = "black", size = 3.88, angle = 0, hjust = 0.5,
+#'                       vjust = 0.5, alpha = NA, family = "", fontface = 1, lineheight = 1.2
+#'                     ),
+#'
+#'                     draw_panel = function(data, panel_params, coord, parse = FALSE,
+#'                                           na.rm = FALSE, check_overlap = FALSE) {
+#'                       lab <- data$label
+#'                       if (parse) {
+#'                         lab <- parse_safe(as.character(lab))
+#'                       }
+#'
+#'                       data <- coord$transform(data, panel_params)
+#'                       if (is.character(data$vjust)) {
+#'                         data$vjust <- compute_just(data$vjust, data$y)
+#'                       }
+#'                       if (is.character(data$hjust)) {
+#'                         data$hjust <- compute_just(data$hjust, data$x)
+#'                       }
+#'
+#'                       textGrob(
+#'                         lab,
+#'                         data$x, data$y, default.units = "native",
+#'                         hjust = data$hjust, vjust = data$vjust,
+#'                         rot = data$angle,
+#'                         gp = gpar(
+#'                           col = alpha(data$colour, data$alpha),
+#'                           fontsize = data$size * .pt,
+#'                           fontfamily = data$family,
+#'                           fontface = data$fontface,
+#'                           lineheight = data$lineheight
+#'                         ),
+#'                         check.overlap = check_overlap
+#'                       )
+#'                     },
+#'
+#'                     draw_key = draw_key_text
+#' )
+
+
+
+
+# ggplot(grp_goods, aes(x = year, y = realgrp, color = cluster)) +
+#   geom_recessions(xformat = "numeric") +
+#   geom_line() +
+#   theme_minimal()
 #
 #
 # ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
