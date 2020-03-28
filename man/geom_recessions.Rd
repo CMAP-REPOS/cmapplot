@@ -5,8 +5,8 @@
 \title{Add recessions to time series graphs}
 \usage{
 geom_recessions(xformat = "numeric", text = TRUE, label = " Recession",
-  ymin = -Inf, ymax = Inf, text_nudge_x = 0.2, text_nudge_y = 0, show.legend
-  = FALSE, ..., rect_aes = NULL, text_aes = NULL)
+ ymin = -Inf, ymax = Inf, fill = "#002d49", text_nudge_x = 0.2, text_nudge_y
+ = 0, show.legend = TRUE, ..., rect_aes = NULL, text_aes = NULL)
 }
 \arguments{
 \item{xformat}{Char, a string indicating whether the x axis of the primary
@@ -16,64 +16,69 @@ currently accept one of \code{c("numeric", "date")}.}
 \item{text}{Logical, whether or not to include labels that identify each box
 as a recession.}
 
-\item{label}{Char, the text to label each recession. Defaults to "
-Recession". (The space is a more consistent y axix buffer than text_nudge_y
-because it not relative to the scale of the y axis.)}
+\item{label}{Char, the text to label each recession. Defaults to " Recession".
+(The space is a more consistent y axix buffer than text_nudge_y because it
+not relative to the scale of the y axis.)}
 
 \item{ymin, ymax}{Numeric, The height of the recession rectangles. Defaults to
 -Inf and +Inf. Override to the top and bottom gridlines to implement ideal
 CMAP design standards.}
 
-\item{text_nudge_x, text_nudge_y}{Numeric, the amount to shift the labels
-along each axis. Defaults to 0.2 and 0, respectively. Note that these use
-the x and y scales so will need to be adjusted depending on what is being
-graphed.}
+\item{fill}{Char, the fill color for the recession rectangles. Defaults to
+\code{#002d49} for compliance with CMAP design standards.}
+
+\item{text_nudge_x, text_nudge_y}{Numeric, the amount to shift the labels along
+each axis. Defaults to 0.2 and 0, respectively. Note that these use the x
+and y scales so will need to be adjusted depending on what is being graphed.}
 
 \item{show.legend}{Logical, whether to render the rectangles in the legend.
 Defaults to \code{FALSE}.}
 
-\item{...}{additional aesthetics to send to BOTH the rectangle and text
-geoms.}
+\item{...}{additional aesthetics to send to BOTH the rectangle and text geoms.}
 
-\item{rect_aes}{Named list, additional aesthetics to send to the rectangle
-geom.}
-
-\item{text_aes}{Named list, additional aesthetics to send to the text geom.}
+\item{rect_aes, text_aes}{Named list, additional aesthetics to send to the
+rectangle and text geoms, respectively.}
 }
 \description{
 \code{geom_recessions} returns one or two ggplot geoms that add rectangles
 representing recessions to a plot. It will either return only rectangles or,
 by default, both rectangles and text identifying each recession.
 }
-\details{
-Note that it is best to place this object before your primary geom (likely
-]code{geom_line()}) in your code, so that ggplot draws it behind the primary
-data being drawn.
+\section{Important notes}{
+ If \code{show.legend = TRUE} you must place any
+ categorical aesthetics (e.g. color, size) specific to the primary data in
+ the geom(s) used to display that data. Otherwise, the legend will inherit
+ aesthetics from geom_recessions.
+
+ It is best to place this object before your primary geom (likely
+ \code{geom_line()}) in your code, so that ggplot draws it behind the primary
+ data being drawn.
 }
+
 \section{Default color}{
  The CMAP color palette gray used for recessions is
-  \code{#e3e8eb}. The rectangle geom has default fill and alpha values of
-  \code{#002d49} and \code{0.11} built into the function. These replicate the
-  palette color at the highest possible transparency. This is done because
-  there is no known way to place the recession geom behind the graph's grid
-  lines. The default therefore produces the approved CMAP color while
-  altering the appearance of any overlapping grid lines as little as
-  possible. These can be overridden, as in \code{rect_aes = list(fill =
-  "red", alpha = 0.5)}. This was generated using the hints found here:
-  \url{https://stackoverflow.com/questions/6672374/convert-rgb-to-rgba-over-white}.
+ \code{#e3e8eb}. The rectangle geom has default fill and alpha values of
+ \code{#002d49} and \code{0.11} built into the function. These replicate the
+ palette color at the highest possible transparency. This is done because
+ there is no known way to place the recession geom behind the graph's grid
+ lines. The default therefore produces the approved CMAP color while altering
+ the appearance of any overlapping grid lines as little as possible. These
+ can be overridden, but separately. Override fill using the top-level
+ argument, as in \code{fill = "red"}. Override alpha within rect_aes as in
+ \code{rect_aes = list(alpha = 0.5)}. Color and alpha were calculated using
+ the hints found here:
+ \url{https://stackoverflow.com/questions/6672374/convert-rgb-to-rgba-over-white}.
 }
 
 \section{NA}{
- The CMAP color palette gray used for recessions is
-  \code{#e3e8eb}. The rectangle geom has default fill and alpha values of
-  \code{#002d49} and \code{0.11} built into the function. These replicate the
-  palette color at the highest possible transparency. This is done because
-  there is no known way to place the recession geom behind the graph's grid
-  lines. The default therefore produces the approved CMAP color while
-  altering the appearance of any overlapping grid lines as little as
-  possible. These can be overridden, as in \code{rect_aes = list(fill =
-  "red", alpha = 0.5)}. This was generated using the hints found here:
-  \url{https://stackoverflow.com/questions/6672374/convert-rgb-to-rgba-over-white}.
+ If \code{show.legend = TRUE} you must place any
+ categorical aesthetics (e.g. color, size) specific to the primary data in
+ the geom(s) used to display that data. Otherwise, the legend will inherit
+ aesthetics from geom_recessions.
+
+ It is best to place this object before your primary geom (likely
+ \code{geom_line()}) in your code, so that ggplot draws it behind the primary
+ data being drawn.
 }
 
 \examples{
@@ -96,9 +101,10 @@ mapping = aes(x = year2, y = realgrp, color = cluster)) +
   theme_minimal()
 
 # MODIFIED AESTHETICS
-ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
-  geom_recessions(rect_aes = list(alpha = 1, fill = "blue", color = "red"), text = FALSE) +
-  geom_line() +
+ggplot(grp_over_time, aes(x = year, y = realgrp)) +
+  geom_recessions(show.legend = TRUE, fill = "blue", text = FALSE,
+                  rect_aes = list(alpha = 1, color = "red")) +
+  geom_line(aes(color = cluster)) +
   scale_x_continuous("Year") +
   theme_minimal()
 
@@ -115,25 +121,26 @@ pivot_longer(cols = starts_with("var"),
 
 # A plot with an integer-based x axis
 ggplot(data = filter(time_series, date_dec >= 1980 & date_dec <= 2019),
-       mapping = aes(x = date_dec, y = value, color = var)) +
+       mapping = aes(x = date_dec, y = value)) +
   geom_recessions() +
-  geom_line() +
+  geom_line(aes(color = var)) +
   scale_x_continuous("Year") +
   theme_cmap()
 
 # A plot with a date-based x axis
 ggplot(data = filter(time_series, date_dec >= 1980 & date_dec <= 2019),
-       mapping = aes(x = date_date, y = value, color = var)) +
-  geom_recessions(xformat = "date") +
-  geom_line() +
+       mapping = aes(x = date_date, y = value)) +
+  geom_recessions(xformat = "date", show.legend = TRUE) +
+  geom_line(aes(color = var)) +
   scale_x_date() +
   theme_cmap()
+
 }
 
 }
 \seealso{
 \url{https://ggplot2-book.org/extensions.html}
-\url{https://htmlpreview.github.io/?https://github.com/brodieG/ggbg/blob/development/inst/doc/extensions.html#stat-compute}
+\url{https://github.com/brodieG/ggbg/blob/development/inst/doc/extensions.html#stat-compute}
 \url{https://rpubs.com/hadley/97970}
 \url{https://cran.r-project.org/web/packages/ggplot2/vignettes/extending-ggplot2.html}
 }
