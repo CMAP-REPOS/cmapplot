@@ -8,9 +8,10 @@
 #' ]code{geom_line()}) in your code, so that ggplot draws it behind the primary
 #' data being drawn.
 #'
-#' @usage geom_recessions(xformat = "numeric", text = TRUE, label = " Recession",
-#'   ymin = -Inf, ymax = Inf, text_nudge_x = 0.2, text_nudge_y = 0, show.legend
-#'   = FALSE, ..., rect_aes = NULL, text_aes = NULL)
+#' @usage geom_recessions(xformat = "numeric", text = TRUE, label = "
+#'   Recession", ymin = -Inf, ymax = Inf, fill = "#002d49", text_nudge_x = 0.2,
+#'   text_nudge_y = 0, show.legend = TRUE, ..., rect_aes = NULL, text_aes =
+#'   NULL)
 #'
 #' @param xformat Char, a string indicating whether the x axis of the primary
 #'   data being graphed is in integer or date format. This argument will
@@ -23,6 +24,8 @@
 #' @param ymin,ymax Numeric, The height of the recession rectangles. Defaults to
 #'   -Inf and +Inf. Override to the top and bottom gridlines to implement ideal
 #'   CMAP design standards.
+#' @param fill Char, the fill color for the recession rectangles. Defaults to
+#'   \code{#002d49} for compliance with CMAP design standards.
 #' @param text_nudge_x,text_nudge_y Numeric, the amount to shift the labels
 #'   along each axis. Defaults to 0.2 and 0, respectively. Note that these use
 #'   the x and y scales so will need to be adjusted depending on what is being
@@ -31,9 +34,8 @@
 #'   Defaults to \code{FALSE}.
 #' @param ... additional aesthetics to send to BOTH the rectangle and text
 #'   geoms.
-#' @param rect_aes Named list, additional aesthetics to send to the rectangle
-#'   geom.
-#' @param text_aes Named list, additional aesthetics to send to the text geom.
+#' @param rect_aes,text_aes Named list, additional aesthetics to send to the
+#'   rectangle and text geoms, respectively.
 #'
 #'
 #' @section Default color: The CMAP color palette gray used for recessions is
@@ -43,9 +45,12 @@
 #'   there is no known way to place the recession geom behind the graph's grid
 #'   lines. The default therefore produces the approved CMAP color while
 #'   altering the appearance of any overlapping grid lines as little as
-#'   possible. These can be overridden, as in \code{rect_aes = list(fill =
-#'   "red", alpha = 0.5)}. This was generated using the hints found here:
+#'   possible. These can be overridden, but separately. Override fill using the
+#'   top-level argument, as in \code{fill = "red"}. Override alpha within
+#'   rect_aes as in \code{rect_aes = list(alpha = 0.5)}. Color and alpha were
+#'   calculated using the hints found here:
 #'   \url{https://stackoverflow.com/questions/6672374/convert-rgb-to-rgba-over-white}.
+#'
 #'
 #'
 #' @section Under the hood: This function calls two custom geoms, constructed
@@ -96,9 +101,9 @@
 #'
 #' # A plot with an integer-based x axis
 #' ggplot(data = filter(time_series, date_dec >= 1980 & date_dec <= 2019),
-#'        mapping = aes(x = date_dec, y = value, color = var)) +
+#'        mapping = aes(x = date_dec, y = value)) +
 #'   geom_recessions() +
-#'   geom_line() +
+#'   geom_line(aes(color = var)) +
 #'   scale_x_continuous("Year") +
 #'   theme_cmap()
 #'
@@ -109,12 +114,12 @@
 #'   geom_line() +
 #'   scale_x_date() +
 #'   theme_cmap()
-#' }
+#'}
 #'
 #' @seealso
 #'
 #' \url{https://ggplot2-book.org/extensions.html}
-#' \url{https://htmlpreview.github.io/?https://github.com/brodieG/ggbg/blob/development/inst/doc/extensions.html#stat-compute}
+#' \url{https://github.com/brodieG/ggbg/blob/development/inst/doc/extensions.html#stat-compute}
 #' \url{https://rpubs.com/hadley/97970}
 #' \url{https://cran.r-project.org/web/packages/ggplot2/vignettes/extending-ggplot2.html}
 #'
@@ -124,22 +129,22 @@ geom_recessions <- function(xformat = "numeric",
                             label = " Recession",
                             ymin = -Inf,
                             ymax = Inf,
+                            fill = "#002d49",
                             text_nudge_x = 0.2,
                             text_nudge_y = 0,
                             show.legend = FALSE,
                             ...,
                             rect_aes = NULL,
-                            text_aes = NULL
-) {
+                            text_aes = NULL) {
 
   list(
     layer(
       data = NULL,
-      mapping = NULL,
+      mapping = aes(fill = "Recession"), # map fill to asthetic in order to generate legend if desired
       stat = "identity",
       geom = GeomRecessions,
       position = "identity",
-      show.legend = show.legend,
+      show.legend = if_else(show.legend, NA, FALSE),
       inherit.aes = TRUE,
       params = append(
         list(
@@ -170,13 +175,18 @@ geom_recessions <- function(xformat = "numeric",
           text_aes
         )
       )
-    }
+    },
+    # apply the fill color to values where fill="Recession". Push this to the legend if called for.
+    do.call(scale_fill_manual, list(values = c("Recession" = fill),
+                                    if(show.legend){guide = "legend"}
+    )
+    )
   )
 
 }
 
 
-
+# Internal function designed to filter the built-in recessions table
 filter_recessions <- function(min, max, xformat){
   # Bind local variables to function
   end_num <- start_num <- end_date <- start_date <- end <- start <- NULL
@@ -203,11 +213,11 @@ filter_recessions <- function(min, max, xformat){
   return(recessions2)
 }
 
-
+# Modification of GeomRect
 GeomRecessions <- ggproto("GeomRecessions", Geom,
-                          default_aes = aes(colour = NA, fill = "#002d49", alpha = 0.11, size = 0.5, linetype = 1, na.rm = TRUE),
+                          default_aes = aes(colour = NA, alpha = 0.11, size = 0.5, linetype = 1, na.rm = TRUE),
 
-                          required_aes = c("xformat", "ymin", "ymax"),
+                          required_aes = c("xformat", "ymin", "ymax", "fill"),
 
                           # replace `data` with `recessions`, filtered by `data`
                           setup_data = function(data, params) {
@@ -221,7 +231,8 @@ GeomRecessions <- ggproto("GeomRecessions", Geom,
                                                      ymin = params$ymin,
                                                      ymax = params$ymax,
                                                      PANEL = 1,
-                                                     group = -1
+                                                     group = -1,
+                                                     fill = "Recession"
                             )
 
                             return(data)
@@ -268,7 +279,7 @@ GeomRecessions <- ggproto("GeomRecessions", Geom,
                           draw_key = draw_key_polygon
 )
 
-
+# Modification of GeomText
 GeomRecessionsText <- ggproto("GeomRecessionsText", Geom,
 
                               required_aes = c("xformat", "label", "y"),
@@ -335,132 +346,9 @@ GeomRecessionsText <- ggproto("GeomRecessionsText", Geom,
 
 
 
-# # Below are shaky experiments for allowing a legend item for the recessions.
-# # It involves creating a dummy aes for the recessions layer, remapping the
-# # color when data gets rebuilt, and adding a scale_fill_identity layer.
-# # Needs more development and testing to see that it works. It worries me.
-#
-# geom_recessions <- function(xformat = "numeric",
-#                             text = TRUE,
-#                             label = " Recession",
-#                             ymin = -Inf,
-#                             ymax = Inf,
-#                             text_nudge_x = 0.2,
-#                             text_nudge_y = 0,
-#                             show.legend = TRUE,
-#                             ...,
-#                             rect_aes = NULL,
-#                             text_aes = NULL
-# ) {
-#
-#   list(
-#     layer(
-#       data = NULL,
-#       mapping = aes(fill = "X"),
-#       stat = "identity",
-#       geom = GeomRecessions,
-#       position = "identity",
-#       show.legend = if_else(show.legend, NA, FALSE),
-#       inherit.aes = TRUE,
-#       params = append(
-#         list(
-#           xformat = xformat,
-#           ymin = ymin,
-#           ymax = ymax,
-#           ...
-#         ),
-#         rect_aes
-#       )
-#     ),
-#     if(text){
-#       layer(
-#         data = NULL,
-#         mapping = NULL,
-#         stat = "identity",
-#         geom = GeomRecessionsText,
-#         position = position_nudge(x = text_nudge_x, y = 0),
-#         show.legend = FALSE,
-#         inherit.aes = TRUE,
-#         params = append(
-#           list(
-#             xformat = xformat,
-#             label = label,
-#             y = ymax + text_nudge_y,
-#             ...
-#           ),
-#           text_aes
-#         )
-#       )
-#     },
-#     scale_fill_identity(guide = "legend", name = "", labels = "Recessions")
-#   )
-#
-# }
-#
-# GeomRecessions <- ggproto("GeomRecessions", Geom,
-#                           default_aes = aes(colour = NA, fill = "#002d49", alpha = 0.11, size = 0.5, linetype = 1, na.rm = TRUE),
-#
-#                           required_aes = c("xformat", "ymin", "ymax"),
-#
-#                           # replace `data` with `recessions`, filtered by `data`
-#                           setup_data = function(data, params) {
-#                             #filter recessions based on date parameters from `data` and return it. This overwrites `data`.
-#                             data <- filter_recessions(min = min(data$x), max = max(data$x), xformat = params$xformat)
-#                             print(params$fill)
-#
-#                             # set up data for GeomRect
-#                             data <- dplyr::transmute(data,
-#                                                      xmin = start,
-#                                                      xmax = end,
-#                                                      ymin = params$ymin,
-#                                                      ymax = params$ymax,
-#                                                      PANEL = 1,
-#                                                      group = -1,
-#                                                      fill = "#002d49"
-#                             )
-#
-#                             return(data)
-#                           },
-#
-#                           # remainder untouched from `geom_rect`:
-#                           draw_panel = function(self, data, panel_params, coord, linejoin = "mitre") {
-#
-#                             if (!coord$is_linear()) {
-#                               aesthetics <- setdiff(
-#                                 names(data), c("x", "y", "xmin", "xmax", "ymin", "ymax")
-#                               )
-#
-#                               polys <- lapply(split(data, seq_len(nrow(data))), function(row) {
-#                                 poly <- rect_to_poly(row$xmin, row$xmax, row$ymin, row$ymax)
-#                                 aes <- new_data_frame(row[aesthetics])[rep(1,5), ]
-#
-#                                 GeomPolygon$draw_panel(cbind(poly, aes), panel_params, coord)
-#                               })
-#
-#                               ggname("bar", do.call("grobTree", polys))
-#                             } else {
-#                               coords <- coord$transform(data, panel_params)
-#                               ggname("geom_rect", rectGrob(
-#                                 coords$xmin, coords$ymax,
-#                                 width = coords$xmax - coords$xmin,
-#                                 height = coords$ymax - coords$ymin,
-#                                 default.units = "native",
-#                                 just = c("left", "top"),
-#                                 gp = gpar(
-#                                   col = coords$colour,
-#                                   fill = alpha(coords$fill, coords$alpha),
-#                                   lwd = coords$size * .pt,
-#                                   lty = coords$linetype,
-#                                   linejoin = linejoin,
-#                                   # `lineend` is a workaround for Windows and intentionally kept unexposed
-#                                   # as an argument. (c.f. https://github.com/tidyverse/ggplot2/issues/3037#issuecomment-457504667)
-#                                   lineend = if (identical(linejoin, "round")) "round" else "square"
-#                                 )
-#                               ))
-#                             }
-#                           },
-#
-#                           draw_key = draw_key_polygon
-# )
-#
+
+
+
+
+
 
