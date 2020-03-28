@@ -4,7 +4,9 @@
 \name{cmap_gradients}
 \alias{cmap_gradients}
 \title{CMAP continuous color palettes}
-\format{An object of class \code{list} of length 15.}
+\format{
+An object of class \code{list} of length 15.
+}
 \usage{
 cmap_gradients
 }
