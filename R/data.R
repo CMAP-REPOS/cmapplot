@@ -7,7 +7,7 @@
 #' @format A tibble. 33 rows and 4 variables:
 #' \describe{
 #'    \item{start_char, end_char}{Chr. Easily readable labels for the beginning and end of the recession}
-#'    \item{start_num, end_num}{Double. Dates expressed as years, with decimels referring to months. (e.g. April = 4/12 = .333)}
+#'    \item{start_int, end_int}{Double. Dates expressed as years, with decimels referring to months. (e.g. April = 4/12 = .333)}
 #'    \item{start_date, end_date}{Date. Dates expressed in R datetime format, using the first day of the specified month.}
 #' }
 #'
@@ -32,16 +32,13 @@
 #'   # rename character values
 #'   rename(start_char = 1, end_char = 2) %>%
 #'   mutate(
-#'     # convert character dates to R date
+#'    # numeric values expressed as months since January 1800
+#'     start_int = (`Peak month number`-1)/12 + 1800,
+#'     end_int = (`Trough month number`-1)/12 + 1800,
+#'     # convert to R date
 #'     start_date =  as.Date(str_replace(start_char, " ", " 1, "), format = "%B %d, %Y"),
-#'     end_date =  as.Date(str_replace(end_char, " ", " 1, "), format = "%B %d, %Y"),
-#'     # convert R dates to numeric dates
-#'     start_num = decimal_date(start_date),
-#'     end_num = decimal_date(end_date)
-#'     ) %>%
+#'     end_date =  as.Date(str_replace(end_char, " ", " 1, "), format = "%B %d, %Y")) %>%
 #'   select(-3:-8)
-#'
-#' save(recessions, file = "~/GitHub/cmapplot/data/recessions.RData")
 #'}
 #'
 "recessions"

@@ -4,15 +4,13 @@
 \name{economy_basic}
 \alias{economy_basic}
 \title{Basic regional economic stats in 2001 and 2017}
-\format{
-A tibble. 18 rows and 4 variables:
+\format{A tibble. 18 rows and 4 variables:
 \describe{
    \item{variable}{Chr. Indicates the meaning of the data stored in `value`. Jobs, Real Earnings, or Establishments.}
    \item{year}{Factor. 2001 or 2017.}
    \item{sector}{Chr. local, tradedgoods, or tradedservices. Together, these three sectors account for all clusters in the region.}
    \item{value}{Int. The value indicated as described by the other columns}
-}
-}
+}}
 \source{
 CMAP traded clusters report
 }

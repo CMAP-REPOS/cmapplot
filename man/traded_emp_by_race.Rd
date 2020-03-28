@@ -4,16 +4,14 @@
 \name{traded_emp_by_race}
 \alias{traded_emp_by_race}
 \title{Traded employment by race}
-\format{
-A tibble. 12 rows and 4 variables:
+\format{A tibble. 12 rows and 4 variables:
 \describe{
    \item{Race}{Chr. White, Asian, Hispanic, Other, Black, or Regional Average.}
    \item{variable}{Chr. SpecializedTraded, UnspecializedTraded, or Total.
    Total is a sum of SpecializedTraded and UnspecializedTraded. The invisible remainder (e.g. `1-Total` or
    `1-(SpecializedTraded+UnspecializedTraded)`) is the percentage employed in local clusters.}
    \item{value}{Double. The value indicated by the other variables.}
-}
-}
+}}
 \source{
 CMAP traded clusters report
 }

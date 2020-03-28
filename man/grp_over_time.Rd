@@ -4,8 +4,7 @@
 \name{grp_over_time}
 \alias{grp_over_time}
 \title{Gross Regional Product by cluster, 2007-17}
-\format{
-A tibble. 121 rows and 5 variables:
+\format{A tibble. 121 rows and 5 variables:
 \describe{
    \item{cluster}{Chr. The name of the cluster}
    \item{category}{Factor. "goods-producing" or "services"}
@@ -13,8 +12,7 @@ A tibble. 121 rows and 5 variables:
    \item{year}{Double. The year of the data}
    \item{realgrp}{Double. The real gross regional product of the cluster in year `year`.
    Not exactly sure on the inflation year but I believe it is 2012}
-}
-}
+}}
 \source{
 CMAP traded clusters report
 }
