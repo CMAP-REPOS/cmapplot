@@ -22,7 +22,13 @@
 #' @export
 cmap_fill_race <- function(white, black, hispanic, asian, other) {
 
-    race_palette <- cmap_palettes$race
+    race_palette <- c(
+        wht  = "#72a6e5",
+        blk  = "#8de572",
+        hisp = "#cca600",
+        asn  = "#cc3000",
+        oth  = "#8a9ea8"
+    )
 
     if(!missing(white)){
         names(race_palette)[1] <- white
@@ -53,7 +59,13 @@ cmap_fill_race <- function(white, black, hispanic, asian, other) {
 #' @export
 cmap_color_race <- function(white, black, hispanic, asian, other) {
 
-    race_palette <- cmap_palettes$race
+    race_palette <- c(
+        wht  = "#72a6e5",
+        blk  = "#8de572",
+        hisp = "#cca600",
+        asn  = "#cc3000",
+        oth  = "#8a9ea8"
+    )
 
     if(!missing(white)){
         names(race_palette)[1] <- white

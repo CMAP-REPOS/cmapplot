@@ -6,11 +6,11 @@
 \alias{cmap_colour_continuous}
 \title{Apply continuous CMAP palettes to ggplot2 aesthetics}
 \usage{
-cmap_fill_continuous(palette = "seq_reds", reverse = FALSE)
+cmap_fill_continuous(palette = "red_gradient", reverse = FALSE)
 
-cmap_color_continuous(palette = "seq_reds", reverse = FALSE)
+cmap_color_continuous(palette = "red_gradient", reverse = FALSE)
 
-cmap_colour_continuous(palette = "seq_reds", reverse = FALSE)
+cmap_colour_continuous(palette = "red_gradient", reverse = FALSE)
 }
 \arguments{
 \item{palette}{Choose from 'cmap_gradients' list}
@@ -23,9 +23,9 @@ Pick the function depending on the aesthetic of your ggplot object (fill or colo
 \examples{
 library(dplyr)
 grp_over_time \%>\%
-  filter(cluster=="Biopharmaceuticals") \%>\%
-  ggplot(aes(x = year, y = realgrp, color = realgrp)) +
-    geom_line() +
-    cmap_color_continuous(palette = "seq_red_purple")
+   filter(cluster=="Biopharmaceuticals") \%>\%
+      ggplot(., aes(x = year, y = realgrp, color = realgrp)) +
+      geom_line() +
+      cmap_color_continuous(palette = "red_purple")
 
 }

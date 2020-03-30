@@ -45,10 +45,10 @@ ggplot(cluster_jobchange, aes(x = reorder(name, jobchange), y = jobchange, fill 
 ``` r
 # a stacked bar chart
 filter(traded_emp_by_race, variable %in% c("SpecializedTraded", "UnspecializedTraded")) %>%
-  ggplot(aes(x = reorder(Race, -value), y = value, fill = variable)) +
-    geom_col(position = position_stack(reverse = TRUE)) +
-    scale_y_continuous(labels = scales::percent) +
-    theme_cmap()
+ggplot(aes(x = reorder(Race, -value), y = value, fill = variable)) +
+  geom_col(position = position_stack(reverse = TRUE)) +
+  scale_y_continuous(labels = scales::percent) +
+  theme_cmap()
 ```
 
 ![](man/figures/README-unnamed-chunk-5-1.png)<!-- -->
@@ -78,7 +78,6 @@ ggplot(economy_basic, aes(x = interaction(year, variable), y = value, fill = sec
 # a non-time-series line chart
 ggplot(percentile_wages, aes(x = percentile, y = wage, color = cluster)) +
   geom_line() +
-  scale_y_continuous(labels = scales::dollar) +
   theme_cmap()
 ```
 
@@ -88,7 +87,7 @@ ggplot(percentile_wages, aes(x = percentile, y = wage, color = cluster)) +
 # a time-series line chart
 ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
   geom_line() +
-  geom_text_lastonly(add_points = TRUE) +
+  geom_text_lastonly(add_points=TRUE) +
   theme_cmap()
 ```
 
@@ -107,44 +106,59 @@ Add discrete palettes by adding either a `cmap_fill_discrete` or
 `cmap_color_discrete` object to a ggplot. Note that discrete palettes
 will automatically interpolate additional colors if the dataset has more
 colors than the palette. This can be helpful but is not ideal for
-finished graphics.
+finished
+graphics.
 
 ``` r
 ggplot(percentile_wages, aes(x = percentile, y = wage, color = cluster)) +
   geom_line() +
-  scale_y_continuous(labels = scales::dollar) +
   theme_cmap() +
   cmap_color_discrete(palette = "prosperity")
 ```
 
 ![](man/figures/README-unnamed-chunk-10-1.png)<!-- -->
 
-The following gradients are available:
+The following gradients are
+available:
 
-<img src="man/figures/README-unnamed-chunk-11-1.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-11-2.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-11-3.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-11-4.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-11-5.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-11-6.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-11-7.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-11-8.png" width="50%" height="40%" />
+<img src="man/figures/README-unnamed-chunk-11-1.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-11-2.png" width="50%" height="40%" />
+
+<img src="man/figures/README-unnamed-chunk-12-1.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-12-2.png" width="50%" height="40%" />
+
+<img src="man/figures/README-unnamed-chunk-13-1.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-2.png" width="50%" height="40%" />
+
+<img src="man/figures/README-unnamed-chunk-14-1.png" width="50%" height="40%" />
 
 ### Continuous palettes
 
 Add continuous palettes by adding either a `cmap_fill_continuous` or
-`cmap_color_continuous` object to a ggplot. For example:
+`cmap_color_continuous` object to a ggplot. As in:
 
 ``` r
 percentile_wages %>% 
   filter(cluster %in% c("Biopharmaceuticals", "Hospitality and Tourism", "Paper and Packaging")) %>% 
   ggplot(aes(x = cluster, y = wage, color = percentile)) +
-    geom_point(size = 5) +
-    scale_y_continuous(labels = scales::dollar) +
+    geom_point(size=5) +
     coord_flip() +
     theme_cmap() +
-    cmap_color_continuous(palette = "seq_red_purple")
+    cmap_color_continuous(palette = "red_purple")
 ```
 
-![](man/figures/README-unnamed-chunk-12-1.png)<!-- -->
+![](man/figures/README-unnamed-chunk-15-1.png)<!-- -->
 
-#### Sequential gradients (single- and multi-hue)
+The following gradients are
+available:
 
-<img src="man/figures/README-unnamed-chunk-13-1.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-2.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-3.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-4.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-5.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-6.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-7.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-8.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-9.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-10.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-11.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-12.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-13.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-14.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-15.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-13-16.png" width="50%" height="40%" />
+<img src="man/figures/README-unnamed-chunk-16-1.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-16-2.png" width="50%" height="40%" />
 
-#### Diverging gradients
+<img src="man/figures/README-unnamed-chunk-17-1.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-17-2.png" width="50%" height="40%" />
 
-<img src="man/figures/README-unnamed-chunk-14-1.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-14-2.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-14-3.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-14-4.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-14-5.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-14-6.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-14-7.png" width="50%" height="40%" />
+<img src="man/figures/README-unnamed-chunk-18-1.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-18-2.png" width="50%" height="40%" />
+
+<img src="man/figures/README-unnamed-chunk-19-1.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-19-2.png" width="50%" height="40%" />
+
+<img src="man/figures/README-unnamed-chunk-20-1.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-20-2.png" width="50%" height="40%" />
+
+<img src="man/figures/README-unnamed-chunk-21-1.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-21-2.png" width="50%" height="40%" />
+
+<img src="man/figures/README-unnamed-chunk-22-1.png" width="50%" height="40%" /><img src="man/figures/README-unnamed-chunk-22-2.png" width="50%" height="40%" />

@@ -16,6 +16,6 @@ Displays 25 interpolated colors from the cmap continuous palettes.
 Modeled after viz_palette from the \href{https://github.com/ropenscilabs/ochRe}{ochRe package}
 }
 \examples{
-viz_gradient(cmap_gradients$seq_orange_red)
+viz_gradient(cmap_gradients$orange_red)
 
 }
