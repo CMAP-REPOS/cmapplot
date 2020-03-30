@@ -6,7 +6,6 @@ output: github_document
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  tidy = TRUE,
   fig.path = "man/figures/README-"
 )
 
@@ -55,10 +54,10 @@ ggplot(cluster_jobchange, aes(x = reorder(name, jobchange), y = jobchange, fill 
 ```{r eval=TRUE}
 # a stacked bar chart
 filter(traded_emp_by_race, variable %in% c("SpecializedTraded", "UnspecializedTraded")) %>%
-ggplot(aes(x = reorder(Race, -value), y = value, fill = variable)) +
-  geom_col(position = position_stack(reverse = TRUE)) +
-  scale_y_continuous(labels = scales::percent) +
-  theme_cmap()
+  ggplot(aes(x = reorder(Race, -value), y = value, fill = variable)) +
+    geom_col(position = position_stack(reverse = TRUE)) +
+    scale_y_continuous(labels = scales::percent) +
+    theme_cmap()
 ```
 
 ```{r eval=TRUE}
@@ -82,6 +81,7 @@ ggplot(economy_basic, aes(x = interaction(year, variable), y = value, fill = sec
 # a non-time-series line chart
 ggplot(percentile_wages, aes(x = percentile, y = wage, color = cluster)) +
   geom_line() +
+  scale_y_continuous(labels = scales::dollar) +
   theme_cmap()
 ```
 
@@ -89,7 +89,7 @@ ggplot(percentile_wages, aes(x = percentile, y = wage, color = cluster)) +
 # a time-series line chart
 ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
   geom_line() +
-  geom_text_lastonly(add_points=TRUE) +
+  geom_text_lastonly(add_points = TRUE) +
   theme_cmap()
 
 ```
@@ -106,6 +106,7 @@ Add discrete palettes by adding either a `cmap_fill_discrete` or `cmap_color_dis
 ```{r eval=TRUE}
 ggplot(percentile_wages, aes(x = percentile, y = wage, color = cluster)) +
   geom_line() +
+  scale_y_continuous(labels = scales::dollar) +
   theme_cmap() +
   cmap_color_discrete(palette = "prosperity")
 ```
@@ -113,73 +114,37 @@ ggplot(percentile_wages, aes(x = percentile, y = wage, color = cluster)) +
 The following gradients are available:
 
 ```{r echo=FALSE, out.height="40%", out.width="50%"}
-viz_palette(cmap_palettes$environment)
-viz_palette(cmap_palettes$governance)
-```
-
-```{r echo=FALSE, out.height="40%", out.width="50%"}
-viz_palette(cmap_palettes$mobility)
-viz_palette(cmap_palettes$legislation)
-```
-
-```{r echo=FALSE, out.height="40%", out.width="50%"}
-viz_palette(cmap_palettes$prosperity)
-viz_palette(cmap_palettes$community)
-```
-
-```{r echo=FALSE, out.height="40%", out.width="50%"}
-viz_palette(cmap_palettes$friday)
+walk2(cmap_palettes, names(cmap_palettes), viz_palette)
 ```
 
 
 ### Continuous palettes
 
-Add continuous palettes by adding either a `cmap_fill_continuous` or `cmap_color_continuous` object to a ggplot. As in:
+Add continuous palettes by adding either a `cmap_fill_continuous` or `cmap_color_continuous` object to a ggplot. For example:
 
 ```{r eval=TRUE}
 percentile_wages %>% 
   filter(cluster %in% c("Biopharmaceuticals", "Hospitality and Tourism", "Paper and Packaging")) %>% 
   ggplot(aes(x = cluster, y = wage, color = percentile)) +
-    geom_point(size=5) +
+    geom_point(size = 5) +
+    scale_y_continuous(labels = scales::dollar) +
     coord_flip() +
     theme_cmap() +
-    cmap_color_continuous(palette = "red_purple")
+    cmap_color_continuous(palette = "seq_red_purple")
 ```
 
-The following gradients are available:
-
-```{r echo=FALSE, out.height="40%", out.width="50%"}
-viz_gradient(cmap_gradients$red_gradient)
-viz_gradient(cmap_gradients$orange_red)
-```
+#### Sequential gradients (single- and multi-hue)
 
 ```{r echo=FALSE, out.height="40%", out.width="50%"}
-viz_gradient(cmap_gradients$orange_gradient)
-viz_gradient(cmap_gradients$yellow_orange)
+cmap_gradients %>% 
+  keep(str_detect(names(.), "^seq")) %>% 
+  walk2(., names(.), viz_gradient)
 ```
 
-```{r echo=FALSE, out.height="40%", out.width="50%"}
-viz_gradient(cmap_gradients$yellow_gradient)
-viz_gradient(cmap_gradients$yellow_green)
-```
+#### Diverging gradients
 
 ```{r echo=FALSE, out.height="40%", out.width="50%"}
-viz_gradient(cmap_gradients$green_gradient)
-viz_gradient(cmap_gradients$green_teal)
+cmap_gradients %>% 
+  keep(str_detect(names(.), "^div")) %>% 
+  walk2(., names(.), viz_gradient)
 ```
-
-```{r echo=FALSE, out.height="40%", out.width="50%"}
-viz_gradient(cmap_gradients$teal_gradient)
-viz_gradient(cmap_gradients$teal_blue)
-```
-
-```{r echo=FALSE, out.height="40%", out.width="50%"}
-viz_gradient(cmap_gradients$blue_gradient)
-viz_gradient(cmap_gradients$purple_gradient)
-```
-
-```{r echo=FALSE, out.height="40%", out.width="50%"}
-viz_gradient(cmap_gradients$red_purple)
-viz_gradient(cmap_gradients$gray_gradient)
-```
-  
