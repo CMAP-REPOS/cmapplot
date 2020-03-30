@@ -134,7 +134,6 @@ ggplot(data = filter(time_series, date_dec >= 1980 & date_dec <= 2019),
   geom_line(aes(color = var)) +
   scale_x_date() +
   theme_cmap()
-
 }
 
 }

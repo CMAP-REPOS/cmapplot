@@ -53,8 +53,6 @@
 #'  \url{https://stackoverflow.com/questions/6672374/convert-rgb-to-rgba-over-white}.
 #'
 #'
-#'
-#'
 #'@section Under the hood: This function calls two custom geoms, constructed
 #'  with ggproto. The custom GeomRecessions and GeomRecessionsText are modified
 #'  versions of GeomRect and GeomText, respectively. The only variations to each
@@ -116,7 +114,6 @@
 #'   geom_line(aes(color = var)) +
 #'   scale_x_date() +
 #'   theme_cmap()
-#'
 #' }
 #'
 #'@seealso
@@ -143,7 +140,8 @@ geom_recessions <- function(xformat = "numeric",
   list(
     layer(
       data = NULL,
-      mapping = aes(fill = "Recession"), # map fill to asthetic in order to generate legend if desired
+      # An aesthetic mapping is required to generate a legend entry
+      mapping = aes(fill = "Recession"),
       stat = "identity",
       geom = GeomRecessions,
       position = "identity",
@@ -235,6 +233,7 @@ GeomRecessions <- ggproto("GeomRecessions", Geom,
                                                      ymax = params$ymax,
                                                      PANEL = 1,
                                                      group = -1,
+                                                     # re-establish dummy aesthetic, needed for legend entry
                                                      fill = "Recession"
                             )
 
