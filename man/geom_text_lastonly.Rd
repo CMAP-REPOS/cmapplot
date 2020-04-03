@@ -103,7 +103,7 @@ ggplot(df, aes(x=year, y=var, color=byvar, label=sprintf("\%.1f\%\%", 100*var)))
   geom_line() +
   labs(title="Random lines") +
   scale_y_continuous("Percentage of absolutely nothing", labels=scales::percent) +
-  scale_x_continuous("Year", expand=expand_scale(mult=c(0.05, 0.10))) +
+  scale_x_continuous("Year", expand=expansion(mult=c(0.05, 0.10))) +
   geom_text_lastonly(add_points=TRUE)
 
 }

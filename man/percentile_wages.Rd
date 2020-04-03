@@ -4,12 +4,14 @@
 \name{percentile_wages}
 \alias{percentile_wages}
 \title{Wage percentiles by cluster}
-\format{A tibble. 45 rows and 3 variables:
+\format{
+A tibble. 45 rows and 3 variables:
 \describe{
    \item{cluster}{Chr. The name of the cluster}
    \item{percentile}{Double. The percentile wage being reported}
    \item{wage}{Double. The wage. I believe 2017 data.}
-}}
+}
+}
 \source{
 CMAP traded clusters report
 }

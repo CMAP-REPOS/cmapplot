@@ -1,7 +1,7 @@
 Package: cmapplot
 Title: CMAP Themes and Color Palettes
 Version: 0.0.0.9000
-Authors@R: 
+Authors@R:
     person(given = "Noel",
            family = "Peterson",
            role = c("aut", "cre"),
@@ -15,7 +15,7 @@ Depends:
     ggplot2
 Suggests:
     testthat
-Imports: 
+Imports:
     dplyr,
     glue,
     graphics,
@@ -23,5 +23,6 @@ Imports:
     grid,
     lubridate,
     rlang,
-    scales
-RoxygenNote: 7.0.2
+    scales,
+    sysfonts
+RoxygenNote: 7.1.0
