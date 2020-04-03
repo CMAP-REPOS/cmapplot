@@ -52,7 +52,7 @@
 #'   geom_line() +
 #'   labs(title="Random lines") +
 #'   scale_y_continuous("Percentage of absolutely nothing", labels=scales::percent) +
-#'   scale_x_continuous("Year", expand=expand_scale(mult=c(0.05, 0.10))) +
+#'   scale_x_continuous("Year", expand=expansion(mult=c(0.05, 0.10))) +
 #'   geom_text_lastonly(add_points=TRUE)
 #'
 #' @export
@@ -73,37 +73,38 @@ geom_text_lastonly <- function(mapping = NULL, data = NULL,
     position_pt <- position_identity()
   }
 
-  elements <- layer(
-    data = data,
-    mapping = mapping,
-    stat = stat,
-    geom = GeomTextLast,
-    position = position_lab,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    params = list(
-      parse = parse,
-      check_overlap = check_overlap,
-      na.rm = na.rm,
-      ...
-    )
-  )
-  if (add_points == TRUE) {
-    points <- layer(
+  elements <- list(
+    if (add_points) {
+      layer(
+        data = data,
+        mapping = mapping,
+        stat = stat,
+        geom = GeomPointLast,
+        position = position_pt,
+        show.legend = show.legend,
+        inherit.aes = inherit.aes,
+        params = list(
+          na.rm = na.rm,
+          ...
+        )
+      )
+    },
+    layer(
       data = data,
       mapping = mapping,
       stat = stat,
-      geom = GeomPointLast,
-      position = position_pt,
+      geom = GeomTextLast,
+      position = position_lab,
       show.legend = show.legend,
       inherit.aes = inherit.aes,
       params = list(
+        parse = parse,
+        check_overlap = check_overlap,
         na.rm = na.rm,
         ...
       )
     )
-    elements <- list(points, elements)
-  }
+  )
   return(elements)
 }
 
