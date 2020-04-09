@@ -61,7 +61,7 @@
 #'  \{ggplot(data = XXX)}) to filter the recessions displayed.
 #'
 #'
-#' @examples
+#'@examples
 #' grp_goods <- dplyr::filter(grp_over_time, category == "Goods-Producing")
 #' grp_goods <- dplyr::mutate(grp_goods, year2 = as.Date(lubridate::date_decimal(year)))
 #'

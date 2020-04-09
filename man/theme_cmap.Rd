@@ -4,7 +4,7 @@
 \alias{theme_cmap}
 \title{Add CMAP theme to ggplot chart}
 \usage{
-theme_cmap()
+theme_cmap(xlab = NULL, ylab = NULL, xorigin = NULL, yorigin = NULL)
 }
 \description{
 Add CMAP theme to ggplot chart
