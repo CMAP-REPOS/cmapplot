@@ -4,13 +4,15 @@
 \name{pop_and_laborforce_by_age}
 \alias{pop_and_laborforce_by_age}
 \title{Population and Labor Force by Age}
-\format{A tibble. 12 rows and 4 variables:
+\format{
+A tibble. 12 rows and 4 variables:
 \describe{
    \item{variable}{Chr. Indicates the meaning of the data stored in `value`. "population" or "laborforce".}
    \item{year}{Factor. 2010 or 2017.}
    \item{age}{Chr. The age bucket. Either 16-24, 25-54, or 55+.}
    \item{value}{Double. The value indicated by the other variables.}
-}}
+}
+}
 \source{
 CMAP traded clusters report
 }

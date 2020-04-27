@@ -135,6 +135,7 @@ draw_plot <- function(plot,
                     heights = c(0.03,1))
 
   if (action=='view') {
+    width_pixels = 670
     if (newwindow==TRUE) {
       if (.Platform$OS.type == "windows") {
         windows(width=(width_pixels/72))
