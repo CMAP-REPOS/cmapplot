@@ -12,6 +12,21 @@
 #'  line to be added to the plot. Use \code{hline = 0}, for example, to place a
 #'  line at y = 0 to differentiate between positive and negative values.
 #'
+#'@examples
+#'
+#' \dontrun{
+#' ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
+#'  geom_line() +
+#'  scale_x_continuous(breaks = scales::breaks_pretty(11)) +
+#'  theme_cmap(hline = 0, ylab = "Percent change")
+#'
+#' filter(traded_emp_by_race, variable %in% c("SpecializedTraded", "UnspecializedTraded")) %>%
+#'   ggplot(aes(x = reorder(Race, -value), y = value, fill = variable)) +
+#'   geom_col(position = position_stack(reverse = TRUE)) +
+#'   scale_y_continuous(labels = scales::percent) +
+#'   theme_cmap(hline = 0, ylab = "This is the y axis")
+#' }
+#'
 #'@export
 theme_cmap <- function(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL) {
 
@@ -104,10 +119,3 @@ theme_cmap <- function(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL) {
   return(magrittr::extract(elements, !is.na(elements)))
 }
 
-
-### TEST PLOT ###
-# filter(traded_emp_by_race, variable %in% c("SpecializedTraded", "UnspecializedTraded")) %>%
-#   ggplot(aes(x = reorder(Race, -value), y = value, fill = variable)) +
-#   geom_col(position = position_stack(reverse = TRUE)) +
-#   scale_y_continuous(labels = scales::percent) +
-#   theme_cmap(hline = 0, ylab = "This is the y axis")
