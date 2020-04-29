@@ -4,8 +4,18 @@
 \alias{theme_cmap}
 \title{Add CMAP theme to ggplot chart}
 \usage{
-theme_cmap()
+theme_cmap(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL)
+}
+\arguments{
+\item{xlab, ylab}{Char, the string used to label the x and y axes,
+respectively. If left as NULL, the default, the axis label will be left off
+the graph.}
+
+\item{hline, vline}{Numeric, the location of a strong horizontal or vertical
+line to be added to the plot. Use \code{hline = 0}, for example, to place a
+line at y = 0 to differentiate between positive and negative values.}
 }
 \description{
-Add CMAP theme to ggplot chart
+\code{theme_cmap} returns one or more ggplot objects that together construct a
+plot area in accordance with CMAP design standards.
 }

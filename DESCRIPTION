@@ -24,5 +24,6 @@ Imports:
     lubridate,
     rlang,
     scales,
-    sysfonts
+    sysfonts,
+    magrittr
 RoxygenNote: 7.1.0
