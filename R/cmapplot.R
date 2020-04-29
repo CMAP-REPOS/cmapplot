@@ -18,51 +18,73 @@
 #' @import ggplot2 dplyr grid scales grDevices graphics rlang
 #' @importFrom glue glue glue_collapse
 #' @importFrom lubridate date_decimal
-#' @importFrom sysfonts font_files
 #' @keywords internal
 "_PACKAGE"
 
 cmapplot_globals <- new.env(parent=emptyenv())  # An environment for storing any global variables
 
-# Set CMAP fonts: use Whitney if installed, Calibri otherwise
-all_fonts <- sysfonts::font_files()
-whitney_fonts <- dplyr::filter(all_fonts,
-  family %in% c("Whitney Medium", "Whitney Book", "Whitney Semibold") & face == "Regular"
-)
-cmapplot_globals$use_whitney = length(whitney_fonts$family) == 3
-rm(all_fonts)
-rm(whitney_fonts)
+if (.Platform$OS.type == "windows") {
 
-if (cmapplot_globals$use_whitney) {
-  grDevices::windowsFonts(
-    sans = "Whitney Medium",  # Override the default font (Arial)
-    font_reg = "Whitney Medium",
-    font_lite = "Whitney Book",
-    font_sbold = "Whitney Semibold"
+  # Set CMAP fonts: use Whitney if installed, Calibri otherwise
+  all_fonts <- sysfonts::font_files()
+  whitney_fonts <- dplyr::filter(all_fonts,
+    family %in% c("Whitney Medium", "Whitney Book", "Whitney Semibold") & face == "Regular"
   )
+  cmapplot_globals$use_whitney = length(whitney_fonts$family) == 3
+  rm(all_fonts)
+  rm(whitney_fonts)
+
+  if (cmapplot_globals$use_whitney) {
+    grDevices::windowsFonts(
+      sans = "Whitney Medium",  # Override the default font (Arial)
+      font_reg = "Whitney Medium",
+      font_lite = "Whitney Book",
+      font_sbold = "Whitney Semibold"
+    )
+  } else {
+    warning("Whitney is not installed on this PC, so CMAP theme will default to Calibri")
+    grDevices::windowsFonts(
+      sans = "Calibri",  # Override the default font (Arial)
+      font_reg = "Calibri",
+      font_lite = "Calibri Light",
+      font_sbold = "Calibri"  # No separate semibold/bold font for Calibri
+    )
+  }
+
+  cmapplot_globals$font_main <- "font_reg"  # "medium" weight for in-body text and x/y axis
+  cmapplot_globals$font_note <- "font_lite"  # "book" weight for notes and sources
+  cmapplot_globals$font_title <- "font_sbold"  # "semibold" weight for title
+  cmapplot_globals$font_label <- "font_sbold"  # "semibold" weight also for labels
+  if (cmapplot_globals$use_whitney) {
+    cmapplot_globals$font_main_face <- "plain"
+    cmapplot_globals$font_note_face <- "plain"
+    cmapplot_globals$font_title_face <- "plain"
+    cmapplot_globals$font_label_face <- "plain"
+  } else {
+    cmapplot_globals$font_main_face <- "plain"
+    cmapplot_globals$font_note_face <- "plain"
+    cmapplot_globals$font_title_face <- "bold"  # Calibri doesn't have a standalone bold/semibold typeface
+    cmapplot_globals$font_label_face <- "bold"  # Calibri doesn't have a standalone bold/semibold typeface
+  }
+
 } else {
-  grDevices::windowsFonts(
-    sans = "Calibri",  # Override the default font (Arial)
-    font_reg = "Calibri",
-    font_lite = "Calibri Light",
-    font_sbold = "Calibri"
-  )
-}
 
-cmapplot_globals$font_main <- "font_reg"  # "medium" weight for in-body text and x/y axis
-cmapplot_globals$font_note <- "font_lite"  # "book" weight for notes and sources
-cmapplot_globals$font_title <- "font_sbold"  # "semibold" weight for title
-cmapplot_globals$font_label <- "font_sbold"  # "semibold" weight also for labels
-if (cmapplot_globals$use_whitney) {
+  # Assume no Whitney or Calibri on non-Windows (i.e. non-work) computers
+  warning("CMAP theme will default to Arial on non-Windows platforms")
+  grDevices::X11Fonts(
+    sans = grDevices::X11Fonts()$Arial  # Just give in and use Arial for everything :(
+   )
+
+  cmapplot_globals$font_main <- "sans"  # "medium" weight for in-body text and x/y axis
+  cmapplot_globals$font_note <- "sans"  # "book" weight for notes and sources
+  cmapplot_globals$font_title <- "sans"  # "semibold" weight for title
+  cmapplot_globals$font_label <- "sans"  # "semibold" weight also for labels
+
   cmapplot_globals$font_main_face <- "plain"
   cmapplot_globals$font_note_face <- "plain"
-  cmapplot_globals$font_title_face <- "plain"
-  cmapplot_globals$font_label_face <- "plain"
-} else {
-  cmapplot_globals$font_main_face <- "plain"
-  cmapplot_globals$font_note_face <- "plain"
-  cmapplot_globals$font_title_face <- "bold"  # Calibri doesn't have a standalone bold/semibold typeface
-  cmapplot_globals$font_label_face <- "bold"  # Calibri doesn't have a standalone bold/semibold typeface
+  cmapplot_globals$font_title_face <- "bold"  # Arial doesn't have a standalone bold/semibold typeface
+  cmapplot_globals$font_label_face <- "bold"  # Arial doesn't have a standalone bold/semibold typeface
+
 }
 
 check_cmap_fonts <- function() {
