@@ -70,15 +70,13 @@ by default, both rectangles and text identifying each recession.
  \url{https://stackoverflow.com/questions/6672374/convert-rgb-to-rgba-over-white}.
 }
 
-\section{NA}{
- If \code{show.legend = TRUE} you must place any
- categorical aesthetics (e.g. color, size) specific to the primary data in
- the geom(s) used to display that data. Otherwise, the legend will inherit
- aesthetics from geom_recessions.
-
- It is best to place this object before your primary geom (likely
- \code{geom_line()}) in your code, so that ggplot draws it behind the primary
- data being drawn.
+\section{Under the hood}{
+ This function calls two custom geoms, constructed
+ with ggproto. The custom GeomRecessions and GeomRecessionsText are modified
+ versions of GeomRect and GeomText, respectively. The only variations to each
+ occur in \code{default_aes}, \code{required_aes}, and \code{setup_data}
+ arguments. These variations allow the the primary dataframe (specified in
+ \code{ggplot(data = XXX)}) to filter the recessions displayed.
 }
 
 \examples{

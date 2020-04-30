@@ -58,7 +58,7 @@
 #'  versions of GeomRect and GeomText, respectively. The only variations to each
 #'  occur in \code{default_aes}, \code{required_aes}, and \code{setup_data}
 #'  arguments. These variations allow the the primary dataframe (specified in
-#'  \{ggplot(data = XXX)}) to filter the recessions displayed.
+#'  \code{ggplot(data = XXX)}) to filter the recessions displayed.
 #'
 #'
 #' @examples

@@ -23,5 +23,10 @@ Please report issues and suggest improvements at Github:
 \author{
 \strong{Maintainer}: Noel Peterson \email{npeterson@cmap.illinois.gov} (\href{https://orcid.org/0000-0003-1290-2362}{ORCID})
 
+Authors:
+\itemize{
+  \item Matthew Stern \email{mstern@cmap.illinois.gov}
+}
+
 }
 \keyword{internal}
