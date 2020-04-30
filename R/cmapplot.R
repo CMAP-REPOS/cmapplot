@@ -71,6 +71,8 @@ if (.Platform$OS.type == "windows") {
 
   # Assume no Whitney or Calibri on non-Windows (i.e. non-work) computers
   warning("CMAP theme will default to Arial on non-Windows platforms")
+  cmapplot_globals$use_whitney = FALSE
+
   grDevices::X11Fonts(
     sans = grDevices::X11Fonts()$Arial  # Just give in and use Arial for everything :(
    )
