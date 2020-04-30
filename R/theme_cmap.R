@@ -14,6 +14,7 @@
 #'
 #'@examples
 #'
+#' \dontrun{
 #' ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
 #'  geom_line() +
 #'  scale_x_continuous(breaks = scales::breaks_pretty(11)) +
@@ -24,6 +25,7 @@
 #'   geom_col(position = position_stack(reverse = TRUE)) +
 #'   scale_y_continuous(labels = scales::percent) +
 #'   theme_cmap(hline = 0, ylab = "This is the y axis")
+#' }
 #'
 #'@export
 theme_cmap <- function(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL) {

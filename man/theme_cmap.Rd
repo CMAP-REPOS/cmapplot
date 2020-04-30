@@ -21,6 +21,7 @@ plot area in accordance with CMAP design standards.
 }
 \examples{
 
+\dontrun{
 ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
  geom_line() +
  scale_x_continuous(breaks = scales::breaks_pretty(11)) +
@@ -31,5 +32,6 @@ ggplot(df, aes(x = reorder(Race, -value), y = value, fill = variable)) +
   geom_col(position = position_stack(reverse = TRUE)) +
   scale_y_continuous(labels = scales::percent) +
   theme_cmap(hline = 0, ylab = "This is the y axis")
+}
 
 }
