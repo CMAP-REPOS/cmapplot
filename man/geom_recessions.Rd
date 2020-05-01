@@ -98,7 +98,7 @@ mapping = aes(x = year2, y = realgrp, color = cluster)) +
   scale_x_date("Year") +
   theme_minimal()
 
-# MODIFIED AESTHETICS
+# MODIFIED AESTHETICS:
 ggplot(grp_over_time, aes(x = year, y = realgrp)) +
   geom_recessions(show.legend = TRUE, fill = "blue", text = FALSE,
                   rect_aes = list(alpha = 1, color = "red")) +
@@ -108,31 +108,24 @@ ggplot(grp_over_time, aes(x = year, y = realgrp)) +
 
 
 # BELOW EXAMPLES SHOW MORE THAN 1 RECESSION
-\dontrun{
-library(tidyverse)
-
-time_series <- tibble(date_dec = 1800:2020, var = rnorm(221), var2 = rnorm(221)) \%>\%
-pivot_longer(cols = starts_with("var"),
-             names_to = "var") \%>\%
-  mutate(date_date = as.Date(lubridate::date_decimal(date_dec))) \%>\%
-  select(date_dec, date_date, var, value)
+df <- data.frame(date_dec=1800:2020, value=rnorm(442), var=c(rep("A", 221), rep("B", 221)))
+df$date_date <- as.Date(lubridate::date_decimal(df$date_dec))
 
 # A plot with an integer-based x axis
-ggplot(data = filter(time_series, date_dec >= 1980 & date_dec <= 2019),
+ggplot(dplyr::filter(df, date_dec >= 1980 & date_dec <= 2019),
        mapping = aes(x = date_dec, y = value)) +
   geom_recessions() +
   geom_line(aes(color = var)) +
   scale_x_continuous("Year") +
-  theme_cmap()
+  theme_minimal()
 
 # A plot with a date-based x axis
-ggplot(data = filter(time_series, date_dec >= 1980 & date_dec <= 2019),
+ggplot(dplyr::filter(df, date_dec >= 1980 & date_dec <= 2019),
        mapping = aes(x = date_date, y = value)) +
   geom_recessions(xformat = "date", show.legend = TRUE) +
   geom_line(aes(color = var)) +
   scale_x_date() +
-  theme_cmap()
-}
+  theme_minimal()
 
 }
 \seealso{
