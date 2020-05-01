@@ -17,7 +17,7 @@
 #'   stat = "identity", position = NULL, ..., parse = FALSE,
 #'   nudge_x = 0.25, nudge_y = 0, check_overlap = FALSE,
 #'   na.rm = FALSE, show.legend = FALSE, inherit.aes = TRUE,
-#'   add_points = FALSE)
+#'   add_points = FALSE, text_aes = NULL, point_aes = NULL)
 #'
 #' @inheritParams ggplot2::layer
 #' @inheritParams ggplot2::geom_point
@@ -34,13 +34,15 @@
 #'   the order of the data. Therefore data should be arranged by the label
 #'   column before calling \code{geom_text_lastonly()}.
 #' @param add_points If \code{TRUE}, points will be added to the plot (for the labeled
-#'   data only).
+#'   data only). Default size=2, color will match line color.
+#' @param text_aes,point_aes Named list, additional aesthetics to send to the
+#'   text and point geoms, respectively.
 #'
 #' @examples
-#' df <- data.frame(year=2010:2020, var=runif(22), byvar=c(rep("A", 11), rep("B", 11)))
+#' df <- data.frame(year=2010:2020, value=runif(22), var=c(rep("A", 11), rep("B", 11)))
 #'
 #' # Without points, label formatting or x-axis expansion
-#' ggplot(df, aes(x=year, y=var, color=byvar)) +
+#' ggplot(df, aes(x=year, y=value, color=var)) +
 #'   geom_line() +
 #'   labs(title="Random lines") +
 #'   scale_y_continuous("Percentage of absolutely nothing") +
@@ -48,12 +50,12 @@
 #'   geom_text_lastonly()
 #'
 #' # With points, label formatting and x-axis expansion
-#' ggplot(df, aes(x=year, y=var, color=byvar, label=sprintf("%.1f%%", 100*var))) +
+#' ggplot(df, aes(x=year, y=value, color=var, label=sprintf("%.1f%%", 100*var))) +
 #'   geom_line() +
 #'   labs(title="Random lines") +
 #'   scale_y_continuous("Percentage of absolutely nothing", labels=scales::percent) +
 #'   scale_x_continuous("Year", expand=expansion(mult=c(0.05, 0.10))) +
-#'   geom_text_lastonly(add_points=TRUE)
+#'   geom_text_lastonly(add_points=TRUE, text_aes=list(fontface="bold"), point_aes=list(size=2.5))
 #'
 #' @export
 geom_text_lastonly <- function(mapping = NULL, data = NULL,
@@ -66,7 +68,9 @@ geom_text_lastonly <- function(mapping = NULL, data = NULL,
                       na.rm = FALSE,
                       show.legend = FALSE,
                       inherit.aes = TRUE,
-                      add_points = FALSE)
+                      add_points = FALSE,
+                      text_aes = NULL,
+                      point_aes = NULL)
 {
   if (is.null(position)) {
     position_lab <- position_nudge(nudge_x, nudge_y)
@@ -83,9 +87,12 @@ geom_text_lastonly <- function(mapping = NULL, data = NULL,
         position = position_pt,
         show.legend = show.legend,
         inherit.aes = inherit.aes,
-        params = list(
-          na.rm = na.rm,
-          ...
+        params = append(
+          list(
+            na.rm = na.rm,
+            ...
+          ),
+          point_aes
         )
       )
     },
@@ -97,11 +104,14 @@ geom_text_lastonly <- function(mapping = NULL, data = NULL,
       position = position_lab,
       show.legend = show.legend,
       inherit.aes = inherit.aes,
-      params = list(
-        parse = parse,
-        check_overlap = check_overlap,
-        na.rm = na.rm,
-        ...
+      params = append(
+        list(
+          parse = parse,
+          check_overlap = check_overlap,
+          na.rm = na.rm,
+          ...
+        ),
+        text_aes
       )
     )
   )

@@ -8,7 +8,7 @@ geom_text_lastonly(mapping = NULL, data = NULL,
   stat = "identity", position = NULL, ..., parse = FALSE,
   nudge_x = 0.25, nudge_y = 0, check_overlap = FALSE,
   na.rm = FALSE, show.legend = FALSE, inherit.aes = TRUE,
-  add_points = FALSE)
+  add_points = FALSE, text_aes = NULL, point_aes = NULL)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2:aes]{aes()}} or
@@ -70,7 +70,10 @@ that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
 
 \item{add_points}{If \code{TRUE}, points will be added to the plot (for the labeled
-data only).}
+data only). Default size=2, color will match line color.}
+
+\item{text_aes, point_aes}{Named list, additional aesthetics to send to the
+text and point geoms, respectively.}
 }
 \description{
 Label only the last point(s) on a plot. \code{geom_text_lastonly()} can be used
@@ -88,10 +91,10 @@ Code was mostly copied from the source of \code{ggplot2::geom_text()} and
 \code{ggplot2::geom_point()}.
 }
 \examples{
-df <- data.frame(year=2010:2020, var=runif(22), byvar=c(rep("A", 11), rep("B", 11)))
+df <- data.frame(year=2010:2020, value=runif(22), var=c(rep("A", 11), rep("B", 11)))
 
 # Without points, label formatting or x-axis expansion
-ggplot(df, aes(x=year, y=var, color=byvar)) +
+ggplot(df, aes(x=year, y=value, color=var)) +
   geom_line() +
   labs(title="Random lines") +
   scale_y_continuous("Percentage of absolutely nothing") +
@@ -99,11 +102,11 @@ ggplot(df, aes(x=year, y=var, color=byvar)) +
   geom_text_lastonly()
 
 # With points, label formatting and x-axis expansion
-ggplot(df, aes(x=year, y=var, color=byvar, label=sprintf("\%.1f\%\%", 100*var))) +
+ggplot(df, aes(x=year, y=value, color=var, label=sprintf("\%.1f\%\%", 100*var))) +
   geom_line() +
   labs(title="Random lines") +
   scale_y_continuous("Percentage of absolutely nothing", labels=scales::percent) +
   scale_x_continuous("Year", expand=expansion(mult=c(0.05, 0.10))) +
-  geom_text_lastonly(add_points=TRUE)
+  geom_text_lastonly(add_points=TRUE, text_aes=list(fontface="bold"), point_aes=list(size=2.5))
 
 }
