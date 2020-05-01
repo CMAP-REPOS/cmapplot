@@ -5,9 +5,9 @@
 \title{Text (Last Only)}
 \usage{
 geom_text_lastonly(mapping = NULL, data = NULL, stat = "identity",
-  position = NULL, parse = FALSE, nudge_x = 0.25, nudge_y = 0,
+  position = NULL, ..., parse = FALSE, nudge_x = 0.25, nudge_y = 0,
   check_overlap = FALSE, na.rm = FALSE, show.legend = FALSE, inherit.aes =
-  TRUE, add_points = FALSE, text_aes = NULL, point_aes = NULL, ...)
+  TRUE, add_points = FALSE, text_aes = NULL, point_aes = NULL)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2:aes]{aes()}} or
@@ -36,6 +36,10 @@ layer, as a string.}
 \item{position}{Position adjustment, either as a string, or the result of a
 call to a position adjustment function. Cannot be jointy specified with
 \code{nudge_x} or \code{nudge_y}.}
+
+\item{...}{additional aesthetics to send to BOTH the point and text geoms.
+Note that if \code{add_points = FALSE}, additional parameters can be passed
+to the text geom here, rather than in \code{text_aes}, without breaking.}
 
 \item{parse}{If \code{TRUE}, the labels will be parsed into expressions and
 displayed as described in \code{?plotmath}.}
@@ -68,10 +72,6 @@ labeled data only). Default size=2, color will match line color.}
 
 \item{text_aes, point_aes}{Named list, additional aesthetics to send to the
 text and point geoms, respectively.}
-
-\item{...}{additional aesthetics to send to BOTH the point and text geoms.
-Note that if \code{add_points = FALSE}, additional parameters can be passed
-to the text geom here, rather than in \code{text_aes}, without breaking.}
 }
 \description{
 Label only the last point(s) on a plot. \code{geom_text_lastonly()} can be

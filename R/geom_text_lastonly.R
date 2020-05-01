@@ -14,9 +14,9 @@
 #' \code{ggplot2::geom_point()}.
 #'
 #' @usage geom_text_lastonly(mapping = NULL, data = NULL, stat = "identity",
-#'   position = NULL, parse = FALSE, nudge_x = 0.25, nudge_y = 0,
+#'   position = NULL, ..., parse = FALSE, nudge_x = 0.25, nudge_y = 0,
 #'   check_overlap = FALSE, na.rm = FALSE, show.legend = FALSE, inherit.aes =
-#'   TRUE, add_points = FALSE, text_aes = NULL, point_aes = NULL, ...)
+#'   TRUE, add_points = FALSE, text_aes = NULL, point_aes = NULL)
 #'
 #' @inheritParams ggplot2::layer
 #' @inheritParams ggplot2::geom_point
@@ -62,6 +62,7 @@
 #' @export
 geom_text_lastonly <- function(mapping = NULL, data = NULL,
                       stat = "identity", position = NULL,
+                      ...,
                       parse = FALSE,
                       nudge_x = 0.25,
                       nudge_y = 0,
@@ -71,8 +72,8 @@ geom_text_lastonly <- function(mapping = NULL, data = NULL,
                       inherit.aes = TRUE,
                       add_points = FALSE,
                       text_aes = NULL,
-                      point_aes = NULL,
-                      ...)
+                      point_aes = NULL
+                      )
 {
   if (is.null(position)) {
     position_lab <- position_nudge(nudge_x, nudge_y)
