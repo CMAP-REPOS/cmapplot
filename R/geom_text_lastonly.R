@@ -1,23 +1,22 @@
 #' Text (Last Only)
 #'
-#' Label only the last point(s) on a plot. \code{geom_text_lastonly()} can be used
-#' instead of \code{ggplot2::geom_text()} when only the last point(s) should be
-#' labeled. This is accomplished by identifying the maximum value of \code{x} in
-#' \code{data} and applying a filter to omit records where \code{x} is less than the
-#' maximum.
+#' Label only the last point(s) on a plot. \code{geom_text_lastonly()} can be
+#' used instead of \code{ggplot2::geom_text()} when only the last point(s)
+#' should be labeled. This is accomplished by identifying the maximum value of
+#' \code{x} in \code{data} and applying a filter to omit records where \code{x}
+#' is less than the maximum.
 #'
-#' Labels are automatically placed to the right of the final point,
-#' and may be partially cut off by the plot limits, unless the \code{x} scale is
-#' expanded, e.g. with \code{scale_x_continuous(expand=expand_scale(mult=0.10))}.
+#' Labels are automatically placed to the right of the final point, and may be
+#' partially cut off by the plot limits, unless the \code{x} scale is expanded,
+#' e.g. with \code{scale_x_continuous(expand=expand_scale(mult=0.10))}.
 #'
 #' Code was mostly copied from the source of \code{ggplot2::geom_text()} and
 #' \code{ggplot2::geom_point()}.
 #'
-#' @usage geom_text_lastonly(mapping = NULL, data = NULL,
-#'   stat = "identity", position = NULL, ..., parse = FALSE,
-#'   nudge_x = 0.25, nudge_y = 0, check_overlap = FALSE,
-#'   na.rm = FALSE, show.legend = FALSE, inherit.aes = TRUE,
-#'   add_points = FALSE, text_aes = NULL, point_aes = NULL)
+#' @usage geom_text_lastonly(mapping = NULL, data = NULL, stat = "identity",
+#'   position = NULL, parse = FALSE, nudge_x = 0.25, nudge_y = 0,
+#'   check_overlap = FALSE, na.rm = FALSE, show.legend = FALSE, inherit.aes =
+#'   TRUE, add_points = FALSE, text_aes = NULL, point_aes = NULL, ...)
 #'
 #' @inheritParams ggplot2::layer
 #' @inheritParams ggplot2::geom_point
@@ -26,17 +25,20 @@
 #' @param nudge_x,nudge_y Horizontal and vertical adjustment to nudge labels by.
 #'   Useful for offsetting text from points, particularly on discrete scales.
 #'   Cannot be jointy specified with \code{position}.
-#' @param position Position adjustment, either as a string, or the result of
-#'  a call to a position adjustment function. Cannot be jointy specified with
-#'  \code{nudge_x} or \code{nudge_y}.
+#' @param position Position adjustment, either as a string, or the result of a
+#'   call to a position adjustment function. Cannot be jointy specified with
+#'   \code{nudge_x} or \code{nudge_y}.
 #' @param check_overlap If \code{TRUE}, text that overlaps previous text in the
-#'   same layer will not be plotted. \code{check_overlap} happens at draw time and in
-#'   the order of the data. Therefore data should be arranged by the label
-#'   column before calling \code{geom_text_lastonly()}.
-#' @param add_points If \code{TRUE}, points will be added to the plot (for the labeled
-#'   data only). Default size=2, color will match line color.
+#'   same layer will not be plotted. \code{check_overlap} happens at draw time
+#'   and in the order of the data. Therefore data should be arranged by the
+#'   label column before calling \code{geom_text_lastonly()}.
+#' @param add_points If \code{TRUE}, points will be added to the plot (for the
+#'   labeled data only). Default size=2, color will match line color.
 #' @param text_aes,point_aes Named list, additional aesthetics to send to the
 #'   text and point geoms, respectively.
+#' @param ... additional aesthetics to send to BOTH the point and text geoms.
+#'   Note that if \code{add_points = FALSE}, additional parameters can be passed
+#'   to the text geom here, rather than in \code{text_aes}, without breaking.
 #'
 #' @examples
 #' df <- data.frame(year=2010:2020, value=runif(22), var=c(rep("A", 11), rep("B", 11)))
@@ -60,7 +62,6 @@
 #' @export
 geom_text_lastonly <- function(mapping = NULL, data = NULL,
                       stat = "identity", position = NULL,
-                      ...,
                       parse = FALSE,
                       nudge_x = 0.25,
                       nudge_y = 0,
@@ -70,7 +71,8 @@ geom_text_lastonly <- function(mapping = NULL, data = NULL,
                       inherit.aes = TRUE,
                       add_points = FALSE,
                       text_aes = NULL,
-                      point_aes = NULL)
+                      point_aes = NULL,
+                      ...)
 {
   if (is.null(position)) {
     position_lab <- position_nudge(nudge_x, nudge_y)

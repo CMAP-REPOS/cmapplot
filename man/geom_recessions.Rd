@@ -6,7 +6,7 @@
 \usage{
 geom_recessions(xformat = "numeric", text = TRUE, label = " Recession",
  ymin = -Inf, ymax = Inf, fill = "#002d49", text_nudge_x = 0.2, text_nudge_y
- = 0, show.legend = FALSE, ..., rect_aes = NULL, text_aes = NULL)
+ = 0, show.legend = FALSE, rect_aes = NULL, text_aes = NULL, ...)
 }
 \arguments{
 \item{xformat}{Char, a string indicating whether the x axis of the primary
@@ -34,10 +34,10 @@ and y scales so will need to be adjusted depending on what is being graphed.}
 \item{show.legend}{Logical, whether to render the rectangles in the legend.
 Defaults to \code{FALSE}.}
 
-\item{...}{additional aesthetics to send to BOTH the rectangle and text geoms.}
-
 \item{rect_aes, text_aes}{Named list, additional aesthetics to send to the
 rectangle and text geoms, respectively.}
+
+\item{...}{additional aesthetics to send to BOTH the rectangle and text geoms.}
 }
 \description{
 \code{geom_recessions} returns one or two ggplot geoms that add rectangles
@@ -93,7 +93,7 @@ ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
 # DATE X AXIS:
 ggplot(data = grp_goods,
 mapping = aes(x = year2, y = realgrp, color = cluster)) +
-  geom_recessions(xformat = "date", ) +
+  geom_recessions(xformat = "date") +
   geom_line() +
   scale_x_date("Year") +
   theme_minimal()
@@ -108,20 +108,18 @@ ggplot(grp_over_time, aes(x = year, y = realgrp)) +
 
 
 # BELOW EXAMPLES SHOW MORE THAN 1 RECESSION
-df <- data.frame(date_dec=1800:2020, value=rnorm(442), var=c(rep("A", 221), rep("B", 221)))
-df$date_date <- as.Date(lubridate::date_decimal(df$date_dec))
+df <- data.frame(year_dec=1950:1999, value=rnorm(100), var=c(rep("A", 50), rep("B", 50)))
+df$year_date <- as.Date(lubridate::date_decimal(df$year_dec))
 
 # A plot with an integer-based x axis
-ggplot(dplyr::filter(df, date_dec >= 1980 & date_dec <= 2019),
-       mapping = aes(x = date_dec, y = value)) +
+ggplot(df, mapping = aes(x = year_dec, y = value)) +
   geom_recessions() +
   geom_line(aes(color = var)) +
   scale_x_continuous("Year") +
   theme_minimal()
 
 # A plot with a date-based x axis
-ggplot(dplyr::filter(df, date_dec >= 1980 & date_dec <= 2019),
-       mapping = aes(x = date_date, y = value)) +
+ggplot(df, mapping = aes(x = year_date, y = value)) +
   geom_recessions(xformat = "date", show.legend = TRUE) +
   geom_line(aes(color = var)) +
   scale_x_date() +

@@ -4,11 +4,10 @@
 \alias{geom_text_lastonly}
 \title{Text (Last Only)}
 \usage{
-geom_text_lastonly(mapping = NULL, data = NULL,
-  stat = "identity", position = NULL, ..., parse = FALSE,
-  nudge_x = 0.25, nudge_y = 0, check_overlap = FALSE,
-  na.rm = FALSE, show.legend = FALSE, inherit.aes = TRUE,
-  add_points = FALSE, text_aes = NULL, point_aes = NULL)
+geom_text_lastonly(mapping = NULL, data = NULL, stat = "identity",
+  position = NULL, parse = FALSE, nudge_x = 0.25, nudge_y = 0,
+  check_overlap = FALSE, na.rm = FALSE, show.legend = FALSE, inherit.aes =
+  TRUE, add_points = FALSE, text_aes = NULL, point_aes = NULL, ...)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2:aes]{aes()}} or
@@ -34,14 +33,9 @@ from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
 \item{stat}{The statistical transformation to use on the data for this
 layer, as a string.}
 
-\item{position}{Position adjustment, either as a string, or the result of
-a call to a position adjustment function. Cannot be jointy specified with
+\item{position}{Position adjustment, either as a string, or the result of a
+call to a position adjustment function. Cannot be jointy specified with
 \code{nudge_x} or \code{nudge_y}.}
-
-\item{...}{Other arguments passed on to \code{\link[ggplot2:layer]{layer()}}. These are
-often aesthetics, used to set an aesthetic to a fixed value, like
-\code{colour = "red"} or \code{size = 3}. They may also be parameters
-to the paired geom/stat.}
 
 \item{parse}{If \code{TRUE}, the labels will be parsed into expressions and
 displayed as described in \code{?plotmath}.}
@@ -51,9 +45,9 @@ Useful for offsetting text from points, particularly on discrete scales.
 Cannot be jointy specified with \code{position}.}
 
 \item{check_overlap}{If \code{TRUE}, text that overlaps previous text in the
-same layer will not be plotted. \code{check_overlap} happens at draw time and in
-the order of the data. Therefore data should be arranged by the label
-column before calling \code{geom_text_lastonly()}.}
+same layer will not be plotted. \code{check_overlap} happens at draw time
+and in the order of the data. Therefore data should be arranged by the
+label column before calling \code{geom_text_lastonly()}.}
 
 \item{na.rm}{If \code{FALSE}, the default, missing values are removed with
 a warning. If \code{TRUE}, missing values are silently removed.}
@@ -69,23 +63,27 @@ rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
 
-\item{add_points}{If \code{TRUE}, points will be added to the plot (for the labeled
-data only). Default size=2, color will match line color.}
+\item{add_points}{If \code{TRUE}, points will be added to the plot (for the
+labeled data only). Default size=2, color will match line color.}
 
 \item{text_aes, point_aes}{Named list, additional aesthetics to send to the
 text and point geoms, respectively.}
+
+\item{...}{additional aesthetics to send to BOTH the point and text geoms.
+Note that if \code{add_points = FALSE}, additional parameters can be passed
+to the text geom here, rather than in \code{text_aes}, without breaking.}
 }
 \description{
-Label only the last point(s) on a plot. \code{geom_text_lastonly()} can be used
-instead of \code{ggplot2::geom_text()} when only the last point(s) should be
-labeled. This is accomplished by identifying the maximum value of \code{x} in
-\code{data} and applying a filter to omit records where \code{x} is less than the
-maximum.
+Label only the last point(s) on a plot. \code{geom_text_lastonly()} can be
+used instead of \code{ggplot2::geom_text()} when only the last point(s)
+should be labeled. This is accomplished by identifying the maximum value of
+\code{x} in \code{data} and applying a filter to omit records where \code{x}
+is less than the maximum.
 }
 \details{
-Labels are automatically placed to the right of the final point,
-and may be partially cut off by the plot limits, unless the \code{x} scale is
-expanded, e.g. with \code{scale_x_continuous(expand=expand_scale(mult=0.10))}.
+Labels are automatically placed to the right of the final point, and may be
+partially cut off by the plot limits, unless the \code{x} scale is expanded,
+e.g. with \code{scale_x_continuous(expand=expand_scale(mult=0.10))}.
 
 Code was mostly copied from the source of \code{ggplot2::geom_text()} and
 \code{ggplot2::geom_point()}.
