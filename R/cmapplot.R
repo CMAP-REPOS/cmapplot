@@ -42,7 +42,7 @@ if (.Platform$OS.type == "windows") {
       font_sbold = "Whitney Semibold"
     )
   } else {
-    warning("Whitney is not installed on this PC, so CMAP theme will default to Calibri")
+    message("WARNING: Whitney is not installed on this PC, so CMAP theme will default to Calibri")
     grDevices::windowsFonts(
       sans = "Calibri",  # Override the default font (Arial)
       font_reg = "Calibri",
@@ -70,7 +70,7 @@ if (.Platform$OS.type == "windows") {
 } else {
 
   # Assume no Whitney or Calibri on non-Windows (i.e. non-work) computers
-  warning("CMAP theme will default to Arial on non-Windows platforms")
+  message("WARNING: CMAP theme will default to Arial on non-Windows platforms")
   cmapplot_globals$use_whitney = FALSE
 
   grDevices::X11Fonts(
@@ -105,5 +105,3 @@ check_cmap_fonts <- function() {
   graphics::text(1, 1, "font_label", cex=4)
 }
 #check_cmap_fonts()
-
-ggplot2::update_geom_defaults("text", list(family=cmapplot_globals$font_main, face=cmapplot_globals$font_main_face))
