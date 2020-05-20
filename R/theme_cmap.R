@@ -118,4 +118,3 @@ theme_cmap <- function(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL) {
   # filter out NA elements before returning
   return(magrittr::extract(elements, !is.na(elements)))
 }
->>>>>>> 820637ddae265bc1eb9425047b7a51e3c1f049fd

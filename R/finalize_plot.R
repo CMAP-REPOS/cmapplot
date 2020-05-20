@@ -18,15 +18,15 @@
 #'
 #'
 #' @examples
-#' title <- "Change in labor force size per 1,000 residents, by age, Chicago and select Metropolitan Statistical Areas, 2006-10 to 2013-17"
-#' subtitle <- "Source: Chicago Metropolitan Agency for Planning analysis of National Highway Traffic Safety Administration Corporate Average Fuel Economy Fact Sheets; Illinois Department of Transportation data; 2009 National Household Travel Survey data."
-#'
-#' myplot <- ggplot(economy_basic, aes(x = interaction(year, variable), y = value, fill = sector)) +
-#'   geom_col(position = "fill") +
-#'   scale_y_continuous(labels = scales::percent) + theme_cmap()
-#'
-#'
-#' draw_plot(myplot,title, subtitle, action='view', newwindow=TRUE)
+# title <- "Change in labor force size per 1,000 residents, by age, Chicago and select Metropolitan Statistical Areas, 2006-10 to 2013-17"
+# subtitle <- "Source: Chicago Metropolitan Agency for Planning analysis of National Highway Traffic Safety Administration Corporate Average Fuel Economy Fact Sheets; Illinois Department of Transportation data; 2009 National Household Travel Survey data."
+#
+# myplot <- ggplot(economy_basic, aes(x = interaction(year, variable), y = value, fill = sector)) +
+#   geom_col(position = "fill") +
+#   scale_y_continuous(labels = scales::percent) + theme_cmap()
+#
+#
+# draw_plot(myplot,title, subtitle, action='save', type='web', save_filepath = '/Users/sarahbuchhorn/Desktop/test6.png')
 
 
 
@@ -79,7 +79,7 @@ create_title_block <- function (title, subtitle) {
                                                gp = grid::gpar(fontsize=17,
                                                                fontfamily=cmapplot_globals$font_title,
                                                                fontface=cmapplot_globals$font_title_face,
-                                                               lineheight=1)),
+                                                               lineheight=0.93)),
                                 grid::textGrob(subtitle,
                                                x = 0.1, hjust = 0, vjust = 1, y = 0.72,
                                                gp = grid::gpar(fontsize=11,
@@ -97,9 +97,9 @@ draw_plot <- function(plot,
                       title,
                       subtitle,
                       save_filepath,
-                      height_pixels,
+                      height_pixels=400,
                       type,
-                      sidepercent=27,
+                      sidepercent=23,
                       autowrap=TRUE,
                       titlewraplen=22,
                       subtitlewraplen=28,
@@ -122,13 +122,15 @@ draw_plot <- function(plot,
   }
 
   line <- grid::linesGrob(x = grid::unit(c(0,1), "npc"),
-                          y = grid::unit(c(0.9,0.9), "npc"),
+                          y = grid::unit(c(0.92,0.92), "npc"),
                           gp=grid::gpar(col='black',
                                         lwd=3))
 
-  bottom <- ggpubr::ggarrange(side, plot,
-                    ncol=2, nrow=1,
-                    widths = c(1, ((100/sidepercent) - 1)))
+  space <- grid::rectGrob(width = 1, gp=gpar(fill='white',lwd=0))
+
+  bottom <- ggpubr::ggarrange(side, space, plot,
+                    ncol=3, nrow=1,
+                    widths = c(1, (2/sidepercent), ((100/sidepercent) - 1)))
 
   plot_grid <- ggpubr::ggarrange(line, bottom,
                     ncol = 1, nrow = 2,
@@ -138,10 +140,13 @@ draw_plot <- function(plot,
     width_pixels = 670
     if (newwindow==TRUE) {
       if (.Platform$OS.type == "windows") {
-        windows(width=(width_pixels/72))
+        windows(width=(width_pixels/72),
+                height=(height_pixels/72))
         return(plot_grid)
       } else {
-        dev.new(width=(width_pixels/72))
+        dev.new(width=(width_pixels/72),
+                height=(height_pixels/72),
+                noRStudioGD = TRUE)
         return(plot_grid)
       }
     }

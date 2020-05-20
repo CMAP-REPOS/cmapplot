@@ -105,4 +105,3 @@ check_cmap_fonts <- function() {
   graphics::text(1, 1, "font_label", cex=4)
 }
 #check_cmap_fonts()
->>>>>>> 820637ddae265bc1eb9425047b7a51e3c1f049fd
