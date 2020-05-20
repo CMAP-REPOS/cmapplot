@@ -6,7 +6,7 @@
 \usage{
 geom_recessions(xformat = "numeric", text = TRUE, label = " Recession",
  ymin = -Inf, ymax = Inf, fill = "#002d49", text_nudge_x = 0.2, text_nudge_y
- = 0, show.legend = FALSE, ..., rect_aes = NULL, text_aes = NULL)
+ = 0, show.legend = FALSE, rect_aes = NULL, text_aes = NULL, ...)
 }
 \arguments{
 \item{xformat}{Char, a string indicating whether the x axis of the primary
@@ -34,10 +34,10 @@ and y scales so will need to be adjusted depending on what is being graphed.}
 \item{show.legend}{Logical, whether to render the rectangles in the legend.
 Defaults to \code{FALSE}.}
 
-\item{...}{additional aesthetics to send to BOTH the rectangle and text geoms.}
-
 \item{rect_aes, text_aes}{Named list, additional aesthetics to send to the
 rectangle and text geoms, respectively.}
+
+\item{...}{additional aesthetics to send to BOTH the rectangle and text geoms.}
 }
 \description{
 \code{geom_recessions} returns one or two ggplot geoms that add rectangles
@@ -70,15 +70,13 @@ by default, both rectangles and text identifying each recession.
  \url{https://stackoverflow.com/questions/6672374/convert-rgb-to-rgba-over-white}.
 }
 
-\section{NA}{
- If \code{show.legend = TRUE} you must place any
- categorical aesthetics (e.g. color, size) specific to the primary data in
- the geom(s) used to display that data. Otherwise, the legend will inherit
- aesthetics from geom_recessions.
-
- It is best to place this object before your primary geom (likely
- \code{geom_line()}) in your code, so that ggplot draws it behind the primary
- data being drawn.
+\section{Under the hood}{
+ This function calls two custom geoms, constructed
+ with ggproto. The custom GeomRecessions and GeomRecessionsText are modified
+ versions of GeomRect and GeomText, respectively. The only variations to each
+ occur in \code{default_aes}, \code{required_aes}, and \code{setup_data}
+ arguments. These variations allow the the primary dataframe (specified in
+ \code{ggplot(data = XXX)}) to filter the recessions displayed.
 }
 
 \examples{
@@ -95,12 +93,12 @@ ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
 # DATE X AXIS:
 ggplot(data = grp_goods,
 mapping = aes(x = year2, y = realgrp, color = cluster)) +
-  geom_recessions(xformat = "date", ) +
+  geom_recessions(xformat = "date") +
   geom_line() +
   scale_x_date("Year") +
   theme_minimal()
 
-# MODIFIED AESTHETICS
+# MODIFIED AESTHETICS:
 ggplot(grp_over_time, aes(x = year, y = realgrp)) +
   geom_recessions(show.legend = TRUE, fill = "blue", text = FALSE,
                   rect_aes = list(alpha = 1, color = "red")) +
@@ -110,31 +108,22 @@ ggplot(grp_over_time, aes(x = year, y = realgrp)) +
 
 
 # BELOW EXAMPLES SHOW MORE THAN 1 RECESSION
-\dontrun{
-library(tidyverse)
-
-time_series <- tibble(date_dec = 1800:2020, var = rnorm(221), var2 = rnorm(221)) \%>\%
-pivot_longer(cols = starts_with("var"),
-             names_to = "var") \%>\%
-  mutate(date_date = as.Date(lubridate::date_decimal(date_dec))) \%>\%
-  select(date_dec, date_date, var, value)
+df <- data.frame(year_dec=1950:1999, value=rnorm(100), var=c(rep("A", 50), rep("B", 50)))
+df$year_date <- as.Date(lubridate::date_decimal(df$year_dec))
 
 # A plot with an integer-based x axis
-ggplot(data = filter(time_series, date_dec >= 1980 & date_dec <= 2019),
-       mapping = aes(x = date_dec, y = value)) +
+ggplot(df, mapping = aes(x = year_dec, y = value)) +
   geom_recessions() +
   geom_line(aes(color = var)) +
   scale_x_continuous("Year") +
-  theme_cmap()
+  theme_minimal()
 
 # A plot with a date-based x axis
-ggplot(data = filter(time_series, date_dec >= 1980 & date_dec <= 2019),
-       mapping = aes(x = date_date, y = value)) +
+ggplot(df, mapping = aes(x = year_date, y = value)) +
   geom_recessions(xformat = "date", show.legend = TRUE) +
   geom_line(aes(color = var)) +
   scale_x_date() +
-  theme_cmap()
-}
+  theme_minimal()
 
 }
 \seealso{
