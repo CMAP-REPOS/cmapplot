@@ -130,7 +130,7 @@ draw_plot <- function(plot,
 
   bottom <- ggpubr::ggarrange(side, space, plot,
                     ncol=3, nrow=1,
-                    widths = c(1, (2/sidepercent), ((100/sidepercent) - 1)))
+                    widths = c(1, (2/sidepercent), ((98/sidepercent) - 1)))
 
   plot_grid <- ggpubr::ggarrange(line, bottom,
                     ncol = 1, nrow = 2,
