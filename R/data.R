@@ -185,3 +185,27 @@
 #'   scale_y_continuous(labels = scales::percent)
 #'
 "traded_emp_by_race"
+
+
+
+#' Transit ridership in the Chicago region, 1980-2019
+#'
+#' A test dataset containing 1980-2019 transit ridership for the three service
+#' boards that provide transit in Northeastern Illinois.
+#'
+#' @format A tibble. 200 rows and 3 variables
+#' \describe{
+#'    \item{year}{Double. Year of data}
+#'    \item{system}{Char. Name of system (includes CTA bus, CTA rail, Metra, Pace, and Pace ADA)}
+#'    \item{ridership}{Double. Annual unlinked passenger trips in millions}
+#' }
+#' @source Regional Transportation Authority \url{http://www.rtams.org/rtams/systemRidership.jsp}
+#'
+#' @examples
+#' # A line graph
+#' ggplot(transit_ridership,aes(x = year,y=ridership,group=system,color=system)) +
+#'   geom_line(na.rm=TRUE)
+#'
+#'
+"transit_ridership"
+
