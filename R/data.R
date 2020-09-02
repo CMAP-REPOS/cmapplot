@@ -185,3 +185,51 @@
 #'   scale_y_continuous(labels = scales::percent)
 #'
 "traded_emp_by_race"
+
+
+
+#' Transit ridership in the Chicago region, 1980-2019
+#'
+#' A test dataset containing 1980-2019 transit ridership for the three service
+#' boards that provide transit in Northeastern Illinois.
+#'
+#' @format A tibble. 200 rows and 3 variables
+#' \describe{
+#'    \item{year}{Double. Year of data}
+#'    \item{system}{Char. Name of system (includes CTA bus, CTA rail, Metra, Pace, and Pace ADA)}
+#'    \item{ridership}{Double. Annual unlinked passenger trips in millions}
+#' }
+#' @source Regional Transportation Authority \url{http://www.rtams.org/rtams/systemRidership.jsp}
+#'
+#' @examples
+#' # A line graph
+#' ggplot(transit_ridership,aes(x = year,y=ridership,group=system,color=system)) +
+#'   geom_line(na.rm=TRUE)
+#'
+#'
+"transit_ridership"
+
+
+
+
+#' Vehicle ownership in the CMAP seven county region
+#'
+#' A test dataset containing vehicle ownership rates in the seven county region
+#' of northeastern Illinois.
+#'
+#' @format A tibble. 40 rows and 3 variables
+#' \describe{
+#'    \item{county}{Char. Name of county}
+#'    \item{number_of_veh}{Char. Number of vehicles owned by household}
+#'    \item{pct}{Numeric. Share of households with the given number of vehicles (values between 0 and 1)}
+#' }
+#' @source CMAP Travel Inventory Survey Data Summary  \url{https://www.cmap.illinois.gov/documents/10180/77659/Travel+Inventory+Survey+Data+Summary_weighted_V2.pdf/d4b33cdd-1c44-4322-b32f-2f54b85207cb}
+#'
+#' @examples
+#' # A stacked bar chart
+#' ggplot(vehicle_ownership,
+#'        aes(x = county, y = pct, fill = number_of_veh)) +
+#'    geom_bar(position = position_stack(), stat = "identity")
+#'
+"vehicle_ownership"
+
