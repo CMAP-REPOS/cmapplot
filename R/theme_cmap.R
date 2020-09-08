@@ -60,6 +60,10 @@ theme_cmap <- function(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL) {
       legend.position = "top",
       legend.text.align = 0,
       legend.background = ggplot2::element_blank(),
+      legend.text = ggplot2::element_text(family = cmapplot_globals$font_main,
+                                          face = cmapplot_globals$font_main_face,
+                                          size = 8,
+                                          color="#222222"),
       legend.title = ggplot2::element_blank(),
       legend.key = ggplot2::element_blank(),
 
