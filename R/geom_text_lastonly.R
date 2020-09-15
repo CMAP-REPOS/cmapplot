@@ -52,7 +52,7 @@
 #'   geom_text_lastonly()
 #'
 #' # With points, label formatting and x-axis expansion
-#' ggplot(df, aes(x=year, y=value, color=var, label=sprintf("%.1f%%", 100*var))) +
+#' ggplot(df, aes(x=year, y=value, color=var, label=scales::label_percent(accuracy = 0.1)(value))) +
 #'   geom_line() +
 #'   labs(title="Random lines") +
 #'   scale_y_continuous("Percentage of absolutely nothing", labels=scales::percent) +
