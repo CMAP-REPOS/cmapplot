@@ -44,13 +44,13 @@ theme_cmap <- function(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL) {
       # Default text
       text = ggplot2::element_text(family = cmapplot_globals$font_main,
                                    face = cmapplot_globals$font_main_face,
-                                   size = 12,
+                                   size = 14,
                                    color="#222222"),
 
       # Title text
       plot.title = ggplot2::element_text(family=cmapplot_globals$font_title,
                                          face=cmapplot_globals$font_title_face,
-                                         size=14),
+                                         size=17),
 
       # Text elements not displayed
       plot.subtitle = ggplot2::element_blank(),
@@ -60,10 +60,7 @@ theme_cmap <- function(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL) {
       legend.position = "top",
       legend.text.align = 0,
       legend.background = ggplot2::element_blank(),
-      legend.text = ggplot2::element_text(family = cmapplot_globals$font_main,
-                                          face = cmapplot_globals$font_main_face,
-                                          size = 14,
-                                          color="#222222"),
+      legend.text = ggplot2::element_text(),
       legend.title = ggplot2::element_blank(),
       legend.key = ggplot2::element_blank(),
 
@@ -85,7 +82,7 @@ theme_cmap <- function(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL) {
       strip.background = ggplot2::element_rect(fill="white"),
 
       #Facet wrap text
-      strip.text = ggplot2::element_text(size  = 12,  hjust = 0)
+      strip.text = ggplot2::element_text(hjust = 0)
     ),
 
     # The following elements get added based on the presence of specific
