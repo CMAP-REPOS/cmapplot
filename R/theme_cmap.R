@@ -62,7 +62,7 @@ theme_cmap <- function(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL) {
       legend.background = ggplot2::element_blank(),
       legend.text = ggplot2::element_text(family = cmapplot_globals$font_main,
                                           face = cmapplot_globals$font_main_face,
-                                          size = 11,
+                                          size = 14,
                                           color="#222222"),
       legend.title = ggplot2::element_blank(),
       legend.key = ggplot2::element_blank(),
