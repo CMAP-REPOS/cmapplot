@@ -13,6 +13,7 @@
 #' @param autowrap Wrap title and subtitle text automatically.  Default = TRUE.
 #' @param titlewraplen The wrap code point length for the title (use with autowrap = TRUE).  Default = 22.
 #' @param subtitlewraplen The wrap code point length for the subtitle (use with autowrap = TRUE).  Default = 28.
+#' @param subtitleheight The placement of the subtitle.  Default = 0.72
 #' @param action Choose whether to view or save the plot.  Default = view.
 #' @param newwindow View plot in a new window if TRUE.  Default = FALSE.
 #'
@@ -26,7 +27,7 @@
 #   scale_y_continuous(labels = scales::percent) + theme_cmap()
 #
 #
-# finalize_plot(myplot, title, subtitle, action='save', type='web', save_filepath = '/Users/sarahbuchhorn/Desktop/test6.png')
+# finalize_plot(myplot, title, subtitle, action='save', type='web', titlewraplen = 14, subtitleheight = 0.55, save_filepath = '/Users/sarahbuchhorn/Desktop/test7.png')
 
 
 
@@ -72,7 +73,7 @@ save_plot <- function (plot_grid, save_filepath, type, height=NA) {
 }
 
 
-create_title_block <- function (title, subtitle) {
+create_title_block <- function (title, subtitle, sheight) {
   title_block <- grid::grobTree(
                                 grid::textGrob(title,
                                                x = 0.1, hjust = 0, y = 1, vjust = 1,
@@ -81,7 +82,7 @@ create_title_block <- function (title, subtitle) {
                                                                fontface=cmapplot_globals$font_title_face,
                                                                lineheight=0.93)),
                                 grid::textGrob(subtitle,
-                                               x = 0.1, hjust = 0, vjust = 1, y = 0.6,
+                                               x = 0.1, hjust = 0, vjust = 1, y = sheight,
                                                gp = grid::gpar(fontsize=11,
                                                                fontfamily=cmapplot_globals$font_reg,
                                                                fontface=cmapplot_globals$font_reg_face,
@@ -103,6 +104,7 @@ finalize_plot <- function(plot,
                       autowrap=TRUE,
                       titlewraplen=22,
                       subtitlewraplen=28,
+                      subtitleheight=0.72,
                       action=view,
                       newwindow=FALSE) {
 
@@ -113,11 +115,11 @@ finalize_plot <- function(plot,
     stpieces <- stringi::stri_wrap(subtitle, subtitlewraplen, cost_exponent=2, whitespace_only=TRUE)
     subtitlebreak <- stringi::stri_paste_list(list(stpieces), sep="\n")
 
-    side <- create_title_block(titlebreak, subtitlebreak)
+    side <- create_title_block(titlebreak, subtitlebreak, subtitleheight)
   }
 
   if (autowrap == FALSE){
-    side <- create_title_block(title, subtitle)
+    side <- create_title_block(title, subtitle, subtitleheight)
 
   }
 
