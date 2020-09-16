@@ -11,6 +11,9 @@
 #'@param hline,vline Numeric, the location of a strong horizontal or vertical
 #'  line to be added to the plot. Use \code{hline = 0}, for example, to place a
 #'  line at y = 0 to differentiate between positive and negative values.
+#'@param ygrid,xgrid Bool, the display of vertical and/or horizontal grid lines
+#'  on the chart. If left as default, horizontal grid lines will be displayed
+#'  while vertical grid lines will be masked.
 #'
 #'@examples
 #'
@@ -21,14 +24,20 @@
 #'  theme_cmap(hline = 0, ylab = "Percent change")
 #'
 #' df <- dplyr::filter(traded_emp_by_race, variable %in% c("SpecializedTraded", "UnspecializedTraded"))
-#' ggplot(df, aes(x = reorder(Race, -value), y = value, fill = variable)) +
-#'   geom_col(position = position_stack(reverse = TRUE)) +
-#'   scale_y_continuous(labels = scales::percent) +
-#'   theme_cmap(hline = 0, ylab = "This is the y axis")
-#' }
+#'  ggplot(df, aes(x = reorder(Race, -value), y = value, fill = variable)) +
+#'    geom_col(position = position_stack(reverse = TRUE)) +
+#'    scale_y_continuous(labels = scales::percent) +
+#'    theme_cmap(hline = 0, ylab = "This is the y axis")
 #'
+#' ggplot(df, aes(x = reorder(Race, -value), y = value, fill = variable)) +
+#'    geom_col(position = position_stack(reverse = TRUE)) +
+#'    coord_flip() +
+#'    scale_y_continuous(labels = scales::percent) +
+#'    theme_cmap(hline = 0, ygrid = FALSE, xgrid = TRUE)
+#' }
 #'@export
-theme_cmap <- function(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL) {
+theme_cmap <- function(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL,
+                       ygrid = TRUE, xgrid = FALSE) {
 
   # Generate an explicit message to user if Whitney font family is not available
   if (!(cmapplot_globals$use_whitney)){
@@ -70,11 +79,6 @@ theme_cmap <- function(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL) {
       axis.text.x = ggplot2::element_text(margin=ggplot2::margin(5, b = 10)),
       axis.ticks = ggplot2::element_blank(),
       axis.line = ggplot2::element_blank(),
-
-      #Grid lines
-      panel.grid.major.y = ggplot2::element_line(size = other_line_width,
-                                                 color="#222222"),
-      panel.grid.major.x = ggplot2::element_blank(),
 
       #Blank background
       panel.background = ggplot2::element_blank(),
@@ -118,6 +122,25 @@ theme_cmap <- function(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL) {
       ggplot2::geom_vline(xintercept = vline,
                           size = origin_line_width,
                           color = "#222222")
+    },
+
+    # Adjust grid lines
+    if (ygrid) {
+      ggplot2::theme(panel.grid.major.y =
+                       ggplot2::element_line(size = other_line_width,
+                                             color="#222222"))
+    },
+    if (!ygrid) {
+      ggplot2::theme(panel.grid.major.y = ggplot2::element_blank())
+    },
+
+    if (xgrid) {
+      ggplot2::theme(panel.grid.major.x =
+                       ggplot2::element_line(size = other_line_width,
+                                             color="#222222"))
+    },
+    if (!xgrid) {
+      ggplot2::theme(panel.grid.major.y = ggplot2::element_blank())
     }
   )
 

@@ -14,6 +14,10 @@ the graph.}
 \item{hline, vline}{Numeric, the location of a strong horizontal or vertical
 line to be added to the plot. Use \code{hline = 0}, for example, to place a
 line at y = 0 to differentiate between positive and negative values.}
+
+\item{ygrid, xgrid}{Bool, the display of vertical and/or horizontal grid lines
+on the chart. If left as default, horizontal grid lines will be displayed
+while vertical grid lines will be masked.}
 }
 \description{
 \code{theme_cmap} returns one or more ggplot objects that together construct a
@@ -28,10 +32,15 @@ ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
  theme_cmap(hline = 0, ylab = "Percent change")
 
 df <- dplyr::filter(traded_emp_by_race, variable \%in\% c("SpecializedTraded", "UnspecializedTraded"))
-ggplot(df, aes(x = reorder(Race, -value), y = value, fill = variable)) +
-  geom_col(position = position_stack(reverse = TRUE)) +
-  scale_y_continuous(labels = scales::percent) +
-  theme_cmap(hline = 0, ylab = "This is the y axis")
-}
+ ggplot(df, aes(x = reorder(Race, -value), y = value, fill = variable)) +
+   geom_col(position = position_stack(reverse = TRUE)) +
+   scale_y_continuous(labels = scales::percent) +
+   theme_cmap(hline = 0, ylab = "This is the y axis")
 
+ggplot(df, aes(x = reorder(Race, -value), y = value, fill = variable)) +
+   geom_col(position = position_stack(reverse = TRUE)) +
+   coord_flip() +
+   scale_y_continuous(labels = scales::percent) +
+   theme_cmap(hline = 0, ygrid = FALSE, xgrid = TRUE)
+}
 }
