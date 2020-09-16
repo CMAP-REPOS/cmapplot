@@ -27,10 +27,14 @@ plot area in accordance with CMAP design standards.
 \examples{
 
 \dontrun{
+
+# The only way to place the origin line (`hline`, `vline`) behind any data geoms
+# is to or place `theme_cmap()` before the geoms:
  ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
+   theme_cmap(hline = 0, ylab = "Percent change") +
    geom_line() +
-   scale_x_continuous(breaks = scales::breaks_pretty(11)) +
-   theme_cmap(hline = 0, ylab = "Percent change")
+   scale_x_continuous(breaks = scales::breaks_pretty(11))
+
 
  df <- dplyr::filter(traded_emp_by_race, variable \%in\% c("SpecializedTraded",
    "UnspecializedTraded"))
