@@ -111,30 +111,29 @@ check_cmap_fonts <- function() {
 #  a value (numeric) and a type (character). The type can be "pt", "mm", or "in",
 #  representing points, millimeters, or inches, respectively.
 line_size_conversion <- function(value,type) {
-  if (type == "pt") {
-    output <- value /
-      ggplot2::.pt / # Account for ggplot's multiplication of size by .pt,
-                     #  which is defined as 72.27/25.4
-      72 * # Normalize from points
-      96 # Multiply by units for R pixels (per inch)
+  if (type == "pt" | type == "mm" | type == "in") {
+    points_value <- grid::convertUnit(unit(value,type), # Take inputs
+                                      "points", # convert to points
+                                      valueOnly = TRUE) # Drop units
   }
-  else if (type == "mm"){
-    output <-
-      value /
-      ggplot2::.pt / # Account for .pt
-      25.4 * # Normalize from millimeters
-      96 # Multiply by units for R pixels (per inch)
-  }
-  else if (type == "in") {
-    output <-
-      value /
-      ggplot2::.pt * # Account for .pt
-      96 # Multiply by units for R pixels (per inch)
-  }
+
   else {
     message("WARNING: Invalid value type")
     return()
   }
 
+  output <-
+    points_value /
+    72 * # Normalize from points
+    96 / # Multiply by units for R pixels (per inch)
+    ggplot2::.pt # Account for ggplot's multiplication of size by .pt,
+                 #  which is defined as 72.27/25.4
+
   return(output)
 }
+
+# Pre-set values for width of lines (specified by the Communications team)
+
+line_graph_width  <- line_size_conversion(3, "pt")
+origin_line_width <- line_size_conversion(1.6, "pt") # This is not spec, but appears to be the minimum for variation between origin lines and other background lines
+other_line_width  <- line_size_conversion(.3, "pt")
