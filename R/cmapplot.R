@@ -23,6 +23,8 @@
 
 cmapplot_globals <- new.env(parent=emptyenv())  # An environment for storing any global variables
 
+
+### Default font handling -------------------------------------------
 if (.Platform$OS.type == "windows") {
 
   # Set CMAP fonts: use Whitney if installed, Calibri otherwise
@@ -107,6 +109,8 @@ check_cmap_fonts <- function() {
 #check_cmap_fonts()
 
 
+### plot sizes and colors  ------------------------------------------------
+
 # Helper function to calculate correct size for ggplot inputs. Takes two inputs:
 #  a value (numeric) and a type (character). The type can be "pt", "mm", or "in",
 #  representing points, millimeters, or inches, respectively.
@@ -127,13 +131,17 @@ line_size_conversion <- function(value,type) {
     72 * # Normalize from points
     96 / # Multiply by units for R pixels (per inch)
     ggplot2::.pt # Account for ggplot's multiplication of size by .pt,
-                 #  which is defined as 72.27/25.4
+  #  which is defined as 72.27/25.4
 
   return(output)
 }
 
+
 # Pre-set values for width of lines (specified by the Communications team)
 
-line_graph_width  <- line_size_conversion(3, "pt")
-origin_line_width <- line_size_conversion(1.6, "pt") # This is not spec, but appears to be the minimum for variation between origin lines and other background lines
-other_line_width  <- line_size_conversion(.3, "pt")
+cmapplot_globals$line_graph_width  <- line_size_conversion(3, "pt")
+cmapplot_globals$origin_line_width <- line_size_conversion(1.6, "pt") # This is not spec, but appears to be the minimum for variation between origin lines and other background lines
+cmapplot_globals$other_line_width  <- line_size_conversion(.3, "pt")
+cmapplot_globals$black_hex         <- "#222222"
+
+

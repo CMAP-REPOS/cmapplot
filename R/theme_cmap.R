@@ -19,10 +19,14 @@
 #'@examples
 #'
 #'\dontrun{
+#'
+#' # The only way to place the origin line (`hline`, `vline`) behind any data geoms
+#' # is to or place `theme_cmap()` before the geoms:
 #'  ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
+#'    theme_cmap(hline = 0, ylab = "Percent change") +
 #'    geom_line() +
-#'    scale_x_continuous(breaks = scales::breaks_pretty(11)) +
-#'    theme_cmap(hline = 0, ylab = "Percent change")
+#'    scale_x_continuous(breaks = scales::breaks_pretty(11))
+#'
 #'
 #'  df <- dplyr::filter(traded_emp_by_race, variable %in% c("SpecializedTraded",
 #'    "UnspecializedTraded"))
@@ -63,7 +67,7 @@ theme_cmap <- function(
       text = ggplot2::element_text(family = cmapplot_globals$font_main,
                                    face = cmapplot_globals$font_main_face,
                                    size = 14,
-                                   color="#222222"),
+                                   color=cmapplot_globals$black_hex),
 
       # Title text
       plot.title = ggplot2::element_text(family=cmapplot_globals$font_title,
@@ -128,30 +132,30 @@ theme_cmap <- function(
     # add x origin line if specified
     if(!is.null(hline)){
       ggplot2::geom_hline(yintercept = hline,
-                          size = origin_line_width,
-                          color="#222222")
+                          size = cmapplot_globals$origin_line_width,
+                          color=cmapplot_globals$black_hex)
     },
 
     # add y origin line if specified
     if(!is.null(vline)){
       ggplot2::geom_vline(xintercept = vline,
-                          size = origin_line_width,
-                          color = "#222222")
+                          size = cmapplot_globals$origin_line_width,
+                          color = cmapplot_globals$black_hex)
     },
 
     # re-introduce horizontal gridlines if specified
     if (grepl("h", gridlines)) {
       ggplot2::theme(
-        panel.grid.major.y = ggplot2::element_line(size = other_line_width,
-                                                   color = "#222222")
+        panel.grid.major.y = ggplot2::element_line(size = cmapplot_globals$other_line_width,
+                                                   color = cmapplot_globals$black_hex)
       )
     },
 
     # re-introduce vertical gridlines if specified
     if (grepl("v", gridlines)) {
       ggplot2::theme(
-        panel.grid.major.x = ggplot2::element_line(size = other_line_width,
-                                                   color = "#222222")
+        panel.grid.major.x = ggplot2::element_line(size = cmapplot_globals$other_line_width,
+                                                   color = cmapplot_globals$black_hex)
       )
     }
   )
