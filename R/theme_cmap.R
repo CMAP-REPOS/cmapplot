@@ -3,7 +3,7 @@
 #'\code{theme_cmap} returns one or more ggplot objects that together construct a
 #'plot area in accordance with CMAP design standards.
 #'
-#'@usage theme_cmap(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL, gridlines = c("h","v","vh",NA))
+#'@usage theme_cmap(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL, gridlines = c("h","v","vh","none"))
 #'
 #'@param xlab,ylab Char, the string used to label the x and y axes,
 #'  respectively. If left as NULL, the default, the axis label will be left off
@@ -13,7 +13,8 @@
 #'  line at y = 0 to differentiate between positive and negative values.
 #' @param gridlines Char, the grid lines to be displayed on the chart. If left
 #'   as default, horizontal grid lines will be displayed while vertical grid
-#'   lines will be masked.
+#'   lines will be masked. Acceptable values are "v" (vertical), "h"
+#'   (horizontal), "vh" (both), and "none" (none).
 #'
 #'@examples
 #'
@@ -37,14 +38,14 @@
 #' }
 #'@export
 theme_cmap <- function(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL,
-                       gridlines = c("h","v","vh",NA)) {
+                       gridlines = c("h","v","vh","none")) {
 
   # Generate an explicit message to user if Whitney font family is not available
   if (!(cmapplot_globals$use_whitney)){
     message("'Whitney' font family not found. Using a substitute...")
   }
 
-  match.arg(gridlines)
+  match.arg(gridlines) # Check if gridline input is allowed, throws error if not
 
   # Generate list of elements to return.
   elements <- list(

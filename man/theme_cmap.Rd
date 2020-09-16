@@ -4,7 +4,7 @@
 \alias{theme_cmap}
 \title{Add CMAP theme to ggplot chart}
 \usage{
-theme_cmap(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL, gridlines = c("h","v","vh",NA))
+theme_cmap(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL, gridlines = c("h","v","vh","none"))
 }
 \arguments{
 \item{xlab, ylab}{Char, the string used to label the x and y axes,
@@ -17,7 +17,8 @@ line at y = 0 to differentiate between positive and negative values.}
 
 \item{gridlines}{Char, the grid lines to be displayed on the chart. If left
 as default, horizontal grid lines will be displayed while vertical grid
-lines will be masked.}
+lines will be masked. Acceptable values are "v" (vertical), "h"
+(horizontal), "vh" (both), and "none" (none).}
 }
 \description{
 \code{theme_cmap} returns one or more ggplot objects that together construct a
