@@ -44,6 +44,8 @@ theme_cmap <- function(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL,
     message("'Whitney' font family not found. Using a substitute...")
   }
 
+  match.arg(gridlines)
+
   # Generate list of elements to return.
   elements <- list(
 
