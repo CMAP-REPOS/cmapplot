@@ -3,7 +3,8 @@
 #'\code{theme_cmap} returns one or more ggplot objects that together construct a
 #'plot area in accordance with CMAP design standards.
 #'
-#'@usage theme_cmap(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL, gridlines = c("h","v","vh","none"))
+#'@usage theme_cmap(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL,
+#'gridlines = c("h","v","vh","none"))
 #'
 #'@param xlab,ylab Char, the string used to label the x and y axes,
 #'  respectively. If left as NULL, the default, the axis label will be left off
@@ -24,7 +25,8 @@
 #'  scale_x_continuous(breaks = scales::breaks_pretty(11)) +
 #'  theme_cmap(hline = 0, ylab = "Percent change")
 #'
-#' df <- dplyr::filter(traded_emp_by_race, variable %in% c("SpecializedTraded", "UnspecializedTraded"))
+#' df <- dplyr::filter(traded_emp_by_race, variable %in% c("SpecializedTraded",
+#' "UnspecializedTraded"))
 #'  ggplot(df, aes(x = reorder(Race, -value), y = value, fill = variable)) +
 #'    geom_col(position = position_stack(reverse = TRUE)) +
 #'    scale_y_continuous(labels = scales::percent) +

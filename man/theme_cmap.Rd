@@ -4,7 +4,8 @@
 \alias{theme_cmap}
 \title{Add CMAP theme to ggplot chart}
 \usage{
-theme_cmap(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL, gridlines = c("h","v","vh","none"))
+theme_cmap(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL,
+gridlines = c("h","v","vh","none"))
 }
 \arguments{
 \item{xlab, ylab}{Char, the string used to label the x and y axes,
@@ -32,7 +33,8 @@ ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
  scale_x_continuous(breaks = scales::breaks_pretty(11)) +
  theme_cmap(hline = 0, ylab = "Percent change")
 
-df <- dplyr::filter(traded_emp_by_race, variable \%in\% c("SpecializedTraded", "UnspecializedTraded"))
+df <- dplyr::filter(traded_emp_by_race, variable \%in\% c("SpecializedTraded",
+"UnspecializedTraded"))
  ggplot(df, aes(x = reorder(Race, -value), y = value, fill = variable)) +
    geom_col(position = position_stack(reverse = TRUE)) +
    scale_y_continuous(labels = scales::percent) +
