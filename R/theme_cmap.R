@@ -4,29 +4,29 @@
 #'plot area in accordance with CMAP design standards.
 #'
 #'@usage theme_cmap(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL,
-#'gridlines = c("h","v","vh","none"))
+#'  gridlines = c("h","v","hv","none"))
 #'
 #'@param xlab,ylab Char, the string used to label the x and y axes,
-#'  respectively. If left as NULL, the default, the axis label will be left off
-#'  the graph.
+#'  respectively. If unspecified, the axis label will be left off the graph.
 #'@param hline,vline Numeric, the location of a strong horizontal or vertical
 #'  line to be added to the plot. Use \code{hline = 0}, for example, to place a
 #'  line at y = 0 to differentiate between positive and negative values.
-#' @param gridlines Char, the grid lines to be displayed on the chart. If left
-#'   as default, horizontal grid lines will be displayed while vertical grid
-#'   lines will be masked. Acceptable values are "v" (vertical), "h"
-#'   (horizontal), "vh" (both), and "none" (none).
+#'@param gridlines Char, the grid lines to be displayed on the chart. If left as
+#'  default, horizontal grid lines will be displayed while vertical grid lines
+#'  will be masked. Acceptable values are "h" (horizontal only), "v" (vertical
+#'  only), "hv" (both horizontal and vertical), and "none" (neither).
 #'
 #'@examples
 #'
-#' \dontrun{
-#' ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
-#'  geom_line() +
-#'  scale_x_continuous(breaks = scales::breaks_pretty(11)) +
-#'  theme_cmap(hline = 0, ylab = "Percent change")
+#'\dontrun{
+#'  ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
+#'    geom_line() +
+#'    scale_x_continuous(breaks = scales::breaks_pretty(11)) +
+#'    theme_cmap(hline = 0, ylab = "Percent change")
 #'
-#' df <- dplyr::filter(traded_emp_by_race, variable %in% c("SpecializedTraded",
-#' "UnspecializedTraded"))
+#'  df <- dplyr::filter(traded_emp_by_race, variable %in% c("SpecializedTraded",
+#'    "UnspecializedTraded"))
+#'
 #'  ggplot(df, aes(x = reorder(Race, -value), y = value, fill = variable)) +
 #'    geom_col(position = position_stack(reverse = TRUE)) +
 #'    scale_y_continuous(labels = scales::percent) +
@@ -39,15 +39,19 @@
 #'    theme_cmap(hline = 0, gridlines = "v")
 #' }
 #'@export
-theme_cmap <- function(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL,
-                       gridlines = c("h","v","vh","none")) {
+theme_cmap <- function(
+  xlab = NULL, ylab = NULL,
+  hline = NULL, vline = NULL,
+  gridlines = c("h","v","hv","none")
+) {
 
   # Generate an explicit message to user if Whitney font family is not available
   if (!(cmapplot_globals$use_whitney)){
     message("'Whitney' font family not found. Using a substitute...")
   }
 
-  match.arg(gridlines) # Check if gridline input is allowed, throws error if not
+  # Validate gridlines parameter, throw error if invalid
+  gridlines <- match.arg(gridlines)
 
   # Generate list of elements to return.
   elements <- list(
@@ -87,6 +91,12 @@ theme_cmap <- function(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL,
 
       #Blank background
       panel.background = ggplot2::element_blank(),
+
+      #No gridlines
+      panel.grid.major.x = ggplot2::element_blank(),
+      panel.grid.minor.x = ggplot2::element_blank(),
+      panel.grid.major.y = ggplot2::element_blank(),
+      panel.grid.minor.y = ggplot2::element_blank(),
 
       #Strip background
       strip.background = ggplot2::element_rect(fill="white"),
@@ -129,23 +139,20 @@ theme_cmap <- function(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL,
                           color = "#222222")
     },
 
-    # Adjust grid lines
+    # re-introduce horizontal gridlines if specified
     if (grepl("h", gridlines)) {
-      ggplot2::theme(panel.grid.major.y =
-                       ggplot2::element_line(size = other_line_width,
-                                             color="#222222"))
-    }
-    else {
-      ggplot2::theme(panel.grid.major.y = ggplot2::element_blank())
+      ggplot2::theme(
+        panel.grid.major.y = ggplot2::element_line(size = other_line_width,
+                                                   color = "#222222")
+      )
     },
 
+    # re-introduce vertical gridlines if specified
     if (grepl("v", gridlines)) {
-      ggplot2::theme(panel.grid.major.x =
-                       ggplot2::element_line(size = other_line_width,
-                                             color="#222222"))
-    }
-    else {
-      ggplot2::theme(panel.grid.major.x = ggplot2::element_blank())
+      ggplot2::theme(
+        panel.grid.major.x = ggplot2::element_line(size = other_line_width,
+                                                   color = "#222222")
+      )
     }
   )
 
