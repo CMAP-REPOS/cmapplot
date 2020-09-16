@@ -4,7 +4,7 @@
 #'plot area in accordance with CMAP design standards.
 #'
 #'@usage theme_cmap(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL,
-#'  gridlines = c("h","v","hv","none"))
+#'  gridlines = c("h", "v", "hv", "none"))
 #'
 #'@param xlab,ylab Char, the string used to label the x and y axes,
 #'  respectively. If unspecified, the axis label will be left off the graph.
@@ -46,11 +46,11 @@
 theme_cmap <- function(
   xlab = NULL, ylab = NULL,
   hline = NULL, vline = NULL,
-  gridlines = c("h","v","hv","none")
+  gridlines = c("h", "v", "hv", "none")
 ) {
 
   # Generate an explicit message to user if Whitney font family is not available
-  if (!(cmapplot_globals$use_whitney)){
+  if (!(cmapplot_globals$use_whitney)) {
     message("'Whitney' font family not found. Using a substitute...")
   }
 
@@ -67,18 +67,18 @@ theme_cmap <- function(
       text = ggplot2::element_text(family = cmapplot_globals$font_main,
                                    face = cmapplot_globals$font_main_face,
                                    size = 14,
-                                   color=cmapplot_globals$black_hex),
+                                   color = cmapplot_globals$colors$blackish),
 
       # Title text
-      plot.title = ggplot2::element_text(family=cmapplot_globals$font_title,
-                                         face=cmapplot_globals$font_title_face,
-                                         size=17),
+      plot.title = ggplot2::element_text(family = cmapplot_globals$font_title,
+                                         face = cmapplot_globals$font_title_face,
+                                         size = 17),
 
       # Text elements not displayed
       plot.subtitle = ggplot2::element_blank(),
       plot.caption = ggplot2::element_blank(),
 
-      #Legend format
+      # Legend format
       legend.position = "top",
       legend.text.align = 0,
       legend.background = ggplot2::element_blank(),
@@ -86,26 +86,26 @@ theme_cmap <- function(
       legend.title = ggplot2::element_blank(),
       legend.key = ggplot2::element_blank(),
 
-      #Axis format
+      # Axis format
       axis.title.y = ggplot2::element_blank(),
       axis.title.x = ggplot2::element_blank(),
-      axis.text.x = ggplot2::element_text(margin=ggplot2::margin(5, b = 10)),
+      axis.text.x = ggplot2::element_text(margin = ggplot2::margin(5, b = 10)),
       axis.ticks = ggplot2::element_blank(),
       axis.line = ggplot2::element_blank(),
 
-      #Blank background
+      # Blank background
       panel.background = ggplot2::element_blank(),
 
-      #No gridlines
+      # No gridlines
       panel.grid.major.x = ggplot2::element_blank(),
       panel.grid.minor.x = ggplot2::element_blank(),
       panel.grid.major.y = ggplot2::element_blank(),
       panel.grid.minor.y = ggplot2::element_blank(),
 
-      #Strip background
-      strip.background = ggplot2::element_rect(fill="white"),
+      # Strip background
+      strip.background = ggplot2::element_rect(fill = "white"),
 
-      #Facet wrap text
+      # Facet wrap text
       strip.text = ggplot2::element_text(hjust = 0)
     ),
 
@@ -113,7 +113,7 @@ theme_cmap <- function(
     # function arguments. These elements add to or overwrite portions of
     # the default theme.
 
-    # re-introduce x label if specified
+    # Re-introduce x label, if specified
     if(!is.null(xlab)){
       ggplot2::theme(axis.title.x = element_text())
     },
@@ -121,7 +121,7 @@ theme_cmap <- function(
       ggplot2::xlab(xlab)
     },
 
-    # re-introduce y label if specified
+    # Re-introduce y label, if specified
     if(!is.null(ylab)){
       ggplot2::theme(axis.title.y = element_text())
     },
@@ -129,37 +129,37 @@ theme_cmap <- function(
       ggplot2::ylab(ylab)
     },
 
-    # add x origin line if specified
+    # Add x origin line, if specified
     if(!is.null(hline)){
       ggplot2::geom_hline(yintercept = hline,
-                          size = cmapplot_globals$origin_line_width,
-                          color=cmapplot_globals$black_hex)
+                          size = cmapplot_globals$lwd_origin,
+                          color = cmapplot_globals$colors$blackish)
     },
 
-    # add y origin line if specified
+    # Add y origin line, if specified
     if(!is.null(vline)){
       ggplot2::geom_vline(xintercept = vline,
-                          size = cmapplot_globals$origin_line_width,
-                          color = cmapplot_globals$black_hex)
+                          size = cmapplot_globals$lwd_origin,
+                          color = cmapplot_globals$colors$blackish)
     },
 
-    # re-introduce horizontal gridlines if specified
+    # Re-introduce horizontal gridlines if specified
     if (grepl("h", gridlines)) {
       ggplot2::theme(
-        panel.grid.major.y = ggplot2::element_line(size = cmapplot_globals$other_line_width,
-                                                   color = cmapplot_globals$black_hex)
+        panel.grid.major.y = ggplot2::element_line(size = cmapplot_globals$lwd_other,
+                                                   color = cmapplot_globals$colors$blackish)
       )
     },
 
-    # re-introduce vertical gridlines if specified
+    # Re-introduce vertical gridlines if specified
     if (grepl("v", gridlines)) {
       ggplot2::theme(
-        panel.grid.major.x = ggplot2::element_line(size = cmapplot_globals$other_line_width,
-                                                   color = cmapplot_globals$black_hex)
+        panel.grid.major.x = ggplot2::element_line(size = cmapplot_globals$lwd_other,
+                                                   color = cmapplot_globals$colors$blackish)
       )
     }
   )
 
-  # filter out NA elements before returning
+  # Filter out NA elements before returning
   return(magrittr::extract(elements, !is.na(elements)))
 }

@@ -24,7 +24,8 @@
 cmapplot_globals <- new.env(parent=emptyenv())  # An environment for storing any global variables
 
 
-### Default font handling -------------------------------------------
+# Default font handling ---------------------------------------------------
+
 if (.Platform$OS.type == "windows") {
 
   # Set CMAP fonts: use Whitney if installed, Calibri otherwise
@@ -109,39 +110,26 @@ check_cmap_fonts <- function() {
 #check_cmap_fonts()
 
 
-### plot sizes and colors  ------------------------------------------------
+# Plot sizes and colors ---------------------------------------------------
 
 # Helper function to calculate correct size for ggplot inputs. Takes two inputs:
-#  a value (numeric) and a type (character). The type can be "pt", "mm", or "in",
-#  representing points, millimeters, or inches, respectively.
-line_size_conversion <- function(value,type) {
-  if (type == "pt" | type == "mm" | type == "in") {
-    points_value <- grid::convertUnit(unit(value,type), # Take inputs
-                                      "points", # convert to points
-                                      valueOnly = TRUE) # Drop units
-  }
-
-  else {
-    message("WARNING: Invalid value type")
-    return()
-  }
-
-  output <-
-    points_value /
-    72 * # Normalize from points
-    96 / # Multiply by units for R pixels (per inch)
-    ggplot2::.pt # Account for ggplot's multiplication of size by .pt,
-                 #  which is defined as 72.27/25.4
-
-  return(output)
+# a value (numeric) and a type (character). The type can be any of the units
+# accepted by `grid::unit()`, including "pt", "mm", and "in".
+ggplot_size_conversion <- function(value, type) {
+    value_in_pt <- grid::convertUnit(grid::unit(value, type), "points", valueOnly = TRUE)
+    return(
+      value_in_pt / 72.27  # Normalize from points
+        * 96               # Multiply by units for R pixels (per inch)
+        / ggplot2::.pt     # Account for the ggplot2::.pt factor (=72.27/25.4)
+    )
 }
 
-
 # Pre-set values for width of lines (specified by the Communications team)
+cmapplot_globals$lwd_layout  <- ggplot_size_conversion(3, "pt")
+cmapplot_globals$wd_origin <- ggplot_size_conversion(1.6, "pt") # This is not spec, but appears to be the minimum for variation between origin lines and other background lines
+cmapplot_globals$lwd_other <- ggplot_size_conversion(.3, "pt")
 
-cmapplot_globals$line_graph_width  <- line_size_conversion(3, "pt")
-cmapplot_globals$origin_line_width <- line_size_conversion(1.6, "pt") # This is not spec, but appears to be the minimum for variation between origin lines and other background lines
-cmapplot_globals$other_line_width  <- line_size_conversion(.3, "pt")
-cmapplot_globals$black_hex         <- "#222222"
-
-
+# Define common colors
+cmapplot_globals$colors <- list(
+  blackish = "#222222"
+)

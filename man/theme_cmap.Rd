@@ -5,7 +5,7 @@
 \title{Add CMAP theme to ggplot chart}
 \usage{
 theme_cmap(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL,
- gridlines = c("h","v","hv","none"))
+ gridlines = c("h", "v", "hv", "none"))
 }
 \arguments{
 \item{xlab, ylab}{Char, the string used to label the x and y axes,
