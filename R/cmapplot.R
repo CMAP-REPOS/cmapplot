@@ -131,7 +131,7 @@ line_size_conversion <- function(value,type) {
     72 * # Normalize from points
     96 / # Multiply by units for R pixels (per inch)
     ggplot2::.pt # Account for ggplot's multiplication of size by .pt,
-  #  which is defined as 72.27/25.4
+                 #  which is defined as 72.27/25.4
 
   return(output)
 }
