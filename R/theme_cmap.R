@@ -3,7 +3,7 @@
 #'\code{theme_cmap} returns one or more ggplot objects that together construct a
 #'plot area in accordance with CMAP design standards.
 #'
-#'@usage theme_cmap(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL)
+#'@usage theme_cmap(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL, gridlines = c("h","v","vh",NA))
 #'
 #'@param xlab,ylab Char, the string used to label the x and y axes,
 #'  respectively. If left as NULL, the default, the axis label will be left off
