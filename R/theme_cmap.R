@@ -125,7 +125,7 @@ theme_cmap <- function(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL,
     },
 
     # Adjust grid lines
-    if ("h" == gridlines | "vh" == gridlines) {
+    if (grepl("h", gridlines)) {
       ggplot2::theme(panel.grid.major.y =
                        ggplot2::element_line(size = other_line_width,
                                              color="#222222"))
@@ -134,7 +134,7 @@ theme_cmap <- function(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL,
       ggplot2::theme(panel.grid.major.y = ggplot2::element_blank())
     },
 
-    if ("v" == gridlines | "vh" == gridlines) {
+    if (grepl("v", gridlines)) {
       ggplot2::theme(panel.grid.major.x =
                        ggplot2::element_line(size = other_line_width,
                                              color="#222222"))
