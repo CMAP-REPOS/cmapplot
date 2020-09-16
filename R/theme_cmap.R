@@ -72,7 +72,8 @@ theme_cmap <- function(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL) {
       axis.line = ggplot2::element_blank(),
 
       #Grid lines
-      panel.grid.major.y = ggplot2::element_line(size = 0.140359, color="#222222"),
+      panel.grid.major.y = ggplot2::element_line(size = other_line_width,
+                                                 color="#222222"),
       panel.grid.major.x = ggplot2::element_blank(),
 
       #Blank background
@@ -107,12 +108,16 @@ theme_cmap <- function(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL) {
 
     # add x origin line if specified
     if(!is.null(hline)){
-      ggplot2::geom_hline(yintercept = hline, size = 0.4656139, color = "#222222")
+      ggplot2::geom_hline(yintercept = hline,
+                          size = origin_line_width,
+                          color="#222222")
     },
 
     # add y origin line if specified
     if(!is.null(vline)){
-      ggplot2::geom_vline(xintercept = vline, size = 0.4656139, color = "#222222")
+      ggplot2::geom_vline(xintercept = vline,
+                          size = origin_line_width,
+                          color = "#222222")
     }
   )
 
