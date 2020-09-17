@@ -133,3 +133,10 @@ cmapplot_globals$lwd_other <- ggplot_size_conversion(.3, "pt")
 cmapplot_globals$colors <- list(
   blackish = "#222222"
 )
+
+# Define font sizes (specified by the Communications team)
+cmapplot_globals$font_sizes <- list(
+  title = 17,
+  main = 14,
+  note = 11
+)
