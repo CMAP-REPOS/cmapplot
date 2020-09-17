@@ -2,14 +2,11 @@
 
 # for documentation - title and subtitle text takes HTML. Use <br> to force line breaks.
 
-# SAMPLE CODE
+# # SAMPLE CODE
 # myplot <- ggplot(economy_basic, aes(x = interaction(year, variable), y = value, fill = sector)) +
 #   geom_col(position = "fill") +
-#   scale_y_continuous(labels = scales::percent) + theme_cmap() +
-#   theme(panel.background = element_rect(fill = "transparent"), # bg of the panel
-#         plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
-#         legend.background = element_rect(fill = "transparent"), # get rid of legend bg
-#         )
+#   scale_y_continuous(labels = scales::percent) + theme_cmap()
+#
 # finalize_plot2(myplot, "title is<br>long so it might take many lines", "subtitle keeps going and going!")
 
 #' @export
