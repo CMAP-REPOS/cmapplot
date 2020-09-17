@@ -5,6 +5,7 @@
 #' @importFrom grid gpar unit
 #'
 
+# # SAMPLE CODE
 # myplot <- ggplot(economy_basic, aes(x = interaction(year, variable), y = value, fill = sector)) +
 #   geom_col(position = "fill") +
 #   scale_y_continuous(labels = scales::percent) + theme_cmap() +
@@ -12,8 +13,7 @@
 #         plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
 #         legend.background = element_rect(fill = "transparent"), # get rid of legend bg
 #         )
-
-# myplot
+# finalize_plot2(myplot, "title \ntwo lines", "subtitle \nkeeps going \nand going!")
 
 
 finalize_plot2 <- function(plot = ggplot2::last_plot(),
@@ -28,7 +28,7 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
 
 
   # establish rectangle grob for top line
-  grob_rect <- grid::rectGrob(gp=gpar(fill = 'black', lwd=0)) # CHANGE TO GLOBALS REFERENCE ONCE THAT BRANCH IS MERGED
+  grob_rect <- grid::rectGrob(gp=gpar(fill = cmapplot_globals$colors$blackish, lwd=0))
 
   # establish title grob
   grob_title <-  grid::textGrob(label = title,
@@ -43,7 +43,7 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
   # establish subtitle grob
   grob_subtitle <-  grid::textGrob(label = subtitle,
                                    x = unit(2, "points"), # places the title x point in from left margin
-                                   y = unit(1, "npc") - unit(20, "points") - grid::grobHeight(grob_title), # places title at top of area, less the title height, less a x point margin
+                                   y = unit(1, "npc") - unit(20, "points") - grid::grobHeight(grob_title), # places subtitle at top of area, less title height, less a x point margin
                                    just = c("left", "top"), # x and y specify the left and top corner of the Grob
                                    gp = gpar(fontsize=11,
                                              fontfamily=cmapplot_globals$font_reg,
