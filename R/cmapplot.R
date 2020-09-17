@@ -126,7 +126,7 @@ ggplot_size_conversion <- function(value, type) {
 
 # Pre-set values for width of lines (specified by the Communications team)
 cmapplot_globals$lwd_layout  <- ggplot_size_conversion(3, "pt")
-cmapplot_globals$wd_origin <- ggplot_size_conversion(1.6, "pt") # This is not spec, but appears to be the minimum for variation between origin lines and other background lines
+cmapplot_globals$lwd_origin <- ggplot_size_conversion(1.6, "pt") # This is not spec, but appears to be the minimum for variation between origin lines and other background lines
 cmapplot_globals$lwd_other <- ggplot_size_conversion(.3, "pt")
 
 # Define common colors
