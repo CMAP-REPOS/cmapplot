@@ -12,7 +12,7 @@
 #         plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
 #         legend.background = element_rect(fill = "transparent"), # get rid of legend bg
 #         )
-#
+
 # myplot
 
 
@@ -40,39 +40,52 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                                           fontface=cmapplot_globals$font_title_face,
                                           lineheight=0.93))
 
-  ##something is off here--with the below creation of y for the subtitle, we should be using grobtree to assemble the sidebar I think.
-
   # establish subtitle grob
   grob_subtitle <-  grid::textGrob(label = subtitle,
                                    x = unit(2, "points"), # places the title x point in from left margin
-                                   y = unit(1, "npc") - grobHeight(grob_title) - unit(10, "points"), # places title at top of area, less the title height, less a x point margin
+                                   y = unit(1, "npc") - unit(20, "points") - grid::grobHeight(grob_title), # places title at top of area, less the title height, less a x point margin
                                    just = c("left", "top"), # x and y specify the left and top corner of the Grob
                                    gp = gpar(fontsize=11,
                                              fontfamily=cmapplot_globals$font_reg,
                                              fontface=cmapplot_globals$font_reg_face,
                                              lineheight=0.93))
 
-  # establish layout of viewports to draw into
+  # establish matrix shape for three viewports
   layout = rbind(c(1,1),
-                 c(2,4),
-                 c(3,4),
-                 c(NA,4))
+                  c(2,3))
 
   # stitch together the final plot
-  output <- gridExtra::arrangeGrob(grobs = list(grob_rect, grob_title, grob_subtitle, myplot),
-                          layout_matrix = layout,
-                          heights = unit(c(3, 10, 5, 150), "points"),
-                          widths = unit(c(80, 220), "points"))
+  output <- gridExtra::arrangeGrob(grobs = list(grob_rect, grobTree(grob_title, grob_subtitle), myplot),
+                                   layout_matrix = layout,
+                                   heights = unit(c(3, 200), "points"),
+                                   widths = unit(c(80, 220), "points"))
+
+
 
   # for now--just print the grob to the plots window
   grid::grid.newpage()
   grid::grid.draw(output)
+
+  # gtable::gtable_show_layout(output)
 }
 
 
 
 
 
+
+# # # ALTERNATIVE, MORE COMPLICATED LAYOUT
+# # establish layout of viewports to draw into
+# layout = rbind(c(1,1),
+#                c(2,4),
+#                c(3,4),
+#                c(NA,4))
+#
+# # stitch together the final plot
+# output <- gridExtra::arrangeGrob(grobs = list(grob_rect, grob_title, grob_subtitle, myplot),
+#                         layout_matrix = layout,
+#                         heights = unit(c(3, 10, 5, 150), "points"),
+#                         widths = unit(c(80, 220), "points"))
 
 # grid.newpage()
 # grobTree(title, subtitle) %>%
