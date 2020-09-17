@@ -10,7 +10,7 @@
 #         plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
 #         legend.background = element_rect(fill = "transparent"), # get rid of legend bg
 #         )
-# finalize_plot2(myplot, "title is<br>long so it might take two lines", "subtitle keeps going and going!")
+# finalize_plot2(myplot, "title is<br>long so it might take many lines", "subtitle keeps going and going!")
 
 #' @export
 finalize_plot2 <- function(plot = ggplot2::last_plot(),
@@ -28,7 +28,7 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
   height <- height / 2
   title_width <- title_width / 2
 
-  # function constants
+  # function constants (***should these be function arguments?)
   c_topbar_lwd <- unit(3, "points") # width (points) of top line
   c_textmargin_left <- unit(2, "points") # margin (points) to left of title and subtitle text
   c_textmargin_top <- unit(5, "points") # margin (points) between top line and title
@@ -46,14 +46,16 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                                        vjust = 1,
                                        # set margins within textbox
                                        padding = unit.c(c_textmargin_top, # top
-                                                        unit(0, "points"), # right
-                                                        unit(0, "points"), # bottom
+                                                        unit(1, "points"), # right
+                                                        unit(1, "points"), # bottom
                                                         c_textmargin_left),# left
                                        # set aesthetic variables
                                        gp = gpar(fontsize=17,
                                                  fontfamily=cmapplot_globals$font_title,
                                                  fontface=cmapplot_globals$font_title_face,
                                                  lineheight=0.93)
+                                       # # for debug, draw box around grob
+                                       # , box_gp = gpar(col = "blue", fill = "cornsilk")
                                        )
 
   # establish subtitle grob
@@ -65,14 +67,16 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                                            vjust = 1,
                                            # set margins within textbox
                                            padding = unit.c(c_textmargin_mid, # top
-                                                            unit(0, "points"), # right
-                                                            unit(0, "points"), # bottom
+                                                            unit(1, "points"), # right
+                                                            unit(1, "points"), # bottom
                                                             c_textmargin_left),# left
                                            # set aesthetic variables
                                            gp = gpar(fontsize=11,
                                                      fontfamily=cmapplot_globals$font_reg,
                                                      fontface=cmapplot_globals$font_reg_face,
                                                      lineheight=0.93)
+                                           # # for debug, draw box around grob
+                                           # , box_gp = gpar(col = "blue", fill = "lavenderblush")
                                            )
 
   # establish matrix shape for three viewports
@@ -86,8 +90,8 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                                    widths = unit(c(title_width, width - title_width), "points"))
 
 
-  # as debug tool, print viewport layouts to plot window
-  gtable::gtable_show_layout(output)
+  # # as debug tool, print viewport layouts to plot window
+  # gtable::gtable_show_layout(output)
 
 
   # output the figure based on user setting
