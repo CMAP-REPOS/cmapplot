@@ -5,6 +5,8 @@
 #' @importFrom grid gpar unit unit.c
 #'
 
+# for documentation - title and subtitle text takes HTML. Use <br> to force line breaks.
+
 # SAMPLE CODE
 # myplot <- ggplot(economy_basic, aes(x = interaction(year, variable), y = value, fill = sector)) +
 #   geom_col(position = "fill") +
@@ -13,7 +15,7 @@
 #         plot.background = element_rect(fill = "transparent", color = NA), # bg of the plot
 #         legend.background = element_rect(fill = "transparent"), # get rid of legend bg
 #         )
-# finalize_plot2(myplot, "title \ntwo lines", "subtitle \nkeeps going \nand going!")
+# finalize_plot2(myplot, "title is<br>long so it might take two lines", "subtitle keeps going and going!")
 
 #' @export
 finalize_plot2 <- function(plot = ggplot2::last_plot(),
@@ -34,42 +36,49 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
   # function constants
   c_topbar_lwd <- unit(3, "points") # width (points) of top line
   c_textmargin_left <- unit(2, "points") # margin (points) to left of title and subtitle text
-  c_textmargin_top <- unit(10, "points") # margin (points) between top line and title
+  c_textmargin_top <- unit(5, "points") # margin (points) between top line and title
   c_textmargin_mid <- unit(10, "points") # margin (points) between title and subtitle
-
-
-  # implement text wrapping for title and subtitle here
-
-
-
-
 
   # establish rectangle grob for top line
   grob_rect <- grid::rectGrob(gp=gpar(fill = cmapplot_globals$colors$blackish, lwd=0))
 
   # establish title grob
-  grob_title <-  grid::textGrob(label = title,
-                                # set top left location of grob
-                                x = c_textmargin_left,
-                                y = unit(1, "npc") - c_textmargin_top,
-                                just = c("left", "top"),
-                                # set aesthetic variables
-                                gp = gpar(fontsize=17,
-                                          fontfamily=cmapplot_globals$font_title,
-                                          fontface=cmapplot_globals$font_title_face,
-                                          lineheight=0.93))
+  grob_title <- gridtext::textbox_grob(text = title,
+                                       # set top left location of grob
+                                       x = unit(0, "npc"),
+                                       y = unit(1, "npc"),
+                                       hjust = 0,
+                                       vjust = 1,
+                                       # set margins within textbox
+                                       padding = unit.c(c_textmargin_top, # top
+                                                        unit(0, "points"), # right
+                                                        unit(0, "points"), # bottom
+                                                        c_textmargin_left),# left
+                                       # set aesthetic variables
+                                       gp = gpar(fontsize=17,
+                                                 fontfamily=cmapplot_globals$font_title,
+                                                 fontface=cmapplot_globals$font_title_face,
+                                                 lineheight=0.93)
+                                       )
 
   # establish subtitle grob
-  grob_subtitle <-  grid::textGrob(label = subtitle,
-                                   # set top left location of grob
-                                   x = c_textmargin_left,
-                                   y = unit(1, "npc") - grid::grobHeight(grob_title) - c_textmargin_top - c_textmargin_mid,
-                                   just = c("left", "top"),
-                                   # set aesthetic variables
-                                   gp = gpar(fontsize=11,
-                                             fontfamily=cmapplot_globals$font_reg,
-                                             fontface=cmapplot_globals$font_reg_face,
-                                             lineheight=0.93))
+  grob_subtitle <-  gridtext::textbox_grob(text = subtitle,
+                                           # set top left location of grob
+                                           x = unit(0, "npc"),
+                                           y = unit(1, "npc") - grid::grobHeight(grob_title),
+                                           hjust = 0,
+                                           vjust = 1,
+                                           # set margins within textbox
+                                           padding = unit.c(c_textmargin_mid, # top
+                                                            unit(0, "points"), # right
+                                                            unit(0, "points"), # bottom
+                                                            c_textmargin_left),# left
+                                           # set aesthetic variables
+                                           gp = gpar(fontsize=11,
+                                                     fontfamily=cmapplot_globals$font_reg,
+                                                     fontface=cmapplot_globals$font_reg_face,
+                                                     lineheight=0.93)
+                                           )
 
   # establish matrix shape for three viewports
   layout = rbind(c(1,1),
@@ -117,8 +126,28 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
 
 
 
-
-
+# # old title and subtitle grobs
+# grob_title <-  grid::textGrob(label = title,
+#                               # set top left location of grob
+#                               x = c_textmargin_left,
+#                               y = unit(1, "npc") - c_textmargin_top,
+#                               just = c("left", "top"),
+#                               # set aesthetic variables
+#                               gp = gpar(fontsize=17,
+#                                         fontfamily=cmapplot_globals$font_title,
+#                                         fontface=cmapplot_globals$font_title_face,
+#                                         lineheight=0.93))
+#
+# grob_subtitle <-  grid::textGrob(label = subtitle,
+#                                  # set top left location of grob
+#                                  x = c_textmargin_left,
+#                                  y = unit(1, "npc") - grid::grobHeight(grob_title) - c_textmargin_top - c_textmargin_mid,
+#                                  just = c("left", "top"),
+#                                  # set aesthetic variables
+#                                  gp = gpar(fontsize=11,
+#                                            fontfamily=cmapplot_globals$font_reg,
+#                                            fontface=cmapplot_globals$font_reg_face,
+#                                            lineheight=0.93))
 
 # # # ALTERNATIVE, MORE COMPLICATED LAYOUT
 # # establish layout of viewports to draw into
