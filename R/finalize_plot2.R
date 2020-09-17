@@ -2,10 +2,10 @@
 #library(cowplot)
 #library(gtable)
 
-#' @importFrom grid gpar unit
+#' @importFrom grid gpar unit unit.c
 #'
 
-# # SAMPLE CODE
+# SAMPLE CODE
 # myplot <- ggplot(economy_basic, aes(x = interaction(year, variable), y = value, fill = sector)) +
 #   geom_col(position = "fill") +
 #   scale_y_continuous(labels = scales::percent) + theme_cmap() +
@@ -15,16 +15,33 @@
 #         )
 # finalize_plot2(myplot, "title \ntwo lines", "subtitle \nkeeps going \nand going!")
 
-
+#' @export
 finalize_plot2 <- function(plot = ggplot2::last_plot(),
                            title = "Title here",
                            subtitle = "Subtitle here",
-                           # below are not implemented yet in the function
+                           mode = c("plot", "newwindow", "output"), # expand to include output formats (e.g. svg, pdf, etc)?
                            width = 670,
                            height = 300,
                            title_width = 200){
 
+  mode <- match.arg(mode)
+
+  # TEMPORARY convert pixel sizes into something managable
+  width <- width / 2
+  height <- height / 2
+  title_width <- title_width / 2
+
+  # function constants
+  c_topbar_lwd <- unit(3, "points") # width (points) of top line
+  c_textmargin_left <- unit(2, "points") # margin (points) to left of title and subtitle text
+  c_textmargin_top <- unit(10, "points") # margin (points) between top line and title
+  c_textmargin_mid <- unit(10, "points") # margin (points) between title and subtitle
+
+
   # implement text wrapping for title and subtitle here
+
+
+
 
 
   # establish rectangle grob for top line
@@ -32,9 +49,11 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
 
   # establish title grob
   grob_title <-  grid::textGrob(label = title,
-                                x = unit(2, "points"), # places the title x point in from left margin
-                                y = unit(1, "npc") - unit(10, "points"), # places title at top of area, less a x point margin
-                                just = c("left", "top"), # x and y specify the left and top corner of the Grob
+                                # set top left location of grob
+                                x = c_textmargin_left,
+                                y = unit(1, "npc") - c_textmargin_top,
+                                just = c("left", "top"),
+                                # set aesthetic variables
                                 gp = gpar(fontsize=17,
                                           fontfamily=cmapplot_globals$font_title,
                                           fontface=cmapplot_globals$font_title_face,
@@ -42,9 +61,11 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
 
   # establish subtitle grob
   grob_subtitle <-  grid::textGrob(label = subtitle,
-                                   x = unit(2, "points"), # places the title x point in from left margin
-                                   y = unit(1, "npc") - unit(20, "points") - grid::grobHeight(grob_title), # places subtitle at top of area, less title height, less a x point margin
-                                   just = c("left", "top"), # x and y specify the left and top corner of the Grob
+                                   # set top left location of grob
+                                   x = c_textmargin_left,
+                                   y = unit(1, "npc") - grid::grobHeight(grob_title) - c_textmargin_top - c_textmargin_mid,
+                                   just = c("left", "top"),
+                                   # set aesthetic variables
                                    gp = gpar(fontsize=11,
                                              fontfamily=cmapplot_globals$font_reg,
                                              fontface=cmapplot_globals$font_reg_face,
@@ -57,16 +78,41 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
   # stitch together the final plot
   output <- gridExtra::arrangeGrob(grobs = list(grob_rect, grobTree(grob_title, grob_subtitle), myplot),
                                    layout_matrix = layout,
-                                   heights = unit(c(3, 200), "points"),
-                                   widths = unit(c(80, 220), "points"))
+                                   heights = unit.c(c_topbar_lwd, unit(height, "points") - c_topbar_lwd),
+                                   widths = unit(c(title_width, width - title_width), "points"))
+
+
+  # as debug tool, print viewport layouts to plot window
+  gtable::gtable_show_layout(output)
+
+
+  # output the figure based on user setting
+  if (mode == "object") {
+    # just return the output as a TableGrob
+    return(output)
+  } else if (mode == "plot") {
+    # print the grob to the plots window
+    grid::grid.newpage()
+    grid::grid.draw(output)
+  } else if (mode == "newwindow") {
+    # print the grob to a new graphics window
+    if (.Platform$OS.type == "windows") {
+      windows(width=(width*2/72),
+              height=(height*2/72))
+      grid::grid.newpage()
+      grid::grid.draw(output)
+    } else {
+      dev.new(width=(width*2/72),
+              height=(height*2/72),
+              noRStudioGD = TRUE)
+      return(output)
+    }
+  }
 
 
 
-  # for now--just print the grob to the plots window
-  grid::grid.newpage()
-  grid::grid.draw(output)
 
-  # gtable::gtable_show_layout(output)
+
 }
 
 
