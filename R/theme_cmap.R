@@ -66,13 +66,13 @@ theme_cmap <- function(
       # Default text
       text = ggplot2::element_text(family = cmapplot_globals$font_main,
                                    face = cmapplot_globals$font_main_face,
-                                   size = 14,
+                                   size = cmapplot_globals$font_sizes$main,
                                    color = cmapplot_globals$colors$blackish),
 
       # Title text
       plot.title = ggplot2::element_text(family = cmapplot_globals$font_title,
                                          face = cmapplot_globals$font_title_face,
-                                         size = 17),
+                                         size = cmapplot_globals$font_sizes$title),
 
       # Text elements not displayed
       plot.subtitle = ggplot2::element_blank(),
