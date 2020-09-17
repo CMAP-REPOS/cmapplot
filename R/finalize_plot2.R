@@ -48,7 +48,7 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                                                         unit(1, "points"), # bottom
                                                         c_textmargin_left),# left
                                        # set aesthetic variables
-                                       gp = gpar(fontsize=17,
+                                       gp = gpar(fontsize=cmapplot_globals$font_sizes$title,
                                                  fontfamily=cmapplot_globals$font_title,
                                                  fontface=cmapplot_globals$font_title_face,
                                                  lineheight=0.93)
@@ -69,7 +69,7 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                                                             unit(1, "points"), # bottom
                                                             c_textmargin_left),# left
                                            # set aesthetic variables
-                                           gp = gpar(fontsize=11,
+                                           gp = gpar(fontsize=cmapplot_globals$font_sizes$note,
                                                      fontfamily=cmapplot_globals$font_reg,
                                                      fontface=cmapplot_globals$font_reg_face,
                                                      lineheight=0.93)
@@ -130,7 +130,7 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
 #                               y = unit(1, "npc") - c_textmargin_top,
 #                               just = c("left", "top"),
 #                               # set aesthetic variables
-#                               gp = gpar(fontsize=17,
+#                               gp = gpar(fontsize=cmapplot_globals$font_sizes$title,
 #                                         fontfamily=cmapplot_globals$font_title,
 #                                         fontface=cmapplot_globals$font_title_face,
 #                                         lineheight=0.93))
@@ -141,7 +141,7 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
 #                                  y = unit(1, "npc") - grid::grobHeight(grob_title) - c_textmargin_top - c_textmargin_mid,
 #                                  just = c("left", "top"),
 #                                  # set aesthetic variables
-#                                  gp = gpar(fontsize=11,
+#                                  gp = gpar(fontsize=cmapplot_globals$font_sizes$note,
 #                                            fontfamily=cmapplot_globals$font_reg,
 #                                            fontface=cmapplot_globals$font_reg_face,
 #                                            lineheight=0.93))
