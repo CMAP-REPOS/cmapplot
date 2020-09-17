@@ -7,7 +7,7 @@
 #   geom_col(position = "fill") +
 #   scale_y_continuous(labels = scales::percent) + theme_cmap()
 #
-# finalize_plot2(myplot, "title is<br>long so it might take many lines", "subtitle keeps going and going!")
+finalize_plot2(myplot, "title is long so it might take many lines", "subtitle keeps going and going!")
 
 #' @export
 finalize_plot2 <- function(plot = ggplot2::last_plot(),
@@ -15,15 +15,15 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                            subtitle = "Subtitle here",
                            mode = c("plot", "newwindow", "output"), # expand to include output formats (e.g. svg, pdf, etc)?
                            width = 670,
-                           height = 300,
-                           title_width = 200){
+                           height = 400,
+                           title_width = 150){
 
   mode <- match.arg(mode)
 
-  # TEMPORARY convert pixel sizes into something managable
-  width <- width / 2
-  height <- height / 2
-  title_width <- title_width / 2
+  # TEMPORARY convert pixel sizes into something manageable
+  # width <- width / 2
+  # height <- height / 2
+  # title_width <- title_width / 2
 
   # function constants
   # (***should these be function arguments?***)
@@ -33,7 +33,9 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
   c_textmargin_mid <- unit(10, "points") # margin between title and subtitle
 
   # establish rectangle grob for top line
-  grob_rect <- grid::rectGrob(gp=gpar(fill = cmapplot_globals$colors$blackish, lwd=0))
+  grob_topline <- grid::rectGrob(gp=gpar(fill = cmapplot_globals$colors$blackish,
+                                         col = "white",
+                                         lwd=0))
 
   # establish title grob
   grob_title <- gridtext::textbox_grob(text = title,
@@ -75,14 +77,21 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                                                      lineheight=0.93)
                                            # # for debug, draw box around grob
                                            # , box_gp = gpar(col = "blue", fill = "lavenderblush")
-                                           )
+  )
+
+  # add margin between plot elements and titles
+  final_plot <- myplot +
+    theme(plot.margin = unit(c(5,5,5,15),"pt"))
 
   # establish matrix shape for three viewports
   layout = rbind(c(1,1),
-                  c(2,3))
+                 c(2,3))
+
 
   # stitch together the final plot
-  output <- gridExtra::arrangeGrob(grobs = list(grob_rect, grobTree(grob_title, grob_subtitle), myplot),
+  output <- gridExtra::arrangeGrob(grobs = list(grob_topline,
+                                                grobTree(grob_title, grob_subtitle),
+                                                final_plot),
                                    layout_matrix = layout,
                                    heights = unit.c(c_topbar_lwd, unit(height, "points") - c_topbar_lwd),
                                    widths = unit(c(title_width, width - title_width), "points"))
