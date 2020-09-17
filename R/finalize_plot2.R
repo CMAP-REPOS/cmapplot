@@ -1,9 +1,4 @@
-#library(ggpubr)
-#library(cowplot)
-#library(gtable)
-
 #' @importFrom grid gpar unit unit.c
-#'
 
 # for documentation - title and subtitle text takes HTML. Use <br> to force line breaks.
 
