@@ -128,7 +128,7 @@ finalize_plot <- function(plot,
                           gp=grid::gpar(col='black',
                                         lwd=3))
 
-  space <- grid::rectGrob(width = 1, gp=gpar(fill='white',lwd=0))
+  space <- grid::rectGrob(width = 1, gp=grid::gpar(fill='white',lwd=0))
 
   bottom <- ggpubr::ggarrange(side, space, plot,
                     ncol=3, nrow=1,
