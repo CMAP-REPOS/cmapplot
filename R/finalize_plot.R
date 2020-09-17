@@ -77,13 +77,13 @@ create_title_block <- function (title, subtitle, sheight) {
   title_block <- grid::grobTree(
                                 grid::textGrob(title,
                                                x = 0.1, hjust = 0, y = 1, vjust = 1,
-                                               gp = grid::gpar(fontsize=17,
+                                               gp = grid::gpar(fontsize=cmapplot_globals$font_sizes$title,
                                                                fontfamily=cmapplot_globals$font_title,
                                                                fontface=cmapplot_globals$font_title_face,
                                                                lineheight=0.93)),
                                 grid::textGrob(subtitle,
                                                x = 0.1, hjust = 0, vjust = 1, y = sheight,
-                                               gp = grid::gpar(fontsize=11,
+                                               gp = grid::gpar(fontsize=cmapplot_globals$font_sizes$note,
                                                                fontfamily=cmapplot_globals$font_reg,
                                                                fontface=cmapplot_globals$font_reg_face,
                                                                lineheight=1))
@@ -128,7 +128,7 @@ finalize_plot <- function(plot,
                           gp=grid::gpar(col='black',
                                         lwd=3))
 
-  space <- grid::rectGrob(width = 1, gp=grid::gpar(fill='white',lwd=0))
+  space <- grid::rectGrob(width = 1, gp=grid::gpar(fill='white',col='white',lwd=0))
 
   bottom <- ggpubr::ggarrange(side, space, plot,
                     ncol=3, nrow=1,
