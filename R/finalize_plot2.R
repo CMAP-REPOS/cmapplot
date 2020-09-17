@@ -7,16 +7,75 @@
 #   geom_col(position = "fill") +
 #   scale_y_continuous(labels = scales::percent) + theme_cmap()
 #
-finalize_plot2(myplot, "title is long so it might take many lines", "subtitle keeps going and going!")
+# finalize_plot2(myplot, "title is<br>long so it might take many lines", "subtitle keeps going and going!")
+
+
+
+# testing testing testing
+title <- "Change in labor force size per 1,000 residents, by age, Chicago and select Metropolitan Statistical Areas, 2006-10 to 2013-17"
+subtitle <- "Source: Chicago Metropolitan Agency for Planning analysis of National Highway Traffic Safety Administration Corporate Average Fuel Economy Fact Sheets; Illinois Department of Transportation data; 2009 National Household Travel Survey data."
+
+
+finalize_plot2(myplot,title,subtitle,mode="save",save_filepath = "foo.png",type = "ppt", height = 400)
+
+
+
+
+### Actual code below
+
+save_plot <- function (plot_grid, save_filepath, type, height=NA) {
+  # use 72 px/in conversion
+  width_pixels = 670
+
+  if (!type %in% c("web","word",'ppt')) {
+    stop("Type must be 'web', 'word', or 'ppt'")
+  }
+
+  if (type == 'web'){
+    if (grepl('.svg',save_filepath) == FALSE) {
+      paste(save_filepath, '.svg', sep='')
+    }
+  }
+
+  if (type == 'word'){
+    if (grepl('.tiff',save_filepath) == FALSE) {
+      paste(save_filepath, '.tiff', sep='')
+    }
+    if (height > 400){
+      warning("max height is 400 px for this type")
+    }
+  }
+
+  if (type == 'ppt'){
+    if (grepl('.png',save_filepath) == FALSE) {
+      paste(save_filepath, '.png', sep='')
+    }
+    if (height > 400){
+      warning("max height is 400 px for this type")
+    }
+  }
+
+  grid::grid.draw(plot_grid)
+
+  #save it
+  ggplot2::ggsave(filename = save_filepath,
+                  plot=plot_grid,
+                  width=(width_pixels/72), height=(height/72),
+                  dpi = 72,
+                  bg="white")
+}
+
 
 #' @export
 finalize_plot2 <- function(plot = ggplot2::last_plot(),
                            title = "Title here",
                            subtitle = "Subtitle here",
-                           mode = c("plot", "newwindow", "output"), # expand to include output formats (e.g. svg, pdf, etc)?
+                           mode = c("plot", "newwindow", "save"), # expand to include save formats (e.g. svg, pdf, etc)?
                            width = 670,
                            height = 400,
-                           title_width = 150){
+                           title_width = 150,
+                           save_filepath,
+                           type = c("ppt","web","word")){
 
   mode <- match.arg(mode)
 
@@ -27,10 +86,10 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
 
   # function constants
   # (***should these be function arguments?***)
-  c_topbar_lwd <- unit(3, "points") # width of top line
-  c_textmargin_left <- unit(2, "points") # margin to left of title and subtitle text
-  c_textmargin_top <- unit(5, "points") # margin between top line and title
-  c_textmargin_mid <- unit(10, "points") # margin between title and subtitle
+  c_topbar_lwd <- unit(3,"bigpts") # width of top line
+  c_textmargin_left <- unit(2,"bigpts") # margin to left of title and subtitle text
+  c_textmargin_top <- unit(5,"bigpts") # margin between top line and title
+  c_textmargin_mid <- unit(10,"bigpts") # margin between title and subtitle
 
   # establish rectangle grob for top line
   grob_topline <- grid::rectGrob(gp=gpar(fill = cmapplot_globals$colors$blackish,
@@ -46,8 +105,8 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                                        vjust = 1,
                                        # set margins within textbox
                                        padding = unit.c(c_textmargin_top, # top
-                                                        unit(1, "points"), # right
-                                                        unit(1, "points"), # bottom
+                                                        unit(1, "bigpts"), # right
+                                                        unit(1, "bigpts"), # bottom
                                                         c_textmargin_left),# left
                                        # set aesthetic variables
                                        gp = gpar(fontsize=cmapplot_globals$font_sizes$title,
@@ -67,8 +126,8 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                                            vjust = 1,
                                            # set margins within textbox
                                            padding = unit.c(c_textmargin_mid, # top
-                                                            unit(1, "points"), # right
-                                                            unit(1, "points"), # bottom
+                                                            unit(1, "bigpts"), # right
+                                                            unit(1, "bigpts"), # bottom
                                                             c_textmargin_left),# left
                                            # set aesthetic variables
                                            gp = gpar(fontsize=cmapplot_globals$font_sizes$note,
@@ -79,9 +138,11 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                                            # , box_gp = gpar(col = "blue", fill = "lavenderblush")
   )
 
+  # TO BE ADDED : Size conversion for widths in line graphs
+
   # add margin between plot elements and titles
   final_plot <- myplot +
-    theme(plot.margin = unit(c(5,5,5,15),"pt"))
+    theme(plot.margin = unit(c(5,5,5,10),"pt"))
 
   # establish matrix shape for three viewports
   layout = rbind(c(1,1),
@@ -93,8 +154,8 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                                                 grobTree(grob_title, grob_subtitle),
                                                 final_plot),
                                    layout_matrix = layout,
-                                   heights = unit.c(c_topbar_lwd, unit(height, "points") - c_topbar_lwd),
-                                   widths = unit(c(title_width, width - title_width), "points"))
+                                   heights = unit.c(c_topbar_lwd, unit(height, "bigpts") - c_topbar_lwd),
+                                   widths = unit(c(title_width, width - title_width), "bigpts"))
 
 
   # # as debug tool, print viewport layouts to plot window
@@ -105,20 +166,23 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
   if (mode == "object") {
     # just return the output as a TableGrob
     return(output)
-  } else if (mode == "plot") {
+  } else if (mode == "save") {
+    save_plot(output,save_filepath,type,height)
+  }
+  else if (mode == "plot") {
     # print the grob to the plots window
     grid::grid.newpage()
     grid::grid.draw(output)
   } else if (mode == "newwindow") {
     # print the grob to a new graphics window
     if (.Platform$OS.type == "windows") {
-      windows(width=(width*2/72),
-              height=(height*2/72))
+      windows(width=(width/72),
+              height=(height/72))
       grid::grid.newpage()
       grid::grid.draw(output)
     } else {
-      dev.new(width=(width*2/72),
-              height=(height*2/72),
+      dev.new(width=(width/72),
+              height=(height/72),
               noRStudioGD = TRUE)
       return(output)
     }
