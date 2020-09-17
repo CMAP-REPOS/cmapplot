@@ -28,11 +28,12 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
   height <- height / 2
   title_width <- title_width / 2
 
-  # function constants (***should these be function arguments?)
-  c_topbar_lwd <- unit(3, "points") # width (points) of top line
-  c_textmargin_left <- unit(2, "points") # margin (points) to left of title and subtitle text
-  c_textmargin_top <- unit(5, "points") # margin (points) between top line and title
-  c_textmargin_mid <- unit(10, "points") # margin (points) between title and subtitle
+  # function constants
+  # (***should these be function arguments?***)
+  c_topbar_lwd <- unit(3, "points") # width of top line
+  c_textmargin_left <- unit(2, "points") # margin to left of title and subtitle text
+  c_textmargin_top <- unit(5, "points") # margin between top line and title
+  c_textmargin_mid <- unit(10, "points") # margin between title and subtitle
 
   # establish rectangle grob for top line
   grob_rect <- grid::rectGrob(gp=gpar(fill = cmapplot_globals$colors$blackish, lwd=0))
