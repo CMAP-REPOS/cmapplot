@@ -20,12 +20,24 @@ Please report issues and suggest improvements at Github:
 
 \url{https://github.com/CMAP-REPOS/cmapplot}
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://cmap-repos.github.io/cmapplot}
+}
+
+}
 \author{
-\strong{Maintainer}: Noel Peterson \email{npeterson@cmap.illinois.gov} (\href{https://orcid.org/0000-0003-1290-2362}{ORCID})
+\strong{Maintainer}: Matthew Stern \email{mstern@cmap.illinois.gov}
 
 Authors:
 \itemize{
-  \item Matthew Stern \email{mstern@cmap.illinois.gov}
+  \item Noel Peterson \email{npeterson@cmap.illinois.gov} (\href{https://orcid.org/0000-0003-1290-2362}{ORCID})
+}
+
+Other contributors:
+\itemize{
+  \item Chicago Metropolitan Agency for Planning [copyright holder]
 }
 
 }
