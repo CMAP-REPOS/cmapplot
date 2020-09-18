@@ -96,7 +96,7 @@
 <p><img src="reference/figures/README-unnamed-chunk-4-1.png"><!-- --></p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
 <span class="co"># a stacked bar chart</span>
-<span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="kw">traded_emp_by_race</span>, <span class="kw">variable</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"SpecializedTraded"</span>, <span class="st">"UnspecializedTraded"</span>)) <span class="op">%&gt;%</span>
+<span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">traded_emp_by_race</span>, <span class="kw">variable</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"SpecializedTraded"</span>, <span class="st">"UnspecializedTraded"</span>)) <span class="op">%&gt;%</span>
   <span class="fu">ggplot</span>(<span class="fu">aes</span>(x = <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span>(<span class="kw">Race</span>, <span class="op">-</span><span class="kw">value</span>), y = <span class="kw">value</span>, fill = <span class="kw">variable</span>)) <span class="op">+</span>
     <span class="fu">geom_col</span>(position = <span class="fu">position_stack</span>(reverse = <span class="fl">TRUE</span>)) <span class="op">+</span>
     <span class="fu">scale_y_continuous</span>(labels = <span class="kw">scales</span>::<span class="kw"><a href="https://scales.r-lib.org//reference/label_percent.html">percent</a></span>) <span class="op">+</span>
@@ -162,7 +162,7 @@
 <p>Add continuous palettes by adding either a <code>cmap_fill_continuous</code> or <code>cmap_color_continuous</code> object to a ggplot. For example:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit">
 <span class="kw">percentile_wages</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="kw">cluster</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Biopharmaceuticals"</span>, <span class="st">"Hospitality and Tourism"</span>, <span class="st">"Paper and Packaging"</span>)) <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">cluster</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Biopharmaceuticals"</span>, <span class="st">"Hospitality and Tourism"</span>, <span class="st">"Paper and Packaging"</span>)) <span class="op">%&gt;%</span> 
   <span class="fu">ggplot</span>(<span class="fu">aes</span>(x = <span class="kw">cluster</span>, y = <span class="kw">wage</span>, color = <span class="kw">percentile</span>)) <span class="op">+</span>
     <span class="fu">geom_point</span>(size = <span class="fl">5</span>) <span class="op">+</span>
     <span class="fu">scale_y_continuous</span>(labels = <span class="kw">scales</span>::<span class="kw"><a href="https://scales.r-lib.org//reference/label_dollar.html">dollar</a></span>) <span class="op">+</span>
