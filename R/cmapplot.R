@@ -15,7 +15,7 @@
 #'
 #' @name cmapplot
 #' @docType package
-#' @import ggplot2 dplyr grid scales grDevices graphics rlang gridExtra svglite gridtext
+#' @import ggplot2 dplyr grid scales grDevices graphics rlang
 #' @importFrom glue glue glue_collapse
 #' @importFrom lubridate date_decimal
 #' @keywords internal
@@ -39,25 +39,25 @@ if (.Platform$OS.type == "windows") {
 
   if (cmapplot_globals$use_whitney) {
     grDevices::windowsFonts(
-      sans = "Whitney Medium",  # Override the default font (Arial)
-      font_reg = "Whitney Medium",
-      font_lite = "Whitney Book",
-      font_sbold = "Whitney Semibold"
+      sans = windowsFont("Whitney Medium"),  # Override the default font (Arial)
+      font_reg = windowsFont("Whitney Medium"),
+      font_lite = windowsFont("Whitney Book"),
+      font_sbold = windowsFont("Whitney Semibold")
     )
   } else {
     message("WARNING: Whitney is not installed on this PC, so CMAP theme will default to Calibri")
     grDevices::windowsFonts(
-      sans = "Calibri",  # Override the default font (Arial)
-      font_reg = "Calibri",
-      font_lite = "Calibri Light",
-      font_sbold = "Calibri"  # No separate semibold/bold font for Calibri
+      sans = windowsFont("Calibri"),  # Override the default font (Arial)
+      font_reg = windowsFont("Calibri"),
+      font_lite = windowsFont("Calibri Light"),
+      font_sbold = windowsFont("Calibri")  # No separate semibold/bold font for Calibri
     )
   }
 
-  cmapplot_globals$font_main <- "font_reg"  # "medium" weight for in-body text and x/y axis
-  cmapplot_globals$font_note <- "font_lite"  # "book" weight for notes and sources
-  cmapplot_globals$font_title <- "font_sbold"  # "semibold" weight for title
-  cmapplot_globals$font_label <- "font_sbold"  # "semibold" weight also for labels
+  cmapplot_globals$font_main <- windowsFonts("font_reg")  # "medium" weight for in-body text and x/y axis
+  cmapplot_globals$font_note <- windowsFonts("font_lite")  # "book" weight for notes and sources
+  cmapplot_globals$font_title <- windowsFonts("font_sbold")  # "semibold" weight for title
+  cmapplot_globals$font_label <- windowsFonts("font_sbold")  # "semibold" weight also for labels
   if (cmapplot_globals$use_whitney) {
     cmapplot_globals$font_main_face <- "plain"
     cmapplot_globals$font_note_face <- "plain"
@@ -80,10 +80,10 @@ if (.Platform$OS.type == "windows") {
     sans = grDevices::X11Fonts()$Arial  # Just give in and use Arial for everything :(
    )
 
-  cmapplot_globals$font_main <- "sans"  # "medium" weight for in-body text and x/y axis
-  cmapplot_globals$font_note <- "sans"  # "book" weight for notes and sources
-  cmapplot_globals$font_title <- "sans"  # "semibold" weight for title
-  cmapplot_globals$font_label <- "sans"  # "semibold" weight also for labels
+  cmapplot_globals$font_main <- X11Fonts("sans")  # "medium" weight for in-body text and x/y axis
+  cmapplot_globals$font_note <- X11Fonts("sans")  # "book" weight for notes and sources
+  cmapplot_globals$font_title <- X11Fonts("sans")  # "semibold" weight for title
+  cmapplot_globals$font_label <- X11Fonts("sans")  # "semibold" weight also for labels
 
   cmapplot_globals$font_main_face <- "plain"
   cmapplot_globals$font_note_face <- "plain"
@@ -112,9 +112,12 @@ check_cmap_fonts <- function() {
 
 # Plot sizes and colors ---------------------------------------------------
 
-# Helper function to calculate correct size for ggplot inputs. Takes two inputs:
-# a value (numeric) and a type (character). The type can be any of the units
-# accepted by `grid::unit()`, including "pt", "mm", and "in".
+#' Helper function to calculate correct size for ggplot inputs. Takes two inputs:
+#' a value (numeric) and a type (character). The type can be any of the units
+#' accepted by `grid::unit()`, including "pt", "mm", and "in".
+#' @param value Numeric, the value to be converted.
+#' @param type Char, the unit of the value to be converted.
+#' @noRd
 ggplot_size_conversion <- function(value, type) {
     value_in_pt <- grid::convertUnit(grid::unit(value, type), "points", valueOnly = TRUE)
     return(
