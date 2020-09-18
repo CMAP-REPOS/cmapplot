@@ -19,18 +19,18 @@
 #'
 #'
 #' @examples
-# title <- "Change in labor force size per 1,000 residents, by age, Chicago and select Metropolitan Statistical Areas, 2006-10 to 2013-17"
-# subtitle <- "Source: Chicago Metropolitan Agency for Planning analysis of National Highway Traffic Safety Administration Corporate Average Fuel Economy Fact Sheets; Illinois Department of Transportation data; 2009 National Household Travel Survey data."
-#
-# myplot <- ggplot(economy_basic, aes(x = interaction(year, variable), y = value, fill = sector)) +
-#   geom_col(position = "fill") +
-#   scale_y_continuous(labels = scales::percent) + theme_cmap()
-#
-#
-# finalize_plot(myplot, title, subtitle, action='save', type='web', titlewraplen = 14, subtitleheight = 0.55, save_filepath = '/Users/sarahbuchhorn/Desktop/test7.png')
+#' title <- "Change in labor force size per 1,000 residents, by age, Chicago and select Metropolitan Statistical Areas, 2006-10 to 2013-17"
+#' subtitle <- "Source: Chicago Metropolitan Agency for Planning analysis of National Highway Traffic Safety Administration Corporate Average Fuel Economy Fact Sheets; Illinois Department of Transportation data; 2009 National Household Travel Survey data."
+#'
+#' myplot <- ggplot(economy_basic, aes(x = interaction(year, variable), y = value, fill = sector)) +
+#'   geom_col(position = "fill") +
+#'   scale_y_continuous(labels = scales::percent) + theme_cmap()
+#'
+#'
+#' finalize_plot(myplot, title, subtitle, action='save', type='web', titlewraplen = 14, subtitleheight = 0.55, save_filepath = '/Users/sarahbuchhorn/Desktop/test7.png')
 
 
-
+#' @noRd
 save_plot <- function (plot_grid, save_filepath, type, height=NA) {
   # use 72 px/in conversion
   width_pixels = 670
