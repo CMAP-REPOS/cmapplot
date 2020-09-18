@@ -7,82 +7,61 @@
 #   geom_col(position = "fill") +
 #   scale_y_continuous(labels = scales::percent) + theme_cmap()
 #
-# finalize_plot2(myplot, "title is<br>long so it might take many lines", "subtitle keeps going and going!")
+# finalize_plot2(myplot, "title is<br>long so it might take many lines", "subtitle keeps going and going!", mode = "png", filepath = "foo.png")
 
 
 
-# testing testing testing
-title <- "Change in labor force size per 1,000 residents, by age, Chicago and select Metropolitan Statistical Areas, 2006-10 to 2013-17"
-subtitle <- "Source: Chicago Metropolitan Agency for Planning analysis of National Highway Traffic Safety Administration Corporate Average Fuel Economy Fact Sheets; Illinois Department of Transportation data; 2009 National Household Travel Survey data."
-
-
-finalize_plot2(myplot,title,subtitle,mode="save",save_filepath = "foo.png",type = "ppt", height = 400)
+# # testing testing testing
+# title <- "Change in labor force size per 1,000 residents, by age, Chicago and select Metropolitan Statistical Areas, 2006-10 to 2013-17"
+# subtitle <- "Source: Chicago Metropolitan Agency for Planning analysis of National Highway Traffic Safety Administration Corporate Average Fuel Economy Fact Sheets; Illinois Department of Transportation data; 2009 National Household Travel Survey data."
+#
+#
+# finalize_plot2(myplot,title,subtitle,mode="save",save_filepath = "foo.png",type = "ppt", height = 400)
 
 
 
 
 ### Actual code below
 
-save_plot <- function (plot_grid, save_filepath, type, height=NA) {
-  # use 72 px/in conversion
-  width_pixels = 670
-
-  if (!type %in% c("web","word",'ppt')) {
-    stop("Type must be 'web', 'word', or 'ppt'")
-  }
-
-  if (type == 'web'){
-    if (grepl('.svg',save_filepath) == FALSE) {
-      paste(save_filepath, '.svg', sep='')
-    }
-  }
-
-  if (type == 'word'){
-    if (grepl('.tiff',save_filepath) == FALSE) {
-      paste(save_filepath, '.tiff', sep='')
-    }
-    if (height > 400){
-      warning("max height is 400 px for this type")
-    }
-  }
-
-  if (type == 'ppt'){
-    if (grepl('.png',save_filepath) == FALSE) {
-      paste(save_filepath, '.png', sep='')
-    }
-    if (height > 400){
-      warning("max height is 400 px for this type")
-    }
-  }
-
-  grid::grid.draw(plot_grid)
-
-  #save it
-  ggplot2::ggsave(filename = save_filepath,
-                  plot=plot_grid,
-                  width=(width_pixels/72), height=(height/72),
-                  dpi = 72,
-                  bg="white")
-}
-
 
 #' @export
 finalize_plot2 <- function(plot = ggplot2::last_plot(),
                            title = "Title here",
                            subtitle = "Subtitle here",
-                           mode = c("plot", "newwindow", "save"), # expand to include save formats (e.g. svg, pdf, etc)?
+                           mode = c("plot", "newwindow", "object", "svg", "png", "tiff"),
                            width = 670,
                            height = 400,
                            title_width = 150,
-                           save_filepath,
-                           type = c("ppt","web","word")){
+                           filepath = NULL
+                           ){
 
+  # Validation and initialization -----------------------------
+
+  # check mode argument
   mode <- match.arg(mode)
 
-  # TEMPORARY convert pixel sizes into something manageable
-  # width <- width / 2
-  # height <- height / 2
-  # title_width <- title_width / 2
+  # validate output details
+  savetypes <- c("svg", "png", "tiff")
+  if(mode %in% savetypes){
+    # check for filepath
+    if(is.null(filepath)){stop("You must specify a filepath in save mode")}
+
+    # if extension does not contain correct extension, add it.
+    if(!grepl(paste0("//.", mode, "$"), filepath)){
+      filepath <- paste0(filepath, ".", mode)
+    }
+
+    # if mode is SVG, confirm svglite package.
+    if(mode == "svg"){
+      if (!("svglite" %in% rownames(installed.packages()))) {
+        stop("To export as SVG, package `svglite` is required.")
+      }
+    }
+  }
+
+  # validate height and width
+  if(width != 670){warning("Width should typically be 670 px exactly.")}
+  if(height > 400){warning("Height should typically be 400 px or less.")}
 
   # function constants
   # (***should these be function arguments?***)
@@ -90,13 +69,23 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
   c_textmargin_left <- unit(2,"bigpts") # margin to left of title and subtitle text
   c_textmargin_top <- unit(5,"bigpts") # margin between top line and title
   c_textmargin_mid <- unit(10,"bigpts") # margin between title and subtitle
+  c_plotmargins <- unit(c(5,5,5,10),"bigpts") #margins around plot, clockwise from top
 
-  # establish rectangle grob for top line
+  # modify the plot a bit
+  plot <- plot + theme(plot.margin = c_plotmargins,
+                       plot.title = ggplot2::element_blank())
+
+  # TO BE ADDED : Size conversion for widths in line graphs
+
+
+  # Build necessary grobs -----------------------------------------------------
+
+  # rectangle grob for top line
   grob_topline <- grid::rectGrob(gp=gpar(fill = cmapplot_globals$colors$blackish,
                                          col = "white",
                                          lwd=0))
 
-  # establish title grob
+  # title grob
   grob_title <- gridtext::textbox_grob(text = title,
                                        # set top left location of grob
                                        x = unit(0, "npc"),
@@ -117,7 +106,7 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                                        # , box_gp = gpar(col = "blue", fill = "cornsilk")
                                        )
 
-  # establish subtitle grob
+  # subtitle grob
   grob_subtitle <-  gridtext::textbox_grob(text = subtitle,
                                            # set top left location of grob
                                            x = unit(0, "npc"),
@@ -138,11 +127,8 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                                            # , box_gp = gpar(col = "blue", fill = "lavenderblush")
   )
 
-  # TO BE ADDED : Size conversion for widths in line graphs
 
-  # add margin between plot elements and titles
-  final_plot <- myplot +
-    theme(plot.margin = unit(c(5,5,5,10),"pt"))
+  # Assemble final plot -----------------------------------------------------
 
   # establish matrix shape for three viewports
   layout = rbind(c(1,1),
@@ -152,7 +138,7 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
   # stitch together the final plot
   output <- gridExtra::arrangeGrob(grobs = list(grob_topline,
                                                 grobTree(grob_title, grob_subtitle),
-                                                final_plot),
+                                                plot),
                                    layout_matrix = layout,
                                    heights = unit.c(c_topbar_lwd, unit(height, "bigpts") - c_topbar_lwd),
                                    widths = unit(c(title_width, width - title_width), "bigpts"))
@@ -162,19 +148,26 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
   # gtable::gtable_show_layout(output)
 
 
-  # output the figure based on user setting
+  # output the figure based on user setting -----------------------------------
+
   if (mode == "object") {
-    # just return the output as a TableGrob
+    # return output as TableGrob object
     return(output)
-  } else if (mode == "save") {
-    save_plot(output,save_filepath,type,height)
-  }
-  else if (mode == "plot") {
-    # print the grob to the plots window
+  } else if (mode %in% savetypes) {
+    # OR send to ggsave
+    ggplot2::ggsave(filename = filepath,
+                    plot = output,
+                    width = (width/72),
+                    height=(height/72),
+                    dpi = 72,
+                    bg="white")
+    message("Export successful")
+  } else if (mode == "plot") {
+    # OR print the grob to the plots window
     grid::grid.newpage()
     grid::grid.draw(output)
   } else if (mode == "newwindow") {
-    # print the grob to a new graphics window
+    # OR print the grob to a new graphics window
     if (.Platform$OS.type == "windows") {
       windows(width=(width/72),
               height=(height/72))
@@ -187,10 +180,6 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
       return(output)
     }
   }
-
-
-
-
 
 }
 
