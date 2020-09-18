@@ -1,37 +1,83 @@
-#' @importFrom grid gpar unit unit.c
-
-# for documentation - title and subtitle text takes HTML. Use <br> to force line breaks.
-
-# # SAMPLE CODE
-# myplot <- ggplot(economy_basic, aes(x = interaction(year, variable), y = value, fill = sector)) +
-#   geom_col(position = "fill") +
-#   scale_y_continuous(labels = scales::percent) + theme_cmap()
-# #
-# finalize_plot2(myplot, "title is<br>long so it might take many lines", "subtitle keeps going, and going, and going!", mode = "svg", filepath = "foo.svg")
-#
-#
-#
-# # # testing testing testing
-# title <- "Change in labor force size per 1,000 residents, by age, Chicago and select Metropolitan Statistical Areas, 2006-10 to 2013-17"
-# subtitle <- "Source: Chicago Metropolitan Agency for Planning analysis of National Highway Traffic Safety Administration Corporate Average Fuel Economy Fact Sheets; Illinois Department of Transportation data; 2009 National Household Travel Survey data."
-#
-#
-# finalize_plot2(myplot,title,subtitle,filepath = "foo",mode = "pdf", height = 400)
-#
-#
-# myplot2 <- transit_ridership %>%
-#   ggplot(aes(x = year, y = ridership, color = system)) +
-#   geom_line() +
-#   theme_cmap()
-#
-# title2 <- "Transit ridership in the RTA region over time, 1980-2019 (in millions)"
-# subtitle2 <- "Source: Chicago Metropolitan Agency for Planning analysis of data from the Regional Transit Authority"
-#
-# finalize_plot2(myplot2,title2,subtitle2,filepath = "too", mode="png")
-
-### Actual code below
-
-
+#' Arrange and save CMAP ggplot chart
+#'
+#' '\code{finalize_plot2} will save your plot with CMAP infographic standards.
+#' It will align your title and subtitle to the left, add a horizontal line on
+#' top, and make other adjustments to align with CMAP infographic standards. If
+#' instructed to do so, it will also save the plot in one of four file formats
+#' (png, tiff, png, and pdf) to a specified location.
+#'
+#' @param plot ggplot plot, the variable name of the plot you have created
+#'   that you want to finalize.
+#' @param title Char, the text you want to appear in the title block.
+#' @param subtitle Char, the text you want to appear in the subtitle block.
+#' @param mode Char, the action to be taken with the plot. Default is to view in
+#'   the window (using "plot"). Other options include "newwindow" (displays in a
+#'   new window), "object" (exports as grob object), or one of four file
+#'   extensions that can be saved (png, tiff, svg, and pdf).
+#' @param filepath Char, the filepath you want the plot to be saved to.  You can
+#'   specify an extension to use, or an extension will be added if you specify
+#'   it in "mode".
+#' @param width Numeric, the width in pixels for the image, including the title.
+#'   Default = 670.
+#' @param height Numeric, the height in pixels for the image. Default = 400.
+#' @param title_width Numeric, the width in pixels for the title. Default = 150.
+#' @param plot_margins Vector of units, the margins around the elements of the
+#'   plot within the plot object. This requires a vector of 4 "unit" elements,
+#'   defining the margins clockwise starting from the top. The default is 5, 5,
+#'   5, and 10 big points on the top, right, bottom, and left, respectively.
+#'   Inputs should be formatted as
+#'   grid::unit(c(`top`,`right`,`bottom`,`left`),"`units`")
+#'
+#' @importFrom grid gpar unit unit.c grobTree
+#' @importFrom utils installed.packages
+#'
+#' @examples
+#' \dontrun{
+#' econ_plot <-
+#'   cluster_jobchange %>%
+#'   ggplot(aes(x = reorder(name, jobchange), y = jobchange, fill = category)) +
+#'   theme_cmap(gridlines = "v", hline = 0) +
+#'   geom_col() +
+#'   coord_flip() +
+#'   scale_y_continuous(labels = scales::comma)
+#'
+#' econ_title <- "Change in employment in specified clusters in the Chicago
+#'   Metropolitan Statistical Area, 2001-17."
+#' econ_subtitle <- "Source: Chicago
+#'   Metropolitan Agency for Planning analysis of traded clusters."
+#'
+#' finalize_plot2(econ_plot,
+#'                econ_title,
+#'                econ_subtitle,
+#'                mode = "plot",
+#'                plot_margins = unit(c(5,20,5,10),"bigpts"))
+#'
+#' transit_plot <- transit_ridership %>%
+#'   mutate(system = case_when(
+#'     system == "cta_bus" ~ "CTA (Bus)",
+#'     system == "cta_rail" ~ "CTA (Rail)",
+#'     system == "metra" ~ "Metra",
+#'     system == "pace" ~ "Pace",
+#'     system == "pace_ada" ~ "Paratransit"
+#'   )) %>%
+#'   ggplot(aes(x = year, y = ridership, color = system)) +
+#'   geom_line() +
+#'   theme_cmap()
+#'
+#' transit_title <- "Transit ridership in the RTA region over time, 1980-2019
+#'   (in millions)"
+#' transit_subtitle <- "Source: Chicago Metropolitan Agency for Planning
+#'   analysis of data from the Regional Transportation Authority."
+#'
+#' finalize_plot2(transit_plot,
+#'                transit_title,
+#'                transit_subtitle,
+#'                mode="pdf",
+#'                filepath = "foo",
+#'                height = 300,
+#'                title_width = 200,
+#'                width = 800)
+#'}
 #' @export
 finalize_plot2 <- function(plot = ggplot2::last_plot(),
                            title = "Title here",
@@ -40,7 +86,8 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                            width = 670,
                            height = 400,
                            title_width = 150,
-                           filepath = NULL
+                           filepath = NULL,
+                           plot_margins = grid::unit(c(5,5,5,10),"bigpts")
                            ){
 
   # Validation and initialization -----------------------------
@@ -54,14 +101,14 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
     # check for filepath
     if(is.null(filepath)){stop("You must specify a filepath in save mode")}
 
-    # if extension does not contain correct extension, add it.
-    if(!grepl(paste0("//.", mode, "$"), filepath)){
+    # if extension does not contain correct extension, add it (accounting for different slashes in Windows/Unix)
+    if(!(grepl(paste0("//.",mode, "$"), filepath) | grepl(paste0("\\.",mode, "$"), filepath))){
       filepath <- paste0(filepath, ".", mode)
     }
 
     # if mode is SVG, confirm svglite package.
     if(mode == "svg"){
-      if (!("svglite" %in% rownames(installed.packages()))) {
+      if (!("svglite" %in% rownames(utils::installed.packages()))) {
         stop("To export as SVG, package `svglite` is required.")
       }
     }
@@ -77,21 +124,17 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
   c_textmargin_left <- grid::unit(2,"bigpts") # margin to left of title and subtitle text
   c_textmargin_top <- grid::unit(5,"bigpts") # margin between top line and title
   c_textmargin_mid <- grid::unit(10,"bigpts") # margin between title and subtitle
-  c_plotmargins <- grid::unit(c(5,5,5,10),"bigpts") #margins around plot, clockwise from top
 
-  # modify the plot a bit to fix margins
-  plot <- plot + theme(plot.margin = c_plotmargins,
-                       plot.title = ggplot2::element_blank())
-
-  # FLAG FOR REVIEW BY NOEL - Fix discrepancy in fonts for exporting to svg and pdf
-  if (.Platform$OS.type == "windows") {
-    plot <- plot + theme(text = element_text(family = windowsFonts(cmapplot_globals$font_main)))
-  } else {
-    plot <- plot + theme(text = element_text(family = X11Fonts(cmapplot_globals$font_main)))
-  }
+  # FLAG FOR REVIEW AND FURTHER THOUGHT - modify the plot a bit to fix margins
+  #  and text size on plot
+  plot <- plot + theme(plot.margin = plot_margins,
+                       plot.title = ggplot2::element_blank(),
+                       text = element_text(size = 17.5)) # for some reason, text
+    #  on the plot exports smaller than specified. 17.5 appears to export as 14
+    #  for (unclear) reasons.
 
   # Size conversion for widths in line graphs
-  old_lwd <- GeomLine$default_aes$size
+  default_lwd <- GeomLine$default_aes$size
   update_geom_defaults("line", list(size = cmapplot_globals$lwd_layout))
 
   # Build necessary grobs -----------------------------------------------------
@@ -102,7 +145,13 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                                          lwd=0))
 
   # title grob
-  grob_title <- gridtext::textbox_grob(text = title,
+                                              # note that color is defined using
+                                              # html-style "span" tags
+  grob_title <- gridtext::textbox_grob(text = paste0("<span style='color:",
+                                                     cmapplot_globals$colors$blackish,
+                                                     ";'>",
+                                                     title,
+                                                     "</span>"),
                                        # set top left location of grob
                                        x = grid::unit(0, "npc"),
                                        y = grid::unit(1, "npc"),
@@ -115,10 +164,7 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                                                               c_textmargin_left),# left
                                        # set aesthetic variables
                                        gp = grid::gpar(fontsize=cmapplot_globals$font_sizes$title,
-                                                       # FLAG FOR REVIEW BY NOEL - fix for font family that was causing problems in SVG and PDF exports
-                                                       fontfamily= if (.Platform$OS.type == "windows") {
-                                                         windowsFonts(cmapplot_globals$font_title)} else {
-                                                            X11Fonts(cmapplot_globals$font_title)},
+                                                       fontfamily=cmapplot_globals$font_title,
                                                        fontface=cmapplot_globals$font_title_face,
                                                        lineheight=0.93)
                                        # # for debug, draw box around grob
@@ -126,7 +172,13 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                                        )
 
   # subtitle grob
-  grob_subtitle <-  gridtext::textbox_grob(text = subtitle,
+                                           # note that color is defined using
+                                           # html-style "span" tags
+  grob_subtitle <-  gridtext::textbox_grob(text = paste0("<span style='color:",
+                                                         cmapplot_globals$colors$blackish,
+                                                         ";'>",
+                                                         subtitle,
+                                                         "</span>"),
                                            # set top left location of grob
                                            x = grid::unit(0, "npc"),
                                            y = grid::unit(1, "npc") - grid::grobHeight(grob_title),
@@ -139,11 +191,8 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                                                                   c_textmargin_left),# left
                                            # set aesthetic variables
                                            gp = grid::gpar(fontsize=cmapplot_globals$font_sizes$note,
-                                                           # FLAG FOR REVIEW BY NOEL - fix for font family that was causing problems in SVG and PDF exports
-                                                           fontfamily= if (.Platform$OS.type == "windows") {
-                                                             windowsFonts(cmapplot_globals$font_main)} else {
-                                                               X11Fonts(cmapplot_globals$font_main)},
-                                                           fontface=cmapplot_globals$font_main_face,
+                                                           fontfamily=cmapplot_globals$font_note,
+                                                           fontface=cmapplot_globals$font_note_face,
                                                            lineheight=0.93)
                                            # # for debug, draw box around grob
                                            # , box_gp = gpar(col = "blue", fill = "lavenderblush")
@@ -159,7 +208,7 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
 
   # stitch together the final plot
   output <- gridExtra::arrangeGrob(grobs = list(grob_topline,
-                                                grobTree(grob_title, grob_subtitle),
+                                                grid::grobTree(grob_title, grob_subtitle),
                                                 plot),
                                    layout_matrix = layout,
                                    heights = grid::unit.c(c_topbar_lwd,
@@ -208,7 +257,7 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
   }
 
   # return geom defaults as before
-  update_geom_defaults("line",list(size = old_lwd))
+  ggplot2::update_geom_defaults("line",list(size = default_lwd))
 }
 
 
