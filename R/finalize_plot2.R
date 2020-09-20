@@ -1,44 +1,46 @@
-#' Arrange and save CMAP ggplot chart
+#'Arrange and save CMAP ggplot chart
 #'
-#' '\code{finalize_plot2} will save your plot with CMAP infographic standards.
-#' It will align your title and subtitle to the left, add a horizontal line on
-#' top, and make other adjustments to align with CMAP infographic standards. If
-#' instructed to do so, it will also save the plot in one of four file formats
-#' (png, tiff, png, and pdf) to a specified location.
+#'\code{finalize_plot2} will save a ggplot into a frame defined by  CMAP design
+#'standards. It will align your title and subtitle to the left, add a horizontal
+#'line on top, and make other adjustments. If instructed to do so, it will also
+#'save the plot in one of four file formats (png, tiff, svg, and pdf) to a
+#'specified location. This function will not apply CMAP design standards to the
+#'plot itself: use with \code{theme_cmap()} for that.
 #'
-#' @param plot ggplot plot, the variable name of the plot you have created
-#'   that you want to finalize.
-#' @param title Char, the text you want to appear in the title block.
-#' @param subtitle Char, the text you want to appear in the subtitle block.
-#' @param mode Char, the action to be taken with the plot. Default is to view in
-#'   the window (using "plot"). Other options include "newwindow" (displays in a
-#'   new window), "object" (exports as grob object), or one of four file
-#'   extensions that can be saved (png, tiff, svg, and pdf).
-#' @param filepath Char, the filepath you want the plot to be saved to.  You can
-#'   specify an extension to use, or an extension will be added if you specify
-#'   it in "mode".
-#' @param width Numeric, the width in pixels for the image, including the title.
-#'   Default = 670.
-#' @param height Numeric, the height in pixels for the image. Default = 400.
-#' @param title_width Numeric, the width in pixels for the title. Default = 150.
-#' @param plot_margins Vector of units, the margins around the elements of the
-#'   plot within the plot object. This requires a vector of 4 "unit" elements,
-#'   defining the margins clockwise starting from the top. The default is 5, 5,
-#'   5, and 10 big points on the top, right, bottom, and left, respectively.
-#'   Inputs should be formatted as
-#'   grid::unit(c(`top`,`right`,`bottom`,`left`),"`units`")
+#'@param plot ggplot object, the variable name of the plot you have created that
+#'  you want to finalize. The efault is \code{ggplot2::last_plot()}, so if
+#'  unspecified, the most recent plot will be used.
+#'@param title Char, the text you want to appear in the title block.
+#'@param subtitle Char, the text you want to appear in the subtitle block.
+#'@param mode Char, the action to be taken with the plot. Default is to view in
+#'  the window (using "plot"). Other options include "newwindow" (displays in a
+#'  new window), "object" (returns a grob object, but does not print), or one of
+#'  four file extensions that can be saved (png, tiff, svg, and pdf).
+#'@param filepath Char, the filepath you want the plot to be saved to.  You can
+#'  specify an extension to use, or an extension will be added if you specify it
+#'  in "mode".
+#'@param width Numeric, the width in pixels for the image, including the title.
+#'  Default = 670.
+#'@param height Numeric, the height in pixels for the image. Default = 400.
+#'@param title_width Numeric, the width in pixels for the title. Default = 150.
+#'@param plot_margins Vector of units, the margins around the elements of the
+#'  plot within the plot object. This requires a vector of 4 "unit" elements,
+#'  defining the margins clockwise starting from the top. The default is 5, 5,
+#'  5, and 10 big points on the top, right, bottom, and left, respectively.
+#'  Inputs should be formatted as
+#'  grid::unit(c(`top`,`right`,`bottom`,`left`),"`units`")
 #'
-#' @importFrom grid gpar unit unit.c grobTree
-#' @importFrom utils installed.packages
+#'@importFrom grid gpar unit unit.c grobTree
+#'@importFrom utils installed.packages
 #'
 #' @examples
 #' \dontrun{
 #' econ_plot <-
 #'   cluster_jobchange %>%
 #'   ggplot(aes(x = reorder(name, jobchange), y = jobchange, fill = category)) +
-#'   theme_cmap(gridlines = "v", hline = 0) +
 #'   geom_col() +
 #'   coord_flip() +
+#'   theme_cmap(gridlines = "v", hline = 0) +
 #'   scale_y_continuous(labels = scales::comma)
 #'
 #' econ_title <- "Change in employment in specified clusters in the Chicago
@@ -78,7 +80,7 @@
 #'                title_width = 200,
 #'                width = 800)
 #'}
-#' @export
+#'@export
 finalize_plot2 <- function(plot = ggplot2::last_plot(),
                            title = "Title here",
                            subtitle = "Subtitle here",
@@ -101,8 +103,8 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
     # check for filepath
     if(is.null(filepath)){stop("You must specify a filepath in save mode")}
 
-    # if extension does not contain correct extension, add it (accounting for different slashes in Windows/Unix)
-    if(!(grepl(paste0("//.",mode, "$"), filepath) | grepl(paste0("\\.",mode, "$"), filepath))){
+    # if extension does not contain correct extension, add it
+    if(!(grepl(paste0("\\.",mode, "$"), filepath))){
       filepath <- paste0(filepath, ".", mode)
     }
 
@@ -202,7 +204,7 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
   # Assemble final plot -----------------------------------------------------
 
   # establish matrix shape for three viewports
-  layout = rbind(c(1,1),
+  layout <- rbind(c(1,1),
                  c(2,3))
 
 
@@ -230,9 +232,9 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
     ggplot2::ggsave(filename = filepath,
                     plot = output,
                     width = (width/72),
-                    height=(height/72),
+                    height = (height/72),
                     dpi = 72,
-                    bg="white",
+                    bg = "white",
                     # If PDF, switch device to "cairo" for better PDF handling
                     device = if (mode == "pdf") {cairo_pdf} else {mode}
                     )
@@ -244,94 +246,22 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
   } else if (mode == "newwindow") {
     # OR print the grob to a new graphics window
     if (.Platform$OS.type == "windows") {
-      windows(width=(width/72),
-              height=(height/72))
+      windows(width = (width/72),
+              height = (height/72))
       grid::grid.newpage()
       grid::grid.draw(output)
     } else {
-      dev.new(width=(width/72),
-              height=(height/72),
+      dev.new(width = (width/72),
+              height = (height/72),
               noRStudioGD = TRUE)
       return(output)
     }
   }
 
   # return geom defaults as before
+  ## THIS IS PROBLEMATIC BC IT WILL NOT RUN AFTER CONDITIONAL RETURN FXNS ABOVE
   ggplot2::update_geom_defaults("line",list(size = default_lwd))
 }
-
-
-
-# # old title and subtitle grobs
-# grob_title <-  grid::textGrob(label = title,
-#                               # set top left location of grob
-#                               x = c_textmargin_left,
-#                               y = unit(1, "npc") - c_textmargin_top,
-#                               just = c("left", "top"),
-#                               # set aesthetic variables
-#                               gp = gpar(fontsize=cmapplot_globals$font_sizes$title,
-#                                         fontfamily=cmapplot_globals$font_title,
-#                                         fontface=cmapplot_globals$font_title_face,
-#                                         lineheight=0.93))
-#
-# grob_subtitle <-  grid::textGrob(label = subtitle,
-#                                  # set top left location of grob
-#                                  x = c_textmargin_left,
-#                                  y = unit(1, "npc") - grid::grobHeight(grob_title) - c_textmargin_top - c_textmargin_mid,
-#                                  just = c("left", "top"),
-#                                  # set aesthetic variables
-#                                  gp = gpar(fontsize=cmapplot_globals$font_sizes$note,
-#                                            fontfamily=cmapplot_globals$font_reg,
-#                                            fontface=cmapplot_globals$font_reg_face,
-#                                            lineheight=0.93))
-
-# # # ALTERNATIVE, MORE COMPLICATED LAYOUT
-# # establish layout of viewports to draw into
-# layout = rbind(c(1,1),
-#                c(2,4),
-#                c(3,4),
-#                c(NA,4))
-#
-# # stitch together the final plot
-# output <- gridExtra::arrangeGrob(grobs = list(grob_rect, grob_title, grob_subtitle, myplot),
-#                         layout_matrix = layout,
-#                         heights = unit(c(3, 10, 5, 150), "points"),
-#                         widths = unit(c(80, 220), "points"))
-
-# grid.newpage()
-# grobTree(title, subtitle) %>%
-#   grid.draw()
-
-#how to use grobHeight to automatically adjust location of subtitle?
-
-# this attempt has the title and subtitle in separate matrix locations
-
-
-
-# this attempt has the title and subtitle in a single matrix
-
-# # note arrangeGrob is same as grid.arrange but does not draw
-# layout2 = rbind(c(1,1),
-#                 c(2,3))
-#
-# grid.arrange(grobs = list(rect, grobTree(title, subtitle), myplot),
-#              layout_matrix = layout2,
-#              heights = unit(c(3, 200), "points"),
-#              widths = unit(c(80, 220), "points"))
-
-
-# help
-# https://cran.r-project.org/web/packages/gridExtra/vignettes/arrangeGrob.html
-# https://stackoverflow.com/questions/59012782/ggplot2-how-to-align-grobs-to-sides-using-arrangegrob
-
-
-### OLD
-
-
-# # problem is title placement features are abandoned here. How to place top left in grid?
-# title_block <- arrangeGrob(title, title, ncol = 1,
-#              heights = unit(c(3, 3), "lines")) # How many lines of height?
-
 
 
 
