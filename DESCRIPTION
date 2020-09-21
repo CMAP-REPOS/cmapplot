@@ -4,7 +4,8 @@ Version: 0.0.0.9000
 Authors@R: c(
     person("Matthew", "Stern",
            role = c("aut", "cre"),
-           email = "mstern@cmap.illinois.gov"),
+           email = "mstern@cmap.illinois.gov",
+           comment = c(ORCID = "0000-0001-9119-2121")),
     person("Noel", "Peterson",
            role = "aut",
            email = "npeterson@cmap.illinois.gov",
