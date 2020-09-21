@@ -44,14 +44,15 @@
 #'   scale_y_continuous(labels = scales::comma)
 #'
 #' econ_title <- "Change in employment in specified clusters in the Chicago
-#'   Metropolitan Statistical Area, 2001-17."
-#' econ_subtitle <- "Source: Chicago
-#'   Metropolitan Agency for Planning analysis of traded clusters."
+#' Metropolitan Statistical Area, 2001-17."
+#' econ_subtitle <- "Source: Chicago Metropolitan Agency for Planning analysis
+#' of traded clusters."
 #'
 #' finalize_plot2(econ_plot,
 #'                econ_title,
 #'                econ_subtitle,
 #'                mode = "plot",
+#'                filepath = "foo",
 #'                plot_margins = unit(c(5,20,5,10),"bigpts"))
 #'
 #' transit_plot <- transit_ridership %>%
@@ -67,9 +68,9 @@
 #'   theme_cmap()
 #'
 #' transit_title <- "Transit ridership in the RTA region over time, 1980-2019
-#'   (in millions)"
+#' (in millions)"
 #' transit_subtitle <- "Source: Chicago Metropolitan Agency for Planning
-#'   analysis of data from the Regional Transportation Authority."
+#' analysis of data from the Regional Transportation Authority."
 #'
 #' finalize_plot2(transit_plot,
 #'                transit_title,
@@ -128,12 +129,14 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
   c_textmargin_mid <- grid::unit(10,"bigpts") # margin between title and subtitle
 
   # FLAG FOR REVIEW AND FURTHER THOUGHT - modify the plot a bit to fix margins
-  #  and text size on plot
+  # and text size on plot
   plot <- plot + theme(plot.margin = plot_margins,
                        plot.title = ggplot2::element_blank(),
-                       text = element_text(size = 17.5)) # for some reason, text
-    #  on the plot exports smaller than specified. 17.5 appears to export as 14
-    #  for (unclear) reasons.
+                       text = element_text(size = cmapplot_globals$font_sizes$main * 96/72))
+                       # for some reason, text on the plot exports smaller than
+                       # specified. 17.5 (which is 1.25 x 14, or 96/72 x 14)
+                       # appears to be accurately rendered at 14. This could be
+                       # an artifact of the points vs. pixels size problem.
 
   # Size conversion for widths in line graphs (this is ignored in calls that
   # return a grob object, as it is not yet drawn)
