@@ -143,8 +143,8 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
 
   # rectangle grob for top line
   grob_topline <- grid::rectGrob(gp=grid::gpar(fill = cmapplot_globals$colors$blackish,
-                                         col = "white",
-                                         lwd=0))
+                                               col = "white",
+                                               lwd=0))
 
   # title grob
                                               # note that color is defined using
@@ -164,7 +164,7 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                                                               grid::unit(1, "bigpts"), # right
                                                               grid::unit(1, "bigpts"), # bottom
                                                               c_textmargin_left),# left
-                                       # set aesthetic variables
+                                       # set font aesthetic variables
                                        gp = grid::gpar(fontsize=cmapplot_globals$font_sizes$title,
                                                        fontfamily=cmapplot_globals$font_title,
                                                        fontface=cmapplot_globals$font_title_face,
@@ -204,19 +204,20 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
   # Assemble final plot -----------------------------------------------------
 
   # establish matrix shape for three viewports
-  layout <- rbind(c(1,1),
-                 c(2,3))
-
+  layout <- rbind(c(3,3),
+                 c(2,1))
 
   # stitch together the final plot
-  output <- gridExtra::arrangeGrob(grobs = list(grob_topline,
+  output <- gridExtra::arrangeGrob(grobs = list(plot,
                                                 grid::grobTree(grob_title, grob_subtitle),
-                                                plot),
+                                                grob_topline),
                                    layout_matrix = layout,
+                                   # establish specific dimensions for each column and row
                                    heights = grid::unit.c(c_topbar_lwd,
                                                           unit(height, "bigpts") - c_topbar_lwd),
-                                   widths = grid::unit(c(title_width, width - title_width),
-                                                       "bigpts"))
+                                   widths = grid::unit(c(title_width,
+                                                         width - title_width),
+                                                         "bigpts"))
 
 
   # # as debug tool, print viewport layouts to plot window
