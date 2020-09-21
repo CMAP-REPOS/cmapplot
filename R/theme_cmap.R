@@ -15,6 +15,14 @@
 #'  default, horizontal grid lines will be displayed while vertical grid lines
 #'  will be masked. Acceptable values are "h" (horizontal only), "v" (vertical
 #'  only), "hv" (both horizontal and vertical), and "none" (neither).
+#'@param max_columns Integer, the maximum number of columns in the legend. If no
+#'  value is set, the chart will rely on `ggplot`'s default and automatic column
+#'  handling behavior, which should work for most cases. Manual adjustment may
+#'  be required if legend entries are particularly numerous and/or lengthy. Note
+#'  that `ggplot` will still auto-adjust in ways that may mean the total number
+#'  of columns is less than the maximum (e.g., if there are five items in a
+#'  legend with four columns as the maximum, the output will be one row of three
+#'  and another row of two).
 #'
 #'@examples
 #'
@@ -46,7 +54,8 @@
 theme_cmap <- function(
   xlab = NULL, ylab = NULL,
   hline = NULL, vline = NULL,
-  gridlines = c("h", "v", "hv", "none")
+  gridlines = c("h", "v", "hv", "none"),
+  max_columns = NULL
 ) {
 
   # Generate an explicit message to user if Whitney font family is not available
@@ -157,7 +166,16 @@ theme_cmap <- function(
         panel.grid.major.x = ggplot2::element_line(size = cmapplot_globals$lwd_other,
                                                    color = cmapplot_globals$colors$blackish)
       )
+    },
+
+    # FLAG FOR REVIEW - experimental functionality
+    # only edit legend columns if value is added
+    if (!is.null(max_columns)){
+        # set maximum number of columns for legend based on either "fill" or "col" to reflect different geom structures
+        ggplot2::guides(fill = guide_legend(ncol = max_columns),
+                        col  = guide_legend(ncol = max_columns))
     }
+
   )
 
   # Filter out NA elements before returning
