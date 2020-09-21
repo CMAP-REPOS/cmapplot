@@ -36,6 +36,14 @@
 #'  Default is 5 "big points."
 #'@param text_margin_mid Unit, the margin between the title and subtitle text.
 #'  Default is 10 "big points."
+#'@param max_columns Integer, the maximum number of columns in the legend. If no
+#'  value is set, the chart will rely on `ggplot`'s default and automatic column
+#'  handling behavior, which should work for most cases. Manual adjustment may
+#'  be required if legend entries are particularly numerous and/or lengthy. Note
+#'  that `ggplot` will still auto-adjust in ways that may mean the total number
+#'  of columns is less than the maximum (e.g., if there are five items in a
+#'  legend with four columns as the maximum, the output will be one row of three
+#'  and another row of two).
 #'
 #'@importFrom grid gpar unit unit.c grobTree
 #'@importFrom utils installed.packages
@@ -86,8 +94,9 @@
 #'                filepath = "foo",
 #'                height = 300,
 #'                title_width = 200,
-#'                width = 800)
-#' }
+#'                width = 800,
+#'                max_columns = 3)
+#'}
 #'@export
 finalize_plot2 <- function(plot = ggplot2::last_plot(),
                            title = "Title here",
@@ -101,7 +110,8 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                            top_bar_lwd = 3,
                            text_margin_left = 2,
                            text_margin_top = 5,
-                           text_margin_mid = 10
+                           text_margin_mid = 10,
+                           max_columns = NA
                            ){
 
   # Validation and initialization -----------------------------
@@ -164,6 +174,16 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                        # specified at 17.5 (which is 1.25 x 14, or 96/72 x 14)
                        # appears to be accurately rendered at 14. This could be
                        # an artifact of the points vs. pixels size problem.
+
+
+  # FLAG FOR REVIEW - experimental functionality
+  # only edit legend columns if value is added
+  if (!is.na(max_columns)){
+    plot <- plot +
+      # set maximum number of columns for legend based on either "fill" or "col"
+            guides(fill = guide_legend(ncol = max_columns),
+                   col  = guide_legend(ncol = max_columns))
+  }
 
   # Size conversion for widths in line graphs (this is ignored in calls that
   # return a grob object, as it is not yet drawn)
