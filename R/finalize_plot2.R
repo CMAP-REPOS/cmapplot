@@ -248,7 +248,7 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
     grid::grid.newpage()
     grid::grid.draw(output)
   } else if (mode == "newwindow") {
-    # TO COFNRIM - does this work on Mac?
+    # TO CONFIRM - does this work on Mac?
     dev.new(width = (width/72),
             height = (height/72),
             noRStudioGD = TRUE)
@@ -257,7 +257,6 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
   }
 
   # return geom defaults as before
-  ## THIS IS PROBLEMATIC BC IT WILL NOT RUN AFTER CONDITIONAL RETURN FXNS ABOVE
   ggplot2::update_geom_defaults("line",list(size = default_lwd))
 }
 
