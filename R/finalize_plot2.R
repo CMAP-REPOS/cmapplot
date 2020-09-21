@@ -257,6 +257,8 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
             noRStudioGD = TRUE)
     grid::grid.newpage()
     grid::grid.draw(output)
+    # Reset device to original (for future plots, if needed)
+    dev.set()
   }
 
   # return geom defaults as before
