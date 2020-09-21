@@ -135,9 +135,12 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
     #  on the plot exports smaller than specified. 17.5 appears to export as 14
     #  for (unclear) reasons.
 
-  # Size conversion for widths in line graphs
+  # Size conversion for widths in line graphs (this is ignored in calls that
+  # return a grob object, as it is not yet drawn)
+  if (mode != "object") {
   default_lwd <- GeomLine$default_aes$size
   update_geom_defaults("line", list(size = cmapplot_globals$lwd_layout))
+  }
 
   # Build necessary grobs -----------------------------------------------------
 
@@ -245,18 +248,12 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
     grid::grid.newpage()
     grid::grid.draw(output)
   } else if (mode == "newwindow") {
-    # OR print the grob to a new graphics window
-    if (.Platform$OS.type == "windows") {
-      windows(width = (width/72),
-              height = (height/72))
-      grid::grid.newpage()
-      grid::grid.draw(output)
-    } else {
-      dev.new(width = (width/72),
-              height = (height/72),
-              noRStudioGD = TRUE)
-      return(output)
-    }
+    # TO COFNRIM - does this work on Mac?
+    dev.new(width = (width/72),
+            height = (height/72),
+            noRStudioGD = TRUE)
+    grid::grid.newpage()
+    grid::grid.draw(output)
   }
 
   # return geom defaults as before
