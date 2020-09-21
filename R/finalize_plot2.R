@@ -26,9 +26,16 @@
 #'@param plot_margins Vector of units, the margins around the elements of the
 #'  plot within the plot object. This requires a vector of 4 "unit" elements,
 #'  defining the margins clockwise starting from the top. The default is 5, 5,
-#'  5, and 10 big points on the top, right, bottom, and left, respectively.
-#'  Inputs should be formatted as
-#'  grid::unit(c(`top`,`right`,`bottom`,`left`),"`units`")
+#'  5, and 10 big points  (1/72 of an inch) on the top, right, bottom, and left,
+#'  respectively. Inputs should be formatted as c(`top`,`right`,`bottom`,`left`)
+#'@param top_bar_lwd Numeric, the width of the line above the title and graph in
+#'  big points. Default is 3 "big points."
+#'@param text_margin_left Unit, the margin to left of title and subtitle text.
+#'  Default is 2 "big points."
+#'@param text_margin_top Unit, the margin between the top line and title text.
+#'  Default is 5 "big points."
+#'@param text_margin_mid Unit, the margin between the title and subtitle text.
+#'  Default is 10 "big points."
 #'
 #'@importFrom grid gpar unit unit.c grobTree
 #'@importFrom utils installed.packages
@@ -53,7 +60,7 @@
 #'                econ_subtitle,
 #'                mode = "plot",
 #'                filepath = "foo",
-#'                plot_margins = unit(c(5,20,5,10),"bigpts"))
+#'                plot_margins = c(5,20,5,10))
 #'
 #' transit_plot <- transit_ridership %>%
 #'   mutate(system = case_when(
@@ -80,7 +87,7 @@
 #'                height = 300,
 #'                title_width = 200,
 #'                width = 800)
-#'}
+#' }
 #'@export
 finalize_plot2 <- function(plot = ggplot2::last_plot(),
                            title = "Title here",
@@ -90,13 +97,20 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                            height = 400,
                            title_width = 150,
                            filepath = NULL,
-                           plot_margins = grid::unit(c(5,5,5,10),"bigpts")
+                           plot_margins = c(5,5,5,10),
+                           top_bar_lwd = 3,
+                           text_margin_left = 2,
+                           text_margin_top = 5,
+                           text_margin_mid = 10
                            ){
 
   # Validation and initialization -----------------------------
 
   # check mode argument
   mode <- match.arg(mode)
+
+  # check plot margins argument
+  if (length(plot_margins) != 4){stop("Plot margins must be a vector of length four")}
 
   # validate output details
   savetypes <- c("svg", "png", "tiff","pdf")
@@ -121,20 +135,33 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
   if(width != 670){warning("Width should typically be 670 px exactly.")}
   if(height > 400){warning("Height should typically be 400 px or less.")}
 
-  # function constants
-  # (***should these be function arguments?***)
-  c_topbar_lwd <- grid::unit(3,"bigpts") # width of top line
-  c_textmargin_left <- grid::unit(2,"bigpts") # margin to left of title and subtitle text
-  c_textmargin_top <- grid::unit(5,"bigpts") # margin between top line and title
-  c_textmargin_mid <- grid::unit(10,"bigpts") # margin between title and subtitle
+  # validate top bar
+  if(top_bar_lwd != 3){warning("Top bar should typically be 3 big points exactly")}
+
+  # validate margins
+  if(text_margin_left != 2){warning("Margin between left edge and title text should typically be 2 big points exactly")}
+  if(text_margin_top != 5){warning("Margin between top bar and title should typically be 5 big points exactly")}
+  if(text_margin_mid != 10){warning("Margin between title and subtitle should typically be 10 big points exactly")}
+
+
+  # convert top bar and margins to big points
+  top_bar_lwd <- grid::unit(top_bar_lwd,"bigpts")
+  text_margin_left <- grid::unit(text_margin_left,"bigpts")
+  text_margin_top <- grid::unit(text_margin_top,"bigpts")
+  text_margin_mid <- grid::unit(text_margin_mid,"bigpts")
+  plot_margins <- grid::unit(plot_margins,"bigpts")
+
+
 
   # FLAG FOR REVIEW AND FURTHER THOUGHT - modify the plot a bit to fix margins
   # and text size on plot
   plot <- plot + theme(plot.margin = plot_margins,
                        plot.title = ggplot2::element_blank(),
-                       text = element_text(size = cmapplot_globals$font_sizes$main * 96/72))
-                       # for some reason, text on the plot exports smaller than
-                       # specified. 17.5 (which is 1.25 x 14, or 96/72 x 14)
+                       text = ggplot2::element_text(size = cmapplot_globals$font_sizes$main * 1.25))
+                       # The plot appears to be resizing when exported via save
+                       # (but not in plot or newwindow). To have correct font
+                       # sizes for export, it appears that chart text must be
+                       # specified at 17.5 (which is 1.25 x 14, or 96/72 x 14)
                        # appears to be accurately rendered at 14. This could be
                        # an artifact of the points vs. pixels size problem.
 
@@ -166,10 +193,10 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                                        hjust = 0,
                                        vjust = 1,
                                        # set margins within textbox
-                                       padding = grid::unit.c(c_textmargin_top, # top
+                                       padding = grid::unit.c(text_margin_top, # top
                                                               grid::unit(1, "bigpts"), # right
                                                               grid::unit(1, "bigpts"), # bottom
-                                                              c_textmargin_left),# left
+                                                              text_margin_left),# left
                                        # set font aesthetic variables
                                        gp = grid::gpar(fontsize=cmapplot_globals$font_sizes$title,
                                                        fontfamily=cmapplot_globals$font_title,
@@ -193,10 +220,10 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                                            hjust = 0,
                                            vjust = 1,
                                            # set margins within textbox
-                                           padding = grid::unit.c(c_textmargin_mid, # top
+                                           padding = grid::unit.c(text_margin_mid, # top
                                                                   grid::unit(1, "bigpts"), # right
                                                                   grid::unit(1, "bigpts"), # bottom
-                                                                  c_textmargin_left),# left
+                                                                  text_margin_left),# left
                                            # set aesthetic variables
                                            gp = grid::gpar(fontsize=cmapplot_globals$font_sizes$note,
                                                            fontfamily=cmapplot_globals$font_note,
@@ -219,8 +246,8 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                                                 grob_topline),
                                    layout_matrix = layout,
                                    # establish specific dimensions for each column and row
-                                   heights = grid::unit.c(c_topbar_lwd,
-                                                          unit(height, "bigpts") - c_topbar_lwd),
+                                   heights = grid::unit.c(top_bar_lwd,
+                                                          unit(height, "bigpts") - top_bar_lwd),
                                    widths = grid::unit(c(title_width,
                                                          width - title_width),
                                                          "bigpts"))
