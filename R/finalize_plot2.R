@@ -7,6 +7,12 @@
 #'specified location. This function will not apply CMAP design standards to the
 #'plot itself: use with \code{theme_cmap()} for that.
 #'
+#'@usage finalize_plot2(plot = ggplot2::last_plot(),title = "Title here",
+#'  subtitle = "Subtitle here",mode = c("plot", "newwindow", "object", "svg",
+#'  "png", "tiff","pdf"),width = 670,height = 400,title_width = 150,
+#'  filepath = NULL,plot_margins = c(5,5,5,10),top_bar = 2,text_margin_left = 2,
+#'  text_margin_top = 5,text_margin_mid = 10)
+#'
 #'@param plot ggplot object, the variable name of the plot you have created that
 #'  you want to finalize. The efault is \code{ggplot2::last_plot()}, so if
 #'  unspecified, the most recent plot will be used.
@@ -39,6 +45,8 @@
 #'
 #'@importFrom grid gpar unit unit.c grobTree
 #'@importFrom utils installed.packages
+#'@importFrom gridtext textbox_grob
+#'@importFrom gridExtra arrangeGrob
 #'
 #' @examples
 #' \dontrun{
@@ -95,8 +103,7 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                            top_bar = 2,
                            text_margin_left = 2,
                            text_margin_top = 5,
-                           text_margin_mid = 10,
-                           max_columns = NA
+                           text_margin_mid = 10
                            ){
 
   # Validation and initialization -----------------------------
@@ -140,7 +147,7 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
 
 
   # convert top bar and margins to big points
-  top_bar <- grid::unit(top_bar_lwd,"bigpts")
+  top_bar <- grid::unit(top_bar,"bigpts")
   text_margin_left <- grid::unit(text_margin_left,"bigpts")
   text_margin_top <- grid::unit(text_margin_top,"bigpts")
   text_margin_mid <- grid::unit(text_margin_mid,"bigpts")
@@ -150,9 +157,9 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
 
   # FLAG FOR REVIEW AND FURTHER THOUGHT - modify the plot a bit to fix margins
   # and text size on plot
-  plot <- plot + theme(plot.margin = plot_margins,
-                       plot.title = ggplot2::element_blank(),
-                       text = ggplot2::element_text(size = cmapplot_globals$font_sizes$main * 1.25))
+  plot <- plot + ggplot2::theme(plot.margin = plot_margins,
+                                plot.title = ggplot2::element_blank(),
+                                text = ggplot2::element_text(size = cmapplot_globals$font_sizes$main * 1.25))
                        # The plot appears to be resizing when exported via save
                        # (but not in plot or newwindow). To have correct font
                        # sizes for export, it appears that chart text must be
@@ -163,8 +170,8 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
   # Size conversion for widths in line graphs (this is ignored in calls that
   # return a grob object, as it is not yet drawn)
   if (mode != "object") {
-  default_lwd <- GeomLine$default_aes$size
-  update_geom_defaults("line", list(size = cmapplot_globals$lwd_layout))
+  default_lwd <- ggplot2::GeomLine$default_aes$size
+  ggplot2::update_geom_defaults("line", list(size = cmapplot_globals$lwd_layout))
   }
 
   # Build necessary grobs -----------------------------------------------------
@@ -265,13 +272,13 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
     grid::grid.draw(output)
   } else if (mode == "newwindow") {
     # TO CONFIRM - does this work on Mac?
-    dev.new(width = (width/72),
-            height = (height/72),
-            noRStudioGD = TRUE)
+    grDevices::dev.new(width = (width/72),
+                       height = (height/72),
+                       noRStudioGD = TRUE)
     grid::grid.newpage()
     grid::grid.draw(output)
     # Reset device to original (for future plots, if needed)
-    dev.next()
+    grDevices::dev.next()
   }
 
   # return geom defaults as before

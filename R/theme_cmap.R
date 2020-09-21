@@ -4,7 +4,7 @@
 #'plot area in accordance with CMAP design standards.
 #'
 #'@usage theme_cmap(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL,
-#'  gridlines = c("h", "v", "hv", "none"))
+#'  gridlines = c("h", "v", "hv", "none"), max_columns = NULL)
 #'
 #'@param xlab,ylab Char, the string used to label the x and y axes,
 #'  respectively. If unspecified, the axis label will be left off the graph.

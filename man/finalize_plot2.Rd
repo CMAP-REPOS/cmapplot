@@ -4,17 +4,11 @@
 \alias{finalize_plot2}
 \title{Arrange and save CMAP ggplot chart}
 \usage{
-finalize_plot2(
-  plot = ggplot2::last_plot(),
-  title = "Title here",
-  subtitle = "Subtitle here",
-  mode = c("plot", "newwindow", "object", "svg", "png", "tiff", "pdf"),
-  width = 670,
-  height = 400,
-  title_width = 150,
-  filepath = NULL,
-  plot_margins = grid::unit(c(5, 5, 5, 10), "bigpts")
-)
+finalize_plot2(plot = ggplot2::last_plot(),title = "Title here",
+ subtitle = "Subtitle here",mode = c("plot", "newwindow", "object", "svg",
+ "png", "tiff","pdf"),width = 670,height = 400,title_width = 150,
+ filepath = NULL,plot_margins = c(5,5,5,10),top_bar = 2,text_margin_left = 2,
+ text_margin_top = 5,text_margin_mid = 10)
 }
 \arguments{
 \item{plot}{ggplot object, the variable name of the plot you have created that
@@ -27,8 +21,8 @@ unspecified, the most recent plot will be used.}
 
 \item{mode}{Char, the action to be taken with the plot. Default is to view in
 the window (using "plot"). Other options include "newwindow" (displays in a
-new window), "object" (exports as grob object), or one of four file
-extensions that can be saved (png, tiff, svg, and pdf).}
+new window), "object" (returns a grob object, but does not print), or one of
+four file extensions that can be saved (png, tiff, svg, and pdf).}
 
 \item{width}{Numeric, the width in pixels for the image, including the title.
 Default = 670.}
@@ -44,38 +38,47 @@ in "mode".}
 \item{plot_margins}{Vector of units, the margins around the elements of the
 plot within the plot object. This requires a vector of 4 "unit" elements,
 defining the margins clockwise starting from the top. The default is 5, 5,
-5, and 10 big points on the top, right, bottom, and left, respectively.
-Inputs should be formatted as
-grid::unit(c(`top`,`right`,`bottom`,`left`),"`units`")}
+5, and 10 big points  (1/72 of an inch) on the top, right, bottom, and left,
+respectively. Inputs should be formatted as c(`top`,`right`,`bottom`,`left`)}
+
+\item{top_bar}{Numeric, the width of the line above the title and graph in
+big points. Default is 3 "big points."}
+
+\item{text_margin_left}{Unit, the margin to left of title and subtitle text.
+Default is 2 "big points."}
+
+\item{text_margin_top}{Unit, the margin between the top line and title text.
+Default is 5 "big points."}
+
+\item{text_margin_mid}{Unit, the margin between the title and subtitle text.
+Default is 10 "big points."}
 }
 \description{
-'\code{finalize_plot2} will save a ggplot into a frame defined by  CMAP design
+\code{finalize_plot2} will save a ggplot into a frame defined by  CMAP design
 standards. It will align your title and subtitle to the left, add a horizontal
 line on top, and make other adjustments. If instructed to do so, it will also
 save the plot in one of four file formats (png, tiff, svg, and pdf) to a
 specified location. This function will not apply CMAP design standards to the
-plot itself--use \code{theme_cmap()} for that.
+plot itself: use with \code{theme_cmap()} for that.
 }
 \examples{
 \dontrun{
 econ_plot <-
   cluster_jobchange \%>\%
   ggplot(aes(x = reorder(name, jobchange), y = jobchange, fill = category)) +
-  theme_cmap(gridlines = "v", hline = 0) +
   geom_col() +
   coord_flip() +
+  theme_cmap(gridlines = "v", hline = 0) +
   scale_y_continuous(labels = scales::comma)
 
-econ_title <- "Change in employment in specified clusters in the Chicago
-  Metropolitan Statistical Area, 2001-17."
-econ_subtitle <- "Source: Chicago
-  Metropolitan Agency for Planning analysis of traded clusters."
-
 finalize_plot2(econ_plot,
-               econ_title,
-               econ_subtitle,
+               "Change in employment in specified clusters in the Chicago
+               Metropolitan Statistical Area, 2001-17.",
+               "Source: Chicago Metropolitan Agency for Planning analysis
+               of traded clusters.",
                mode = "plot",
-               plot_margins = unit(c(5,20,5,10),"bigpts"))
+               filepath = "foo",
+               plot_margins = c(5,20,5,10))
 
 transit_plot <- transit_ridership \%>\%
   mutate(system = case_when(
@@ -87,16 +90,13 @@ transit_plot <- transit_ridership \%>\%
   )) \%>\%
   ggplot(aes(x = year, y = ridership, color = system)) +
   geom_line() +
-  theme_cmap()
-
-transit_title <- "Transit ridership in the RTA region over time, 1980-2019
-  (in millions)"
-transit_subtitle <- "Source: Chicago Metropolitan Agency for Planning
-  analysis of data from the Regional Transportation Authority."
+  theme_cmap(max_columns = 3)
 
 finalize_plot2(transit_plot,
-               transit_title,
-               transit_subtitle,
+               "Transit ridership in the RTA region over time, 1980-2019
+               (in millions)",
+               "Source: Chicago Metropolitan Agency for Planning
+               analysis of data from the Regional Transportation Authority.",
                mode="pdf",
                filepath = "foo",
                height = 300,

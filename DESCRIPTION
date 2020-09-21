@@ -10,8 +10,11 @@ Authors@R: c(
     person(given = "Matthew",
            family = "Stern",
            role = "aut",
-           email = "mstern@cmap.illinois.gov")
-    )
+           email = "mstern@cmap.illinois.gov"),
+    person(given = "Daniel",
+           family = "Comeaux",
+           role = "aut",
+           email = "dcomeaux@cmap.illinois.gov"))
 Description: Provides themes and color scales for 'ggplot2', based on Chicago Metropolitan Agency for Planning (CMAP) design guidelines.
 License: MIT + file LICENSE
 Encoding: UTF-8
@@ -30,5 +33,7 @@ Imports:
     rlang,
     scales,
     sysfonts,
-    magrittr
+    magrittr,
+    gridtext,
+    gridExtra
 RoxygenNote: 7.1.1

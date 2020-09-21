@@ -26,6 +26,7 @@ Please report issues and suggest improvements at Github:
 Authors:
 \itemize{
   \item Matthew Stern \email{mstern@cmap.illinois.gov}
+  \item Daniel Comeaux \email{dcomeaux@cmap.illinois.gov}
 }
 
 }
