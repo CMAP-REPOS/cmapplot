@@ -28,7 +28,7 @@
 #'  defining the margins clockwise starting from the top. The default is 5, 5,
 #'  5, and 10 big points  (1/72 of an inch) on the top, right, bottom, and left,
 #'  respectively. Inputs should be formatted as c(`top`,`right`,`bottom`,`left`)
-#'@param top_bar_lwd Numeric, the width of the line above the title and graph in
+#'@param top_bar Numeric, the width of the line above the title and graph in
 #'  big points. Default is 3 "big points."
 #'@param text_margin_left Unit, the margin to left of title and subtitle text.
 #'  Default is 2 "big points."
@@ -58,14 +58,11 @@
 #'   theme_cmap(gridlines = "v", hline = 0) +
 #'   scale_y_continuous(labels = scales::comma)
 #'
-#' econ_title <- "Change in employment in specified clusters in the Chicago
-#' Metropolitan Statistical Area, 2001-17."
-#' econ_subtitle <- "Source: Chicago Metropolitan Agency for Planning analysis
-#' of traded clusters."
-#'
 #' finalize_plot2(econ_plot,
-#'                econ_title,
-#'                econ_subtitle,
+#'                "Change in employment in specified clusters in the Chicago
+#'                Metropolitan Statistical Area, 2001-17.",
+#'                "Source: Chicago Metropolitan Agency for Planning analysis
+#'                of traded clusters.",
 #'                mode = "plot",
 #'                filepath = "foo",
 #'                plot_margins = c(5,20,5,10))
@@ -82,21 +79,18 @@
 #'   geom_line() +
 #'   theme_cmap()
 #'
-#' transit_title <- "Transit ridership in the RTA region over time, 1980-2019
-#' (in millions)"
-#' transit_subtitle <- "Source: Chicago Metropolitan Agency for Planning
-#' analysis of data from the Regional Transportation Authority."
-#'
-#' finalize_plot2(transit_plot,
-#'                transit_title,
-#'                transit_subtitle,
-#'                mode="pdf",
-#'                filepath = "foo",
-#'                height = 300,
-#'                title_width = 200,
-#'                width = 800,
-#'                max_columns = 3)
-#'}
+finalize_plot2(transit_plot,
+               "Transit ridership in the RTA region over time, 1980-2019
+               (in millions)",
+               "Source: Chicago Metropolitan Agency for Planning
+               analysis of data from the Regional Transportation Authority.",
+               mode="pdf",
+               filepath = "foo",
+               height = 300,
+               title_width = 200,
+               width = 800,
+               max_columns = 3)
+#' }
 #'@export
 finalize_plot2 <- function(plot = ggplot2::last_plot(),
                            title = "Title here",
@@ -107,7 +101,7 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                            title_width = 150,
                            filepath = NULL,
                            plot_margins = c(5,5,5,10),
-                           top_bar_lwd = 3,
+                           top_bar = 2,
                            text_margin_left = 2,
                            text_margin_top = 5,
                            text_margin_mid = 10,
@@ -146,7 +140,7 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
   if(height > 400){warning("Height should typically be 400 px or less.")}
 
   # validate top bar
-  if(top_bar_lwd != 3){warning("Top bar should typically be 3 big points exactly")}
+  if(top_bar != 2){warning("Top bar should typically be 2 big points exactly")}
 
   # validate margins
   if(text_margin_left != 2){warning("Margin between left edge and title text should typically be 2 big points exactly")}
@@ -155,7 +149,7 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
 
 
   # convert top bar and margins to big points
-  top_bar_lwd <- grid::unit(top_bar_lwd,"bigpts")
+  top_bar <- grid::unit(top_bar_lwd,"bigpts")
   text_margin_left <- grid::unit(text_margin_left,"bigpts")
   text_margin_top <- grid::unit(text_margin_top,"bigpts")
   text_margin_mid <- grid::unit(text_margin_mid,"bigpts")
@@ -196,17 +190,10 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
 
   # rectangle grob for top line
   grob_topline <- grid::rectGrob(gp=grid::gpar(fill = cmapplot_globals$colors$blackish,
-                                               col = "white",
-                                               lwd=0))
+                                               col = "white"))
 
   # title grob
-                                              # note that color is defined using
-                                              # html-style "span" tags
-  grob_title <- gridtext::textbox_grob(text = paste0("<span style='color:",
-                                                     cmapplot_globals$colors$blackish,
-                                                     ";'>",
-                                                     title,
-                                                     "</span>"),
+  grob_title <- gridtext::textbox_grob(text = title,
                                        # set top left location of grob
                                        x = grid::unit(0, "npc"),
                                        y = grid::unit(1, "npc"),
@@ -221,7 +208,8 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                                        gp = grid::gpar(fontsize=cmapplot_globals$font_sizes$title,
                                                        fontfamily=cmapplot_globals$font_title,
                                                        fontface=cmapplot_globals$font_title_face,
-                                                       lineheight=0.93)
+                                                       lineheight=0.93,
+                                                       col=cmapplot_globals$colors$blackish)
                                        # # for debug, draw box around grob
                                        # , box_gp = gpar(col = "blue", fill = "cornsilk")
                                        )
@@ -229,11 +217,7 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
   # subtitle grob
                                            # note that color is defined using
                                            # html-style "span" tags
-  grob_subtitle <-  gridtext::textbox_grob(text = paste0("<span style='color:",
-                                                         cmapplot_globals$colors$blackish,
-                                                         ";'>",
-                                                         subtitle,
-                                                         "</span>"),
+  grob_subtitle <-  gridtext::textbox_grob(text = subtitle,
                                            # set top left location of grob
                                            x = grid::unit(0, "npc"),
                                            y = grid::unit(1, "npc") - grid::grobHeight(grob_title),
@@ -248,7 +232,8 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                                            gp = grid::gpar(fontsize=cmapplot_globals$font_sizes$note,
                                                            fontfamily=cmapplot_globals$font_note,
                                                            fontface=cmapplot_globals$font_note_face,
-                                                           lineheight=0.93)
+                                                           lineheight=0.93,
+                                                           col=cmapplot_globals$colors$blackish)
                                            # # for debug, draw box around grob
                                            # , box_gp = gpar(col = "blue", fill = "lavenderblush")
   )
@@ -266,8 +251,8 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                                                 grob_topline),
                                    layout_matrix = layout,
                                    # establish specific dimensions for each column and row
-                                   heights = grid::unit.c(top_bar_lwd,
-                                                          unit(height, "bigpts") - top_bar_lwd),
+                                   heights = grid::unit.c(top_bar,
+                                                          unit(height, "bigpts") - top_bar),
                                    widths = grid::unit(c(title_width,
                                                          width - title_width),
                                                          "bigpts"))
