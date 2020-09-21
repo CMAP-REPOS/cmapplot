@@ -50,7 +50,9 @@ if (.Platform$OS.type == "windows") {
       sans = windowsFont("Calibri"),  # Override the default font (Arial)
       font_reg = windowsFont("Calibri"),
       font_lite = windowsFont("Calibri Light"),
-      font_sbold = windowsFont("Calibri")  # No separate semibold/bold font for Calibri
+      font_sbold = windowsFont("Calibri"),  # No separate semibold/bold font for Calibri,
+      "Calibri" = windowsFont("Calibri"), # FOR REVIEW - this appears to be necessary to force an import of Calibri and Calibri Light
+      "Calibri Light" = windowsFont("Calibri Light")
     )
   }
 
@@ -80,6 +82,9 @@ if (.Platform$OS.type == "windows") {
     sans = grDevices::X11Fonts()$Arial  # Just give in and use Arial for everything :(
    )
 
+  # FLAG FOR REVIEW - I don't know if this is the right formatting/expression
+  # for this function, or if this additional code (adding X11Fonts()) is
+  # required on non-Windows systems).
   cmapplot_globals$font_main <- X11Fonts("sans")  # "medium" weight for in-body text and x/y axis
   cmapplot_globals$font_note <- X11Fonts("sans")  # "book" weight for notes and sources
   cmapplot_globals$font_title <- X11Fonts("sans")  # "semibold" weight for title
