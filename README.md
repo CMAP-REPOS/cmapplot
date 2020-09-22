@@ -28,6 +28,8 @@ details. Datasets currently included are:
     #>  percentile_wages
     #>  pop_and_laborforce_by_age
     #>  traded_emp_by_race
+    #>  transit_ridership
+    #>  vehicle_ownership
 
 The following provided code uses the sample datasets to produce
 publishable or near-publishable graphics:
@@ -38,6 +40,7 @@ ggplot(cluster_jobchange, aes(x = reorder(name, jobchange), y = jobchange, fill 
   geom_col() +
   coord_flip() +
   theme_cmap()
+#> 'Whitney' font family not found. Using a substitute...
 ```
 
 ![](man/figures/README-unnamed-chunk-4-1.png)<!-- -->
@@ -49,6 +52,7 @@ filter(traded_emp_by_race, variable %in% c("SpecializedTraded", "UnspecializedTr
     geom_col(position = position_stack(reverse = TRUE)) +
     scale_y_continuous(labels = scales::percent) +
     theme_cmap()
+#> 'Whitney' font family not found. Using a substitute...
 ```
 
 ![](man/figures/README-unnamed-chunk-5-1.png)<!-- -->
@@ -59,6 +63,7 @@ ggplot(pop_and_laborforce_by_age, aes(x = interaction(year, variable), y = value
   geom_col(position = position_stack(reverse = TRUE)) +
   coord_flip() +
   theme_cmap()
+#> 'Whitney' font family not found. Using a substitute...
 ```
 
 ![](man/figures/README-unnamed-chunk-6-1.png)<!-- -->
@@ -70,6 +75,7 @@ ggplot(economy_basic, aes(x = interaction(year, variable), y = value, fill = sec
   scale_y_continuous(labels = scales::percent) +
   coord_flip() +
   theme_cmap()
+#> 'Whitney' font family not found. Using a substitute...
 ```
 
 ![](man/figures/README-unnamed-chunk-7-1.png)<!-- -->
@@ -80,6 +86,7 @@ ggplot(percentile_wages, aes(x = percentile, y = wage, color = cluster)) +
   geom_line() +
   scale_y_continuous(labels = scales::dollar) +
   theme_cmap()
+#> 'Whitney' font family not found. Using a substitute...
 ```
 
 ![](man/figures/README-unnamed-chunk-8-1.png)<!-- -->
@@ -90,6 +97,7 @@ ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
   geom_line() +
   geom_text_lastonly(add_points = TRUE) +
   theme_cmap()
+#> 'Whitney' font family not found. Using a substitute...
 ```
 
 ![](man/figures/README-unnamed-chunk-9-1.png)<!-- -->
@@ -115,6 +123,7 @@ ggplot(percentile_wages, aes(x = percentile, y = wage, color = cluster)) +
   scale_y_continuous(labels = scales::dollar) +
   theme_cmap() +
   cmap_color_discrete(palette = "prosperity")
+#> 'Whitney' font family not found. Using a substitute...
 ```
 
 ![](man/figures/README-unnamed-chunk-10-1.png)<!-- -->
@@ -137,6 +146,7 @@ percentile_wages %>%
     coord_flip() +
     theme_cmap() +
     cmap_color_continuous(palette = "seq_red_purple")
+#> 'Whitney' font family not found. Using a substitute...
 ```
 
 ![](man/figures/README-unnamed-chunk-12-1.png)<!-- -->
