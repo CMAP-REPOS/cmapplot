@@ -85,10 +85,10 @@ if (.Platform$OS.type == "windows") {
   # FLAG FOR REVIEW - I don't know if this is the right formatting/expression
   # for this function, or if this additional code (adding X11Fonts()) is
   # required on non-Windows systems).
-  cmapplot_globals$font_main <- X11Fonts("sans")  # "medium" weight for in-body text and x/y axis
-  cmapplot_globals$font_note <- X11Fonts("sans")  # "book" weight for notes and sources
-  cmapplot_globals$font_title <- X11Fonts("sans")  # "semibold" weight for title
-  cmapplot_globals$font_label <- X11Fonts("sans")  # "semibold" weight also for labels
+  cmapplot_globals$font_main <- X11Font("sans")  # "medium" weight for in-body text and x/y axis
+  cmapplot_globals$font_note <- X11Font("sans")  # "book" weight for notes and sources
+  cmapplot_globals$font_title <- X11Font("sans")  # "semibold" weight for title
+  cmapplot_globals$font_label <- X11Font("sans")  # "semibold" weight also for labels
 
   cmapplot_globals$font_main_face <- "plain"
   cmapplot_globals$font_note_face <- "plain"
