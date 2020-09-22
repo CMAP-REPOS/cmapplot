@@ -20,8 +20,16 @@ Please report issues and suggest improvements at Github:
 
 \url{https://github.com/CMAP-REPOS/cmapplot}
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://cmap-repos.github.io/cmapplot}
+}
+
+}
 \author{
 \strong{Maintainer}: Matthew Stern \email{mstern@cmap.illinois.gov} (\href{https://orcid.org/0000-0001-9119-2121}{ORCID})
+
 
 Authors:
 \itemize{
