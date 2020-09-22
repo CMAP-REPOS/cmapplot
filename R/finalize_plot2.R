@@ -205,8 +205,6 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                                        )
 
   # subtitle grob
-                                           # note that color is defined using
-                                           # html-style "span" tags
   grob_subtitle <-  gridtext::textbox_grob(text = subtitle,
                                            # set top left location of grob
                                            x = grid::unit(0, "npc"),
@@ -217,13 +215,13 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                                            padding = grid::unit.c(text_margin_mid, # top
                                                                   grid::unit(1, "bigpts"), # right
                                                                   grid::unit(1, "bigpts"), # bottom
-                                                                  text_margin_left),# left
+                                                                  text_margin_left), # left
                                            # set aesthetic variables
-                                           gp = grid::gpar(fontsize=cmapplot_globals$font_sizes$note,
-                                                           fontfamily=cmapplot_globals$font_note,
-                                                           fontface=cmapplot_globals$font_note_face,
-                                                           lineheight=0.93,
-                                                           col=cmapplot_globals$colors$blackish)
+                                           gp = grid::gpar(fontsize = cmapplot_globals$font_sizes$note,
+                                                           fontfamily = cmapplot_globals$font_note,
+                                                           fontface = cmapplot_globals$font_note_face,
+                                                           lineheight = 0.93,
+                                                           col = cmapplot_globals$colors$blackish)
                                            # # for debug, draw box around grob
                                            # , box_gp = gpar(col = "blue", fill = "lavenderblush")
   )
@@ -266,7 +264,6 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                     #bg = "white",
                     # If PDF, switch device to "cairo" for better PDF handling,
                     device = if (mode == "pdf") {cairo_pdf} else {mode}
-
                     )
     message("Export successful")
   } else if (mode == "plot") {
@@ -274,6 +271,7 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
     grid::grid.newpage()
     grid::grid.draw(output)
   } else if (mode == "newwindow") {
+    # OR, print the grob in a new window of the correct size
     # TO CONFIRM - does this work on Mac?
     # Adding adjustment to show whole plot, it does not show top bar otherwise
     grDevices::dev.new(width = (width/72*1.02),
@@ -281,7 +279,7 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                        noRStudioGD = TRUE)
     grid::grid.newpage()
     grid::grid.draw(output)
-    # Reset device to original (for future plots, if needed)
+    # change active device to original, so next regular plot appears in plots pane
     grDevices::dev.next()
   }
 
