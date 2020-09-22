@@ -72,12 +72,9 @@ econ_plot <-
   scale_y_continuous(labels = scales::comma)
 
 finalize_plot2(econ_plot,
-               "Change in employment in specified clusters in the Chicago
-               Metropolitan Statistical Area, 2001-17.",
-               "Source: Chicago Metropolitan Agency for Planning analysis
-               of traded clusters.",
+               "Cluster-level employment changes in the Chicago MSA, 2001-17.",
+               "Source: Chicago Metropolitan Agency for Planning analysis.",
                mode = "plot",
-               filepath = "foo",
                plot_margins = c(5,20,5,10))
 
 transit_plot <- transit_ridership \%>\%
