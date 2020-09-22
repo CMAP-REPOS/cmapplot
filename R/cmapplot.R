@@ -39,6 +39,9 @@ if (.Platform$OS.type == "windows") {
 
   if (cmapplot_globals$use_whitney) {
     grDevices::windowsFonts(
+      `Whitney Medium` = grDevices::windowsFont("Whitney Medium"),
+      `Whitney Book` = grDevices::windowsFont("Whitney Book"),
+      `Whitney Semibold` = grDevices::windowsFont("Whitney Semibold"),
       sans = "Whitney Medium",  # Override the default font (Arial)
       font_reg = "Whitney Medium",
       font_lite = "Whitney Book",
@@ -47,19 +50,19 @@ if (.Platform$OS.type == "windows") {
   } else {
     message("WARNING: Whitney is not installed on this PC, so CMAP theme will default to Calibri")
     grDevices::windowsFonts(
-      sans = "Calibri",  # Override the default font (Arial)
-      font_reg = "Calibri",
-      font_lite = "Calibri Light",
-      font_sbold = "Calibri",  # No separate semibold/bold font for Calibri,
-      "Calibri" = windowsFont("Calibri"), # FOR REVIEW - this appears to be necessary to force an import of Calibri and Calibri Light
-      "Calibri Light" = windowsFont("Calibri Light")
+      Calibri = grDevices::windowsFont("Calibri"), # FOR REVIEW - this appears to be necessary to force an import of Calibri and Calibri Light
+      `Calibri Light` = grDevices::windowsFont("Calibri Light"),
+      sans = grDevices::windowsFont("Calibri"),  # Override the default font (Arial)
+      font_reg = grDevices::windowsFont("Calibri"),
+      font_lite = grDevices::windowsFont("Calibri Light"),
+      font_sbold = grDevices::windowsFont("Calibri")  # No separate semibold/bold font for Calibri
     )
   }
 
-  cmapplot_globals$font_main <- windowsFonts("font_reg")  # "medium" weight for in-body text and x/y axis
-  cmapplot_globals$font_note <- windowsFonts("font_lite")  # "book" weight for notes and sources
-  cmapplot_globals$font_title <- windowsFonts("font_sbold")  # "semibold" weight for title
-  cmapplot_globals$font_label <- windowsFonts("font_sbold")  # "semibold" weight also for labels
+  cmapplot_globals$font_main <- grDevices::windowsFonts("font_reg")  # "medium" weight for in-body text and x/y axis
+  cmapplot_globals$font_note <- grDevices::windowsFonts("font_lite")  # "book" weight for notes and sources
+  cmapplot_globals$font_title <- grDevices::windowsFonts("font_sbold")  # "semibold" weight for title
+  cmapplot_globals$font_label <- grDevices::windowsFonts("font_sbold")  # "semibold" weight also for labels
   if (cmapplot_globals$use_whitney) {
     cmapplot_globals$font_main_face <- "plain"
     cmapplot_globals$font_note_face <- "plain"
@@ -82,13 +85,10 @@ if (.Platform$OS.type == "windows") {
     sans = grDevices::X11Fonts()$Arial  # Just give in and use Arial for everything :(
    )
 
-  # FLAG FOR REVIEW - I don't know if this is the right formatting/expression
-  # for this function, or if this additional code (adding X11Fonts()) is
-  # required on non-Windows systems).
-  cmapplot_globals$font_main <- X11Font("sans")  # "medium" weight for in-body text and x/y axis
-  cmapplot_globals$font_note <- X11Font("sans")  # "book" weight for notes and sources
-  cmapplot_globals$font_title <- X11Font("sans")  # "semibold" weight for title
-  cmapplot_globals$font_label <- X11Font("sans")  # "semibold" weight also for labels
+  cmapplot_globals$font_main <- "sans"
+  cmapplot_globals$font_note <- "sans"
+  cmapplot_globals$font_title <- "sans"
+  cmapplot_globals$font_label <- "sans"
 
   cmapplot_globals$font_main_face <- "plain"
   cmapplot_globals$font_note_face <- "plain"
