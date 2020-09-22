@@ -39,18 +39,18 @@ if (.Platform$OS.type == "windows") {
 
   if (cmapplot_globals$use_whitney) {
     grDevices::windowsFonts(
-      sans = windowsFont("Whitney Medium"),  # Override the default font (Arial)
-      font_reg = windowsFont("Whitney Medium"),
-      font_lite = windowsFont("Whitney Book"),
-      font_sbold = windowsFont("Whitney Semibold")
+      sans = "Whitney Medium",  # Override the default font (Arial)
+      font_reg = "Whitney Medium",
+      font_lite = "Whitney Book",
+      font_sbold = "Whitney Semibold"
     )
   } else {
     message("WARNING: Whitney is not installed on this PC, so CMAP theme will default to Calibri")
     grDevices::windowsFonts(
-      sans = windowsFont("Calibri"),  # Override the default font (Arial)
-      font_reg = windowsFont("Calibri"),
-      font_lite = windowsFont("Calibri Light"),
-      font_sbold = windowsFont("Calibri"),  # No separate semibold/bold font for Calibri,
+      sans = "Calibri",  # Override the default font (Arial)
+      font_reg = "Calibri",
+      font_lite = "Calibri Light",
+      font_sbold = "Calibri",  # No separate semibold/bold font for Calibri,
       "Calibri" = windowsFont("Calibri"), # FOR REVIEW - this appears to be necessary to force an import of Calibri and Calibri Light
       "Calibri Light" = windowsFont("Calibri Light")
     )

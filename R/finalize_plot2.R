@@ -48,8 +48,8 @@
 #'@importFrom gridtext textbox_grob
 #'@importFrom gridExtra arrangeGrob
 #'
-#' @examples
-#' \dontrun{
+#'@examples
+#'\dontrun{
 #' econ_plot <-
 #'   cluster_jobchange %>%
 #'   ggplot(aes(x = reorder(name, jobchange), y = jobchange, fill = category)) +
@@ -59,12 +59,9 @@
 #'   scale_y_continuous(labels = scales::comma)
 #'
 #' finalize_plot2(econ_plot,
-#'                "Change in employment in specified clusters in the Chicago
-#'                Metropolitan Statistical Area, 2001-17.",
-#'                "Source: Chicago Metropolitan Agency for Planning analysis
-#'                of traded clusters.",
+#'                "Cluster-level employment changes in the Chicago MSA, 2001-17.",
+#'                "Source: Chicago Metropolitan Agency for Planning analysis.",
 #'                mode = "plot",
-#'                filepath = "foo",
 #'                plot_margins = c(5,20,5,10))
 #'
 #' transit_plot <- transit_ridership %>%
@@ -89,7 +86,7 @@
 #'                height = 300,
 #'                title_width = 200,
 #'                width = 800)
-#' }
+#'}
 #'@export
 finalize_plot2 <- function(plot = ggplot2::last_plot(),
                            title = "Title here",
@@ -147,7 +144,12 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
 
 
   # convert top bar and margins to big points
-  top_bar <- grid::unit(top_bar,"bigpts")
+  # At 72 dpi, 2.001 big points appears to be the minimum that will render
+  if ((mode == "png" | mode == "tiff") & top_bar <= 2 & top_bar > 0) {
+    top_bar <- grid::unit(2.001,"bigpts")
+  } else {
+    top_bar <- top_bar <- grid::unit(top_bar,"bigpts")
+  }
   text_margin_left <- grid::unit(text_margin_left,"bigpts")
   text_margin_top <- grid::unit(text_margin_top,"bigpts")
   text_margin_mid <- grid::unit(text_margin_mid,"bigpts")
@@ -261,9 +263,10 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
                     width = (width/72),
                     height = (height/72),
                     dpi = 72,
-                    bg = "white",
-                    # If PDF, switch device to "cairo" for better PDF handling
+                    #bg = "white",
+                    # If PDF, switch device to "cairo" for better PDF handling,
                     device = if (mode == "pdf") {cairo_pdf} else {mode}
+
                     )
     message("Export successful")
   } else if (mode == "plot") {
@@ -272,8 +275,9 @@ finalize_plot2 <- function(plot = ggplot2::last_plot(),
     grid::grid.draw(output)
   } else if (mode == "newwindow") {
     # TO CONFIRM - does this work on Mac?
-    grDevices::dev.new(width = (width/72),
-                       height = (height/72),
+    # Adding adjustment to show whole plot, it does not show top bar otherwise
+    grDevices::dev.new(width = (width/72*1.02),
+                       height = (height/72*1.02),
                        noRStudioGD = TRUE)
     grid::grid.newpage()
     grid::grid.draw(output)
