@@ -173,6 +173,7 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
   input_plot <- input_plot + ggplot2::theme(
     plot.margin = plot_margins,
     plot.title = ggplot2::element_blank(),
+    plot.caption = ggplot2::element_blank(),
     text = ggplot2::element_text(size = cmapplot_globals$font_sizes$main * 1.25)
   )
 
