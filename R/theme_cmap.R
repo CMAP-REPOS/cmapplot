@@ -73,20 +73,20 @@ theme_cmap <- function(
     ggplot2::theme(
 
       # Default text
-      text = ggplot2::element_text(family = cmapplot_globals$font_main,
-                                   face = cmapplot_globals$font_main_face,
-                                   size = cmapplot_globals$font_sizes$main,
+      text = ggplot2::element_text(family = cmapplot_globals$font$main$family,
+                                   face = cmapplot_globals$font$main$face,
+                                   size = cmapplot_globals$font$main$size,
                                    color = cmapplot_globals$colors$blackish),
 
       # Title text
-      plot.title = ggplot2::element_text(family = cmapplot_globals$font_title,
-                                         face = cmapplot_globals$font_title_face,
-                                         size = cmapplot_globals$font_sizes$title),
+      plot.title = ggplot2::element_text(family = cmapplot_globals$font$title$family,
+                                         face = cmapplot_globals$font$title$face,
+                                         size = cmapplot_globals$font$title$size),
 
       # Caption/source text
-      plot.caption = ggplot2::element_text(family = cmapplot_globals$font_note,
-                                           face = cmapplot_globals$font_note_face,
-                                           size = cmapplot_globals$font_sizes$note),
+      plot.caption = ggplot2::element_text(family = cmapplot_globals$font$note$family,
+                                           face = cmapplot_globals$font$note$face,
+                                           size = cmapplot_globals$font$note$size),
 
       # Text elements not displayed
       plot.subtitle = ggplot2::element_blank(),

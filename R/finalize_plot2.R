@@ -173,7 +173,7 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
     plot.margin = plot_margins,
     plot.title = ggplot2::element_blank(),
     plot.caption = ggplot2::element_blank(),
-    text = ggplot2::element_text(size = cmapplot_globals$font_sizes$main * 1.25)
+    text = ggplot2::element_text(size = cmapplot_globals$font$main$size * 1.25)
   )
 
   # The plot appears to be resizing when exported via save
@@ -212,9 +212,9 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
                            grid::unit(1, "bigpts"), # bottom
                            text_margin_left), # left
     # set font aesthetic variables
-    gp = grid::gpar(fontsize=cmapplot_globals$font_sizes$title,
-                    fontfamily=cmapplot_globals$font_title,
-                    fontface=cmapplot_globals$font_title_face,
+    gp = grid::gpar(fontsize=cmapplot_globals$font$title$size,
+                    fontfamily=cmapplot_globals$font$title$family,
+                    fontface=cmapplot_globals$font$title$face,
                     lineheight=0.93,
                     col=cmapplot_globals$colors$blackish)
                     ## for debug, draw box around grob
@@ -235,9 +235,9 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
                            grid::unit(1, "bigpts"), # bottom
                            text_margin_left), # left
     # set aesthetic variables
-    gp = grid::gpar(fontsize = cmapplot_globals$font_sizes$note,
-                    fontfamily = cmapplot_globals$font_note,
-                    fontface = cmapplot_globals$font_note_face,
+    gp = grid::gpar(fontsize = cmapplot_globals$font$note$size,
+                    fontfamily = cmapplot_globals$font$note$family,
+                    fontface = cmapplot_globals$font$note$face,
                     lineheight = 0.93,
                     col = cmapplot_globals$colors$blackish)
                     ## for debug, draw box around grob
@@ -391,15 +391,15 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
 #   title_block <- grid::grobTree(
 #     grid::textGrob(title,
 #                    x = 0.1, hjust = 0, y = 1, vjust = 1,
-#                    gp = grid::gpar(fontsize=cmapplot_globals$font_sizes$title,
-#                                    fontfamily=cmapplot_globals$font_title,
-#                                    fontface=cmapplot_globals$font_title_face,
+#                    gp = grid::gpar(fontsize=cmapplot_globals$font$title$size,
+#                                    fontfamily=cmapplot_globals$font$title$family,
+#                                    fontface=cmapplot_globals$font$title$face,
 #                                    lineheight=0.93)),
 #     grid::textGrob(subtitle,
 #                    x = 0.1, hjust = 0, vjust = 1, y = sheight,
-#                    gp = grid::gpar(fontsize=cmapplot_globals$font_sizes$note,
-#                                    fontfamily=cmapplot_globals$font_reg,
-#                                    fontface=cmapplot_globals$font_reg_face,
+#                    gp = grid::gpar(fontsize=cmapplot_globals$font$note$size,
+#                                    fontfamily=cmapplot_globals$font$note$family,
+#                                    fontface=cmapplot_globals$font$note$face,
 #                                    lineheight=1))
 #   )
 #
