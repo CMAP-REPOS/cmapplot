@@ -83,9 +83,13 @@ theme_cmap <- function(
                                          face = cmapplot_globals$font_title_face,
                                          size = cmapplot_globals$font_sizes$title),
 
+      # Caption/source text
+      plot.caption = ggplot2::element_text(family = cmapplot_globals$font_note,
+                                           face = cmapplot_globals$font_note_face,
+                                           size = cmapplot_globals$font_sizes$note),
+
       # Text elements not displayed
       plot.subtitle = ggplot2::element_blank(),
-      plot.caption = ggplot2::element_blank(),
 
       # Legend format
       legend.position = "top",
