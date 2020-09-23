@@ -7,22 +7,23 @@
 #'specified location. This function will not apply CMAP design standards to the
 #'plot itself: use with \code{theme_cmap()} for that.
 #'
-#'@usage finalize_plot2(plot = ggplot2::last_plot(), title = "Title here",
+#'@usage finalize_plot2(input_plot = ggplot2::last_plot(), title = "Title here",
 #'  caption = "Caption here", mode = c("plot", "newwindow", "object", "svg",
 #'  "png", "tiff", "pdf"), width = 670, height = 400, title_width = 150,
-#'  filepath = NULL, plot_margins = c(5,5,5,10), top_bar = 2, text_margin_left
-#'  = 2, text_margin_top = 5, text_margin_mid = 10)
+#'  filepath = NULL, plot_margins = c(5,5,5,10), top_bar = 2, text_margin_left =
+#'  2, text_margin_top = 5, text_margin_mid = 10)
 #'
-#'@param plot ggplot object, the variable name of the plot you have created that
-#'  you want to finalize. The efault is \code{ggplot2::last_plot()}, so if
-#'  unspecified, the most recent plot will be used.
+#'@param input_plot ggplot object, the variable name of the plot you have
+#'  created that you want to finalize. The default is
+#'  \code{ggplot2::last_plot()}, so unless specified the most recent plot will
+#'  be used.
 #'@param title Char, the text you want to appear in the title block.
 #'@param caption Char, the text you want to appear in the caption block.
 #'@param mode Char, the action to be taken with the plot. Default is to view in
 #'  the window (using "plot"). Other options include "newwindow" (displays in a
 #'  new window), "object" (returns a grob object, but does not print), or one of
 #'  four file extensions that can be saved (png, tiff, svg, and pdf).
-#'@param filepath Char, the filepath you want the plot to be saved to.  You can
+#'@param filepath Char, the filepath you want the plot to be saved to. You can
 #'  specify an extension to use, or an extension will be added if you specify it
 #'  in "mode".
 #'@param width Numeric, the width in pixels for the image, including the title.
@@ -34,8 +35,8 @@
 #'  defining the margins clockwise starting from the top. The default is 5, 5,
 #'  5, and 10 big points  (1/72 of an inch) on the top, right, bottom, and left,
 #'  respectively. Inputs should be formatted as c(`top`,`right`,`bottom`,`left`)
-#'@param top_bar Numeric, the width of the line above the title and graph in
-#'  big points. Default is 3 "big points."
+#'@param top_bar Numeric, the width of the line above the title and graph in big
+#'  points. Default is 3 "big points."
 #'@param text_margin_left Unit, the margin to left of title and caption text.
 #'  Default is 2 "big points."
 #'@param text_margin_top Unit, the margin between the top line and title text.
@@ -43,10 +44,8 @@
 #'@param text_margin_mid Unit, the margin between the title and caption text.
 #'  Default is 10 "big points."
 #'
-#'@importFrom grid gpar unit unit.c grobTree
-#'@importFrom utils installed.packages
-#'@importFrom gridtext textbox_grob
-#'@importFrom gridExtra arrangeGrob
+#' @importFrom utils installed.packages
+#' @importFrom gridExtra arrangeGrob
 #'
 #'@examples
 #'\dontrun{

@@ -30,7 +30,6 @@ Useful links:
 \author{
 \strong{Maintainer}: Matthew Stern \email{mstern@cmap.illinois.gov} (\href{https://orcid.org/0000-0001-9119-2121}{ORCID})
 
-
 Authors:
 \itemize{
   \item Noel Peterson \email{npeterson@cmap.illinois.gov} (\href{https://orcid.org/0000-0003-1290-2362}{ORCID})
