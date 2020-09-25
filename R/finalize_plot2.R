@@ -62,7 +62,8 @@
 #'                "Cluster-level employment changes in the Chicago MSA, 2001-17.",
 #'                "Source: Chicago Metropolitan Agency for Planning analysis.",
 #'                mode = "plot",
-#'                plot_margins = c(5,20,5,10))
+#'                height = 6,
+#'                plot_margins = c(5,30,5,10))
 #'
 #' transit_plot <- transit_ridership %>%
 #'   mutate(system = case_when(
@@ -78,12 +79,11 @@
 #'
 #' finalize_plot2(transit_plot,
 #'                "Transit ridership in the RTA region over time, 1980-2019
-#'                (in millions)",
+#'                (in millions).",
 #'                "Source: Chicago Metropolitan Agency for Planning
 #'                analysis of data from the Regional Transportation Authority.",
-#'                mode="pdf",
+#'                mode="png",
 #'                filepath = "foo",
-#'                height = 3,
 #'                title_width = 2,
 #'                plot_margins = c(5,10,5,10))
 #'}
@@ -310,10 +310,11 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
     if (mode == "png" | mode == "tiff") {
       do.call(mode,
               list(filename = filepath,
+                   type = "cairo",
                    width = width,
-                  height = height,
+                   height = height,
                    units = "in",
-                  res = 300))
+                   res = 300))
     } else if (mode == "pdf" | mode == "svg") {
       do.call(if (mode == "pdf") {"cairo_pdf"} else {mode},
               list(filename = filepath,

@@ -79,7 +79,8 @@ finalize_plot2(econ_plot,
                "Cluster-level employment changes in the Chicago MSA, 2001-17.",
                "Source: Chicago Metropolitan Agency for Planning analysis.",
                mode = "plot",
-               plot_margins = c(5,20,5,10))
+               height = 6,
+               plot_margins = c(5,30,5,10))
 
 transit_plot <- transit_ridership \%>\%
   mutate(system = case_when(
@@ -95,12 +96,11 @@ transit_plot <- transit_ridership \%>\%
 
 finalize_plot2(transit_plot,
                "Transit ridership in the RTA region over time, 1980-2019
-               (in millions)",
+               (in millions).",
                "Source: Chicago Metropolitan Agency for Planning
                analysis of data from the Regional Transportation Authority.",
-               mode="pdf",
+               mode="png",
                filepath = "foo",
-               height = 3,
                title_width = 2,
                plot_margins = c(5,10,5,10))
 }
