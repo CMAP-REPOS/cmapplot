@@ -6,9 +6,9 @@
 \usage{
 finalize_plot2(input_plot = ggplot2::last_plot(), title = "Title here",
  caption = "Caption here", mode = c("plot", "newwindow", "object", "svg",
- "png", "tiff", "pdf"), width = 670, height = 400, title_width = 150,
- filepath = NULL, plot_margins = c(5,5,5,10), top_bar = 2, text_margin_left =
- 2, text_margin_top = 5, text_margin_mid = 10)
+ "png", "tiff", "pdf"), width = 7, height = 4, title_width = 1.5,
+ filepath = NULL, plot_margins = c(5,5,5,10), topline = 2, topline_margin =
+ 5, text_margin_left = 2, text_margin_top = 5, text_margin_mid = 10)
 }
 \arguments{
 \item{input_plot}{ggplot object, the variable name of the plot you have
@@ -25,12 +25,12 @@ the window (using "plot"). Other options include "newwindow" (displays in a
 new window), "object" (returns a grob object, but does not print), or one of
 four file extensions that can be saved (png, tiff, svg, and pdf).}
 
-\item{width}{Numeric, the width in pixels for the image, including the title.
-Default = 670.}
+\item{width}{Numeric, the width in inches for the image, including the title.
+Default = 7.}
 
-\item{height}{Numeric, the height in pixels for the image. Default = 400.}
+\item{height}{Numeric, the height in inches for the image. Default = 4.}
 
-\item{title_width}{Numeric, the width in pixels for the title. Default = 150.}
+\item{title_width}{Numeric, the width in inches for the title. Default = 1.5.}
 
 \item{filepath}{Char, the filepath you want the plot to be saved to. You can
 specify an extension to use, or an extension will be added if you specify it
@@ -42,8 +42,11 @@ defining the margins clockwise starting from the top. The default is 5, 5,
 5, and 10 big points  (1/72 of an inch) on the top, right, bottom, and left,
 respectively. Inputs should be formatted as c(`top`,`right`,`bottom`,`left`)}
 
-\item{top_bar}{Numeric, the width of the line above the title and graph in big
+\item{topline}{Numeric, the width of the line above the title and graph in big
 points. Default is 3 "big points."}
+
+\item{topline_margin}{Numeric, the margin between the top line and the top of
+the exported image. Default is 5 "big points."}
 
 \item{text_margin_left}{Unit, the margin to left of title and caption text.
 Default is 2 "big points."}
@@ -97,8 +100,8 @@ finalize_plot2(transit_plot,
                analysis of data from the Regional Transportation Authority.",
                mode="pdf",
                filepath = "foo",
-               height = 300,
-               title_width = 200,
-               width = 800)
+               height = 3,
+               title_width = 2,
+               plot_margins = c(5,10,5,10))
 }
 }

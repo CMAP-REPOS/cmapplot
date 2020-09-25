@@ -9,9 +9,9 @@
 #'
 #'@usage finalize_plot2(input_plot = ggplot2::last_plot(), title = "Title here",
 #'  caption = "Caption here", mode = c("plot", "newwindow", "object", "svg",
-#'  "png", "tiff", "pdf"), width = 670, height = 400, title_width = 150,
-#'  filepath = NULL, plot_margins = c(5,5,5,10), top_bar = 2, text_margin_left =
-#'  2, text_margin_top = 5, text_margin_mid = 10)
+#'  "png", "tiff", "pdf"), width = 7, height = 4, title_width = 1.5,
+#'  filepath = NULL, plot_margins = c(5,5,5,10), topline = 2, topline_margin =
+#'  5, text_margin_left = 2, text_margin_top = 5, text_margin_mid = 10)
 #'
 #'@param input_plot ggplot object, the variable name of the plot you have
 #'  created that you want to finalize. The default is
@@ -26,17 +26,19 @@
 #'@param filepath Char, the filepath you want the plot to be saved to. You can
 #'  specify an extension to use, or an extension will be added if you specify it
 #'  in "mode".
-#'@param width Numeric, the width in pixels for the image, including the title.
-#'  Default = 670.
-#'@param height Numeric, the height in pixels for the image. Default = 400.
-#'@param title_width Numeric, the width in pixels for the title. Default = 150.
+#'@param width Numeric, the width in inches for the image, including the title.
+#'  Default = 7.
+#'@param height Numeric, the height in inches for the image. Default = 4.
+#'@param title_width Numeric, the width in inches for the title. Default = 1.5.
 #'@param plot_margins Vector of units, the margins around the elements of the
 #'  plot within the plot object. This requires a vector of 4 "unit" elements,
 #'  defining the margins clockwise starting from the top. The default is 5, 5,
 #'  5, and 10 big points  (1/72 of an inch) on the top, right, bottom, and left,
 #'  respectively. Inputs should be formatted as c(`top`,`right`,`bottom`,`left`)
-#'@param top_bar Numeric, the width of the line above the title and graph in big
+#'@param topline Numeric, the width of the line above the title and graph in big
 #'  points. Default is 3 "big points."
+#'@param topline_margin Numeric, the margin between the top line and the top of
+#'  the exported image. Default is 5 "big points."
 #'@param text_margin_left Unit, the margin to left of title and caption text.
 #'  Default is 2 "big points."
 #'@param text_margin_top Unit, the margin between the top line and title text.
@@ -45,7 +47,6 @@
 #'  Default is 10 "big points."
 #'
 #' @importFrom utils installed.packages
-#' @importFrom gridExtra arrangeGrob
 #'
 #'@examples
 #'\dontrun{
@@ -82,21 +83,22 @@
 #'                analysis of data from the Regional Transportation Authority.",
 #'                mode="pdf",
 #'                filepath = "foo",
-#'                height = 300,
-#'                title_width = 200,
-#'                width = 800)
+#'                height = 3,
+#'                title_width = 2,
+#'                plot_margins = c(5,10,5,10))
 #'}
 #'@export
 finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
                            title = "Title here",
                            caption = "Caption here",
                            mode = c("plot", "newwindow", "object", "svg", "png", "tiff","pdf"),
-                           width = 670,
-                           height = 400,
-                           title_width = 150,
+                           width = 7,
+                           height = 4,
+                           title_width = 1.5,
                            filepath = NULL,
                            plot_margins = c(5,5,5,10),
-                           top_bar = 2,
+                           topline = 2,
+                           topline_margin = 5,
                            text_margin_left = 2,
                            text_margin_top = 5,
                            text_margin_mid = 10
@@ -130,11 +132,12 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
   }
 
   # validate height and width
-  if (width != 670) { warning("Width should typically be 670 px exactly.") }
-  if (height > 400) { warning("Height should typically be 400 px or less.") }
+  if (width != 7) { warning("Width should typically be 7 inches exactly.") }
+  if (height > 4) { warning("Height should typically be 4 inches or less.") }
 
   # validate top bar
-  if (top_bar != 2) { warning("Top bar should typically be 2 big points exactly") }
+  if (topline != 2) { warning("Top line should typically be 2 big points exactly") }
+  if (topline_margin != 5) { warning("Margin between top line and edge should typically be 5 big points exactly") }
 
   # validate margins
   if (text_margin_left != 2) { warning("Margin between left edge and title text should typically be 2 big points exactly") }
@@ -143,12 +146,8 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
 
 
   # convert top bar and margins to big points
-  # At 72 dpi, 2.001 big points appears to be the minimum that will render
-  if ((mode == "png" | mode == "tiff") & top_bar <= 2 & top_bar > 0) {
-    top_bar <- grid::unit(2.001, "bigpts")
-  } else {
-    top_bar <- top_bar <- grid::unit(top_bar,"bigpts")
-  }
+  topline <- grid::unit(topline,"bigpts")
+  topline_margin <- grid::unit(topline_margin,"bigpts")
   text_margin_left <- grid::unit(text_margin_left, "bigpts")
   text_margin_top <- grid::unit(text_margin_top, "bigpts")
   text_margin_mid <- grid::unit(text_margin_mid, "bigpts")
@@ -193,9 +192,11 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
   # Build necessary grobs -----------------------------------------------------
 
   # rectangle grob for top line
-  grob_topline <- grid::rectGrob(
-    gp=grid::gpar(fill = cmapplot_globals$colors$blackish,
-                  col = "white")
+  grob_topline <- grid::linesGrob(
+    y = grid::unit(1, "npc") - topline_margin,
+    gp=grid::gpar(col = cmapplot_globals$colors$blackish,
+                  lineend = "butt",
+                  lwd = topline)
   )
 
   # title grob
@@ -203,9 +204,12 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
     text = title,
     # set top left location of grob
     x = grid::unit(0, "npc"),
-    y = grid::unit(1, "npc"),
+    y = grid::unit(1, "npc") - topline_margin - text_margin_top,
     hjust = 0,
     vjust = 1,
+    # set dimensions
+    width = grid::unit(title_width,"in"),
+    maxheight = grid::unit(1, "npc") - topline_margin - text_margin_top,
     # set margins within textbox
     padding = grid::unit.c(text_margin_top, # top
                            grid::unit(1, "bigpts"), # right
@@ -226,9 +230,12 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
     text = caption,
     # set top left location of grob
     x = grid::unit(0, "npc"),
-    y = grid::unit(1, "npc") - grid::grobHeight(grob_title),
+    y = grid::unit(1, "npc") - topline_margin - text_margin_top - grid::grobHeight(grob_title),
     hjust = 0,
     vjust = 1,
+    # set dimensions
+    width = grid::unit(title_width,"in"),
+    maxheight = grid::unit(1,"npc") - topline_margin - text_margin_top - grid::grobHeight(grob_title),
     # set margins within textbox
     padding = grid::unit.c(text_margin_mid, # top
                            grid::unit(1, "bigpts"), # right
@@ -247,60 +254,89 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
 
   # Assemble final plot -----------------------------------------------------
 
-  # establish matrix shape for three viewports
-  layout <- rbind(c(3,3),
-                 c(2,1))
-
-  # stitch together the final plot
-  output <- gridExtra::arrangeGrob(
-    grobs = list(input_plot,
-                 grid::grobTree(grob_title, grob_caption),
-                 grob_topline),
-    layout_matrix = layout,
-    # establish specific dimensions for each column and row
-    heights = grid::unit.c(top_bar,
-                           unit(height, "bigpts") - top_bar),
-    widths = grid::unit(c(title_width, width - title_width), "bigpts")
+  # create two viewports for drawing graphics
+  vp.stack <- vpStack(
+    # parent viewport is full final size
+    viewport(
+      name = "vp.frame",
+      width = width,
+      height = height,
+      default.units = "in",
+      gp = grid::gpar(fill = "white")
+    ),
+    # child viewport is for the plot itself.
+    viewport(
+      name = "vp.plot",
+      x = grid::unit(title_width, "in"),
+      y = grid::unit(height, "in") - topline_margin - text_margin_top,
+      width = unit(width - title_width, "in"),
+      height = unit(height, "in") - topline_margin - text_margin_top,
+      just = c(0,1)
+    )
   )
 
+  # internal function that takes a vpstack object and a list of grobs.
+  # The function works from the inside out, pasting the first grob in the
+  # innermost viewport, stepping out 1 viewport, and repeating.
+  recursive.vp.draw <- function(viewports, grobs){
+    if(length(viewports) == length(grobs)){
+      pushViewport(viewports)
 
-  # # as debug tool, print viewport layouts to plot window
-  # gtable::gtable_show_layout(output)
+      for(i in seq_along(viewports)){
+        grid.draw(grobs[[i]])
+        popViewport()
+      }
+      message("Draw successful.")
+    } else {
+      message("Draw aborted. Make sure `viewports` and `grobs` are of equal length.")
+    }
+  }
+
+  # assemble all objects to plot into list of grobs
+  plotlist <- list(
+    # first, the ggplot as a grob
+    ggplot2::ggplotGrob(input_plot),
+    # second, the various decorations as a grob
+    grid::grobTree(grob_topline, grob_title, grob_caption))
 
   # output the figure based on user setting -----------------------------------
 
   if (mode == "object") {
-    # return output as TableGrob object
-    return(output)
+    # return output as a list of grobs
+    return(plotlist)
+
+    # OR export as image
   } else if (mode %in% savetypes) {
-    # OR send to ggsave
-    ggplot2::ggsave(filename = filepath,
-                    plot = output,
-                    width = (width/72),
-                    height = (height/72),
-                    dpi = 72,
-                    #bg = "white",
-                    # If PDF, switch device to "cairo" for better PDF handling,
-                    device = if (mode == "pdf") {cairo_pdf} else {mode}
-                    )
+    if (mode == "png" | mode == "tiff") {
+      do.call(mode,
+              list(filename = filepath,
+                   width = width,
+                  height = height,
+                   units = "in",
+                  res = 300))
+    } else if (mode == "pdf" | mode == "svg") {
+      do.call(if (mode == "pdf") {"cairo_pdf"} else {mode},
+              list(filename = filepath,
+                   width = width,
+                   height = height))
+    }
+    recursive.vp.draw(vp.stack,plotlist)
+    dev.off()
     message("Export successful")
-  } else if (mode == "plot") {
+
     # OR print the grob to the plots window
-    grid::grid.newpage()
-    grid::grid.draw(output)
-  } else if (mode == "newwindow") {
+  } else if (mode == "plot") {
+    grid.newpage()
+    recursive.vp.draw(vp.stack,plotlist)
+
     # OR, print the grob in a new window of the correct size
-    # TO CONFIRM - does this work on Mac?
-    # Adding adjustment to show whole plot, it does not show top bar otherwise
-    grDevices::dev.new(width = (width/72*1.02),
-                       height = (height/72*1.02),
+  } else if (mode == "newwindow") {
+    grDevices::dev.new(width = width,
+                       height = height,
                        noRStudioGD = TRUE)
-    grid::grid.newpage()
-    grid::grid.draw(output)
-    # change active device to original, so next regular plot appears in plots pane
+    recursive.vp.draw(vp.stack,plotlist)
     grDevices::dev.next()
   }
-
   # return geom defaults as before
   ggplot2::update_geom_defaults("line",list(size = default_lwd))
 }

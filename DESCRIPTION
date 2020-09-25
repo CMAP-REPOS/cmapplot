@@ -38,6 +38,5 @@ Imports:
     scales,
     sysfonts,
     magrittr,
-    gridtext,
-    gridExtra
+    gridtext
 RoxygenNote: 7.1.1
