@@ -8,10 +8,11 @@
 #'plot itself: use with \code{theme_cmap()} for that.
 #'
 #'@usage finalize_plot2(input_plot = ggplot2::last_plot(), title = "Title here",
-#'  caption = "Caption here", mode = c("plot", "newwindow", "object", "svg",
-#'  "png", "tiff", "pdf"), width = 7, height = 4, title_width = 1.5,
-#'  filepath = NULL, plot_margins = c(5,5,5,10), topline = 2, topline_margin =
-#'  5, text_margin_left = 2, text_margin_top = 5, text_margin_mid = 10)
+#'  caption = "Caption here", mode = c("plot", "newwindow", "object", "png",
+#'  "tiff", "jpeg", "bmp", "svg", "ps", "pdf"), width = 7, height = 4,
+#'  title_width = 1.5, filepath = NULL, plot_margins = c(5,5,5,10), topline = 2,
+#'  topline_margin = 5, text_margin_left = 2, text_margin_top = 5,
+#'  text_margin_mid = 10, white_canvas = FALSE)
 #'
 #'@param input_plot ggplot object, the variable name of the plot you have
 #'  created that you want to finalize. The default is
@@ -22,7 +23,7 @@
 #'@param mode Char, the action to be taken with the plot. Default is to view in
 #'  the window (using "plot"). Other options include "newwindow" (displays in a
 #'  new window), "object" (returns a grob object, but does not print), or one of
-#'  four file extensions that can be saved (png, tiff, svg, and pdf).
+#'  file extensions that can be saved (png, tiff, jpeg, bmp, svg, ps, and pdf).
 #'@param filepath Char, the filepath you want the plot to be saved to. You can
 #'  specify an extension to use, or an extension will be added if you specify it
 #'  in "mode".
@@ -45,6 +46,10 @@
 #'  Default is 5 "big points."
 #'@param text_margin_mid Unit, the margin between the title and caption text.
 #'  Default is 10 "big points."
+#'@param white_canvas Bool, whether the canvas for "plot" or "newwindow" should
+#'  be white outside the plot element. Default is FALSE, which returns a gray
+#'  canvas to make it easier to determine whether text is overflowing the
+#'  desired size.
 #'
 #' @importFrom utils installed.packages
 #'
@@ -91,7 +96,9 @@
 finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
                            title = "Title here",
                            caption = "Caption here",
-                           mode = c("plot", "newwindow", "object", "svg", "png", "tiff","pdf"),
+                           mode = c("plot", "newwindow", "object",
+                                    "png","tiff","jpeg","bmp",
+                                    "svg","ps","pdf"),
                            width = 7,
                            height = 4,
                            title_width = 1.5,
@@ -101,7 +108,8 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
                            topline_margin = 5,
                            text_margin_left = 2,
                            text_margin_top = 5,
-                           text_margin_mid = 10
+                           text_margin_mid = 10,
+                           white_canvas = FALSE
                            ){
 
   # Validation and initialization -----------------------------
@@ -113,7 +121,9 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
   if (length(plot_margins) != 4) { stop("Plot margins must be a vector of length four") }
 
   # validate output details
-  savetypes <- c("svg", "png", "tiff","pdf")
+  raster_savetypes <- c("png","tiff","jpeg","bmp")
+  vector_savetypes <- c("svg","ps","pdf")
+  savetypes <- c(raster_savetypes,vector_savetypes)
   if (mode %in% savetypes) {
     # check for filepath
     if (is.null(filepath)) { stop("You must specify a filepath in save mode") }
@@ -123,12 +133,6 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
       filepath <- paste0(filepath, ".", mode)
     }
 
-    # if mode is SVG, confirm svglite package.
-    if (mode == "svg") {
-      if (!("svglite" %in% rownames(utils::installed.packages()))) {
-        stop("To export as SVG, package `svglite` is required.")
-      }
-    }
   }
 
   # validate height and width
@@ -189,10 +193,46 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
     ggplot2::update_geom_defaults("line", list(size = cmapplot_globals$lwd_layout))
   }
 
+  # Build necessary viewports
+
+  # create viewport for non-plot content
+  vp.frame <- viewport(
+    name = "vp.frame",
+    # origin at 0,0 of parent
+    x = 0,
+    y = 0,
+    just = c(0,0),
+    # with a size determined by user
+    width = width,
+    height = height,
+    default.units = "in"
+  )
+
+  # create viewport for plot
+  vp.plot <- viewport(
+    name = "vp.plot",
+    # origin shifted over `title_width` from 0,0 of parent
+    x = grid::unit(title_width, "in"),
+    y = 0,
+    just = c(0,0),
+    # size is function of remaining size available
+    width = grid::unit(width - title_width, "in"),
+    height = grid::unit(height, "in") - topline_margin - text_margin_top
+  )
+
+  # create a parent viewport for centering plot when drawing rather than saving
+  vp.centerframe <- viewport(
+    width = grid::unit(width, "in"),
+    height = grid::unit(height, "in"),
+    clip = "on"
+  )
+
+
   # Build necessary grobs -----------------------------------------------------
 
   # rectangle grob for top line
   grob_topline <- grid::linesGrob(
+    vp = vp.frame,
     y = grid::unit(1, "npc") - topline_margin,
     gp=grid::gpar(col = cmapplot_globals$colors$blackish,
                   lineend = "butt",
@@ -202,6 +242,8 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
   # title grob
   grob_title <- gridtext::textbox_grob(
     text = title,
+    # set location down from top left corner of vp.frame
+    vp = vp.frame,
     # set top left location of grob
     x = grid::unit(0, "npc"),
     y = grid::unit(1, "npc") - topline_margin - text_margin_top,
@@ -228,7 +270,8 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
   # Caption grob
   grob_caption <- gridtext::textbox_grob(
     text = caption,
-    # set top left location of grob
+    # set location down from top left corner of vp.frame
+    vp = vp.frame,
     x = grid::unit(0, "npc"),
     y = grid::unit(1, "npc") - topline_margin - text_margin_top - grid::grobHeight(grob_title),
     hjust = 0,
@@ -254,60 +297,21 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
 
   # Assemble final plot -----------------------------------------------------
 
-  # create two viewports for drawing graphics
-  vp.stack <- vpStack(
-    # parent viewport is full final size
-    viewport(
-      name = "vp.frame",
-      width = width,
-      height = height,
-      default.units = "in",
-      gp = grid::gpar(fill = "white")
-    ),
-    # child viewport is for the plot itself.
-    viewport(
-      name = "vp.plot",
-      x = grid::unit(title_width, "in"),
-      y = grid::unit(height, "in") - topline_margin - text_margin_top,
-      width = unit(width - title_width, "in"),
-      height = unit(height, "in") - topline_margin - text_margin_top,
-      just = c(0,1)
-    )
+  final_plot <- grid::grobTree(
+    grid::grid.rect(gp = grid::gpar(fill = "white", col = "white")),
+    grob_topline, grob_title, grob_caption,
+    grid::grobTree(ggplotGrob(input_plot), vp = vp.plot)
   )
-
-  # internal function that takes a vpstack object and a list of grobs.
-  # The function works from the inside out, pasting the first grob in the
-  # innermost viewport, stepping out 1 viewport, and repeating.
-  recursive.vp.draw <- function(viewports, grobs){
-    if(length(viewports) == length(grobs)){
-      pushViewport(viewports)
-
-      for(i in seq_along(viewports)){
-        grid.draw(grobs[[i]])
-        popViewport()
-      }
-      message("Draw successful.")
-    } else {
-      message("Draw aborted. Make sure `viewports` and `grobs` are of equal length.")
-    }
-  }
-
-  # assemble all objects to plot into list of grobs
-  plotlist <- list(
-    # first, the ggplot as a grob
-    ggplot2::ggplotGrob(input_plot),
-    # second, the various decorations as a grob
-    grid::grobTree(grob_topline, grob_title, grob_caption))
 
   # output the figure based on user setting -----------------------------------
 
   if (mode == "object") {
-    # return output as a list of grobs
-    return(plotlist)
+    # return output as a grob
+    return(final_plot)
 
     # OR export as image
   } else if (mode %in% savetypes) {
-    if (mode == "png" | mode == "tiff") {
+    if (mode %in% raster_savetypes) {
       do.call(mode,
               list(filename = filepath,
                    type = "cairo",
@@ -315,28 +319,39 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
                    height = height,
                    units = "in",
                    res = 300))
-    } else if (mode == "pdf" | mode == "svg") {
-      do.call(if (mode == "pdf") {"cairo_pdf"} else {mode},
+    } else if (mode %in% vector_savetypes) {
+      # add required cairo prefix for non-svg files
+      do.call(if (mode != "svg") { paste0("cairo_" , mode) }
+              else { mode },
               list(filename = filepath,
                    width = width,
                    height = height))
     }
-    recursive.vp.draw(vp.stack,plotlist)
+    grid::grid.draw(final_plot)
     dev.off()
     message("Export successful")
 
-    # OR print the grob to the plots window
-  } else if (mode == "plot") {
-    grid.newpage()
-    recursive.vp.draw(vp.stack,plotlist)
+    # OR print the grob without saving
+  } else if (mode == "plot" | mode == "newwindow") {
+    # If new window, open a new window
+    if (mode == "newwindow") {
+      grDevices::dev.new(width = width * 1.02,
+                         height = height * 1.02,
+                         noRStudioGD = TRUE)
+    }
+    # Display the canvas as gray unless specified otherwise
+    if (!white_canvas) {
+        grid::grid.rect(gp = grid::gpar(fill = "gray90",
+                                        col = "gray90"))
+    }
+    # Display plot
+    grid::pushViewport(vp.centerframe)
+    grid::grid.draw(final_plot)
 
-    # OR, print the grob in a new window of the correct size
-  } else if (mode == "newwindow") {
-    grDevices::dev.new(width = width,
-                       height = height,
-                       noRStudioGD = TRUE)
-    recursive.vp.draw(vp.stack,plotlist)
+    # Reset to next device if new window
+    if (mode == "newwindow") {
     grDevices::dev.next()
+    }
   }
   # return geom defaults as before
   ggplot2::update_geom_defaults("line",list(size = default_lwd))

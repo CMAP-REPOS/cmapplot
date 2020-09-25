@@ -5,10 +5,11 @@
 \title{Arrange and save CMAP ggplot chart}
 \usage{
 finalize_plot2(input_plot = ggplot2::last_plot(), title = "Title here",
- caption = "Caption here", mode = c("plot", "newwindow", "object", "svg",
- "png", "tiff", "pdf"), width = 7, height = 4, title_width = 1.5,
- filepath = NULL, plot_margins = c(5,5,5,10), topline = 2, topline_margin =
- 5, text_margin_left = 2, text_margin_top = 5, text_margin_mid = 10)
+ caption = "Caption here", mode = c("plot", "newwindow", "object", "png",
+ "tiff", "jpeg", "bmp", "svg", "ps", "pdf"), width = 7, height = 4,
+ title_width = 1.5, filepath = NULL, plot_margins = c(5,5,5,10), topline = 2,
+ topline_margin = 5, text_margin_left = 2, text_margin_top = 5,
+ text_margin_mid = 10, white_canvas = FALSE)
 }
 \arguments{
 \item{input_plot}{ggplot object, the variable name of the plot you have
@@ -23,7 +24,7 @@ be used.}
 \item{mode}{Char, the action to be taken with the plot. Default is to view in
 the window (using "plot"). Other options include "newwindow" (displays in a
 new window), "object" (returns a grob object, but does not print), or one of
-four file extensions that can be saved (png, tiff, svg, and pdf).}
+file extensions that can be saved (png, tiff, jpeg, bmp, svg, ps, and pdf).}
 
 \item{width}{Numeric, the width in inches for the image, including the title.
 Default = 7.}
@@ -56,6 +57,11 @@ Default is 5 "big points."}
 
 \item{text_margin_mid}{Unit, the margin between the title and caption text.
 Default is 10 "big points."}
+
+\item{white_canvas}{Bool, whether the canvas for "plot" or "newwindow" should
+be white outside the plot element. Default is FALSE, which returns a gray
+canvas to make it easier to determine whether text is overflowing the
+desired size.}
 }
 \description{
 \code{finalize_plot2} will save a ggplot into a frame defined by  CMAP design
