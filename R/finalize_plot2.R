@@ -196,7 +196,15 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
     ggplot2::update_geom_defaults("line", list(size = cmapplot_globals$lwd_layout))
   }
 
-  # Build necessary viewports
+  # Build necessary viewports -----------------------------------------------------
+
+
+  # create a parent viewport for centering the plot when drawing within R
+  vp.centerframe <- viewport(
+    width = grid::unit(width, "in"),
+    height = grid::unit(height, "in"),
+    clip = "on"
+  )
 
   # create viewport for non-plot content
   vp.frame <- viewport(
@@ -208,7 +216,8 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
     # with a size determined by user
     width = width,
     height = height,
-    default.units = "in"
+    default.units = "in",
+    clip = "on"
   )
 
   # create viewport for plot
@@ -223,13 +232,6 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
     height = grid::unit(height, "in") - topline_margin - text_margin_top
   )
 
-  # create a parent viewport for centering plot when drawing rather than saving
-  vp.centerframe <- viewport(
-    width = grid::unit(width, "in"),
-    height = grid::unit(height, "in"),
-    clip = "on"
-  )
-
 
   # Build necessary grobs -----------------------------------------------------
 
@@ -237,9 +239,9 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
   grob_topline <- grid::linesGrob(
     vp = vp.frame,
     y = grid::unit(1, "npc") - topline_margin,
-    gp=grid::gpar(col = cmapplot_globals$colors$blackish,
-                  lineend = "butt",
-                  lwd = topline)
+    gp = grid::gpar(col = cmapplot_globals$colors$blackish,
+                    lineend = "butt",
+                    lwd = topline)
   )
 
   # title grob
@@ -247,7 +249,6 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
     text = title,
     # set location down from top left corner of vp.frame
     vp = vp.frame,
-    # set top left location of grob
     x = grid::unit(0, "npc"),
     y = grid::unit(1, "npc") - topline_margin - text_margin_top,
     hjust = 0,
@@ -360,26 +361,6 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
   ggplot2::update_geom_defaults("line",list(size = default_lwd))
 }
 
-
-
-# # visualisation experiment
-# line <- grid::linesGrob(x = grid::unit(c(0,1), "npc"),
-#                         y = grid::unit(c(0.92,0.92), "npc"),
-#                         gp=grid::gpar(col='black',
-#                                       lwd=3))
-#
-# line2 <- grid::linesGrob(x = grid::unit(c(0,1), "npc"),
-#                         y = grid::unit(c(1,1), "inches"),
-#                         gp=grid::gpar(col='black',
-#                                       lwd=3))
-#
-# line3 <- grid::linesGrob(x = grid::unit(c(0,1), "npc"),
-#                          y = grid::unit(c(3,3), "points"),
-#                          gp=grid::gpar(col='black',
-#                                        lwd=3))
-#
-#
-# grid.arrange(line, line2, line3, nrow = 1)
 
 
 
