@@ -3,16 +3,22 @@
 #'\code{finalize_plot2} will save a ggplot into a frame defined by  CMAP design
 #'standards. It will align your title and caption to the left, add a horizontal
 #'line on top, and make other adjustments. If instructed to do so, it will also
-#'save the plot in one of four file formats (png, tiff, svg, and pdf) to a
-#'specified location. This function will not apply CMAP design standards to the
-#'plot itself: use with \code{theme_cmap()} for that.
+#'save the plot in one of seven file formats (png, tiff, jpeg, bmp, svg, ps, and
+#'pdf) to a specified location. This function will not apply CMAP design
+#'standards to the plot itself: use with \code{theme_cmap()} for that.
 #'
 #'@usage finalize_plot2(input_plot = ggplot2::last_plot(), title = "Title here",
-#'  caption = "Caption here", mode = c("plot", "newwindow", "object", "png",
-#'  "tiff", "jpeg", "bmp", "svg", "ps", "pdf"), width = 7, height = 4,
-#'  title_width = 1.5, resolution = 300, filepath = NULL, plot_margins =
-#'  c(5,5,5,10), topline = 2, topline_margin = 5, text_margin_left = 2,
-#'  text_margin_top = 5, text_margin_mid = 10, white_canvas = FALSE)
+#'  caption = "Caption here", mode = c("plot", "newwindow", "object",
+#'  "png","tiff","jpeg","bmp", "svg","ps","pdf"), width = 6.7, height = 4,
+#'  title_width = 2, resolution = 300, filepath = NULL, plot_margin_top =
+#'  cmapplot_globals$margins$plot_top, plot_margin_right =
+#'  cmapplot_globals$margins$plot_right, plot_margin_bottom =
+#'  cmapplot_globals$margins$plot_bottom, plot_margin_left =
+#'  cmapplot_globals$margins$plot_left, topline = cmapplot_globals$lwds$topline,
+#'  topline_margin = cmapplot_globals$margins$topline_above, text_margin_left =
+#'  cmapplot_globals$margins$title_left, text_margin_top =
+#'  cmapplot_globals$margins$title_top, text_margin_mid =
+#'  cmapplot_globals$margins$title_bottom, white_canvas = FALSE)
 #'
 #'@param input_plot ggplot object, the variable name of the plot you have
 #'  created that you want to finalize. The default is
@@ -30,24 +36,27 @@
 #'@param width Numeric, the width in inches for the image, including the title.
 #'  Default = 7.
 #'@param height Numeric, the height in inches for the image. Default = 4.
-#'@param title_width Numeric, the width in inches for the title. Default = 1.5.
+#'@param title_width Numeric, the width in inches for the title. Default = 2.
 #'@param resolution, Numeric, the resolution of exported images (in dpi).
 #'  Default = 300.
-#'@param plot_margins Vector of units, the margins around the elements of the
-#'  plot within the plot object. This requires a vector of 4 "unit" elements,
-#'  defining the margins clockwise starting from the top. The default is 5, 5,
-#'  5, and 10 big points  (1/72 of an inch) on the top, right, bottom, and left,
-#'  respectively. Inputs should be formatted as c(`top`,`right`,`bottom`,`left`)
-#'@param topline Numeric, the width of the line above the title and graph in big
-#'  points. Default is 3 "big points."
+#'@param plot_margin_top Numeric, the margin between the top line and the plot
+#'  (in big points). Default = 5.
+#'@param plot_margin_right Numeric, the margin between the the plot and the
+#'  right edge (in big points). Default = 2.
+#'@param plot_margin_bottom Numeric, the margin between the the plot and the
+#'  bottom edge (in big points). Default = 2.
+#'@param plot_margin_left Numeric, the margin between the the plot and the
+#'  title/caption (in big points). Default = 11.5.
+#'@param topline Numeric, the width of the line above the title and graph  (in
+#'  "big points"). Default = 3.
 #'@param topline_margin Numeric, the margin between the top line and the top of
-#'  the exported image. Default is 5 "big points."
-#'@param text_margin_left Unit, the margin to left of title and caption text.
-#'  Default is 2 "big points."
-#'@param text_margin_top Unit, the margin between the top line and title text.
-#'  Default is 5 "big points."
-#'@param text_margin_mid Unit, the margin between the title and caption text.
-#'  Default is 10 "big points."
+#'  the exported image (in "big points"). Default = 5.
+#'@param text_margin_left Numeric, the margin to left of title and caption text
+#'  (in "big points"). Default = 2.
+#'@param text_margin_top Numeric, the margin between the top line and title text
+#'  (in "big points"). Default = 5.
+#'@param text_margin_mid Numeric, the margin between the title and caption text
+#'  (in "big points"). Default = 10.
 #'@param white_canvas Bool, whether the canvas for "plot" or "newwindow" should
 #'  be white outside the plot element. Default is FALSE, which returns a gray
 #'  canvas to make it easier to determine whether text is overflowing the
@@ -70,7 +79,9 @@
 #'                "Source: Chicago Metropolitan Agency for Planning analysis.",
 #'                mode = "plot",
 #'                height = 6,
-#'                plot_margins = c(5,30,5,10))
+#'                width = 8,
+#'                title_width = 2.5,
+#'                plot_margin_right = 30)
 #'
 #' transit_plot <- transit_ridership %>%
 #'   mutate(system = case_when(
@@ -89,10 +100,9 @@
 #'                (in millions).",
 #'                "Source: Chicago Metropolitan Agency for Planning
 #'                analysis of data from the Regional Transportation Authority.",
-#'                mode="png",
+#'                mode="newwindow",
 #'                filepath = "foo",
-#'                title_width = 2,
-#'                plot_margins = c(5,10,5,10))
+#'                plot_margin_right = 10)
 #'}
 #'@export
 finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
@@ -101,17 +111,20 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
                            mode = c("plot", "newwindow", "object",
                                     "png","tiff","jpeg","bmp",
                                     "svg","ps","pdf"),
-                           width = 7,
+                           width = 6.7,
                            height = 4,
-                           title_width = 1.5,
+                           title_width = 2,
                            resolution = 300,
                            filepath = NULL,
-                           plot_margins = c(5,5,5,10),
-                           topline = 2,
-                           topline_margin = 5,
-                           text_margin_left = 2,
-                           text_margin_top = 5,
-                           text_margin_mid = 10,
+                           plot_margin_top = cmapplot_globals$margins$plot_top,
+                           plot_margin_right = cmapplot_globals$margins$plot_right,
+                           plot_margin_bottom = cmapplot_globals$margins$plot_bottom,
+                           plot_margin_left = cmapplot_globals$margins$plot_left,
+                           topline = cmapplot_globals$lwds$topline,
+                           topline_margin = cmapplot_globals$margins$topline_above,
+                           text_margin_left = cmapplot_globals$margins$title_left,
+                           text_margin_top = cmapplot_globals$margins$title_top,
+                           text_margin_mid = cmapplot_globals$margins$title_bottom,
                            white_canvas = FALSE
                            ){
 
@@ -119,9 +132,6 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
 
   # check mode argument
   mode <- match.arg(mode)
-
-  # check plot margins argument
-  if (length(plot_margins) != 4) { stop("Plot margins must be a vector of length four") }
 
   # validate output details
   raster_savetypes <- c("png","tiff","jpeg","bmp")
@@ -139,8 +149,13 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
   }
 
   # validate height and width
-  if (width != 7) { warning("Width should typically be 7 inches exactly.") }
+  if (width != 6.7) { warning("Width should typically be 6.7 inches exactly.") }
   if (height > 4) { warning("Height should typically be 4 inches or less.") }
+
+  # validate plot margins
+  if (plot_margin_top != 5) { warning("Margin between top line and plot should typically be 5 big points exactly") }
+  if (plot_margin_bottom != 2) { warning("Margin between plot and bottom edge should typically be 2 big points exactly") }
+  if (plot_margin_left != 11.5) { warning("Margin between plot and title text should typically be 11.5 big points exactly") }
 
   # validate top bar
   if (topline != 2) { warning("Top line should typically be 2 big points exactly") }
@@ -148,7 +163,7 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
 
   # validate margins
   if (text_margin_left != 2) { warning("Margin between left edge and title text should typically be 2 big points exactly") }
-  if (text_margin_top != 5) { warning("Margin between top bar and title should typically be 5 big points exactly") }
+  if (text_margin_top != 5) { warning("Margin between top line and title should typically be 5 big points exactly") }
   if (text_margin_mid != 10) { warning("Margin between title and caption should typically be 10 big points exactly") }
 
 
@@ -158,7 +173,7 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
   text_margin_left <- grid::unit(text_margin_left, "bigpts")
   text_margin_top <- grid::unit(text_margin_top, "bigpts")
   text_margin_mid <- grid::unit(text_margin_mid, "bigpts")
-  plot_margins <- grid::unit(plot_margins, "bigpts")
+  plot_margins <- grid::unit(c(plot_margin_top,plot_margin_right,plot_margin_bottom,plot_margin_left), "bigpts")
 
 
   # If title/caption unspecified, try to extract from plot
@@ -182,18 +197,17 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
     text = ggplot2::element_text(size = cmapplot_globals$font$main$size * 1.25)
   )
 
-  # The plot appears to be resizing when exported via save
-  # (but not in plot or newwindow). To have correct font
-  # sizes for export, it appears that chart text must be
-  # specified at 17.5 (which is 1.25 x 14, or 96/72 x 14)
-  # appears to be accurately rendered at 14. This could be
-  # an artifact of the points vs. pixels size problem.
+  # The plot appears to be resizing when exported via save (but not in plot or
+  # newwindow). To have correct font sizes for export, it appears that chart
+  # text must be specified at 17.5 (which is 1.25 x 14) appears to be accurately
+  # rendered at 14. This could be an artifact of the points vs. pixels size
+  # problem.
 
   # Size conversion for widths in line graphs (this is ignored in calls that
   # return a grob object, as it is not yet drawn)
   if (mode != "object") {
     default_lwd <- ggplot2::GeomLine$default_aes$size
-    ggplot2::update_geom_defaults("line", list(size = cmapplot_globals$lwd_layout))
+    ggplot2::update_geom_defaults("line", list(size = cmapplot_globals$lwds$line_graph))
   }
 
   # Build necessary viewports -----------------------------------------------------
@@ -258,14 +272,14 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
     maxheight = grid::unit(1, "npc") - topline_margin - text_margin_top,
     # set margins within textbox
     padding = grid::unit.c(text_margin_top, # top
-                           grid::unit(1, "bigpts"), # right
-                           grid::unit(1, "bigpts"), # bottom
+                           grid::unit(cmapplot_globals$margins$title_right,"bigpts"), # right
+                           text_margin_mid, # bottom
                            text_margin_left), # left
     # set font aesthetic variables
     gp = grid::gpar(fontsize=cmapplot_globals$font$title$size,
                     fontfamily=cmapplot_globals$font$title$family,
                     fontface=cmapplot_globals$font$title$face,
-                    lineheight=0.93,
+                    lineheight=cmapplot_globals$spacing$title,
                     col=cmapplot_globals$colors$blackish)
                     ## for debug, draw box around grob
                     #, box_gp = gpar(col = "blue", fill = "cornsilk")
@@ -284,15 +298,15 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
     width = grid::unit(title_width,"in"),
     maxheight = grid::unit(1,"npc") - topline_margin - text_margin_top - grid::grobHeight(grob_title),
     # set margins within textbox
-    padding = grid::unit.c(text_margin_mid, # top
-                           grid::unit(1, "bigpts"), # right
+    padding = grid::unit.c(grid::unit(0, "bigpts"), # top
+                           grid::unit(cmapplot_globals$margins$title_right,"bigpts"), # right
                            grid::unit(1, "bigpts"), # bottom
                            text_margin_left), # left
     # set aesthetic variables
     gp = grid::gpar(fontsize = cmapplot_globals$font$note$size,
                     fontfamily = cmapplot_globals$font$note$family,
                     fontface = cmapplot_globals$font$note$face,
-                    lineheight = 0.93,
+                    lineheight = cmapplot_globals$spacing$caption,
                     col = cmapplot_globals$colors$blackish)
                     ## for debug, draw box around grob
                     #, box_gp = gpar(col = "blue", fill = "lavenderblush")

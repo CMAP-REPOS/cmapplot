@@ -114,9 +114,31 @@ ggplot_size_conversion <- function(value, type) {
 }
 
 # Pre-set values for width of lines (specified by the Communications team)
-cmapplot_globals$lwd_layout  <- ggplot_size_conversion(3, "pt")
-cmapplot_globals$lwd_origin <- ggplot_size_conversion(1.6, "pt") # This is not spec, but appears to be the minimum for variation between origin lines and other background lines
-cmapplot_globals$lwd_other <- ggplot_size_conversion(.3, "pt")
+cmapplot_globals$lwds <- list(
+  topline = 2,
+  line_graph = ggplot_size_conversion(3, "pt"),
+  origin = ggplot_size_conversion(1.6, "pt"), # This is not spec, but appears to be the minimum for variation between origin lines and other background lines
+  other = ggplot_size_conversion(.3, "pt")
+)
+
+# Pre-set values for margins (some specified by the Communications team)
+cmapplot_globals$margins <- list(
+  topline_above = 5,
+  title_top = 5,
+  title_right = 0,
+  title_bottom = 10,
+  title_left = 2,
+  plot_top = 5,
+  plot_right = 2,
+  plot_bottom = 2,
+  plot_left = 11.5
+)
+
+# Pre-set values for line-spacing (calculated based on Comms' specs)
+cmapplot_globals$spacing <- list(
+  title = 0.93,
+  caption = 1
+)
 
 # Define common colors
 cmapplot_globals$colors <- list(
