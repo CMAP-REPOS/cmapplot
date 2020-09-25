@@ -10,9 +10,9 @@
 #'@usage finalize_plot2(input_plot = ggplot2::last_plot(), title = "Title here",
 #'  caption = "Caption here", mode = c("plot", "newwindow", "object", "png",
 #'  "tiff", "jpeg", "bmp", "svg", "ps", "pdf"), width = 7, height = 4,
-#'  title_width = 1.5, filepath = NULL, plot_margins = c(5,5,5,10), topline = 2,
-#'  topline_margin = 5, text_margin_left = 2, text_margin_top = 5,
-#'  text_margin_mid = 10, white_canvas = FALSE)
+#'  title_width = 1.5, resolution = 300, filepath = NULL, plot_margins =
+#'  c(5,5,5,10), topline = 2, topline_margin = 5, text_margin_left = 2,
+#'  text_margin_top = 5, text_margin_mid = 10, white_canvas = FALSE)
 #'
 #'@param input_plot ggplot object, the variable name of the plot you have
 #'  created that you want to finalize. The default is
@@ -31,6 +31,8 @@
 #'  Default = 7.
 #'@param height Numeric, the height in inches for the image. Default = 4.
 #'@param title_width Numeric, the width in inches for the title. Default = 1.5.
+#'@param resolution, Numeric, the resolution of exported images (in dpi).
+#'  Default = 300.
 #'@param plot_margins Vector of units, the margins around the elements of the
 #'  plot within the plot object. This requires a vector of 4 "unit" elements,
 #'  defining the margins clockwise starting from the top. The default is 5, 5,
@@ -102,6 +104,7 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
                            width = 7,
                            height = 4,
                            title_width = 1.5,
+                           resolution = 300,
                            filepath = NULL,
                            plot_margins = c(5,5,5,10),
                            topline = 2,
@@ -318,7 +321,7 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
                    width = width,
                    height = height,
                    units = "in",
-                   res = 300))
+                   res = resolution))
     } else if (mode %in% vector_savetypes) {
       # add required cairo prefix for non-svg files
       do.call(if (mode != "svg") { paste0("cairo_" , mode) }
