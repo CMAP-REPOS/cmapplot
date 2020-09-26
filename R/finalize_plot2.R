@@ -8,8 +8,7 @@
 #'standards to the plot itself: use with \code{theme_cmap()} for that.
 #'
 #'@usage finalize_plot2(input_plot = ggplot2::last_plot(), title = "Title here",
-#'  caption = "Caption here", mode = c("plot", "newwindow", "object",
-#'  "png","tiff","jpeg","bmp", "svg","ps","pdf"), width = 6.7, height = 4,
+#'  caption = "Caption here", mode = c("plot"), width = 6.7, height = 4,
 #'  title_width = 2, resolution = 300, filepath = NULL, plot_margin_top =
 #'  cmapplot_globals$margins$plot_top, plot_margin_right =
 #'  cmapplot_globals$margins$plot_right, plot_margin_bottom =
@@ -25,13 +24,14 @@
 #'  plot will be retrieved via \code{ggplot2::last_plot()}.
 #'@param title Char, the text you want to appear in the title block.
 #'@param caption Char, the text you want to appear in the caption block.
-#'@param mode Char, the action to be taken with the plot. Default is to view in
-#'  the window (using "plot"). Other options include "newwindow" (displays in a
-#'  new window), "object" (returns a grob object, but does not print), or one of
-#'  file extensions that can be saved (png, tiff, jpeg, bmp, svg, ps, and pdf).
-#'@param filepath Char, the filepath you want the plot to be saved to. You can
-#'  specify an extension to use, or an extension will be added if you specify it
-#'  in "mode".
+#'@param mode Vector, the action(s) to be taken with the plot. If a vector of
+#'  modes is provided, it will be iterated over to provide multiple outputs.
+#'  Options include in-R drawing [`plot`, `window`], vector outputs [`svg`,
+#'  `pdf` or `ps`], raster outputs [`png`, `tiff`, `jpeg`, and `bmp`], and
+#'  `object`, which returns a gTree object. Default is `plot`.
+#'@param filepath Char, the filepath you want the plot to be saved to. You may
+#'  specify an extension to use, but if you don't, the correct extension will
+#'  be added for you.
 #'@param width Numeric, the width in inches for the image, including the title.
 #'  Default = 7.
 #'@param height Numeric, the height in inches for the image. Default = 4.
@@ -60,8 +60,6 @@
 #'  be white outside the plot element. Default is FALSE, which returns a gray
 #'  canvas to make it easier to determine whether text is overflowing the
 #'  desired size.
-#'
-#' @importFrom utils installed.packages
 #'
 #'@examples
 #'\dontrun{
@@ -107,14 +105,12 @@
 finalize_plot2 <- function(input_plot = NULL,
                            title = "Title here",
                            caption = "Caption here",
-                           mode = c("plot", "newwindow", "object",
-                                    "png","tiff","jpeg","bmp",
-                                    "svg","ps","pdf"),
+                           mode = c("plot"),
                            width = 6.7,
                            height = 4,
                            title_width = 2,
                            resolution = 300,
-                           filepath = NULL,
+                           filepath = "",
                            plot_margin_top = cmapplot_globals$margins$plot_top,
                            plot_margin_right = cmapplot_globals$margins$plot_right,
                            plot_margin_bottom = cmapplot_globals$margins$plot_bottom,
@@ -130,27 +126,26 @@ finalize_plot2 <- function(input_plot = NULL,
 
   # Validation and initialization -----------------------------
 
-  # check mode argument
-  mode <- match.arg(mode)
-
   # Seek last plot if user did not specify one
   if(is.null(input_plot)){
     input_plot <- ggplot2::last_plot()
   }
 
-  # validate output details
-  raster_savetypes <- c("png","tiff","jpeg","bmp")
-  vector_savetypes <- c("svg","ps","pdf")
-  savetypes <- c(raster_savetypes,vector_savetypes)
-  if (mode %in% savetypes) {
-    # check for filepath
-    if (is.null(filepath)) { stop("You must specify a filepath in save mode") }
+  # check mode argument and validate filepath
+  savetypes_raster <- c("png","tiff","jpeg","bmp")
+  savetypes_vector <- c("svg","ps","pdf")
+  savetypes_print <- c("plot", "window")
 
-    # if extension does not contain correct extension, add it
-    if (!(grepl(paste0("\\.", mode, "$"), filepath))) {
-      filepath <- paste0(filepath, ".", mode)
-    }
+  mode <- match.arg(arg = mode,
+                    choices = c(savetypes_raster,
+                                savetypes_vector,
+                                savetypes_print,
+                                "object"),
+                    several.ok = TRUE)
 
+  # if any save modes specified, check for filepath
+  if (length(intersect(mode, c(savetypes_raster, savetypes_vector)))>0) {
+    if (filepath == "") { stop("You must specify a filepath if saving") }
   }
 
   # validate height and width
@@ -192,12 +187,9 @@ finalize_plot2 <- function(input_plot = NULL,
     caption = input_caption
   }
 
-  # Size conversion for widths in line graphs (this is ignored in calls that
-  # return a grob object, as it is not yet drawn)
-  if (mode != "object") {
-    default_lwd <- ggplot2::GeomLine$default_aes$size
-    ggplot2::update_geom_defaults("line", list(size = cmapplot_globals$lwds$line_graph))
-  }
+  # Size conversion for widths in line graphs
+  default_lwd <- ggplot2::GeomLine$default_aes$size
+  ggplot2::update_geom_defaults("line", list(size = cmapplot_globals$lwds$line_graph))
 
   # Build necessary viewports -----------------------------------------------------
 
@@ -345,55 +337,86 @@ finalize_plot2 <- function(input_plot = NULL,
     name = "final_plot"
   )
 
-  # output the figure based on user setting -----------------------------------
+  # Output the figure based on mode selected -----------------------------------
 
-  if (mode == "object") {
-    # return output as a grob
-    return(final_plot)
+  for(this_mode in mode){
 
-    # OR export as image
-  } else if (mode %in% savetypes) {
-    if (mode %in% raster_savetypes) {
-      do.call(mode,
-              list(filename = filepath,
+    # if filename does not contain correct extension, add it
+    # (this is meaningless in view mode)
+    if (!(grepl(paste0("\\.", this_mode, "$"), filepath))) {
+      this_filepath <- paste0(filepath, ".", this_mode)
+    } else {
+      this_filepath <- filepath
+    }
+
+    # export as raster
+    if (this_mode %in% savetypes_raster) {
+
+      # Open the device
+      do.call(this_mode,
+              list(filename = this_filepath,
                    type = "cairo",
                    width = width,
                    height = height,
                    units = "in",
                    res = resolution))
-    } else if (mode %in% vector_savetypes) {
+
+      # draw the plot and close the device
+      grid::grid.draw(final_plot)
+      dev.off()
+
+      message(paste("Export successful:", this_mode))
+
+    # OR export as vector
+    } else if (this_mode %in% savetypes_vector) {
+
       # add required cairo prefix for non-svg files
-      do.call(if (mode != "svg") { paste0("cairo_" , mode) } else { mode },
-              list(filename = filepath,
+      mode_modified <- if (this_mode != "svg") { paste0("cairo_" , this_mode) } else { this_mode }
+
+      # open the device
+      do.call(mode_modified,
+              list(filename = this_filepath,
                    width = width,
                    height = height))
-    }
-    grid::grid.draw(final_plot)
-    dev.off()
-    message("Export successful")
 
-    # OR print the grob without saving
-  } else if (mode == "plot" | mode == "newwindow") {
-    # If new window, open a new window
-    if (mode == "newwindow") {
-      grDevices::dev.new(width = width * 1.02,
-                         height = height * 1.02,
-                         noRStudioGD = TRUE)
-    }
-    # set up blank canvas
-    grid::grid.newpage()
-    grid::grid.draw(grob_canvas)
-    # Display plot
-    grid::pushViewport(vp.centerframe)
-    grid::grid.draw(final_plot)
+      # draw the plot and close the device
+      grid::grid.draw(final_plot)
+      dev.off()
 
-    # Reset to next device if new window
-    if (mode == "newwindow") {
-    grDevices::dev.next()
+      message(paste("Export successful:", this_mode))
+
+    # OR print the grob
+    } else if (this_mode %in% savetypes_print) {
+
+      # If new window, open a new window
+      if (this_mode == "window") {
+        grDevices::dev.new(width = width * 1.02,
+                           height = height * 1.02,
+                           noRStudioGD = TRUE)
+      }
+
+      # set up blank canvas
+      grid::grid.newpage()
+      grid::grid.draw(grob_canvas)
+
+      # draw the plot
+      grid::pushViewport(vp.centerframe)
+      grid::grid.draw(final_plot)
+
+      # Deactivate the new window
+      if (this_mode == "window") {
+        grDevices::dev.next()
+      }
     }
   }
+
   # return geom defaults as before
   ggplot2::update_geom_defaults("line",list(size = default_lwd))
+
+  # if user wants an object, return it
+  if("object" %in% mode){
+    return(final_plot)
+  }
 }
 
 
