@@ -105,15 +105,15 @@ check_cmap_fonts <- function() {
 #' @param type Char, the unit of the value to be converted.
 #' @noRd
 ggplot_size_conversion <- function(value, type) {
-    value_in_pt <- grid::convertUnit(grid::unit(value, type), "points", valueOnly = TRUE)
+    value_in_bigpt <- grid::convertUnit(grid::unit(value, type), "bigpts", valueOnly = TRUE)
     return(
-      value_in_pt / 72.27  # Normalize from points
+      value_in_bigpts / 72 # Normalize from points
         * 96               # Multiply by units for R pixels (per inch)
         / ggplot2::.pt     # Account for the ggplot2::.pt factor (=72.27/25.4)
     )
 }
 
-# Pre-set values for width of lines (specified by the Communications team)
+# Establish
 cmapplot_globals$lwds <- list(
   topline = 2,
   line_graph = ggplot_size_conversion(3, "pt"),
