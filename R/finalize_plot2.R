@@ -133,11 +133,10 @@ finalize_plot2 <- function(input_plot = NULL,
   # check mode argument
   mode <- match.arg(mode)
 
-  # check
+  # Seek last plot if user did not specify one
   if(is.null(input_plot)){
     input_plot <- ggplot2::last_plot()
   }
-
 
   # validate output details
   raster_savetypes <- c("png","tiff","jpeg","bmp")
@@ -201,7 +200,6 @@ finalize_plot2 <- function(input_plot = NULL,
   }
 
   # Build necessary viewports -----------------------------------------------------
-
 
   # create a parent viewport for centering the plot when drawing within R
   vp.centerframe <- viewport(
@@ -322,17 +320,19 @@ finalize_plot2 <- function(input_plot = NULL,
   grob_plot <- grid::grobTree(
     ggplotGrob(
       input_plot + ggplot2::theme(
-        plot.margin = plot_margins,
+        # make sure the plot has no title or caption
         plot.title = ggplot2::element_blank(),
         plot.caption = ggplot2::element_blank(),
-        text = ggplot2::element_text(size = cmapplot_globals$font$main$size * 1.25) # *** SEE NOTE
+        # add margins and modify text sizing  *** SEE NOTE BELOW
+        plot.margin = plot_margins,
+        text = ggplot2::element_text(size = cmapplot_globals$font$main$size * 1.25)
       )
     ),
     vp = vp.plot,
     name = "plot"
   )
 
-  # The plot appears to be resizing when exported via save (but not in plot or
+  # NOTE: The plot appears to be resizing when exported via save (but not in plot or
   # newwindow). To have correct font sizes for export, it appears that chart
   # text must be specified at 17.5 (which is 1.25 x 14) appears to be accurately
   # rendered at 14. This could be an artifact of the points vs. pixels size
