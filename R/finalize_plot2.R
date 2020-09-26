@@ -249,8 +249,22 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
 
   # Build necessary grobs -----------------------------------------------------
 
-  # rectangle grob for top line
+  # gray rectangle that fills viewport
+  grob_rectgray <- grid::grid.rect(
+    name = "rectgray",
+    gp = grid::gpar(fill = "gray90",
+                    col = "gray90"))
+
+  # gray rectangle that fills viewport
+  grob_rectwhite <- grid::grid.rect(
+    name = "rectwhite",
+    vp = vp.frame,
+    gp = grid::gpar(fill = "white",
+                    col = "white"))
+
+  #  top line
   grob_topline <- grid::linesGrob(
+    name = "topline",
     vp = vp.frame,
     y = grid::unit(1, "npc") - topline_margin,
     gp = grid::gpar(col = cmapplot_globals$colors$blackish,
@@ -258,8 +272,9 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
                     lwd = topline)
   )
 
-  # title grob
+  # title textbox
   grob_title <- gridtext::textbox_grob(
+    name = "title",
     text = title,
     # set location down from top left corner of vp.frame
     vp = vp.frame,
@@ -281,12 +296,11 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
                     fontface=cmapplot_globals$font$title$face,
                     lineheight=cmapplot_globals$spacing$title,
                     col=cmapplot_globals$colors$blackish)
-                    ## for debug, draw box around grob
-                    #, box_gp = gpar(col = "blue", fill = "cornsilk")
   )
 
-  # Caption grob
+  # caption textbox
   grob_caption <- gridtext::textbox_grob(
+    name = "caption",
     text = caption,
     # set location down from top left corner of vp.frame
     vp = vp.frame,
@@ -308,17 +322,17 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
                     fontface = cmapplot_globals$font$note$face,
                     lineheight = cmapplot_globals$spacing$caption,
                     col = cmapplot_globals$colors$blackish)
-                    ## for debug, draw box around grob
-                    #, box_gp = gpar(col = "blue", fill = "lavenderblush")
   )
 
 
   # Assemble final plot -----------------------------------------------------
 
   final_plot <- grid::grobTree(
-    grid::grid.rect(gp = grid::gpar(fill = "white", col = "white")),
-    grob_topline, grob_title, grob_caption,
-    grid::grobTree(ggplotGrob(input_plot), vp = vp.plot)
+    name = "final_plot",
+    # plot grobs in the vp.frame viewport
+    grob_rectwhite, grob_topline, grob_title, grob_caption,
+    # then plot the ggplot into the vp.plot viewport
+    grid::grobTree(ggplotGrob(input_plot), vp = vp.plot, name = "plot")
   )
 
   # output the figure based on user setting -----------------------------------
@@ -339,8 +353,7 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
                    res = resolution))
     } else if (mode %in% vector_savetypes) {
       # add required cairo prefix for non-svg files
-      do.call(if (mode != "svg") { paste0("cairo_" , mode) }
-              else { mode },
+      do.call(if (mode != "svg") { paste0("cairo_" , mode) } else { mode },
               list(filename = filepath,
                    width = width,
                    height = height))
@@ -359,8 +372,7 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
     }
     # Display the canvas as gray unless specified otherwise
     if (!white_canvas) {
-        grid::grid.rect(gp = grid::gpar(fill = "gray90",
-                                        col = "gray90"))
+        grid::grid.draw(grob_rectgray)
     }
     # Display plot
     grid::pushViewport(vp.centerframe)

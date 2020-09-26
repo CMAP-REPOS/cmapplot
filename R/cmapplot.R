@@ -22,7 +22,7 @@
 #' @keywords internal
 "_PACKAGE"
 
-cmapplot_globals <- new.env(parent=emptyenv())  # An environment for storing any global variables
+cmapplot_globals <- new.env(parent = emptyenv())  # An environment for storing any global variables
 
 
 # Default font handling ---------------------------------------------------
