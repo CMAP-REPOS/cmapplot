@@ -105,7 +105,7 @@ check_cmap_fonts <- function() {
 #' @param type Char, the unit of the value to be converted.
 #' @noRd
 ggplot_size_conversion <- function(value, type) {
-    value_in_bigpt <- grid::convertUnit(grid::unit(value, type), "bigpts", valueOnly = TRUE)
+    value_in_bigpts <- grid::convertUnit(grid::unit(value, type), "bigpts", valueOnly = TRUE)
     return(
       value_in_bigpts / 72 # Normalize from points
         * 96               # Multiply by units for R pixels (per inch)
@@ -113,31 +113,21 @@ ggplot_size_conversion <- function(value, type) {
     )
 }
 
-# Establish
-cmapplot_globals$lwds <- list(
-  topline = 2,
-  line_graph = ggplot_size_conversion(3, "pt"),
-  origin = ggplot_size_conversion(1.6, "pt"), # This is not spec, but appears to be the minimum for variation between origin lines and other background lines
-  other = ggplot_size_conversion(.3, "pt")
-)
-
-# Pre-set values for margins (some specified by the Communications team)
-cmapplot_globals$margins <- list(
-  topline_above = 5,
-  title_top = 5,
-  title_right = 0,
-  title_bottom = 10,
-  title_left = 2,
-  plot_top = 5,
-  plot_right = 2,
-  plot_bottom = 2,
-  plot_left = 11.5
-)
-
-# Pre-set values for line-spacing (calculated based on Comms' specs)
-cmapplot_globals$spacing <- list(
-  title = 0.93,
-  caption = 1
+# Establish plotting constants
+# (mostly in bigpts)
+cmapplot_globals$plot_constants <- list(
+  lwd_plotline = ggplot_size_conversion(3, "pt"),
+  lwd_originline = ggplot_size_conversion(1.6, "pt"), # This appears to be the minimum for variation between origin lines and other background lines
+  lwd_gridline = ggplot_size_conversion(.3, "pt"),
+  lwd_topline = 2,
+  margin_v1 = 5,
+  margin_v2 = 5,
+  margin_v3 = 5,
+  margin_h1 = 2,
+  margin_h2 = 10,
+  padding_plot = c(0,2,2,0),
+  leading_title = 0.93,
+  leading_caption = 1
 )
 
 # Define common colors

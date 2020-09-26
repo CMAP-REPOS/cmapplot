@@ -145,21 +145,21 @@ theme_cmap <- function(
     # Add x origin line, if specified
     if(!is.null(hline)){
       ggplot2::geom_hline(yintercept = hline,
-                          size = cmapplot_globals$lwds$origin,
+                          size = cmapplot_globals$plot_constants$lwd_originline,
                           color = cmapplot_globals$colors$blackish)
     },
 
     # Add y origin line, if specified
     if(!is.null(vline)){
       ggplot2::geom_vline(xintercept = vline,
-                          size = cmapplot_globals$lwds$origin,
+                          size = cmapplot_globals$plot_constants$lwd_originline,
                           color = cmapplot_globals$colors$blackish)
     },
 
     # Re-introduce horizontal gridlines if specified
     if (grepl("h", gridlines)) {
       ggplot2::theme(
-        panel.grid.major.y = ggplot2::element_line(size = cmapplot_globals$lwds$other,
+        panel.grid.major.y = ggplot2::element_line(size = cmapplot_globals$plot_constants$lwd_gridline,
                                                    color = cmapplot_globals$colors$blackish)
       )
     },
@@ -167,7 +167,7 @@ theme_cmap <- function(
     # Re-introduce vertical gridlines if specified
     if (grepl("v", gridlines)) {
       ggplot2::theme(
-        panel.grid.major.x = ggplot2::element_line(size = cmapplot_globals$lwds$other,
+        panel.grid.major.x = ggplot2::element_line(size = cmapplot_globals$plot_constants$lwd_gridline,
                                                    color = cmapplot_globals$colors$blackish)
       )
     },

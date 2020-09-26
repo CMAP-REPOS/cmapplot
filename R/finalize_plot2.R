@@ -116,17 +116,9 @@ finalize_plot2 <- function(input_plot = NULL,
                            title_width = 2,
                            resolution = 300,
                            filepath = "",
-                           plot_margin_top = cmapplot_globals$margins$plot_top,
-                           plot_margin_right = cmapplot_globals$margins$plot_right,
-                           plot_margin_bottom = cmapplot_globals$margins$plot_bottom,
-                           plot_margin_left = cmapplot_globals$margins$plot_left,
-                           topline = cmapplot_globals$lwds$topline,
-                           topline_margin = cmapplot_globals$margins$topline_above,
-                           text_margin_left = cmapplot_globals$margins$title_left,
-                           text_margin_top = cmapplot_globals$margins$title_top,
-                           text_margin_mid = cmapplot_globals$margins$title_bottom,
                            fill_bg = "white",
-                           fill_canvas = "gray90"
+                           fill_canvas = "gray90",
+                           overrides = list()
                            ){
 
   # Validation and initialization -----------------------------
@@ -153,33 +145,15 @@ finalize_plot2 <- function(input_plot = NULL,
     if (filepath == "") { stop("You must specify a filepath if saving") }
   }
 
-  # validate height and width
-  if (width != 6.7) { warning("Width should typically be 6.7 inches exactly.") }
-  if (height > 4) { warning("Height should typically be 4 inches or less.") }
+  # create list of plot constants, from globals unless overridden by user
+  plot_constants <- modifyList(cmapplot_globals$plot_constants, overrides)
 
-  # validate plot margins
-  if (plot_margin_top != 5) { warning("Margin between top line and plot should typically be 5 big points exactly") }
-  if (plot_margin_bottom != 2) { warning("Margin between plot and bottom edge should typically be 2 big points exactly") }
-  if (plot_margin_left != 11.5) { warning("Margin between plot and title text should typically be 11.5 big points exactly") }
-
-  # validate top bar
-  if (topline != 2) { warning("Top line should typically be 2 big points exactly") }
-  if (topline_margin != 5) { warning("Margin between top line and edge should typically be 5 big points exactly") }
-
-  # validate margins
-  if (text_margin_left != 2) { warning("Margin between left edge and title text should typically be 2 big points exactly") }
-  if (text_margin_top != 5) { warning("Margin between top line and title should typically be 5 big points exactly") }
-  if (text_margin_mid != 10) { warning("Margin between title and caption should typically be 10 big points exactly") }
-
-
-  # convert top bar and margins to big points
-  topline <- grid::unit(topline,"bigpts")
-  topline_margin <- grid::unit(topline_margin,"bigpts")
-  text_margin_left <- grid::unit(text_margin_left, "bigpts")
-  text_margin_top <- grid::unit(text_margin_top, "bigpts")
-  text_margin_mid <- grid::unit(text_margin_mid, "bigpts")
-  plot_margins <- grid::unit(c(plot_margin_top,plot_margin_right,plot_margin_bottom,plot_margin_left), "bigpts")
-
+  # for brevity, add a sum of margin_v1 and margin_v2 to list
+  plot_constants <- append(plot_constants,
+                           list(margin_v1_v2 =
+                             plot_constants$margin_v1 + plot_constants$margin_v2),
+                           after = 6
+                           )
 
   # If title/caption unspecified, try to extract from plot
   input_title <- input_plot$labels$title
@@ -191,7 +165,6 @@ finalize_plot2 <- function(input_plot = NULL,
     }
   }
 
-
   input_caption <- input_plot$labels$caption
   if (caption == "" & !is.null(input_caption)) {
     caption <- input_caption
@@ -199,7 +172,7 @@ finalize_plot2 <- function(input_plot = NULL,
 
   # Size conversion for widths in line graphs
   default_lwd <- ggplot2::GeomLine$default_aes$size
-  ggplot2::update_geom_defaults("line", list(size = cmapplot_globals$lwds$line_graph))
+  ggplot2::update_geom_defaults("line", list(size = plot_constants$lwd_plotline))
 
   # Build necessary viewports -----------------------------------------------------
 
@@ -234,7 +207,7 @@ finalize_plot2 <- function(input_plot = NULL,
     just = c(0,0),
     # size is function of remaining size available
     width = grid::unit(width - title_width, "in"),
-    height = grid::unit(height, "in") - topline_margin - text_margin_top,
+    height = grid::unit(height, "in") - grid::unit(plot_constants$margin_v1_v2, "bigpts"),
     clip = "on"
   )
 
@@ -259,10 +232,10 @@ finalize_plot2 <- function(input_plot = NULL,
   grob_topline <- grid::linesGrob(
     name = "topline",
     vp = vp.frame,
-    y = grid::unit(1, "npc") - topline_margin,
+    y = grid::unit(1, "npc") - grid::unit(plot_constants$margin_v1, "bigpts"),
     gp = grid::gpar(col = cmapplot_globals$colors$blackish,
                     lineend = "butt",
-                    lwd = topline)
+                    lwd = plot_constants$lwd_topline)
   )
 
   # title textbox (vp.frame)
@@ -272,22 +245,23 @@ finalize_plot2 <- function(input_plot = NULL,
     # set location down from top left corner of vp.frame
     vp = vp.frame,
     x = grid::unit(0, "npc"),
-    y = grid::unit(1, "npc") - topline_margin - text_margin_top,
+    y = grid::unit(1, "npc") - grid::unit(plot_constants$margin_v1_v2, "bigpts"),
     hjust = 0,
     vjust = 1,
     # set dimensions
     width = grid::unit(title_width,"in"),
-    maxheight = grid::unit(1, "npc") - topline_margin - text_margin_top,
+    maxheight = grid::unit(1, "npc") - grid::unit(plot_constants$margin_v1_v2, "bigpts"),
     # set margins within textbox
-    padding = grid::unit.c(text_margin_top, # top
-                           grid::unit(cmapplot_globals$margins$title_right,"bigpts"), # right
-                           text_margin_mid, # bottom
-                           text_margin_left), # left
+    padding = grid::unit(c(0,                        # top
+                           plot_constants$margin_h2, # right
+                           plot_constants$margin_v3, # bottom
+                           plot_constants$margin_h1),# left
+                         "bigpts"),
     # set font aesthetic variables
     gp = grid::gpar(fontsize=cmapplot_globals$font$title$size,
                     fontfamily=cmapplot_globals$font$title$family,
                     fontface=cmapplot_globals$font$title$face,
-                    lineheight=cmapplot_globals$spacing$title,
+                    lineheight=plot_constants$leading_title,
                     col=cmapplot_globals$colors$blackish)
   )
 
@@ -298,22 +272,23 @@ finalize_plot2 <- function(input_plot = NULL,
     # set location down from top left corner of vp.frame
     vp = vp.frame,
     x = grid::unit(0, "npc"),
-    y = grid::unit(1, "npc") - topline_margin - text_margin_top - grid::grobHeight(grob_title),
+    y = grid::unit(1, "npc") - grid::unit(plot_constants$margin_v1_v2, "bigpts") - grid::grobHeight(grob_title),
     hjust = 0,
     vjust = 1,
     # set dimensions
     width = grid::unit(title_width,"in"),
-    maxheight = grid::unit(1,"npc") - topline_margin - text_margin_top - grid::grobHeight(grob_title),
+    maxheight = grid::unit(1,"npc") - grid::unit(plot_constants$margin_v1_v2, "bigpts") - grid::grobHeight(grob_title),
     # set margins within textbox
-    padding = grid::unit.c(grid::unit(0, "bigpts"), # top
-                           grid::unit(cmapplot_globals$margins$title_right,"bigpts"), # right
-                           grid::unit(1, "bigpts"), # bottom
-                           text_margin_left), # left
+    padding = grid::unit(c(0,                        # top
+                           plot_constants$margin_h2, # right
+                           0,                        # bottom
+                           plot_constants$margin_h1),# left
+                         "bigpts"),
     # set aesthetic variables
     gp = grid::gpar(fontsize = cmapplot_globals$font$note$size,
                     fontfamily = cmapplot_globals$font$note$family,
                     fontface = cmapplot_globals$font$note$face,
-                    lineheight = cmapplot_globals$spacing$caption,
+                    lineheight = plot_constants$leading_caption,
                     col = cmapplot_globals$colors$blackish)
   )
 
@@ -325,7 +300,7 @@ finalize_plot2 <- function(input_plot = NULL,
         plot.title = ggplot2::element_blank(),
         plot.caption = ggplot2::element_blank(),
         # add margins and modify text sizing  *** SEE NOTE BELOW
-        plot.margin = plot_margins,
+        plot.margin = unit(plot_constants$padding_plot, "bigpts"),
         text = ggplot2::element_text(size = cmapplot_globals$font$main$size * 1.25)
       )
     ),
