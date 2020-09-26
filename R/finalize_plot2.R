@@ -6,19 +6,18 @@
 #'export it as a raster or vector file. This function will not apply CMAP design
 #'standards to the plot itself: use with \code{theme_cmap()} for that.
 #'
-#'Additional details can be placed here if needed.
+#'Exports from this function use Cairo graphics drivers, while drawing within R
+#'is done with default (Windows) drivers. \code{mode = "object"} also returns a
+#'gTree object that can be stored and drawn later with \code{grid::grid.draw()}.
+#'Lines drawn by any \code{geom_line()} geoms without line widths explicitly
+#'specified are assigned a thicker width (specifically,
+#'\code{cmapplot_globals$plot_constants$lwd_plotline}) in all outputs except for
+#'when exporting as an object.
 #'
 #'@usage finalize_plot2(input_plot = NULL, title = "", caption = "", mode =
 #'  c("plot"), width = 6.7, height = 4, title_width = 2, resolution = 300,
-#'  filepath = "", plot_margin_top = cmapplot_globals$margins$plot_top,
-#'  plot_margin_right = cmapplot_globals$margins$plot_right, plot_margin_bottom
-#'  = cmapplot_globals$margins$plot_bottom, plot_margin_left =
-#'  cmapplot_globals$margins$plot_left, topline = cmapplot_globals$lwds$topline,
-#'  topline_margin = cmapplot_globals$margins$topline_above, text_margin_left =
-#'  cmapplot_globals$margins$title_left, text_margin_top =
-#'  cmapplot_globals$margins$title_top, text_margin_mid =
-#'  cmapplot_globals$margins$title_bottom, fill_bg = "white", fill_canvas =
-#'  "gray90")
+#'  filepath = "", fill_bg = "white", fill_canvas = "gray90", overrides =
+#'  list())
 #'
 #'@param input_plot ggplot object, the variable name of the plot you have
 #'  created that you want to finalize. If null (the default), the most recent
@@ -40,31 +39,17 @@
 #'@param title_width Numeric, the width in inches for the title. Default = 2.
 #'@param resolution, Numeric, the resolution of exported images (in dpi).
 #'  Default = 300.
-#'@param plot_margin_top Numeric, the margin between the top line and the plot
-#'  (in big points). Default = 5.
-#'@param plot_margin_right Numeric, the margin between the the plot and the
-#'  right edge (in big points). Default = 2.
-#'@param plot_margin_bottom Numeric, the margin between the the plot and the
-#'  bottom edge (in big points). Default = 2.
-#'@param plot_margin_left Numeric, the margin between the the plot and the
-#'  title/caption (in big points). Default = 11.5.
-#'@param topline Numeric, the width of the line above the title and graph  (in
-#'  "big points"). Default = 3.
-#'@param topline_margin Numeric, the margin between the top line and the top of
-#'  the exported image (in "big points"). Default = 5.
-#'@param text_margin_left Numeric, the margin to left of title and caption text
-#'  (in "big points"). Default = 2.
-#'@param text_margin_top Numeric, the margin between the top line and title text
-#'  (in "big points"). Default = 5.
-#'@param text_margin_mid Numeric, the margin between the title and caption text
-#'  (in "big points"). Default = 10.
 #'@param fill_bg,fill_canvas Char, strings that represent colors R can
 #'  interpret. They are used to fill behind and around the finished plot,
 #'  respectively.
+#'@param overrides Named list, overrides the default drawing attributes defined
+#'  in \code{cmapplot_globals$plot_constants}.
 #'
 #'@return If and only if \code{"object"} is one of the modes specified, a gTree
 #'  object is returned. gTree is an assembly of grobs, or graphical objects,
 #'  that can be drawn using the grid package.
+#'
+#'@importfrom utils modifyList
 #'
 #'@examples
 #'\dontrun{
@@ -146,7 +131,7 @@ finalize_plot2 <- function(input_plot = NULL,
   }
 
   # create list of plot constants, from globals unless overridden by user
-  plot_constants <- modifyList(cmapplot_globals$plot_constants, overrides)
+  plot_constants <- utils::modifyList(cmapplot_globals$plot_constants, overrides)
 
   # for brevity, add a sum of margin_v1 and margin_v2 to list
   plot_constants <- append(plot_constants,
