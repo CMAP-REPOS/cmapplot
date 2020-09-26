@@ -7,12 +7,11 @@
 #'pdf) to a specified location. This function will not apply CMAP design
 #'standards to the plot itself: use with \code{theme_cmap()} for that.
 #'
-#'@usage finalize_plot2(input_plot = ggplot2::last_plot(), title = "Title here",
-#'  caption = "Caption here", mode = c("plot"), width = 6.7, height = 4,
-#'  title_width = 2, resolution = 300, filepath = NULL, plot_margin_top =
-#'  cmapplot_globals$margins$plot_top, plot_margin_right =
-#'  cmapplot_globals$margins$plot_right, plot_margin_bottom =
-#'  cmapplot_globals$margins$plot_bottom, plot_margin_left =
+#'@usage finalize_plot2(input_plot = NULL, title = "", caption = "", mode =
+#'  c("plot"), width = 6.7, height = 4, title_width = 2, resolution = 300,
+#'  filepath = "", plot_margin_top = cmapplot_globals$margins$plot_top,
+#'  plot_margin_right = cmapplot_globals$margins$plot_right, plot_margin_bottom
+#'  = cmapplot_globals$margins$plot_bottom, plot_margin_left =
 #'  cmapplot_globals$margins$plot_left, topline = cmapplot_globals$lwds$topline,
 #'  topline_margin = cmapplot_globals$margins$topline_above, text_margin_left =
 #'  cmapplot_globals$margins$title_left, text_margin_top =
@@ -30,8 +29,8 @@
 #'  `pdf` or `ps`], raster outputs [`png`, `tiff`, `jpeg`, and `bmp`], and
 #'  `object`, which returns a gTree object. Default is `plot`.
 #'@param filepath Char, the filepath you want the plot to be saved to. You may
-#'  specify an extension to use, but if you don't, the correct extension will
-#'  be added for you.
+#'  specify an extension to use, but if you don't, the correct extension will be
+#'  added for you.
 #'@param width Numeric, the width in inches for the image, including the title.
 #'  Default = 7.
 #'@param height Numeric, the height in inches for the image. Default = 4.
@@ -103,8 +102,8 @@
 #'}
 #'@export
 finalize_plot2 <- function(input_plot = NULL,
-                           title = "Title here",
-                           caption = "Caption here",
+                           title = "",
+                           caption = "",
                            mode = c("plot"),
                            width = 6.7,
                            height = 4,
@@ -177,14 +176,19 @@ finalize_plot2 <- function(input_plot = NULL,
 
 
   # If title/caption unspecified, try to extract from plot
-  input_title = input_plot$labels$title
-  if (title == "Title here" & !is.null(input_title)) {
-    title = input_title
+  input_title <- input_plot$labels$title
+  if (title == "") {
+    if(!is.null(input_title)) {
+      title <- input_title
+    } else {
+      title <- "This plot needs a title"
+    }
   }
 
-  input_caption = input_plot$labels$caption
-  if (caption == "Caption here" & !is.null(input_caption)) {
-    caption = input_caption
+
+  input_caption <- input_plot$labels$caption
+  if (caption == "" & !is.null(input_caption)) {
+    caption <- input_caption
   }
 
   # Size conversion for widths in line graphs
