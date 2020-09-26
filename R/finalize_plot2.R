@@ -23,8 +23,10 @@
 #'@param input_plot ggplot object, the variable name of the plot you have
 #'  created that you want to finalize. If null (the default), the most recent
 #'  plot will be retrieved via \code{ggplot2::last_plot()}.
-#'@param title Char, the text you want to appear in the title block.
-#'@param caption Char, the text you want to appear in the caption block.
+#'@param title,caption Char, the text you want to appear in the title and
+#'  caption blocks. If empty, any non-Null values from \code{input_plot} will be
+#'  retrieved. These blocks take html formatting, so manual text breaks can be
+#'  created with \code{<br>} and formatting can be changed with \code{<span>}.
 #'@param mode Vector, the action(s) to be taken with the plot. Save using any of
 #'  the following: \code{png}, \code{tiff}, \code{jpeg}, \code{bmp}, \code{svg},
 #'  \code{pdf}, \code{ps}. View in R with: \code{plot}, \code{window}. Return an
@@ -238,7 +240,7 @@ finalize_plot2 <- function(input_plot = NULL,
 
   # Build necessary grobs -----------------------------------------------------
 
-  # grob to fill canvas (null vp)
+  # grob to fill canvas (ROOT vp)
   grob_canvas <- grid::grid.rect(
     name = "canvas",
     gp = grid::gpar(fill = fill_canvas,
@@ -406,9 +408,10 @@ finalize_plot2 <- function(input_plot = NULL,
       grid::grid.newpage()
       grid::grid.draw(grob_canvas)
 
-      # draw the plot
+      # enter centerframe, draw plot, exit centerframe
       grid::pushViewport(vp.centerframe)
       grid::grid.draw(final_plot)
+      grid::popViewport()
 
       # In window mode, deactivate the new window
       if (this_mode == "window") {
