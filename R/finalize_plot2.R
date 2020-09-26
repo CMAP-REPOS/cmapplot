@@ -125,7 +125,8 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
                            text_margin_left = cmapplot_globals$margins$title_left,
                            text_margin_top = cmapplot_globals$margins$title_top,
                            text_margin_mid = cmapplot_globals$margins$title_bottom,
-                           white_canvas = FALSE
+                           fill_canvas = "gray90",
+                           fill_bg = "white"
                            ){
 
   # Validation and initialization -----------------------------
@@ -187,22 +188,6 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
     caption = input_caption
   }
 
-
-  # FLAG FOR REVIEW AND FURTHER THOUGHT - modify the plot a bit to fix margins
-  # and text size on plot
-  input_plot <- input_plot + ggplot2::theme(
-    plot.margin = plot_margins,
-    plot.title = ggplot2::element_blank(),
-    plot.caption = ggplot2::element_blank(),
-    text = ggplot2::element_text(size = cmapplot_globals$font$main$size * 1.25)
-  )
-
-  # The plot appears to be resizing when exported via save (but not in plot or
-  # newwindow). To have correct font sizes for export, it appears that chart
-  # text must be specified at 17.5 (which is 1.25 x 14) appears to be accurately
-  # rendered at 14. This could be an artifact of the points vs. pixels size
-  # problem.
-
   # Size conversion for widths in line graphs (this is ignored in calls that
   # return a grob object, as it is not yet drawn)
   if (mode != "object") {
@@ -215,6 +200,7 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
 
   # create a parent viewport for centering the plot when drawing within R
   vp.centerframe <- viewport(
+    name = "vp.centerframe",
     width = grid::unit(width, "in"),
     height = grid::unit(height, "in"),
     clip = "on"
@@ -243,26 +229,29 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
     just = c(0,0),
     # size is function of remaining size available
     width = grid::unit(width - title_width, "in"),
-    height = grid::unit(height, "in") - topline_margin - text_margin_top
+    height = grid::unit(height, "in") - topline_margin - text_margin_top,
+    clip = "on"
   )
 
 
   # Build necessary grobs -----------------------------------------------------
 
-  # gray rectangle that fills viewport
-  grob_rectgray <- grid::grid.rect(
-    name = "rectgray",
-    gp = grid::gpar(fill = "gray90",
-                    col = "gray90"))
+  # create grob to fill canvas (null vp)
+  grob_canvas <- grid::grid.rect(
+    name = "canvas",
+    gp = grid::gpar(fill = fill_canvas,
+                    col = fill_canvas)
+  )
 
-  # gray rectangle that fills viewport
-  grob_rectwhite <- grid::grid.rect(
-    name = "rectwhite",
+  # gray rectangle that fills (vp.frame)
+  grob_background <- grid::grid.rect(
+    name = "background",
     vp = vp.frame,
-    gp = grid::gpar(fill = "white",
-                    col = "white"))
+    gp = grid::gpar(fill = fill_bg,
+                    col = fill_bg)
+  )
 
-  #  top line
+  #  top line (vp.frame)
   grob_topline <- grid::linesGrob(
     name = "topline",
     vp = vp.frame,
@@ -272,7 +261,7 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
                     lwd = topline)
   )
 
-  # title textbox
+  # title textbox (vp.frame)
   grob_title <- gridtext::textbox_grob(
     name = "title",
     text = title,
@@ -298,7 +287,7 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
                     col=cmapplot_globals$colors$blackish)
   )
 
-  # caption textbox
+  # caption textbox (vp.frame)
   grob_caption <- gridtext::textbox_grob(
     name = "caption",
     text = caption,
@@ -324,15 +313,31 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
                     col = cmapplot_globals$colors$blackish)
   )
 
+  # ggplot as grob (vp.plot)
+  grob_plot <- grid::grobTree(
+    ggplotGrob(
+      input_plot + ggplot2::theme(
+        plot.margin = plot_margins,
+        plot.title = ggplot2::element_blank(),
+        plot.caption = ggplot2::element_blank(),
+        text = ggplot2::element_text(size = cmapplot_globals$font$main$size * 1.25) # *** SEE NOTE
+      )
+    ),
+    vp = vp.plot,
+    name = "plot"
+  )
+
+  # The plot appears to be resizing when exported via save (but not in plot or
+  # newwindow). To have correct font sizes for export, it appears that chart
+  # text must be specified at 17.5 (which is 1.25 x 14) appears to be accurately
+  # rendered at 14. This could be an artifact of the points vs. pixels size
+  # problem.
 
   # Assemble final plot -----------------------------------------------------
 
   final_plot <- grid::grobTree(
-    name = "final_plot",
-    # plot grobs in the vp.frame viewport
-    grob_rectwhite, grob_topline, grob_title, grob_caption,
-    # then plot the ggplot into the vp.plot viewport
-    grid::grobTree(ggplotGrob(input_plot), vp = vp.plot, name = "plot")
+    grob_background, grob_topline, grob_title, grob_caption, grob_plot,
+    name = "final_plot"
   )
 
   # output the figure based on user setting -----------------------------------
@@ -370,10 +375,9 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
                          height = height * 1.02,
                          noRStudioGD = TRUE)
     }
-    # Display the canvas as gray unless specified otherwise
-    if (!white_canvas) {
-        grid::grid.draw(grob_rectgray)
-    }
+    # set up blank canvas
+    grid::grid.newpage()
+    grid::grid.draw(grob_canvas)
     # Display plot
     grid::pushViewport(vp.centerframe)
     grid::grid.draw(final_plot)
