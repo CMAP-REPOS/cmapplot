@@ -1,11 +1,12 @@
 #'Arrange and save CMAP ggplot chart
 #'
-#'\code{finalize_plot2} will save a ggplot into a frame defined by  CMAP design
+#'\code{finalize_plot2} will place a ggplot into a frame defined by CMAP design
 #'standards. It will align your title and caption to the left, add a horizontal
-#'line on top, and make other adjustments. If instructed to do so, it will also
-#'save the plot in one of seven file formats (png, tiff, jpeg, bmp, svg, ps, and
-#'pdf) to a specified location. This function will not apply CMAP design
+#'line on top, and make other adjustments. It can show you the final plot and/or
+#'export it as a raster or vector file. This function will not apply CMAP design
 #'standards to the plot itself: use with \code{theme_cmap()} for that.
+#'
+#'Additional details can be placed here if needed.
 #'
 #'@usage finalize_plot2(input_plot = NULL, title = "", caption = "", mode =
 #'  c("plot"), width = 6.7, height = 4, title_width = 2, resolution = 300,
@@ -16,20 +17,20 @@
 #'  topline_margin = cmapplot_globals$margins$topline_above, text_margin_left =
 #'  cmapplot_globals$margins$title_left, text_margin_top =
 #'  cmapplot_globals$margins$title_top, text_margin_mid =
-#'  cmapplot_globals$margins$title_bottom, white_canvas = FALSE)
+#'  cmapplot_globals$margins$title_bottom, fill_bg = "white", fill_canvas =
+#'  "gray90")
 #'
 #'@param input_plot ggplot object, the variable name of the plot you have
 #'  created that you want to finalize. If null (the default), the most recent
 #'  plot will be retrieved via \code{ggplot2::last_plot()}.
 #'@param title Char, the text you want to appear in the title block.
 #'@param caption Char, the text you want to appear in the caption block.
-#'@param mode Vector, the action(s) to be taken with the plot. If a vector of
-#'  modes is provided, it will be iterated over to provide multiple outputs.
-#'  Options include in-R drawing [`plot`, `window`], vector outputs [`svg`,
-#'  `pdf` or `ps`], raster outputs [`png`, `tiff`, `jpeg`, and `bmp`], and
-#'  `object`, which returns a gTree object. Default is `plot`.
+#'@param mode Vector, the action(s) to be taken with the plot. Save using any of
+#'  the following: \code{png}, \code{tiff}, \code{jpeg}, \code{bmp}, \code{svg},
+#'  \code{pdf}, \code{ps}. View in R with: \code{plot}, \code{window}. Return an
+#'  object with \code{object}.
 #'@param filepath Char, the filepath you want the plot to be saved to. You may
-#'  specify an extension to use, but if you don't, the correct extension will be
+#'  specify an extension to use. If you don't, the correct extension will be
 #'  added for you.
 #'@param width Numeric, the width in inches for the image, including the title.
 #'  Default = 7.
@@ -55,10 +56,13 @@
 #'  (in "big points"). Default = 5.
 #'@param text_margin_mid Numeric, the margin between the title and caption text
 #'  (in "big points"). Default = 10.
-#'@param white_canvas Bool, whether the canvas for "plot" or "newwindow" should
-#'  be white outside the plot element. Default is FALSE, which returns a gray
-#'  canvas to make it easier to determine whether text is overflowing the
-#'  desired size.
+#'@param fill_bg,fill_canvas Char, strings that represent colors R can
+#'  interpret. They are used to fill behind and around the finished plot,
+#'  respectively.
+#'
+#'@return If and only if \code{"object"} is one of the modes specified, a gTree
+#'  object is returned. gTree is an assembly of grobs, or graphical objects,
+#'  that can be drawn using the grid package.
 #'
 #'@examples
 #'\dontrun{
@@ -96,7 +100,7 @@
 #'                (in millions).",
 #'                "Source: Chicago Metropolitan Agency for Planning
 #'                analysis of data from the Regional Transportation Authority.",
-#'                mode="newwindow",
+#'                mode="window",
 #'                filepath = "foo",
 #'                plot_margin_right = 10)
 #'}
@@ -119,8 +123,8 @@ finalize_plot2 <- function(input_plot = NULL,
                            text_margin_left = cmapplot_globals$margins$title_left,
                            text_margin_top = cmapplot_globals$margins$title_top,
                            text_margin_mid = cmapplot_globals$margins$title_bottom,
-                           fill_canvas = "gray90",
-                           fill_bg = "white"
+                           fill_bg = "white",
+                           fill_canvas = "gray90"
                            ){
 
   # Validation and initialization -----------------------------
@@ -143,7 +147,7 @@ finalize_plot2 <- function(input_plot = NULL,
                     several.ok = TRUE)
 
   # if any save modes specified, check for filepath
-  if (length(intersect(mode, c(savetypes_raster, savetypes_vector)))>0) {
+  if (length(intersect(mode, c(savetypes_raster, savetypes_vector))) > 0) {
     if (filepath == "") { stop("You must specify a filepath if saving") }
   }
 
@@ -232,17 +236,16 @@ finalize_plot2 <- function(input_plot = NULL,
     clip = "on"
   )
 
-
   # Build necessary grobs -----------------------------------------------------
 
-  # create grob to fill canvas (null vp)
+  # grob to fill canvas (null vp)
   grob_canvas <- grid::grid.rect(
     name = "canvas",
     gp = grid::gpar(fill = fill_canvas,
                     col = fill_canvas)
   )
 
-  # gray rectangle that fills (vp.frame)
+  # grob to fill behind output (vp.frame)
   grob_background <- grid::grid.rect(
     name = "background",
     vp = vp.frame,
@@ -346,7 +349,7 @@ finalize_plot2 <- function(input_plot = NULL,
   for(this_mode in mode){
 
     # if filename does not contain correct extension, add it
-    # (this is meaningless in view mode)
+    # (in print modes this functions but is meaningless)
     if (!(grepl(paste0("\\.", this_mode, "$"), filepath))) {
       this_filepath <- paste0(filepath, ".", this_mode)
     } else {
@@ -392,7 +395,7 @@ finalize_plot2 <- function(input_plot = NULL,
     # OR print the grob
     } else if (this_mode %in% savetypes_print) {
 
-      # If new window, open a new window
+      # In window mode, open a new window
       if (this_mode == "window") {
         grDevices::dev.new(width = width * 1.02,
                            height = height * 1.02,
@@ -407,7 +410,7 @@ finalize_plot2 <- function(input_plot = NULL,
       grid::pushViewport(vp.centerframe)
       grid::grid.draw(final_plot)
 
-      # Deactivate the new window
+      # In window mode, deactivate the new window
       if (this_mode == "window") {
         grDevices::dev.next()
       }

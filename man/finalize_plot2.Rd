@@ -4,33 +4,31 @@
 \alias{finalize_plot2}
 \title{Arrange and save CMAP ggplot chart}
 \usage{
-finalize_plot2(input_plot = ggplot2::last_plot(), title = "Title here",
- caption = "Caption here", mode = c("plot", "newwindow", "object",
- "png","tiff","jpeg","bmp", "svg","ps","pdf"), width = 6.7, height = 4,
- title_width = 2, resolution = 300, filepath = NULL, plot_margin_top =
- cmapplot_globals$margins$plot_top, plot_margin_right =
- cmapplot_globals$margins$plot_right, plot_margin_bottom =
- cmapplot_globals$margins$plot_bottom, plot_margin_left =
+finalize_plot2(input_plot = NULL, title = "", caption = "", mode =
+ c("plot"), width = 6.7, height = 4, title_width = 2, resolution = 300,
+ filepath = "", plot_margin_top = cmapplot_globals$margins$plot_top,
+ plot_margin_right = cmapplot_globals$margins$plot_right, plot_margin_bottom
+ = cmapplot_globals$margins$plot_bottom, plot_margin_left =
  cmapplot_globals$margins$plot_left, topline = cmapplot_globals$lwds$topline,
  topline_margin = cmapplot_globals$margins$topline_above, text_margin_left =
  cmapplot_globals$margins$title_left, text_margin_top =
  cmapplot_globals$margins$title_top, text_margin_mid =
- cmapplot_globals$margins$title_bottom, white_canvas = FALSE)
+ cmapplot_globals$margins$title_bottom, fill_bg = "white", fill_canvas =
+ "gray90")
 }
 \arguments{
 \item{input_plot}{ggplot object, the variable name of the plot you have
-created that you want to finalize. The default is
-\code{ggplot2::last_plot()}, so unless specified the most recent plot will
-be used.}
+created that you want to finalize. If null (the default), the most recent
+plot will be retrieved via \code{ggplot2::last_plot()}.}
 
 \item{title}{Char, the text you want to appear in the title block.}
 
 \item{caption}{Char, the text you want to appear in the caption block.}
 
-\item{mode}{Char, the action to be taken with the plot. Default is to view in
-the window (using "plot"). Other options include "newwindow" (displays in a
-new window), "object" (returns a grob object, but does not print), or one of
-file extensions that can be saved (png, tiff, jpeg, bmp, svg, ps, and pdf).}
+\item{mode}{Vector, the action(s) to be taken with the plot. Save using any of
+the following: \code{png}, \code{tiff}, \code{jpeg}, \code{bmp}, \code{svg},
+\code{pdf}, \code{ps}. View in R with: \code{plot}, \code{window}. Return an
+object with \code{object}.}
 
 \item{width}{Numeric, the width in inches for the image, including the title.
 Default = 7.}
@@ -42,9 +40,9 @@ Default = 7.}
 \item{resolution, }{Numeric, the resolution of exported images (in dpi).
 Default = 300.}
 
-\item{filepath}{Char, the filepath you want the plot to be saved to. You can
-specify an extension to use, or an extension will be added if you specify it
-in "mode".}
+\item{filepath}{Char, the filepath you want the plot to be saved to. You may
+specify an extension to use. If you don't, the correct extension will be
+added for you.}
 
 \item{plot_margin_top}{Numeric, the margin between the top line and the plot
 (in big points). Default = 5.}
@@ -73,18 +71,24 @@ the exported image (in "big points"). Default = 5.}
 \item{text_margin_mid}{Numeric, the margin between the title and caption text
 (in "big points"). Default = 10.}
 
-\item{white_canvas}{Bool, whether the canvas for "plot" or "newwindow" should
-be white outside the plot element. Default is FALSE, which returns a gray
-canvas to make it easier to determine whether text is overflowing the
-desired size.}
+\item{fill_bg, fill_canvas}{Char, strings that represent colors R can
+interpret. They are used to fill behind and around the finished plot,
+respectively.}
+}
+\value{
+If and only if \code{"object"} is one of the modes specified, a gTree
+ object is returned. gTree is an assembly of grobs, or graphical objects,
+ that can be drawn using the grid package.
 }
 \description{
-\code{finalize_plot2} will save a ggplot into a frame defined by  CMAP design
+\code{finalize_plot2} will place a ggplot into a frame defined by CMAP design
 standards. It will align your title and caption to the left, add a horizontal
-line on top, and make other adjustments. If instructed to do so, it will also
-save the plot in one of seven file formats (png, tiff, jpeg, bmp, svg, ps, and
-pdf) to a specified location. This function will not apply CMAP design
+line on top, and make other adjustments. It can show you the final plot and/or
+export it as a raster or vector file. This function will not apply CMAP design
 standards to the plot itself: use with \code{theme_cmap()} for that.
+}
+\details{
+Additional details can be placed here if needed.
 }
 \examples{
 \dontrun{
@@ -122,7 +126,7 @@ finalize_plot2(transit_plot,
                (in millions).",
                "Source: Chicago Metropolitan Agency for Planning
                analysis of data from the Regional Transportation Authority.",
-               mode="newwindow",
+               mode="window",
                filepath = "foo",
                plot_margin_right = 10)
 }
