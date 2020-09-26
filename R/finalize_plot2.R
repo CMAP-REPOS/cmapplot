@@ -21,9 +21,8 @@
 #'  cmapplot_globals$margins$title_bottom, white_canvas = FALSE)
 #'
 #'@param input_plot ggplot object, the variable name of the plot you have
-#'  created that you want to finalize. The default is
-#'  \code{ggplot2::last_plot()}, so unless specified the most recent plot will
-#'  be used.
+#'  created that you want to finalize. If null (the default), the most recent
+#'  plot will be retrieved via \code{ggplot2::last_plot()}.
 #'@param title Char, the text you want to appear in the title block.
 #'@param caption Char, the text you want to appear in the caption block.
 #'@param mode Char, the action to be taken with the plot. Default is to view in
@@ -105,7 +104,7 @@
 #'                plot_margin_right = 10)
 #'}
 #'@export
-finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
+finalize_plot2 <- function(input_plot = NULL,
                            title = "Title here",
                            caption = "Caption here",
                            mode = c("plot", "newwindow", "object",
@@ -133,6 +132,12 @@ finalize_plot2 <- function(input_plot = ggplot2::last_plot(),
 
   # check mode argument
   mode <- match.arg(mode)
+
+  # check
+  if(is.null(input_plot)){
+    input_plot <- ggplot2::last_plot()
+  }
+
 
   # validate output details
   raster_savetypes <- c("png","tiff","jpeg","bmp")
