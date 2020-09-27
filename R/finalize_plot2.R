@@ -14,10 +14,11 @@
 #'\code{cmapplot_globals$plot_constants$lwd_plotline}) in all outputs except for
 #'when exporting as an object.
 #'
-#'@usage finalize_plot2(input_plot = NULL, title = "", caption = "", mode =
-#'  c("plot"), width = 6.7, height = 4, title_width = 2, resolution = 300,
-#'  filepath = "", fill_bg = "white", fill_canvas = "gray90", overrides =
-#'  list())
+#'@usage finalize_plot2(input_plot = NULL, title = "", caption = "",
+#'  width = 6.7, height = 4, title_width = 1.675, resolution = 300,
+#'  mode = c("plot"), filepath = "",
+#'  fill_bg = "white", fill_canvas = "gray90",
+#'  overrides = list())
 #'
 #'@param input_plot ggplot object, the variable name of the plot you have
 #'  created that you want to finalize. If null (the default), the most recent
@@ -26,6 +27,14 @@
 #'  caption blocks. If empty, any non-Null values from \code{input_plot} will be
 #'  retrieved. These blocks take html formatting, so manual text breaks can be
 #'  created with \code{<br>} and formatting can be changed with \code{<span>}.
+#'@param width,height Numeric, the dimensions for the output image, including
+#'  the title. Units in inches, which interacts with \code{resolution} to define
+#'  the pixel dimensions of raster outputs. Default is 6.7 inches wide and 4
+#'  inches tall.
+#'@param title_width Numeric, the width in inches for the title. Comms guidance
+#'  suggests this should be 25 percent of the total output width.
+#'@param resolution, Numeric, the resolution of exported images (in dpi).
+#'  Default = 300.
 #'@param mode Vector, the action(s) to be taken with the plot. Save using any of
 #'  the following: \code{png}, \code{tiff}, \code{jpeg}, \code{bmp}, \code{svg},
 #'  \code{pdf}, \code{ps}. View in R with: \code{plot}, \code{window}. Return an
@@ -33,14 +42,6 @@
 #'@param filepath Char, the filepath you want the plot to be saved to. You may
 #'  specify an extension to use. If you don't, the correct extension will be
 #'  added for you.
-#'@param width,height Numeric, the dimensions for the output image, including
-#'  the title. Units in inches, which interacts with \code{resolution} to define
-#'  the pixel dimensions of raster outputs. Default is 6.7 inches wide and 4
-#'  inches tall.
-#'@param height Numeric, the height in inches for the image. Default = 4.
-#'@param title_width Numeric, the width in inches for the title. Default = 2.
-#'@param resolution, Numeric, the resolution of exported images (in dpi).
-#'  Default = 300.
 #'@param fill_bg,fill_canvas Char, strings that represent colors R can
 #'  interpret. They are used to fill behind and around the finished plot,
 #'  respectively.
@@ -56,23 +57,26 @@
 #'@importfrom utils modifyList
 #'
 #'@examples
-#'\dontrun{
-#' econ_plot <-
-#'   cluster_jobchange %>%
-#'   ggplot(aes(x = reorder(name, jobchange), y = jobchange, fill = category)) +
+#' \dontrun{
+#' econ_plot <- ggplot(data = cluster_jobchange,
+#'                     mapping = aes(
+#'                       x = reorder(name, jobchange),
+#'                       y = jobchange,
+#'                       fill = category)) +
 #'   geom_col() +
 #'   coord_flip() +
 #'   theme_cmap(gridlines = "v", hline = 0) +
 #'   scale_y_continuous(labels = scales::comma)
 #'
 #' finalize_plot2(econ_plot,
-#'                "Cluster-level employment changes in the Chicago MSA, 2001-17.",
-#'                "Source: Chicago Metropolitan Agency for Planning analysis.",
-#'                mode = "plot",
+#'                "Cluster-level employment changes in the Chicago MSA, 2001-17",
+#'                "Source: Chicago Metropolitan Agency for Planning analysis",
+#'                mode = "window",
 #'                height = 6,
 #'                width = 8,
 #'                title_width = 2.5,
-#'                plot_margin_right = 30)
+#'                overrides = list(margin_h3 = 30)
+#' )
 #'
 #' transit_plot <- transit_ridership %>%
 #'   mutate(system = case_when(
@@ -91,19 +95,19 @@
 #'                (in millions).",
 #'                "Source: Chicago Metropolitan Agency for Planning
 #'                analysis of data from the Regional Transportation Authority.",
-#'                mode="window",
+#'                mode=c("plot", "pdf"),
 #'                filepath = "foo",
-#'                plot_margin_right = 10)
+#'                overrides = list(margin_h3 = 10))
 #'}
 #'@export
 finalize_plot2 <- function(input_plot = NULL,
                            title = "",
                            caption = "",
-                           mode = c("plot"),
                            width = 6.7,
                            height = 4,
-                           title_width = 2,
+                           title_width = 1.675, # per comms, 25% of total width
                            resolution = 300,
+                           mode = c("plot"),
                            filepath = "",
                            fill_bg = "white",
                            fill_canvas = "gray90",
@@ -137,12 +141,17 @@ finalize_plot2 <- function(input_plot = NULL,
   # create list of plot constants, from globals unless overridden by user
   plot_constants <- utils::modifyList(cmapplot_globals$plot_constants, overrides)
 
-  # for brevity, add a sum of margin_v1 and margin_v2 to list
-  plot_constants <- append(plot_constants,
-                           list(margin_v1_v2 =
-                             plot_constants$margin_v1 + plot_constants$margin_v2),
-                           after = 6
-                           )
+  # for brevity and unit consistency, add some extra constants to list
+  plot_constants <- append(
+    plot_constants,
+    list(
+      margin_v1_v2 = plot_constants$margin_v1 + plot_constants$margin_v2,
+      height = convertUnit(unit(height, "in"), "bigpts", valueOnly = TRUE),
+      width = convertUnit(unit(width, "in"), "bigpts", valueOnly = TRUE),
+      title_width = convertUnit(unit(title_width, "in"), "bigpts", valueOnly = TRUE)
+    ),
+    after = 6
+  )
 
   # If title/caption unspecified, try to extract from plot
   input_title <- input_plot$labels$title
@@ -159,7 +168,7 @@ finalize_plot2 <- function(input_plot = NULL,
     caption <- input_caption
   }
 
-  # Size conversion for widths in line graphs
+  # Size conversion for line widths in line graphs
   default_lwd <- ggplot2::GeomLine$default_aes$size
   ggplot2::update_geom_defaults(
     geom = "line",
@@ -171,35 +180,23 @@ finalize_plot2 <- function(input_plot = NULL,
   # create a parent viewport for centering the plot when drawing within R
   vp.centerframe <- viewport(
     name = "vp.centerframe",
-    width = grid::unit(width, "in"),
-    height = grid::unit(height, "in"),
+    default.units = "bigpts",
+    width = plot_constants$width,
+    height = plot_constants$height,
     clip = "on"
   )
-
-  # # create viewport for non-plot content
-  # vp.frame <- viewport(
-  #   name = "vp.frame",
-  #   # origin at 0,0 of parent
-  #   x = 0,
-  #   y = 0,
-  #   just = c(0,0),
-  #   # with a size determined by user
-  #   width = width,
-  #   height = height,
-  #   default.units = "in",
-  #   clip = "on"
-  # )
 
   # create viewport for plot
   vp.plot <- viewport(
     name = "vp.plot",
-    # origin shifted over `title_width` from 0,0 of parent
-    x = grid::unit(title_width, "in"),
-    y = 0,
+    default.units = "bigpts",
+    # origin shifted over from 0,0 of parent vp per spec
+    x = plot_constants$title_width,
+    y = plot_constants$margin_v4,
     just = c(0,0),
     # size is function of remaining size available
-    width = grid::unit(width - title_width, "in"),
-    height = grid::unit(height, "in") - grid::unit(plot_constants$margin_v1_v2, "bigpts"),
+    width = plot_constants$width - plot_constants$title_width - plot_constants$margin_h3,
+    height = plot_constants$height - plot_constants$margin_v1_v2 - plot_constants$margin_v4,
     clip = "on"
   )
 
@@ -222,8 +219,9 @@ finalize_plot2 <- function(input_plot = NULL,
   #  top line (ROOT vp)
   grob_topline <- grid::linesGrob(
     name = "topline",
-    x = grid::unit(c(0, width), "in"),
-    y = grid::unit(height, "in") - grid::unit(plot_constants$margin_v1, "bigpts"),
+    default.units = "bigpts",
+    x = c(0, plot_constants$width),
+    y = plot_constants$height - plot_constants$margin_v1,
     gp = grid::gpar(col = cmapplot_globals$colors$blackish,
                     lineend = "butt",
                     lwd = plot_constants$lwd_topline)
@@ -233,14 +231,15 @@ finalize_plot2 <- function(input_plot = NULL,
   grob_title <- gridtext::textbox_grob(
     name = "title",
     text = title,
+    default.units = "bigpts",
     # set location down from top left corner
-    x = grid::unit(0, "in"),
-    y = grid::unit(height, "in") - grid::unit(plot_constants$margin_v1_v2, "bigpts"),
+    x = 0,
+    y = plot_constants$height - plot_constants$margin_v1_v2,
     hjust = 0,
     vjust = 1,
     # set dimensions
-    width = grid::unit(title_width,"in"),
-    maxheight = grid::unit(height, "in") - grid::unit(plot_constants$margin_v1_v2, "bigpts"),
+    width = plot_constants$title_width,
+    maxheight = plot_constants$height - plot_constants$margin_v1_v2,
     # set margins within textbox
     padding = grid::unit(c(0,                        # top
                            plot_constants$margin_h2, # right
@@ -259,14 +258,15 @@ finalize_plot2 <- function(input_plot = NULL,
   grob_caption <- gridtext::textbox_grob(
     name = "caption",
     text = caption,
+    default.units = "bigpts",
     # set location down from top left corner
-    x = grid::unit(0, "in"),
-    y = grid::unit(height, "in") - grid::unit(plot_constants$margin_v1_v2, "bigpts") - grid::grobHeight(grob_title),
+    x = 0,
+    y = grid::unit(plot_constants$height - plot_constants$margin_v1_v2, "bigpts") - grid::grobHeight(grob_title),
     hjust = 0,
     vjust = 1,
     # set dimensions
-    width = grid::unit(title_width,"in"),
-    maxheight = grid::unit(height, "in") - grid::unit(plot_constants$margin_v1_v2, "bigpts") - grid::grobHeight(grob_title),
+    width = plot_constants$title_width,
+    maxheight = grid::unit(plot_constants$height - plot_constants$margin_v1_v2, "bigpts") - grid::grobHeight(grob_title),
     # set margins within textbox
     padding = grid::unit(c(0,                        # top
                            plot_constants$margin_h2, # right

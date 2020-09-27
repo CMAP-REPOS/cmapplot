@@ -4,10 +4,11 @@
 \alias{finalize_plot2}
 \title{Arrange and save CMAP ggplot chart}
 \usage{
-finalize_plot2(input_plot = NULL, title = "", caption = "", mode =
- c("plot"), width = 6.7, height = 4, title_width = 2, resolution = 300,
- filepath = "", fill_bg = "white", fill_canvas = "gray90", overrides =
- list())
+finalize_plot2(input_plot = NULL, title = "", caption = "",
+ width = 6.7, height = 4, title_width = 1.675, resolution = 300,
+ mode = c("plot"), filepath = "",
+ fill_bg = "white", fill_canvas = "gray90",
+ overrides = list())
 }
 \arguments{
 \item{input_plot}{ggplot object, the variable name of the plot you have
@@ -19,22 +20,21 @@ caption blocks. If empty, any non-Null values from \code{input_plot} will be
 retrieved. These blocks take html formatting, so manual text breaks can be
 created with \code{<br>} and formatting can be changed with \code{<span>}.}
 
-\item{mode}{Vector, the action(s) to be taken with the plot. Save using any of
-the following: \code{png}, \code{tiff}, \code{jpeg}, \code{bmp}, \code{svg},
-\code{pdf}, \code{ps}. View in R with: \code{plot}, \code{window}. Return an
-object with \code{object}.}
-
 \item{width, height}{Numeric, the dimensions for the output image, including
 the title. Units in inches, which interacts with \code{resolution} to define
 the pixel dimensions of raster outputs. Default is 6.7 inches wide and 4
 inches tall.}
 
-\item{height}{Numeric, the height in inches for the image. Default = 4.}
-
-\item{title_width}{Numeric, the width in inches for the title. Default = 2.}
+\item{title_width}{Numeric, the width in inches for the title. Comms guidance
+suggests this should be 25 percent of the total output width.}
 
 \item{resolution, }{Numeric, the resolution of exported images (in dpi).
 Default = 300.}
+
+\item{mode}{Vector, the action(s) to be taken with the plot. Save using any of
+the following: \code{png}, \code{tiff}, \code{jpeg}, \code{bmp}, \code{svg},
+\code{pdf}, \code{ps}. View in R with: \code{plot}, \code{window}. Return an
+object with \code{object}.}
 
 \item{filepath}{Char, the filepath you want the plot to be saved to. You may
 specify an extension to use. If you don't, the correct extension will be
@@ -72,22 +72,25 @@ when exporting as an object.
 }
 \examples{
 \dontrun{
-econ_plot <-
-  cluster_jobchange \%>\%
-  ggplot(aes(x = reorder(name, jobchange), y = jobchange, fill = category)) +
+econ_plot <- ggplot(data = cluster_jobchange,
+                    mapping = aes(
+                      x = reorder(name, jobchange),
+                      y = jobchange,
+                      fill = category)) +
   geom_col() +
   coord_flip() +
   theme_cmap(gridlines = "v", hline = 0) +
   scale_y_continuous(labels = scales::comma)
 
 finalize_plot2(econ_plot,
-               "Cluster-level employment changes in the Chicago MSA, 2001-17.",
-               "Source: Chicago Metropolitan Agency for Planning analysis.",
-               mode = "plot",
+               "Cluster-level employment changes in the Chicago MSA, 2001-17",
+               "Source: Chicago Metropolitan Agency for Planning analysis",
+               mode = "window",
                height = 6,
                width = 8,
                title_width = 2.5,
-               plot_margin_right = 30)
+               overrides = list(margin_h3 = 30)
+)
 
 transit_plot <- transit_ridership \%>\%
   mutate(system = case_when(
@@ -106,8 +109,8 @@ finalize_plot2(transit_plot,
                (in millions).",
                "Source: Chicago Metropolitan Agency for Planning
                analysis of data from the Regional Transportation Authority.",
-               mode="window",
+               mode=c("plot", "pdf"),
                filepath = "foo",
-               plot_margin_right = 10)
+               overrides = list(margin_h3 = 10))
 }
 }
