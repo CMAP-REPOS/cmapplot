@@ -1,6 +1,6 @@
 #'Arrange and save CMAP ggplot chart
 #'
-#'\code{finalize_plot2} will place a ggplot into a frame defined by CMAP design
+#'\code{finalize_plot} will place a ggplot into a frame defined by CMAP design
 #'standards. It will align your title and caption to the left, add a horizontal
 #'line on top, and make other adjustments. It can show you the final plot and/or
 #'export it as a raster or vector file. This function will not apply CMAP design
@@ -14,11 +14,10 @@
 #'\code{cmapplot_globals$plot_constants$lwd_plotline}) in all outputs except for
 #'when exporting as an object.
 #'
-#'@usage finalize_plot2(input_plot = NULL, title = "", caption = "",
-#'  width = 6.7, height = 4, title_width = 1.675, resolution = 300,
-#'  mode = c("plot"), filepath = "",
-#'  fill_bg = "white", fill_canvas = "gray90",
-#'  overrides = list())
+#'@usage finalize_plot(input_plot = NULL, title = "", caption = "", width = 6.7,
+#'  height = 4, title_width = 1.675, resolution = 300, mode = c("plot"),
+#'  filename = "", fill_bg = "white", fill_canvas = "gray90", overrides =
+#'  list())
 #'
 #'@param input_plot ggplot object, the variable name of the plot you have
 #'  created that you want to finalize. If null (the default), the most recent
@@ -39,9 +38,9 @@
 #'  the following: \code{png}, \code{tiff}, \code{jpeg}, \code{bmp}, \code{svg},
 #'  \code{pdf}, \code{ps}. View in R with: \code{plot}, \code{window}. Return an
 #'  object with \code{object}.
-#'@param filepath Char, the filepath you want the plot to be saved to. You may
-#'  specify an extension to use. If you don't, the correct extension will be
-#'  added for you.
+#'@param filename Char, the file path and name you want the plot to be saved to.
+#'  You may specify an extension to use. If you don't, the correct extension
+#'  will be added for you.
 #'@param fill_bg,fill_canvas Char, strings that represent colors R can
 #'  interpret. They are used to fill behind and around the finished plot,
 #'  respectively.
@@ -68,7 +67,7 @@
 #'   theme_cmap(gridlines = "v", hline = 0) +
 #'   scale_y_continuous(labels = scales::comma)
 #'
-#' finalize_plot2(econ_plot,
+#' finalize_plot(econ_plot,
 #'                "Cluster-level employment changes in the Chicago MSA, 2001-17",
 #'                "Source: Chicago Metropolitan Agency for Planning analysis",
 #'                mode = "window",
@@ -90,17 +89,17 @@
 #'   geom_line() +
 #'   theme_cmap(max_columns = 3)
 #'
-#' finalize_plot2(transit_plot,
+#' finalize_plot(transit_plot,
 #'                "Transit ridership in the RTA region over time, 1980-2019
 #'                (in millions).",
 #'                "Source: Chicago Metropolitan Agency for Planning
 #'                analysis of data from the Regional Transportation Authority.",
 #'                mode=c("plot", "pdf"),
-#'                filepath = "foo",
+#'                filename = "foo",
 #'                overrides = list(margin_h3 = 10))
 #'}
 #'@export
-finalize_plot2 <- function(input_plot = NULL,
+finalize_plot <- function(input_plot = NULL,
                            title = "",
                            caption = "",
                            width = 6.7,
@@ -108,7 +107,7 @@ finalize_plot2 <- function(input_plot = NULL,
                            title_width = 1.675, # per comms, 25% of total width
                            resolution = 300,
                            mode = c("plot"),
-                           filepath = "",
+                           filename = "",
                            fill_bg = "white",
                            fill_canvas = "gray90",
                            overrides = list()
@@ -121,7 +120,7 @@ finalize_plot2 <- function(input_plot = NULL,
     input_plot <- ggplot2::last_plot()
   }
 
-  # check mode argument and validate filepath
+  # check mode argument and validate filename
   savetypes_raster <- c("png","tiff","jpeg","bmp")
   savetypes_vector <- c("svg","ps","pdf")
   savetypes_print <- c("plot", "window")
@@ -133,9 +132,9 @@ finalize_plot2 <- function(input_plot = NULL,
                                 "object"),
                     several.ok = TRUE)
 
-  # if any save modes specified, check for filepath
+  # if any save modes specified, check for filename
   if (length(intersect(mode, c(savetypes_raster, savetypes_vector))) > 0) {
-    if (filepath == "") { stop("You must specify a filepath if saving", call. = FALSE) }
+    if (filename == "") { stop("You must specify a filename if saving", call. = FALSE) }
   }
 
   # create list of plot constants, from globals unless overridden by user
@@ -311,10 +310,10 @@ finalize_plot2 <- function(input_plot = NULL,
 
     # if filename does not contain correct extension, add it
     # (in print modes this functions but is meaningless)
-    if (!(grepl(paste0("\\.", this_mode, "$"), filepath))) {
-      this_filepath <- paste0(filepath, ".", this_mode)
+    if (!(grepl(paste0("\\.", this_mode, "$"), filename))) {
+      this_filename <- paste0(filename, ".", this_mode)
     } else {
-      this_filepath <- filepath
+      this_filename <- filename
     }
 
     # export as raster
@@ -322,7 +321,7 @@ finalize_plot2 <- function(input_plot = NULL,
 
       # Open the device
       do.call(this_mode,
-              list(filename = this_filepath,
+              list(filename = this_filename,
                    type = "cairo",
                    width = width,
                    height = height,
@@ -343,7 +342,7 @@ finalize_plot2 <- function(input_plot = NULL,
 
       # open the device
       do.call(mode_modified,
-              list(filename = this_filepath,
+              list(filename = this_filename,
                    width = width,
                    height = height))
 
