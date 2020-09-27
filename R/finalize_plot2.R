@@ -14,9 +14,10 @@
 #'\code{cmapplot_globals$plot_constants$lwd_plotline}) in all outputs except for
 #'when exporting as an object.
 #'
-#'@usage finalize_plot(input_plot = NULL, title = "", caption = "", width = 6.7,
-#'  height = 4, title_width = 1.675, resolution = 300, mode = c("plot"),
-#'  filename = "", fill_bg = "white", fill_canvas = "gray90",
+#'@usage finalize_plot(input_plot = NULL, title = "", caption = "",
+#'  width = 6.7, height = 4, title_width = 1.675, ppi = 300,
+#'  mode = c("plot"), filename = "",
+#'  fill_bg = "white", fill_canvas = "gray90",
 #'  overrides = list())
 #'
 #'@param input_plot ggplot object, the variable name of the plot you have
@@ -27,12 +28,12 @@
 #'  retrieved. These blocks take html formatting, so manual text breaks can be
 #'  created with \code{<br>} and formatting can be changed with \code{<span>}.
 #'@param width,height Numeric, the dimensions for the output image, including
-#'  the title. Units in inches, which interacts with \code{resolution} to define
+#'  the title. Units in inches, which interacts with \code{ppi} to define
 #'  the pixel dimensions of raster outputs. Default is 6.7 inches wide and 4
 #'  inches tall.
 #'@param title_width Numeric, the width in inches for the title. Comms guidance
 #'  suggests this should be 25 percent of the total output width.
-#'@param resolution, Numeric, the resolution of exported images (in dpi).
+#'@param ppi, Numeric, the resolution of exported images (pixels per inch).
 #'  Default = 300.
 #'@param mode Vector, the action(s) to be taken with the plot. Save using any of
 #'  the following: \code{png}, \code{tiff}, \code{jpeg}, \code{bmp}, \code{svg},
@@ -105,7 +106,7 @@ finalize_plot <- function(input_plot = NULL,
                            width = 6.7,
                            height = 4,
                            title_width = 1.675, # per comms, 25% of total width
-                           resolution = 300,
+                           ppi = 300,
                            mode = c("plot"),
                            filename = "",
                            fill_bg = "white",
@@ -326,7 +327,7 @@ finalize_plot <- function(input_plot = NULL,
                    width = width,
                    height = height,
                    units = "in",
-                   res = resolution))
+                   res = ppi))
 
       # draw the plot and close the device
       grid::grid.draw(final_plot)
