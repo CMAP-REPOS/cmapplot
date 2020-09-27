@@ -45,9 +45,9 @@ interpret. They are used to fill behind and around the finished plot,
 respectively.}
 
 \item{overrides}{Named list, overrides the default drawing attributes defined
-in \code{cmapplot_globals$plot_constants} with are drawn by
-\code{finalize_plot()} (most of them). Units are in bigpts (1/72 of an
-inch).}
+in \code{cmapplot_globals$plot_constants} which are drawn by
+\code{finalize_plot()} (this is most of them). Units are in bigpts (1/72 of
+an inch).}
 }
 \value{
 If and only if \code{"object"} is one of the modes specified, a gTree

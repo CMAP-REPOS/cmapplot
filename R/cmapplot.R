@@ -121,8 +121,7 @@ ggplot_size_conversion <- function(value, type = "bigpts") {
   )
 }
 
-# Establish plotting constants
-# (mostly in bigpts)
+# Establish plotting constants in bigpts (1/72 of inch)
 cmapplot_globals$plot_constants <- list(
   lwd_plotline = 3,
   lwd_originline = 1.6, # This appears to be the minimum for variation between origin lines and other background lines

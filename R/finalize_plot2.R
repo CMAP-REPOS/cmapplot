@@ -54,7 +54,7 @@
 #'  object is returned. gTree is an assembly of grobs, or graphical objects,
 #'  that can be drawn using the grid package.
 #'
-#'@importfrom utils modifyList
+#' @importfrom utils modifyList
 #'
 #'@examples
 #' \dontrun{
@@ -149,8 +149,7 @@ finalize_plot <- function(input_plot = NULL,
       height = convertUnit(unit(height, "in"), "bigpts", valueOnly = TRUE),
       width = convertUnit(unit(width, "in"), "bigpts", valueOnly = TRUE),
       title_width = convertUnit(unit(title_width, "in"), "bigpts", valueOnly = TRUE)
-    ),
-    after = 6
+    )
   )
 
   # If title/caption unspecified, try to extract from plot
