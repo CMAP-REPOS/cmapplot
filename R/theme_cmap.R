@@ -108,6 +108,7 @@ theme_cmap <- function(
 
       # Blank background
       panel.background = ggplot2::element_blank(),
+      plot.background = ggplot2::element_blank(),
 
       # No gridlines
       panel.grid.major.x = ggplot2::element_blank(),

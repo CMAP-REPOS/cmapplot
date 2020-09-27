@@ -131,7 +131,7 @@ finalize_plot2 <- function(input_plot = NULL,
 
   # if any save modes specified, check for filepath
   if (length(intersect(mode, c(savetypes_raster, savetypes_vector))) > 0) {
-    if (filepath == "") { stop("You must specify a filepath if saving") }
+    if (filepath == "") { stop("You must specify a filepath if saving", call. = FALSE) }
   }
 
   # create list of plot constants, from globals unless overridden by user
@@ -288,20 +288,15 @@ finalize_plot2 <- function(input_plot = NULL,
         # make sure the plot has no title or caption
         plot.title = ggplot2::element_blank(),
         plot.caption = ggplot2::element_blank(),
-        # add margins and modify text sizing  *** SEE NOTE BELOW
+        # add margins
         plot.margin = unit(plot_constants$padding_plot, "bigpts"),
+        # modify text sizing. **THIS MODIFICATION IS NEEDED BUT NOT UNDERSTOOD**
         text = ggplot2::element_text(size = cmapplot_globals$font$main$size * 1.25)
       )
     ),
     vp = vp.plot,
     name = "plot"
   )
-
-  # NOTE: The plot appears to be resizing when exported via save (but not in plot or
-  # newwindow). To have correct font sizes for export, it appears that chart
-  # text must be specified at 17.5 (which is 1.25 x 14) appears to be accurately
-  # rendered at 14. This could be an artifact of the points vs. pixels size
-  # problem.
 
   # Assemble final plot -----------------------------------------------------
 
