@@ -176,19 +176,19 @@ finalize_plot2 <- function(input_plot = NULL,
     clip = "on"
   )
 
-  # create viewport for non-plot content
-  vp.frame <- viewport(
-    name = "vp.frame",
-    # origin at 0,0 of parent
-    x = 0,
-    y = 0,
-    just = c(0,0),
-    # with a size determined by user
-    width = width,
-    height = height,
-    default.units = "in",
-    clip = "on"
-  )
+  # # create viewport for non-plot content
+  # vp.frame <- viewport(
+  #   name = "vp.frame",
+  #   # origin at 0,0 of parent
+  #   x = 0,
+  #   y = 0,
+  #   just = c(0,0),
+  #   # with a size determined by user
+  #   width = width,
+  #   height = height,
+  #   default.units = "in",
+  #   clip = "on"
+  # )
 
   # create viewport for plot
   vp.plot <- viewport(
@@ -212,37 +212,35 @@ finalize_plot2 <- function(input_plot = NULL,
                     col = fill_canvas)
   )
 
-  # grob to fill behind output (vp.frame)
+  # grob to fill behind output (ROOT vp)
   grob_background <- grid::grid.rect(
     name = "background",
-    vp = vp.frame,
     gp = grid::gpar(fill = fill_bg,
                     col = fill_bg)
   )
 
-  #  top line (vp.frame)
+  #  top line (ROOT vp)
   grob_topline <- grid::linesGrob(
     name = "topline",
-    vp = vp.frame,
-    y = grid::unit(1, "npc") - grid::unit(plot_constants$margin_v1, "bigpts"),
+    x = grid::unit(c(0, width), "in"),
+    y = grid::unit(height, "in") - grid::unit(plot_constants$margin_v1, "bigpts"),
     gp = grid::gpar(col = cmapplot_globals$colors$blackish,
                     lineend = "butt",
                     lwd = plot_constants$lwd_topline)
   )
 
-  # title textbox (vp.frame)
+  # title textbox (ROOT vp)
   grob_title <- gridtext::textbox_grob(
     name = "title",
     text = title,
-    # set location down from top left corner of vp.frame
-    vp = vp.frame,
-    x = grid::unit(0, "npc"),
-    y = grid::unit(1, "npc") - grid::unit(plot_constants$margin_v1_v2, "bigpts"),
+    # set location down from top left corner
+    x = grid::unit(0, "in"),
+    y = grid::unit(height, "in") - grid::unit(plot_constants$margin_v1_v2, "bigpts"),
     hjust = 0,
     vjust = 1,
     # set dimensions
     width = grid::unit(title_width,"in"),
-    maxheight = grid::unit(1, "npc") - grid::unit(plot_constants$margin_v1_v2, "bigpts"),
+    maxheight = grid::unit(height, "in") - grid::unit(plot_constants$margin_v1_v2, "bigpts"),
     # set margins within textbox
     padding = grid::unit(c(0,                        # top
                            plot_constants$margin_h2, # right
@@ -257,19 +255,18 @@ finalize_plot2 <- function(input_plot = NULL,
                     col=cmapplot_globals$colors$blackish)
   )
 
-  # caption textbox (vp.frame)
+  # caption textbox (ROOT vp)
   grob_caption <- gridtext::textbox_grob(
     name = "caption",
     text = caption,
-    # set location down from top left corner of vp.frame
-    vp = vp.frame,
-    x = grid::unit(0, "npc"),
-    y = grid::unit(1, "npc") - grid::unit(plot_constants$margin_v1_v2, "bigpts") - grid::grobHeight(grob_title),
+    # set location down from top left corner
+    x = grid::unit(0, "in"),
+    y = grid::unit(height, "in") - grid::unit(plot_constants$margin_v1_v2, "bigpts") - grid::grobHeight(grob_title),
     hjust = 0,
     vjust = 1,
     # set dimensions
     width = grid::unit(title_width,"in"),
-    maxheight = grid::unit(1,"npc") - grid::unit(plot_constants$margin_v1_v2, "bigpts") - grid::grobHeight(grob_title),
+    maxheight = grid::unit(height, "in") - grid::unit(plot_constants$margin_v1_v2, "bigpts") - grid::grobHeight(grob_title),
     # set margins within textbox
     padding = grid::unit(c(0,                        # top
                            plot_constants$margin_h2, # right
