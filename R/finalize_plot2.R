@@ -46,9 +46,9 @@
 #'  interpret. They are used to fill behind and around the finished plot,
 #'  respectively.
 #'@param overrides Named list, overrides the default drawing attributes defined
-#'  in \code{cmapplot_globals$plot_constants} with are drawn by
-#'  \code{finalize_plot()} (most of them). Units are in bigpts (1/72 of an
-#'  inch).
+#'  in \code{cmapplot_globals$plot_constants} which are drawn by
+#'  \code{finalize_plot()} (this is most of them). Units are in bigpts (1/72 of
+#'  an inch).
 #'
 #'@return If and only if \code{"object"} is one of the modes specified, a gTree
 #'  object is returned. gTree is an assembly of grobs, or graphical objects,
@@ -134,7 +134,7 @@ finalize_plot <- function(input_plot = NULL,
                     several.ok = TRUE)
 
   # if any save modes specified, check for filename
-  if (length(intersect(mode, c(savetypes_raster, savetypes_vector))) > 0) {
+  if (length(generics::intersect(mode, c(savetypes_raster, savetypes_vector))) > 0) {
     if (filename == "") { stop("You must specify a filename if saving", call. = FALSE) }
   }
 
@@ -178,7 +178,7 @@ finalize_plot <- function(input_plot = NULL,
   # Build necessary viewports -----------------------------------------------------
 
   # create a parent viewport for centering the final_plot when drawing within R
-  vp.centerframe <- viewport(
+  vp.centerframe <- grid::viewport(
     name = "vp.centerframe",
     default.units = "bigpts",
     width = plot_constants$width,
@@ -187,7 +187,7 @@ finalize_plot <- function(input_plot = NULL,
   )
 
   # create viewport for plot
-  vp.plot <- viewport(
+  vp.plot <- grid::viewport(
     name = "vp.plot",
     default.units = "bigpts",
     # origin shifted over from 0,0 of parent vp per spec
