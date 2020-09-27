@@ -6,8 +6,8 @@
 \usage{
 finalize_plot(input_plot = NULL, title = "", caption = "", width = 6.7,
  height = 4, title_width = 1.675, resolution = 300, mode = c("plot"),
- filename = "", fill_bg = "white", fill_canvas = "gray90", overrides =
- list())
+ filename = "", fill_bg = "white", fill_canvas = "gray90",
+ overrides = list())
 }
 \arguments{
 \item{input_plot}{ggplot object, the variable name of the plot you have

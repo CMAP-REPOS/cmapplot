@@ -16,8 +16,8 @@
 #'
 #'@usage finalize_plot(input_plot = NULL, title = "", caption = "", width = 6.7,
 #'  height = 4, title_width = 1.675, resolution = 300, mode = c("plot"),
-#'  filename = "", fill_bg = "white", fill_canvas = "gray90", overrides =
-#'  list())
+#'  filename = "", fill_bg = "white", fill_canvas = "gray90",
+#'  overrides = list())
 #'
 #'@param input_plot ggplot object, the variable name of the plot you have
 #'  created that you want to finalize. If null (the default), the most recent
@@ -176,7 +176,7 @@ finalize_plot <- function(input_plot = NULL,
 
   # Build necessary viewports -----------------------------------------------------
 
-  # create a parent viewport for centering the plot when drawing within R
+  # create a parent viewport for centering the final_plot when drawing within R
   vp.centerframe <- viewport(
     name = "vp.centerframe",
     default.units = "bigpts",
