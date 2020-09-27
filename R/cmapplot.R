@@ -100,25 +100,33 @@ check_cmap_fonts <- function() {
 
 #' Helper function to calculate correct size for ggplot inputs. Takes two inputs:
 #' a value (numeric) and a type (character). The type can be any of the units
-#' accepted by `grid::unit()`, including "pt", "mm", and "in".
+#' accepted by `grid::unit()`, including "bigpt", "pt", "mm", and "in".
+#'
 #' @param value Numeric, the value to be converted.
 #' @param type Char, the unit of the value to be converted.
+#'
+#' @return A unitless value in ggplot units
+#'
+#' @seealso <https://stackoverflow.com/questions/17311917/ggplot2-the-unit-of-size>
+#' and [grid::unit()]
+#'
 #' @noRd
-ggplot_size_conversion <- function(value, type) {
-    value_in_bigpts <- grid::convertUnit(grid::unit(value, type), "bigpts", valueOnly = TRUE)
-    return(
-      value_in_bigpts / 72 # Normalize from points
-        * 96               # Multiply by units for R pixels (per inch)
-        / ggplot2::.pt     # Account for the ggplot2::.pt factor (=72.27/25.4)
-    )
+ggplot_size_conversion <- function(value, type = "bigpts") {
+  # convert input type to bigpts (if not already)
+  value_in_bigpts <- grid::convertUnit(grid::unit(value, type), "bigpts", valueOnly = TRUE)
+  return(
+    value_in_bigpts / 72 # Normalize from big points
+      * 96               # Multiply by units for R pixels (per inch)
+      / ggplot2::.pt     # Account for the ggplot2::.pt factor (=72.27/25.4)
+  )
 }
 
 # Establish plotting constants
 # (mostly in bigpts)
 cmapplot_globals$plot_constants <- list(
-  lwd_plotline = ggplot_size_conversion(3, "pt"),
-  lwd_originline = ggplot_size_conversion(1.6, "pt"), # This appears to be the minimum for variation between origin lines and other background lines
-  lwd_gridline = ggplot_size_conversion(.3, "pt"),
+  lwd_plotline = 3,
+  lwd_originline = 1.6, # This appears to be the minimum for variation between origin lines and other background lines
+  lwd_gridline = 0.3,
   lwd_topline = 2,
   margin_v1 = 5,
   margin_v2 = 5,

@@ -33,8 +33,10 @@
 #'@param filepath Char, the filepath you want the plot to be saved to. You may
 #'  specify an extension to use. If you don't, the correct extension will be
 #'  added for you.
-#'@param width Numeric, the width in inches for the image, including the title.
-#'  Default = 7.
+#'@param width,height Numeric, the dimensions for the output image, including
+#'  the title. Units in inches, which interacts with \code{resolution} to define
+#'  the pixel dimensions of raster outputs. Default is 6.7 inches wide and 4
+#'  inches tall.
 #'@param height Numeric, the height in inches for the image. Default = 4.
 #'@param title_width Numeric, the width in inches for the title. Default = 2.
 #'@param resolution, Numeric, the resolution of exported images (in dpi).
@@ -43,7 +45,9 @@
 #'  interpret. They are used to fill behind and around the finished plot,
 #'  respectively.
 #'@param overrides Named list, overrides the default drawing attributes defined
-#'  in \code{cmapplot_globals$plot_constants}.
+#'  in \code{cmapplot_globals$plot_constants} with are drawn by
+#'  \code{finalize_plot()} (most of them). Units are in bigpts (1/72 of an
+#'  inch).
 #'
 #'@return If and only if \code{"object"} is one of the modes specified, a gTree
 #'  object is returned. gTree is an assembly of grobs, or graphical objects,
@@ -157,7 +161,10 @@ finalize_plot2 <- function(input_plot = NULL,
 
   # Size conversion for widths in line graphs
   default_lwd <- ggplot2::GeomLine$default_aes$size
-  ggplot2::update_geom_defaults("line", list(size = plot_constants$lwd_plotline))
+  ggplot2::update_geom_defaults(
+    geom = "line",
+    new = list(size = ggplot_size_conversion(plot_constants$lwd_plotline))
+    )
 
   # Build necessary viewports -----------------------------------------------------
 

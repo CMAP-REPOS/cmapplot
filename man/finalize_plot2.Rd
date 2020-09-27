@@ -24,8 +24,10 @@ the following: \code{png}, \code{tiff}, \code{jpeg}, \code{bmp}, \code{svg},
 \code{pdf}, \code{ps}. View in R with: \code{plot}, \code{window}. Return an
 object with \code{object}.}
 
-\item{width}{Numeric, the width in inches for the image, including the title.
-Default = 7.}
+\item{width, height}{Numeric, the dimensions for the output image, including
+the title. Units in inches, which interacts with \code{resolution} to define
+the pixel dimensions of raster outputs. Default is 6.7 inches wide and 4
+inches tall.}
 
 \item{height}{Numeric, the height in inches for the image. Default = 4.}
 
@@ -43,7 +45,9 @@ interpret. They are used to fill behind and around the finished plot,
 respectively.}
 
 \item{overrides}{Named list, overrides the default drawing attributes defined
-in \code{cmapplot_globals$plot_constants}.}
+in \code{cmapplot_globals$plot_constants} with are drawn by
+\code{finalize_plot()} (most of them). Units are in bigpts (1/72 of an
+inch).}
 }
 \value{
 If and only if \code{"object"} is one of the modes specified, a gTree
