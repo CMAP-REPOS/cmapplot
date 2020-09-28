@@ -290,7 +290,9 @@ finalize_plot <- function(input_plot = NULL,
         # add margins
         plot.margin = unit(plot_constants$padding_plot, "bigpts"),
         # modify text sizing. **THIS MODIFICATION IS NEEDED BUT NOT UNDERSTOOD**
-        text = ggplot2::element_text(size = cmapplot_globals$font$main$size * 1.25)
+        text = ggplot2::element_text(size = cmapplot_globals$font$main$size * 1.25),
+        # modify axis text color **COLORS DO NOT APPEAR TO PROPAGATE FROM THEME_CMAP**
+        axis.text = ggplot2::element_text(color = cmapplot_globals$colors$blackish)
       )
     ),
     vp = vp.plot,
