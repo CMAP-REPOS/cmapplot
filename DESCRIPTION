@@ -29,14 +29,15 @@ Suggests:
     testthat
 Imports:
     dplyr,
+    generics,
     glue,
     graphics,
     grDevices,
     grid,
+    gridtext,
     lubridate,
+    magrittr,
     rlang,
     scales,
-    sysfonts,
-    magrittr,
-    gridtext
+    sysfonts
 RoxygenNote: 7.1.1

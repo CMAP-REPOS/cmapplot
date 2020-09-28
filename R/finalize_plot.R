@@ -14,11 +14,10 @@
 #'\code{cmapplot_globals$plot_constants$lwd_plotline}) in all outputs except for
 #'when exporting as an object.
 #'
-#'@usage finalize_plot(input_plot = NULL, title = "", caption = "",
-#'  width = 6.7, height = 4, title_width = 1.675, ppi = 300,
-#'  mode = c("plot"), filename = "",
-#'  fill_bg = "white", fill_canvas = "gray90",
-#'  overrides = list())
+#'@usage finalize_plot(input_plot = NULL, title = "", caption = "", width =
+#'  670/72, height = 400/72, title_width = NULL, ppi = 300, mode = c("plot"),
+#'  filename = "", fill_bg = "white", fill_canvas = "gray90", overrides =
+#'  list())
 #'
 #'@param input_plot ggplot object, the variable name of the plot you have
 #'  created that you want to finalize. If null (the default), the most recent
@@ -28,11 +27,12 @@
 #'  retrieved. These blocks take html formatting, so manual text breaks can be
 #'  created with \code{<br>} and formatting can be changed with \code{<span>}.
 #'@param width,height Numeric, the dimensions for the output image, including
-#'  the title. Units in inches, which interacts with \code{ppi} to define
-#'  the pixel dimensions of raster outputs. Default is 6.7 inches wide and 4
-#'  inches tall.
-#'@param title_width Numeric, the width in inches for the title. Comms guidance
-#'  suggests this should be 25 percent of the total output width.
+#'  the title. Units in inches, which interacts with \code{ppi} to define the
+#'  pixel dimensions of raster outputs. Default is 9.31 inches wide (670/72) and
+#'  5.56 inches tall (400/72), to match Comms specification of 670px by 400px at
+#'  72ppi.
+#'@param title_width Numeric, the width in inches for the title. If unspecified,
+#'  use 25 percent of the total output width (per Comms guidance).
 #'@param ppi, Numeric, the resolution of exported images (pixels per inch).
 #'  Default = 300.
 #'@param mode Vector, the action(s) to be taken with the plot. Save using any of
@@ -54,7 +54,8 @@
 #'  object is returned. gTree is an assembly of grobs, or graphical objects,
 #'  that can be drawn using the grid package.
 #'
-#' @importfrom utils modifyList
+#'@importFrom utils modifyList
+#'@importFrom generics intersect
 #'
 #'@examples
 #' \dontrun{
