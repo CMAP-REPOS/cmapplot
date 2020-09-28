@@ -287,8 +287,6 @@ finalize_plot <- function(input_plot = NULL,
         # make sure the plot has no title or caption
         plot.title = ggplot2::element_blank(),
         plot.caption = ggplot2::element_blank(),
-        # add margins
-        plot.margin = unit(plot_constants$padding_plot, "bigpts"),
         # modify text sizing. **THIS MODIFICATION IS NEEDED BUT NOT UNDERSTOOD**
         text = ggplot2::element_text(size = cmapplot_globals$font$main$size * 1.25),
         # modify axis text color **COLORS DO NOT APPEAR TO PROPAGATE FROM THEME_CMAP**

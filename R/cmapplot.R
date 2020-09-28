@@ -134,7 +134,6 @@ cmapplot_globals$plot_constants <- list(
   margin_h1 = 2,
   margin_h2 = 10,
   margin_h3 = 10,
-  padding_plot = c(0,0,0,0),
   leading_title = 0.93,
   leading_caption = 1
 )
