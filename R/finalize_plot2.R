@@ -103,9 +103,9 @@
 finalize_plot <- function(input_plot = NULL,
                            title = "",
                            caption = "",
-                           width = 6.7,
-                           height = 4,
-                           title_width = 1.675, # per comms, 25% of total width
+                           width = 670/72, # comms spec: 670px @ 72ppi
+                           height = 400/72, # comms spec: 400px @ 72ppi
+                           title_width = NULL, # if unspecified, default to width/4
                            ppi = 300,
                            mode = c("plot"),
                            filename = "",
@@ -117,8 +117,13 @@ finalize_plot <- function(input_plot = NULL,
   # Validation and initialization -----------------------------
 
   # Seek last plot if user did not specify one
-  if(is.null(input_plot)){
+  if (is.null(input_plot)) {
     input_plot <- ggplot2::last_plot()
+  }
+
+  # Set title_width to 25% of total width if unspecified
+  if (is.null(title_width)) {
+    title_width <- width / 4
   }
 
   # check mode argument and validate filename
