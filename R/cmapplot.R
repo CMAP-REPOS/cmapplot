@@ -131,12 +131,14 @@ cmapplot_globals$plot_constants <- list(
   margin_v2 = 5,
   margin_v3 = 5,
   margin_v4 = 0,
+  margin_v5 = 10,
   margin_h1 = 2,
   margin_h2 = 10,
   margin_h3 = 10,
   padding_plot = c(0,0,0,0),
   leading_title = 0.93,
-  leading_caption = 1
+  leading_caption = 1,
+  legend_indent = 0
 )
 
 # Define common colors

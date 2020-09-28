@@ -67,7 +67,8 @@
 #'   geom_col() +
 #'   coord_flip() +
 #'   theme_cmap(gridlines = "v", hline = 0) +
-#'   scale_y_continuous(labels = scales::comma)
+#'   scale_y_continuous(labels = scales::comma) +
+#'   theme(legend.justification = "left")
 #'
 #' finalize_plot(econ_plot,
 #'                "Cluster-level employment changes in the Chicago MSA, 2001-17",
@@ -89,7 +90,7 @@
 #'   )) %>%
 #'   ggplot(aes(x = year, y = ridership, color = system)) +
 #'   geom_line() +
-#'   theme_cmap(max_columns = 3)
+#'   theme_cmap()
 #'
 #' finalize_plot(transit_plot,
 #'                "Transit ridership in the RTA region over time, 1980-2019
@@ -97,8 +98,7 @@
 #'                "Source: Chicago Metropolitan Agency for Planning
 #'                analysis of data from the Regional Transportation Authority.",
 #'                mode=c("plot", "pdf"),
-#'                filename = "foo",
-#'                overrides = list(margin_h3 = 10))
+#'                filename = "foo")
 #'}
 #'@export
 finalize_plot <- function(input_plot = NULL,
@@ -180,6 +180,12 @@ finalize_plot <- function(input_plot = NULL,
     new = list(size = ggplot_size_conversion(plot_constants$lwd_plotline))
     )
 
+  # Pre-processing of font size discrepancy **THIS IS NECESSARY BUT NOT UNDERSTOOD**
+  processed_plot <- input_plot + ggplot2::theme(
+    text = ggplot2::element_text(size = cmapplot_globals$font$main$size * 1.25),
+    legend.margin = margin(t = 0, r = 0, b = 0, l = 0, unit = "bigpts")
+  )
+
   # Build necessary viewports -----------------------------------------------------
 
   # create a parent viewport for centering the final_plot when drawing within R
@@ -191,17 +197,40 @@ finalize_plot <- function(input_plot = NULL,
     clip = "on"
   )
 
-  # create viewport for plot
+  # extract height and width of legend object within ggplot plot
+  legend_height <- grid::convertUnit(ggpubr::get_legend(input_plot)$heights[[3]],
+                                     "bigpts",
+                                     valueOnly = TRUE)
+  legend_width <-  grid::convertUnit(ggpubr::get_legend(input_plot)$widths[[3]],
+                                     "bigpts",
+                                     valueOnly = TRUE)
+
+  # create viewport for legend
+  vp.legend <- grid::viewport(
+    name = "vp.legend",
+    x = plot_constants$title_width + plot_constants$legend_indent,
+    y = plot_constants$height - plot_constants$margin_v1_v2 - plot_constants$margin_v4 - legend_height,
+    just = c(0,0),
+    default.units = "bigpts",
+    height = legend_height,
+    # NOTE - Legend needs *MANUAL* adjustment (included below) of 20 big points
+    # to address un-editable left margin on legend object
+    width = min(legend_width + plot_constants$legend_indent - 20,
+                plot_constants$width - plot_constants$title_width -
+                  plot_constants$margin_h3 - plot_constants$legend_indent),
+    clip = "on"
+  )
+
+  # create viewport for plot without legend
   vp.plot <- grid::viewport(
     name = "vp.plot",
-    default.units = "bigpts",
-    # origin shifted over from 0,0 of parent vp per spec
     x = plot_constants$title_width,
     y = plot_constants$margin_v4,
     just = c(0,0),
-    # size is function of remaining size available
+    default.units = "bigpts",
+    height = plot_constants$height - plot_constants$margin_v1_v2 -
+      plot_constants$margin_v4 - legend_height - plot_constants$margin_v5,
     width = plot_constants$width - plot_constants$title_width - plot_constants$margin_h3,
-    height = plot_constants$height - plot_constants$margin_v1_v2 - plot_constants$margin_v4,
     clip = "on"
   )
 
@@ -289,24 +318,50 @@ finalize_plot <- function(input_plot = NULL,
   # ggplot as grob (vp.plot)
   grob_plot <- grid::grobTree(
     ggplotGrob(
-      input_plot + ggplot2::theme(
+      processed_plot + ggplot2::theme(
         # make sure the plot has no title or caption
         plot.title = ggplot2::element_blank(),
         plot.caption = ggplot2::element_blank(),
         # add margins
         plot.margin = unit(plot_constants$padding_plot, "bigpts"),
-        # modify text sizing. **THIS MODIFICATION IS NEEDED BUT NOT UNDERSTOOD**
-        text = ggplot2::element_text(size = cmapplot_globals$font$main$size * 1.25)
+        # remove legend
+        legend.position = "none"
       )
     ),
     vp = vp.plot,
     name = "plot"
   )
 
+  # legend as grob (vp.legend)
+  grob_legend <- grid::grobTree(
+    ggpubr::get_legend(processed_plot + ggplot2::theme(
+      # modify legend to ensure correct layout
+      legend.position = "left",
+      legend.direction = "horizontal",
+      legend.justification = "left"
+    )
+    ),
+    vp = vp.legend,
+    name = "legend"
+  )
+
+  # FOR DEBUGGING - show legend box to determine alignment
+  # grob_legend_box <- grid::rectGrob(
+  #   x = plot_constants$title_width + plot_constants$legend_indent,
+  #   y = plot_constants$height - plot_constants$margin_v1_v2 - plot_constants$margin_v4 - legend_height,
+  #   just = c(0,0),
+  #   default.units = "bigpts",
+  #   height = legend_height,
+  #   width = min(legend_width,
+  #               plot_constants$width - plot_constants$title_width -
+  #                 plot_constants$margin_h3 - plot_constants$legend_indent),
+  #   gp = grid::gpar(col = "black")
+  # )
+
   # Assemble final plot -----------------------------------------------------
 
   final_plot <- grid::grobTree(
-    grob_background, grob_topline, grob_title, grob_caption, grob_plot,
+    grob_background, grob_topline, grob_title, grob_caption, grob_legend, grob_plot,
     name = "final_plot"
   )
 
