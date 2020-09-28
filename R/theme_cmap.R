@@ -103,7 +103,6 @@ theme_cmap <- function(
       axis.title.y = ggplot2::element_blank(),
       axis.title.x = ggplot2::element_blank(),
       axis.text.x = ggplot2::element_text(margin = ggplot2::margin(5, b = 10)),
-      axis.text.y = ggplot2::element_text(margin = ggplot2::margin(5, b = 10)),
       axis.ticks = ggplot2::element_blank(),
       axis.line = ggplot2::element_blank(),
 
