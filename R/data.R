@@ -7,7 +7,7 @@
 #' @format A tibble. 33 rows and 4 variables:
 #' \describe{
 #'    \item{start_char, end_char}{Chr. Easily readable labels for the beginning and end of the recession}
-#'    \item{start_int, end_int}{Double. Dates expressed as years, with decimels referring to months. (e.g. April = 4/12 = .333)}
+#'    \item{start_num, end_num}{Double. Dates expressed as years, with decimels referring to months. (e.g. April = 4/12 = .333)}
 #'    \item{start_date, end_date}{Date. Dates expressed in R datetime format, using the first day of the specified month.}
 #' }
 #'
@@ -32,13 +32,16 @@
 #'   # rename character values
 #'   rename(start_char = 1, end_char = 2) %>%
 #'   mutate(
-#'    # numeric values expressed as months since January 1800
-#'     start_int = (`Peak month number`-1)/12 + 1800,
-#'     end_int = (`Trough month number`-1)/12 + 1800,
-#'     # convert to R date
+#'     # convert character dates to R date
 #'     start_date =  as.Date(str_replace(start_char, " ", " 1, "), format = "%B %d, %Y"),
-#'     end_date =  as.Date(str_replace(end_char, " ", " 1, "), format = "%B %d, %Y")) %>%
+#'     end_date =  as.Date(str_replace(end_char, " ", " 1, "), format = "%B %d, %Y"),
+#'     # convert R dates to numeric dates
+#'     start_num = decimal_date(start_date),
+#'     end_num = decimal_date(end_date)
+#'     ) %>%
 #'   select(-3:-8)
+#'
+#' save(recessions, file = "~/GitHub/cmapplot/data/recessions.RData")
 #'}
 #'
 "recessions"
@@ -182,3 +185,51 @@
 #'   scale_y_continuous(labels = scales::percent)
 #'
 "traded_emp_by_race"
+
+
+
+#' Transit ridership in the Chicago region, 1980-2019
+#'
+#' A test dataset containing 1980-2019 transit ridership for the three service
+#' boards that provide transit in Northeastern Illinois.
+#'
+#' @format A tibble. 200 rows and 3 variables
+#' \describe{
+#'    \item{year}{Double. Year of data}
+#'    \item{system}{Char. Name of system (includes CTA bus, CTA rail, Metra, Pace, and Pace ADA)}
+#'    \item{ridership}{Double. Annual unlinked passenger trips in millions}
+#' }
+#' @source Regional Transportation Authority \url{http://www.rtams.org/rtams/systemRidership.jsp}
+#'
+#' @examples
+#' # A line graph
+#' ggplot(transit_ridership,aes(x = year,y=ridership,group=system,color=system)) +
+#'   geom_line(na.rm=TRUE)
+#'
+#'
+"transit_ridership"
+
+
+
+
+#' Vehicle ownership in the CMAP seven county region
+#'
+#' A test dataset containing vehicle ownership rates in the seven county region
+#' of northeastern Illinois.
+#'
+#' @format A tibble. 40 rows and 3 variables
+#' \describe{
+#'    \item{county}{Char. Name of county}
+#'    \item{number_of_veh}{Char. Number of vehicles owned by household}
+#'    \item{pct}{Numeric. Share of households with the given number of vehicles (values between 0 and 1)}
+#' }
+#' @source CMAP Travel Inventory Survey Data Summary  \url{https://www.cmap.illinois.gov/documents/10180/77659/Travel+Inventory+Survey+Data+Summary_weighted_V2.pdf/d4b33cdd-1c44-4322-b32f-2f54b85207cb}
+#'
+#' @examples
+#' # A stacked bar chart
+#' ggplot(vehicle_ownership,
+#'        aes(x = county, y = pct, fill = number_of_veh)) +
+#'    geom_bar(position = position_stack(), stat = "identity")
+#'
+"vehicle_ownership"
+

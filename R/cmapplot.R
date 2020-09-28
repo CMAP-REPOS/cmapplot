@@ -18,51 +18,78 @@
 #' @import ggplot2 dplyr grid scales grDevices graphics rlang
 #' @importFrom glue glue glue_collapse
 #' @importFrom lubridate date_decimal
-#' @importFrom sysfonts font_files
 #' @keywords internal
 "_PACKAGE"
 
 cmapplot_globals <- new.env(parent=emptyenv())  # An environment for storing any global variables
 
-# Set CMAP fonts: use Whitney if installed, Calibri otherwise
-all_fonts <- sysfonts::font_files()
-whitney_fonts <- dplyr::filter(all_fonts,
-  family %in% c("Whitney Medium", "Whitney Book", "Whitney Semibold") & face == "Regular"
-)
-cmapplot_globals$use_whitney = length(whitney_fonts$family) == 3
-rm(all_fonts)
-rm(whitney_fonts)
 
-if (cmapplot_globals$use_whitney) {
-  grDevices::windowsFonts(
-    sans = "Whitney Medium",  # Override the default font (Arial)
-    font_reg = "Whitney Medium",
-    font_lite = "Whitney Book",
-    font_sbold = "Whitney Semibold"
+# Default font handling ---------------------------------------------------
+
+if (.Platform$OS.type == "windows") {
+
+  # Set CMAP fonts: use Whitney if installed, Calibri otherwise
+  all_fonts <- sysfonts::font_files()
+  whitney_fonts <- dplyr::filter(all_fonts,
+    family %in% c("Whitney Medium", "Whitney Book", "Whitney Semibold") & face == "Regular"
   )
+  cmapplot_globals$use_whitney = length(whitney_fonts$family) == 3
+  rm(all_fonts)
+  rm(whitney_fonts)
+
+  if (cmapplot_globals$use_whitney) {
+    grDevices::windowsFonts(
+      sans = "Whitney Medium",  # Override the default font (Arial)
+      font_reg = "Whitney Medium",
+      font_lite = "Whitney Book",
+      font_sbold = "Whitney Semibold"
+    )
+  } else {
+    message("WARNING: Whitney is not installed on this PC, so CMAP theme will default to Calibri")
+    grDevices::windowsFonts(
+      sans = "Calibri",  # Override the default font (Arial)
+      font_reg = "Calibri",
+      font_lite = "Calibri Light",
+      font_sbold = "Calibri"  # No separate semibold/bold font for Calibri
+    )
+  }
+
+  cmapplot_globals$font_main <- "font_reg"  # "medium" weight for in-body text and x/y axis
+  cmapplot_globals$font_note <- "font_lite"  # "book" weight for notes and sources
+  cmapplot_globals$font_title <- "font_sbold"  # "semibold" weight for title
+  cmapplot_globals$font_label <- "font_sbold"  # "semibold" weight also for labels
+  if (cmapplot_globals$use_whitney) {
+    cmapplot_globals$font_main_face <- "plain"
+    cmapplot_globals$font_note_face <- "plain"
+    cmapplot_globals$font_title_face <- "plain"
+    cmapplot_globals$font_label_face <- "plain"
+  } else {
+    cmapplot_globals$font_main_face <- "plain"
+    cmapplot_globals$font_note_face <- "plain"
+    cmapplot_globals$font_title_face <- "bold"  # Calibri doesn't have a standalone bold/semibold typeface
+    cmapplot_globals$font_label_face <- "bold"  # Calibri doesn't have a standalone bold/semibold typeface
+  }
+
 } else {
-  grDevices::windowsFonts(
-    sans = "Calibri",  # Override the default font (Arial)
-    font_reg = "Calibri",
-    font_lite = "Calibri Light",
-    font_sbold = "Calibri"
-  )
-}
 
-cmapplot_globals$font_main <- "font_reg"  # "medium" weight for in-body text and x/y axis
-cmapplot_globals$font_note <- "font_lite"  # "book" weight for notes and sources
-cmapplot_globals$font_title <- "font_sbold"  # "semibold" weight for title
-cmapplot_globals$font_label <- "font_sbold"  # "semibold" weight also for labels
-if (cmapplot_globals$use_whitney) {
+  # Assume no Whitney or Calibri on non-Windows (i.e. non-work) computers
+  message("WARNING: CMAP theme will default to Arial on non-Windows platforms")
+  cmapplot_globals$use_whitney = FALSE
+
+  grDevices::X11Fonts(
+    sans = grDevices::X11Fonts()$Arial  # Just give in and use Arial for everything :(
+   )
+
+  cmapplot_globals$font_main <- "sans"  # "medium" weight for in-body text and x/y axis
+  cmapplot_globals$font_note <- "sans"  # "book" weight for notes and sources
+  cmapplot_globals$font_title <- "sans"  # "semibold" weight for title
+  cmapplot_globals$font_label <- "sans"  # "semibold" weight also for labels
+
   cmapplot_globals$font_main_face <- "plain"
   cmapplot_globals$font_note_face <- "plain"
-  cmapplot_globals$font_title_face <- "plain"
-  cmapplot_globals$font_label_face <- "plain"
-} else {
-  cmapplot_globals$font_main_face <- "plain"
-  cmapplot_globals$font_note_face <- "plain"
-  cmapplot_globals$font_title_face <- "bold"  # Calibri doesn't have a standalone bold/semibold typeface
-  cmapplot_globals$font_label_face <- "bold"  # Calibri doesn't have a standalone bold/semibold typeface
+  cmapplot_globals$font_title_face <- "bold"  # Arial doesn't have a standalone bold/semibold typeface
+  cmapplot_globals$font_label_face <- "bold"  # Arial doesn't have a standalone bold/semibold typeface
+
 }
 
 check_cmap_fonts <- function() {
@@ -82,4 +109,34 @@ check_cmap_fonts <- function() {
 }
 #check_cmap_fonts()
 
-ggplot2::update_geom_defaults("text", list(family=cmapplot_globals$font_main, face=cmapplot_globals$font_main_face))
+
+# Plot sizes and colors ---------------------------------------------------
+
+# Helper function to calculate correct size for ggplot inputs. Takes two inputs:
+# a value (numeric) and a type (character). The type can be any of the units
+# accepted by `grid::unit()`, including "pt", "mm", and "in".
+ggplot_size_conversion <- function(value, type) {
+    value_in_pt <- grid::convertUnit(grid::unit(value, type), "points", valueOnly = TRUE)
+    return(
+      value_in_pt / 72.27  # Normalize from points
+        * 96               # Multiply by units for R pixels (per inch)
+        / ggplot2::.pt     # Account for the ggplot2::.pt factor (=72.27/25.4)
+    )
+}
+
+# Pre-set values for width of lines (specified by the Communications team)
+cmapplot_globals$lwd_layout  <- ggplot_size_conversion(3, "pt")
+cmapplot_globals$lwd_origin <- ggplot_size_conversion(1.6, "pt") # This is not spec, but appears to be the minimum for variation between origin lines and other background lines
+cmapplot_globals$lwd_other <- ggplot_size_conversion(.3, "pt")
+
+# Define common colors
+cmapplot_globals$colors <- list(
+  blackish = "#222222"
+)
+
+# Define font sizes (specified by the Communications team)
+cmapplot_globals$font_sizes <- list(
+  title = 17,
+  main = 14,
+  note = 11
+)
