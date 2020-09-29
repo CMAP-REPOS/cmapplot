@@ -39,8 +39,7 @@ Imports:
     scales,
     sysfonts,
     gridExtra,
-    ggpubr,
-    gtable
+    ggpubr
 Suggests:
     testthat
 RoxygenNote: 7.1.1

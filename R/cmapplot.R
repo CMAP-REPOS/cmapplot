@@ -16,9 +16,8 @@
 #' @name cmapplot
 #' @docType package
 #' @import ggplot2 dplyr grid scales grDevices graphics rlang gridtext
-#' @importFrom gridExtra arrangeGrob grid.arrange
+#' @importFrom gridExtra arrangeGrob
 #' @importFrom ggpubr get_legend
-#' @importFrom gtable gtable_filter
 #' @importFrom glue glue glue_collapse
 #' @importFrom lubridate date_decimal
 #' @importFrom sysfonts font_files
