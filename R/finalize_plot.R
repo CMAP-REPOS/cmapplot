@@ -494,15 +494,8 @@ finalize_plot <- function(input_plot = NULL,
 
       message(paste("Export successful:", this_mode))
 
-    # OR print the grob
-    } else if (this_mode %in% savetypes_print) {
-
-      # In window mode, open a new window
-      if (this_mode == "window") {
-        grDevices::dev.new(width = width * 1.02,
-                           height = height * 1.02,
-                           noRStudioGD = TRUE)
-      }
+    # OR display the grob in the plot window
+    } else if (this_mode == "plot") {
 
       # set up blank canvas
       grid::grid.newpage()
@@ -513,10 +506,21 @@ finalize_plot <- function(input_plot = NULL,
       grid::grid.draw(final_plot)
       grid::popViewport()
 
-      # In window mode, deactivate the new window
-      if (this_mode == "window") {
-        grDevices::dev.next()
-      }
+    } else if (this_mode == "window"){
+
+      # open new device (window)
+      grDevices::dev.new(width = width * 1.02,
+                         height = height * 1.02,
+                         noRStudioGD = TRUE)
+
+      # Mac users: if you get an error, try commenting out the following lines:
+      grid::grid.draw(grob_canvas)
+      grid::pushViewport(vp.centerframe)
+
+
+      grid::grid.draw(final_plot)
+
+      grDevices::dev.next()
     }
   }
 
