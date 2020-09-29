@@ -1,6 +1,6 @@
 Package: cmapplot
 Title: CMAP Themes and Color Palettes
-Version: 0.0.0.9000
+Version: 0.9.0
 Authors@R: c(
     person("Matthew", "Stern",
            role = c("aut", "cre"),
@@ -25,8 +25,6 @@ Encoding: UTF-8
 LazyData: true
 Depends:
     ggplot2
-Suggests:
-    testthat
 Imports:
     dplyr,
     generics,
@@ -40,4 +38,6 @@ Imports:
     rlang,
     scales,
     sysfonts
+Suggests:
+    testthat
 RoxygenNote: 7.1.1
