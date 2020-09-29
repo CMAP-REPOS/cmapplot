@@ -16,8 +16,8 @@
 #'
 #'@usage finalize_plot(input_plot = NULL, title = "", caption = "", width =
 #'  670/72, height = 400/72, title_width = NULL, ppi = 300, mode = c("plot"),
-#'  filename = "", fill_bg = "white", fill_canvas = "gray90", overrides =
-#'  list())
+#'  filename = "", caption_valign = c("top", "bottom"), fill_bg = "white",
+#'  fill_canvas = "gray90", overrides = list())
 #'
 #'@param input_plot ggplot object, the variable name of the plot you have
 #'  created that you want to finalize. If null (the default), the most recent
@@ -33,7 +33,7 @@
 #'  72ppi.
 #'@param title_width Numeric, the width in inches for the title. If unspecified,
 #'  use 25 percent of the total output width (per Comms guidance).
-#'@param ppi, Numeric, the resolution of exported images (pixels per inch).
+#'@param ppi Numeric, the resolution of exported images (pixels per inch).
 #'  Default = 300.
 #'@param mode Vector, the action(s) to be taken with the plot. Save using any of
 #'  the following: \code{png}, \code{tiff}, \code{jpeg}, \code{bmp}, \code{svg},
@@ -42,6 +42,12 @@
 #'@param filename Char, the file path and name you want the plot to be saved to.
 #'  You may specify an extension to use. If you don't, the correct extension
 #'  will be added for you.
+#'@param caption_valign Char, align the caption text at the top or the bottom of
+#'  the available space between the title and gutter created by
+#'  \code{margin_v4}. This argument accepts abbreviations, too: \code{c("top",
+#'  "t", "bottom", "b")}. Note that \code{margin_v3} creates space above the
+#'  caption when it is aligned top, and below the caption when it is aligned
+#'  bottom.
 #'@param fill_bg,fill_canvas Char, strings that represent colors R can
 #'  interpret. They are used to fill behind and around the finished plot,
 #'  respectively.
@@ -110,6 +116,7 @@ finalize_plot <- function(input_plot = NULL,
                            ppi = 300,
                            mode = c("plot"),
                            filename = "",
+                           caption_valign = c("top", "bottom"),
                            fill_bg = "white",
                            fill_canvas = "gray90",
                            overrides = list()
@@ -157,6 +164,9 @@ finalize_plot <- function(input_plot = NULL,
       title_width = convertUnit(unit(title_width, "in"), "bigpts", valueOnly = TRUE)
     )
   )
+
+  # check caption_valign
+  caption_valign <- match.arg(caption_valign)
 
   # If title/caption unspecified, try to extract from plot
   input_title <- input_plot$labels$title
@@ -277,7 +287,7 @@ finalize_plot <- function(input_plot = NULL,
     # set margins within textbox
     padding = grid::unit(c(0,                        # top
                            plot_constants$margin_h2, # right
-                           plot_constants$margin_v3, # bottom
+                           0,                        # bottom
                            plot_constants$margin_h1),# left
                          "bigpts"),
     # set font aesthetic variables
@@ -288,6 +298,25 @@ finalize_plot <- function(input_plot = NULL,
                     col=cmapplot_globals$colors$blackish)
   )
 
+  # set caption textbox alignment options
+  if(caption_valign == "top"){
+    captionvars <- list(
+      y = grid::unit(plot_constants$height - plot_constants$margin_v1_v2, "bigpts") - grid::grobHeight(grob_title),
+      vjust = 1,
+      maxheight = grid::unit(plot_constants$height - plot_constants$margin_v1_v2, "bigpts") - grid::grobHeight(grob_title),
+      padding_top = plot_constants$margin_v3,
+      padding_bottom = 0
+    )
+  } else {
+    captionvars <- list(
+      y = plot_constants$margin_v4,
+      vjust = 0,
+      maxheight = plot_constants$height - plot_constants$margin_v1_v2,
+      padding_top = 0,
+      padding_bottom = plot_constants$margin_v3
+    )
+  }
+
   # caption textbox (ROOT vp)
   grob_caption <- gridtext::textbox_grob(
     name = "caption",
@@ -295,17 +324,17 @@ finalize_plot <- function(input_plot = NULL,
     default.units = "bigpts",
     # set location down from top left corner
     x = 0,
-    y = grid::unit(plot_constants$height - plot_constants$margin_v1_v2, "bigpts") - grid::grobHeight(grob_title),
+    y = captionvars$y,
     hjust = 0,
-    vjust = 1,
+    vjust = captionvars$vjust,
     # set dimensions
     width = plot_constants$title_width,
-    maxheight = grid::unit(plot_constants$height - plot_constants$margin_v1_v2, "bigpts") - grid::grobHeight(grob_title),
+    maxheight = captionvars$maxheight,
     # set margins within textbox
-    padding = grid::unit(c(0,                        # top
-                           plot_constants$margin_h2, # right
-                           0,                        # bottom
-                           plot_constants$margin_h1),# left
+    padding = grid::unit(c(captionvars$padding_top,   # top
+                           plot_constants$margin_h2,  # right
+                           captionvars$padding_bottom,# bottom
+                           plot_constants$margin_h1), # left
                          "bigpts"),
     # set aesthetic variables
     gp = grid::gpar(fontsize = cmapplot_globals$font$note$size,

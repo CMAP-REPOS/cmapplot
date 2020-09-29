@@ -6,8 +6,8 @@
 \usage{
 finalize_plot(input_plot = NULL, title = "", caption = "", width =
  670/72, height = 400/72, title_width = NULL, ppi = 300, mode = c("plot"),
- filename = "", fill_bg = "white", fill_canvas = "gray90", overrides =
- list())
+ filename = "", caption_valign = c("top", "bottom"), fill_bg = "white",
+ fill_canvas = "gray90", overrides = list())
 }
 \arguments{
 \item{input_plot}{ggplot object, the variable name of the plot you have
@@ -28,7 +28,7 @@ pixel dimensions of raster outputs. Default is 9.31 inches wide (670/72) and
 \item{title_width}{Numeric, the width in inches for the title. If unspecified,
 use 25 percent of the total output width (per Comms guidance).}
 
-\item{ppi, }{Numeric, the resolution of exported images (pixels per inch).
+\item{ppi}{Numeric, the resolution of exported images (pixels per inch).
 Default = 300.}
 
 \item{mode}{Vector, the action(s) to be taken with the plot. Save using any of
@@ -39,6 +39,13 @@ object with \code{object}.}
 \item{filename}{Char, the file path and name you want the plot to be saved to.
 You may specify an extension to use. If you don't, the correct extension
 will be added for you.}
+
+\item{caption_valign}{Char, align the caption text at the top or the bottom of
+the available space between the title and gutter created by
+\code{margin_v4}. This argument accepts abbreviations, too: \code{c("top",
+"t", "bottom", "b")}. Note that \code{margin_v3} creates space above the
+caption when it is aligned top, and below the caption when it is aligned
+bottom.}
 
 \item{fill_bg, fill_canvas}{Char, strings that represent colors R can
 interpret. They are used to fill behind and around the finished plot,
