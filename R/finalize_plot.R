@@ -371,18 +371,17 @@ finalize_plot <- function(input_plot = NULL,
     buffer <- grid::rectGrob(gp = grid::gpar(col = "transparent", fill = "transparent"))
 
     # Assemble
-    built <- gridExtra::grid.arrange(
-      gridExtra::arrangeGrob(
-        l[[1]],
-        buffer,
-        p,
-        nrow = 3,
-        heights = grid::unit(c(l_height,
-                               plot_constants$margin_v5,
-                               p_height),
-                             "bigpts")
+    built <- gridExtra::arrangeGrob(
+      l[[1]],
+      buffer,
+      p,
+      nrow = 3,
+      heights = grid::unit(c(l_height,
+                             plot_constants$margin_v5,
+                             p_height),
+                           "bigpts")
       )
-    )
+
 
     return(built)
   }

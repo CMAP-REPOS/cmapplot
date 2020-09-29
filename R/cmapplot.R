@@ -143,6 +143,7 @@ cmapplot_globals$plot_constants <- list(
 
   padding_plot = c(0,0,0,0),
                         # Padding for the plot element
+
   padding_legend = c(0,0,0,-5),
                         # Padding for the legend element. The -5 adjustment is
                         #  necessary to left align key with plot elements
