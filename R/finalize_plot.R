@@ -73,8 +73,7 @@
 #'   geom_col() +
 #'   coord_flip() +
 #'   theme_cmap(gridlines = "v", hline = 0) +
-#'   scale_y_continuous(labels = scales::comma) +
-#'   theme(legend.justification = "left")
+#'   scale_y_continuous(labels = scales::comma)
 #'
 #' finalize_plot(econ_plot,
 #'                "Cluster-level employment changes in the Chicago MSA, 2001-17",
@@ -190,10 +189,14 @@ finalize_plot <- function(input_plot = NULL,
     new = list(size = ggplot_size_conversion(plot_constants$lwd_plotline))
     )
 
-  # Pre-processing of font size discrepancy **THIS IS NECESSARY BUT NOT UNDERSTOOD**
+  # Pre-processing of legend margins and font size discrepancy. This allows the
+  # proper width and heights of the legend element to be extracted for viewport
+  # creation.
   processed_plot <- input_plot + ggplot2::theme(
+    # **FONT SIZE ADJUSTMENTS ARE NECESSARY BUT NOT UNDERSTOOD**
     text = ggplot2::element_text(size = cmapplot_globals$font$main$size * 1.25),
-    legend.margin = margin(t = 0, r = 0, b = 0, l = 0, unit = "bigpts")
+    # Eliminate margin around legend (note ~20 big points of left margin remain)
+    legend.margin = grid::unit(plot_constants$padding_legend,"bigpts")
   )
 
   # Build necessary viewports -----------------------------------------------------
@@ -208,10 +211,10 @@ finalize_plot <- function(input_plot = NULL,
   )
 
   # extract height and width of legend object within ggplot plot
-  legend_height <- grid::convertUnit(ggpubr::get_legend(input_plot)$heights[[3]],
+  legend_height <- grid::convertUnit(ggpubr::get_legend(processed_plot)$heights[[3]],
                                      "bigpts",
                                      valueOnly = TRUE)
-  legend_width <-  grid::convertUnit(ggpubr::get_legend(input_plot)$widths[[3]],
+  legend_width <-  grid::convertUnit(ggpubr::get_legend(processed_plot)$widths[[3]],
                                      "bigpts",
                                      valueOnly = TRUE)
 
@@ -223,11 +226,14 @@ finalize_plot <- function(input_plot = NULL,
     just = c(0,0),
     default.units = "bigpts",
     height = legend_height,
-    # NOTE - Legend needs *MANUAL* adjustment (included below) of 20 big points
-    # to address un-editable left margin on legend object
-    width = min(legend_width + plot_constants$legend_indent - 20,
-                plot_constants$width - plot_constants$title_width -
-                  plot_constants$margin_h3 - plot_constants$legend_indent),
+    # NOTE - Legend needs *MANUAL* adjustment (included below) of 19.5 big
+    # points to address un-editable left margin on legend object
+    width = min(
+      # Either the length of the legend plus the indent, adjusted by 19.5
+      legend_width + plot_constants$legend_indent,
+      # OR the remaining width available, whichever is smaller
+      plot_constants$width - plot_constants$title_width -
+      plot_constants$margin_h3 - plot_constants$legend_indent),
     clip = "on"
   )
 
@@ -375,22 +381,23 @@ finalize_plot <- function(input_plot = NULL,
   )
 
   # FOR DEBUGGING - show legend box to determine alignment
-  # grob_legend_box <- grid::rectGrob(
-  #   x = plot_constants$title_width + plot_constants$legend_indent,
-  #   y = plot_constants$height - plot_constants$margin_v1_v2 - plot_constants$margin_v4 - legend_height,
-  #   just = c(0,0),
-  #   default.units = "bigpts",
-  #   height = legend_height,
-  #   width = min(legend_width,
-  #               plot_constants$width - plot_constants$title_width -
-  #                 plot_constants$margin_h3 - plot_constants$legend_indent),
-  #   gp = grid::gpar(col = "black")
-  # )
+  grob_legend_box <- grid::rectGrob(
+    x = plot_constants$title_width + plot_constants$legend_indent,
+    y = plot_constants$height - plot_constants$margin_v1_v2 - plot_constants$margin_v4 - legend_height,
+    just = c(0,0),
+    default.units = "bigpts",
+    height = legend_height,
+    width = legend_width + plot_constants$legend_indent - 19.5,
+      #min(legend_width,
+      #          plot_constants$width - plot_constants$title_width -
+      #            plot_constants$margin_h3 - plot_constants$legend_indent),
+    gp = grid::gpar(col = "black")
+  )
 
   # Assemble final plot -----------------------------------------------------
 
   final_plot <- grid::grobTree(
-    grob_background, grob_topline, grob_title, grob_caption, grob_legend, grob_plot,
+    grob_background, grob_topline, grob_title, grob_caption, grob_legend_box, grob_legend, grob_plot,
     name = "final_plot"
   )
 
