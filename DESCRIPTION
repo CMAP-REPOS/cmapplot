@@ -39,5 +39,8 @@ Imports:
     magrittr,
     rlang,
     scales,
-    sysfonts
+    sysfonts,
+    gridExtra,
+    ggpubr,
+    gtable
 RoxygenNote: 7.1.1

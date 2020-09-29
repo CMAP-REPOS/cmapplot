@@ -7,7 +7,7 @@
 finalize_plot(input_plot = NULL, title = "", caption = "", width =
  670/72, height = 400/72, title_width = NULL, ppi = 300, mode = c("plot"),
  filename = "", caption_valign = c("top", "bottom"), fill_bg = "white",
- fill_canvas = "gray90", overrides = list())
+ fill_canvas = "gray90", overrides = list(), debug = FALSE)
 }
 \arguments{
 \item{input_plot}{ggplot object, the variable name of the plot you have
@@ -55,6 +55,9 @@ respectively.}
 in \code{cmapplot_globals$plot_constants} which are drawn by
 \code{finalize_plot()} (this is most of them). Units are in bigpts (1/72 of
 an inch).}
+
+\item{debug}{Bool, TRUE enables outlines around components of finalized plot.
+Default = FALSE.}
 }
 \value{
 If and only if \code{"object"} is one of the modes specified, a gTree
@@ -117,7 +120,6 @@ finalize_plot(transit_plot,
                "Source: Chicago Metropolitan Agency for Planning
                analysis of data from the Regional Transportation Authority.",
                mode=c("plot", "pdf"),
-               filename = "foo",
-               overrides = list(margin_h3 = 10))
+               filename = "foo")
 }
 }

@@ -17,7 +17,7 @@
 #'@usage finalize_plot(input_plot = NULL, title = "", caption = "", width =
 #'  670/72, height = 400/72, title_width = NULL, ppi = 300, mode = c("plot"),
 #'  filename = "", caption_valign = c("top", "bottom"), fill_bg = "white",
-#'  fill_canvas = "gray90", overrides = list())
+#'  fill_canvas = "gray90", overrides = list(), debug = FALSE)
 #'
 #'@param input_plot ggplot object, the variable name of the plot you have
 #'  created that you want to finalize. If null (the default), the most recent
@@ -55,6 +55,8 @@
 #'  in \code{cmapplot_globals$plot_constants} which are drawn by
 #'  \code{finalize_plot()} (this is most of them). Units are in bigpts (1/72 of
 #'  an inch).
+#'@param debug Bool, TRUE enables outlines around components of finalized plot.
+#'  Default = FALSE.
 #'
 #'@return If and only if \code{"object"} is one of the modes specified, a gTree
 #'  object is returned. gTree is an assembly of grobs, or graphical objects,
@@ -95,7 +97,7 @@
 #'   )) %>%
 #'   ggplot(aes(x = year, y = ridership, color = system)) +
 #'   geom_line() +
-#'   theme_cmap()
+#'   theme_cmap(max_columns = 3)
 #'
 #' finalize_plot(transit_plot,
 #'                "Transit ridership in the RTA region over time, 1980-2019
@@ -118,7 +120,8 @@ finalize_plot <- function(input_plot = NULL,
                            caption_valign = c("top", "bottom"),
                            fill_bg = "white",
                            fill_canvas = "gray90",
-                           overrides = list()
+                           overrides = list(),
+                           debug = FALSE
                            ){
 
   # Validation and initialization -----------------------------
@@ -160,7 +163,9 @@ finalize_plot <- function(input_plot = NULL,
       margin_v1_v2 = plot_constants$margin_v1 + plot_constants$margin_v2,
       height = convertUnit(unit(height, "in"), "bigpts", valueOnly = TRUE),
       width = convertUnit(unit(width, "in"), "bigpts", valueOnly = TRUE),
-      title_width = convertUnit(unit(title_width, "in"), "bigpts", valueOnly = TRUE)
+      title_width = convertUnit(unit(title_width, "in"), "bigpts", valueOnly = TRUE),
+      margin_v1_v2_v4_v5 = plot_constants$margin_v1 + plot_constants$margin_v2 +
+        plot_constants$margin_v4 + plot_constants$margin_v5
     )
   )
 
@@ -195,8 +200,12 @@ finalize_plot <- function(input_plot = NULL,
   processed_plot <- input_plot + ggplot2::theme(
     # **FONT SIZE ADJUSTMENTS ARE NECESSARY BUT NOT UNDERSTOOD**
     text = ggplot2::element_text(size = cmapplot_globals$font$main$size * 1.25),
-    # Eliminate margin around legend (note ~20 big points of left margin remain)
-    legend.margin = grid::unit(plot_constants$padding_legend,"bigpts")
+    # Eliminate margin around legend for size extraction
+    legend.margin = margin(t = plot_constants$padding_legend[1],
+                           r = plot_constants$padding_legend[2],
+                           b = plot_constants$padding_legend[3],
+                           l = plot_constants$padding_legend[4],
+                           "bigpts")
   )
 
   # Build necessary viewports -----------------------------------------------------
@@ -210,34 +219,12 @@ finalize_plot <- function(input_plot = NULL,
     clip = "on"
   )
 
-  # extract height and width of legend object within ggplot plot
+  # extract height of legend object within ggplot plot
   legend_height <- grid::convertUnit(ggpubr::get_legend(processed_plot)$heights[[3]],
                                      "bigpts",
                                      valueOnly = TRUE)
-  legend_width <-  grid::convertUnit(ggpubr::get_legend(processed_plot)$widths[[3]],
-                                     "bigpts",
-                                     valueOnly = TRUE)
 
-  # create viewport for legend
-  vp.legend <- grid::viewport(
-    name = "vp.legend",
-    x = plot_constants$title_width + plot_constants$legend_indent,
-    y = plot_constants$height - plot_constants$margin_v1_v2 - plot_constants$margin_v4 - legend_height,
-    just = c(0,0),
-    default.units = "bigpts",
-    height = legend_height,
-    # NOTE - Legend needs *MANUAL* adjustment (included below) of 19.5 big
-    # points to address un-editable left margin on legend object
-    width = min(
-      # Either the length of the legend plus the indent, adjusted by 19.5
-      legend_width + plot_constants$legend_indent,
-      # OR the remaining width available, whichever is smaller
-      plot_constants$width - plot_constants$title_width -
-      plot_constants$margin_h3 - plot_constants$legend_indent),
-    clip = "on"
-  )
-
-  # create viewport for plot without legend
+  # create viewport for plot
   vp.plot <- grid::viewport(
     name = "vp.plot",
     x = plot_constants$title_width,
@@ -245,9 +232,10 @@ finalize_plot <- function(input_plot = NULL,
     just = c(0,0),
     default.units = "bigpts",
     height = plot_constants$height - plot_constants$margin_v1_v2 -
-      plot_constants$margin_v4 - legend_height - plot_constants$margin_v5,
+      plot_constants$margin_v4,
     width = plot_constants$width - plot_constants$title_width - plot_constants$margin_h3,
-    clip = "on"
+    clip = "on",
+    gp = gpar(col = "black")
   )
 
   # Build necessary grobs -----------------------------------------------------
@@ -350,56 +338,113 @@ finalize_plot <- function(input_plot = NULL,
                     col = cmapplot_globals$colors$blackish)
   )
 
+
+  # Function to create plot object with left aligned legend on top
+  buildChart <- function(p,l_margins,p_margins,l_indent,l_height,p_height) {
+
+    # Add left indent to plot margins
+    updated_l_margins <- c(l_margins[1:3],l_margins[4] + l_indent)
+
+    # Create a ggplot table of the updated plot element, including a left-aligned legend
+    gt <- ggplot2::ggplot_gtable(
+      ggplot2::ggplot_build(p + theme(legend.position = "left",
+                                      legend.justification = "left",
+                                      legend.direction = "horizontal",
+                                      plot.title = element_blank(),
+                                      plot.margin = grid::unit(p_margins,"bigpts"),
+                                      legend.margin = margin(t = updated_l_margins[1],
+                                                             r = updated_l_margins[2],
+                                                             b = updated_l_margins[3],
+                                                             l = updated_l_margins[4],
+                                                             "bigpts")
+                                      )
+                            )
+      )
+
+    # Extract the legend
+    l <- gtable::gtable_filter(gt, "guide-box")[[1]]
+
+    # Remove the legend from the plot
+    p <- p + ggplot2::theme(legend.position = "none")
+
+    # Create a buffer
+    buffer <- grid::rectGrob(gp = grid::gpar(col = "transparent", fill = "transparent"))
+
+    # Assemble
+    built <- gridExtra::grid.arrange(
+      gridExtra::arrangeGrob(
+        l[[1]],
+        buffer,
+        p,
+        nrow = 3,
+        heights = grid::unit(c(l_height,
+                               plot_constants$margin_v5,
+                               p_height),
+                             "bigpts")
+      )
+    )
+
+    return(built)
+  }
+
+  # Use helper function to develop full stack of legend, buffer, and plot
+  p_l_stack <- buildChart(processed_plot,
+                          l_margins = plot_constants$padding_legend,
+                          p_margins = plot_constants$padding_plot,
+                          l_indent = plot_constants$legend_indent,
+                          l_height = legend_height,
+                          p_height = plot_constants$height - legend_height - plot_constants$margin_v1_v2_v4_v5)
+
   # ggplot as grob (vp.plot)
   grob_plot <- grid::grobTree(
-    ggplotGrob(
-      processed_plot + ggplot2::theme(
-        # make sure the plot has no title or caption
-        plot.title = ggplot2::element_blank(),
-        plot.caption = ggplot2::element_blank(),
-        # add margins
-        plot.margin = unit(plot_constants$padding_plot, "bigpts"),
-        # remove legend
-        legend.position = "none"
-      )
-    ),
+    p_l_stack,
     vp = vp.plot,
     name = "plot"
   )
 
-  # legend as grob (vp.legend)
-  grob_legend <- grid::grobTree(
-    ggpubr::get_legend(processed_plot + ggplot2::theme(
-      # modify legend to ensure correct layout
-      legend.position = "left",
-      legend.direction = "horizontal",
-      legend.justification = "left"
-    )
-    ),
-    vp = vp.legend,
-    name = "legend"
-  )
+  # If debug is called, assemble additional outlines for overlay
+  if (debug) {
+    debug_rects <- grid::rectGrob(gp = gpar(col = "black", fill = "transparent"))
 
-  # FOR DEBUGGING - show legend box to determine alignment
-  grob_legend_box <- grid::rectGrob(
-    x = plot_constants$title_width + plot_constants$legend_indent,
-    y = plot_constants$height - plot_constants$margin_v1_v2 - plot_constants$margin_v4 - legend_height,
-    just = c(0,0),
-    default.units = "bigpts",
-    height = legend_height,
-    width = legend_width + plot_constants$legend_indent - 19.5,
-      #min(legend_width,
-      #          plot_constants$width - plot_constants$title_width -
-      #            plot_constants$margin_h3 - plot_constants$legend_indent),
-    gp = grid::gpar(col = "black")
-  )
+    debug_stack <- gridExtra::arrangeGrob(
+      debug_rects,
+      debug_rects,
+      debug_rects,
+      nrow = 3,
+      heights = grid::unit(c(legend_height,
+                             plot_constants$margin_v5,
+                             plot_constants$height - legend_height - plot_constants$margin_v1_v2_v4_v5),
+                           "bigpts")
+
+    )
+
+    debug_plot <- grid::grobTree(
+      debug_stack,
+      vp = vp.plot,
+      name = "debug_plot"
+    )
+  }
+
 
   # Assemble final plot -----------------------------------------------------
 
+  # If not debugging, proceed as normal
+  if(!debug) {
   final_plot <- grid::grobTree(
-    grob_background, grob_topline, grob_title, grob_caption, grob_legend_box, grob_legend, grob_plot,
+    grob_background, grob_topline, grob_title, grob_caption, grob_plot,
     name = "final_plot"
-  )
+    )
+  } else {
+    # If debugging, add outlines to text boxes and call debug outlines for plot
+    final_plot <- grid::grobTree(
+      grob_background, grob_topline,
+      grid::editGrob(grob_title, box_gp = grid::gpar(col = "black")),
+      grid::editGrob(grob_caption, box_gp = grid::gpar(col = "black")),
+      grob_plot,
+      debug_plot,
+      name = "final_plot"
+    )
+  }
 
   # Output the figure based on mode selected -----------------------------------
 
