@@ -37,8 +37,9 @@
 #'  Default = 300.
 #'@param mode Vector, the action(s) to be taken with the plot. Save using any of
 #'  the following: \code{png}, \code{tiff}, \code{jpeg}, \code{bmp}, \code{svg},
-#'  \code{pdf}, \code{ps}. View in R with: \code{plot}, \code{window}. Return an
-#'  object with \code{object}.
+#'  \code{pdf}, \code{ps}. View in R with: \code{plot}, \code{window} (`window`
+#'  currently works on computers running Windows). Return an object with
+#'  \code{object}.
 #'@param filename Char, the file path and name you want the plot to be saved to.
 #'  You may specify an extension to use. If you don't, the correct extension
 #'  will be added for you.
@@ -84,8 +85,7 @@
 #'                height = 6,
 #'                width = 8,
 #'                title_width = 2.5,
-#'                overrides = list(margin_h3 = 30)
-#' )
+#'                overrides = list(margin_h3 = 30))
 #'
 #' transit_plot <- transit_ridership %>%
 #'   mutate(system = case_when(
@@ -464,19 +464,28 @@ finalize_plot <- function(input_plot = NULL,
 
     } else if (this_mode == "window"){
 
-      # open new device (window)
-      grDevices::dev.new(width = width * 1.02,
-                         height = height * 1.02,
-                         noRStudioGD = TRUE)
+      if(.Platform$OS.type == "windows"){
+        # open new device (window)
+        grDevices::dev.new(width = width * 1.02,
+                           height = height * 1.02,
+                           noRStudioGD = TRUE)
 
-      # Mac users: if you get an error, try commenting out the following lines:
-      grid::grid.draw(grob_canvas)
-      grid::pushViewport(vp.centerframe)
+        # set up blank canvas
+        grid::grid.newpage()
+        grid::grid.draw(grob_canvas)
 
+        # enter centerframe, draw plot, exit centerframe
+        grid::pushViewport(vp.centerframe)
+        grid::grid.draw(final_plot)
+        grid::popViewport()
 
-      grid::grid.draw(final_plot)
+        # reset device to default without closing window
+        grDevices::dev.next()
 
-      grDevices::dev.next()
+      } else {
+
+        message("`Window` mode not available on non-Windows platforms")
+      }
     }
   }
 
@@ -488,6 +497,7 @@ finalize_plot <- function(input_plot = NULL,
     return(final_plot)
   }
 }
+
 
 #' @noRd
 # Function to create plot object with left aligned legend on top
@@ -690,8 +700,3 @@ buildChart <- function(input_plot,
 #     save_plot(plot_grid, save_filepath, type=type, height=height_pixels)
 #   }
 # }
-
-
-
-
-
