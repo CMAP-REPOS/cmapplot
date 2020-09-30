@@ -10,6 +10,9 @@ Authors@R: c(
            role = "aut",
            email = "npeterson@cmap.illinois.gov",
            comment = c(ORCID = "0000-0003-1290-2362")),
+    person("Greta", "Ritzenthaler",
+           role = "aut",
+           email = "gritzenthaler@cmap.illinois.gov"),
     person("Chicago Metropolitan Agency for Planning",
            role = "cph")
     )
