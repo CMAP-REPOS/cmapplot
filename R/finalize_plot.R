@@ -390,17 +390,6 @@ finalize_plot <- function(input_plot = NULL,
     if (debug) {debug_plot},
     name = "final_plot"
     )
-  # } else {
-  #   # If debugging, add outlines to text boxes and call debug outlines for plot
-  #   final_plot <- grid::grobTree(
-  #     grob_background, grob_topline,
-  #     grid::editGrob(grob_title, box_gp = grid::gpar(col = "black")),
-  #     grid::editGrob(grob_caption, box_gp = grid::gpar(col = "black")),
-  #     grob_plot,
-  #     debug_plot,
-  #     name = "final_plot"
-  #   )
-  # }
 
   # Output the figure based on mode selected -----------------------------------
 
