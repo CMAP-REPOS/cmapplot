@@ -4,7 +4,7 @@
 #'plot area in accordance with CMAP design standards.
 #'
 #'@usage theme_cmap(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL,
-#'  gridlines = c("h", "v", "hv", "none"))
+#'  gridlines = c("h", "v", "hv", "none"), max_columns = NULL)
 #'
 #'@param xlab,ylab Char, the string used to label the x and y axes,
 #'  respectively. If unspecified, the axis label will be left off the graph.
@@ -15,6 +15,14 @@
 #'  default, horizontal grid lines will be displayed while vertical grid lines
 #'  will be masked. Acceptable values are "h" (horizontal only), "v" (vertical
 #'  only), "hv" (both horizontal and vertical), and "none" (neither).
+#'@param max_columns Integer, the maximum number of columns in the legend. If no
+#'  value is set, the chart will rely on `ggplot`'s default and automatic column
+#'  handling behavior, which should work for most cases. Manual adjustment may
+#'  be required if legend entries are particularly numerous and/or lengthy. Note
+#'  that `ggplot` will still auto-adjust in ways that may mean the total number
+#'  of columns is less than the maximum (e.g., if there are five items in a
+#'  legend with four columns as the maximum, the output will be one row of three
+#'  and another row of two).
 #'
 #'@examples
 #'
@@ -46,7 +54,8 @@
 theme_cmap <- function(
   xlab = NULL, ylab = NULL,
   hline = NULL, vline = NULL,
-  gridlines = c("h", "v", "hv", "none")
+  gridlines = c("h", "v", "hv", "none"),
+  max_columns = NULL
 ) {
 
   # Generate an explicit message to user if Whitney font family is not available
@@ -64,19 +73,23 @@ theme_cmap <- function(
     ggplot2::theme(
 
       # Default text
-      text = ggplot2::element_text(family = cmapplot_globals$font_main,
-                                   face = cmapplot_globals$font_main_face,
-                                   size = cmapplot_globals$font_sizes$main,
+      text = ggplot2::element_text(family = cmapplot_globals$font$main$family,
+                                   face = cmapplot_globals$font$main$face,
+                                   size = cmapplot_globals$font$main$size,
                                    color = cmapplot_globals$colors$blackish),
 
       # Title text
-      plot.title = ggplot2::element_text(family = cmapplot_globals$font_title,
-                                         face = cmapplot_globals$font_title_face,
-                                         size = cmapplot_globals$font_sizes$title),
+      plot.title = ggplot2::element_text(family = cmapplot_globals$font$title$family,
+                                         face = cmapplot_globals$font$title$face,
+                                         size = cmapplot_globals$font$title$size),
+
+      # Caption/source text
+      plot.caption = ggplot2::element_text(family = cmapplot_globals$font$note$family,
+                                           face = cmapplot_globals$font$note$face,
+                                           size = cmapplot_globals$font$note$size),
 
       # Text elements not displayed
       plot.subtitle = ggplot2::element_blank(),
-      plot.caption = ggplot2::element_blank(),
 
       # Legend format
       legend.position = "top",
@@ -96,6 +109,7 @@ theme_cmap <- function(
 
       # Blank background
       panel.background = ggplot2::element_blank(),
+      plot.background = ggplot2::element_blank(),
 
       # No gridlines
       panel.grid.major.x = ggplot2::element_blank(),
@@ -133,32 +147,42 @@ theme_cmap <- function(
     # Add x origin line, if specified
     if(!is.null(hline)){
       ggplot2::geom_hline(yintercept = hline,
-                          size = cmapplot_globals$lwd_origin,
+                          size = ggplot_size_conversion(cmapplot_globals$plot_constants$lwd_originline),
                           color = cmapplot_globals$colors$blackish)
     },
 
     # Add y origin line, if specified
     if(!is.null(vline)){
       ggplot2::geom_vline(xintercept = vline,
-                          size = cmapplot_globals$lwd_origin,
+                          size = ggplot_size_conversion(cmapplot_globals$plot_constants$lwd_originline),
                           color = cmapplot_globals$colors$blackish)
     },
 
     # Re-introduce horizontal gridlines if specified
     if (grepl("h", gridlines)) {
       ggplot2::theme(
-        panel.grid.major.y = ggplot2::element_line(size = cmapplot_globals$lwd_other,
-                                                   color = cmapplot_globals$colors$blackish)
+        panel.grid.major.y = ggplot2::element_line(
+          size = ggplot_size_conversion(cmapplot_globals$plot_constants$lwd_gridline),
+          color = cmapplot_globals$colors$blackish)
       )
     },
 
     # Re-introduce vertical gridlines if specified
     if (grepl("v", gridlines)) {
       ggplot2::theme(
-        panel.grid.major.x = ggplot2::element_line(size = cmapplot_globals$lwd_other,
-                                                   color = cmapplot_globals$colors$blackish)
+        panel.grid.major.x = ggplot2::element_line(
+          size = ggplot_size_conversion(cmapplot_globals$plot_constants$lwd_gridline),
+          color = cmapplot_globals$colors$blackish)
       )
+    },
+
+    # only edit legend columns if value is added
+    if (!is.null(max_columns)){
+        # set maximum number of columns for legend based on either "fill" or "col" to reflect different geom structures
+        ggplot2::guides(fill = guide_legend(ncol = max_columns),
+                        col  = guide_legend(ncol = max_columns))
     }
+
   )
 
   # Filter out NA elements before returning

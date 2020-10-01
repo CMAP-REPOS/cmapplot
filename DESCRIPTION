@@ -1,6 +1,6 @@
 Package: cmapplot
 Title: CMAP Themes and Color Palettes
-Version: 0.0.0.9000
+Version: 0.9.0
 Authors@R: c(
     person("Matthew", "Stern",
            role = c("aut", "cre"),
@@ -11,8 +11,12 @@ Authors@R: c(
            email = "npeterson@cmap.illinois.gov",
            comment = c(ORCID = "0000-0003-1290-2362")),
     person("Chicago Metropolitan Agency for Planning",
-           role = "cph")
-    )
+           role = "cph"),
+    person(given = "Daniel",
+           family = "Comeaux",
+           role = "aut",
+           email = "dcomeaux@cmap.illinois.gov",
+           comment = c(ORCID = "0000-0002-8412-9092")))
 Description: Provides themes and color scales for 'ggplot2', based on Chicago
     Metropolitan Agency for Planning (CMAP) design guidelines.
 URL: https://cmap-repos.github.io/cmapplot
@@ -21,17 +25,19 @@ Encoding: UTF-8
 LazyData: true
 Depends:
     ggplot2
-Suggests:
-    testthat
 Imports:
     dplyr,
+    generics,
     glue,
     graphics,
     grDevices,
     grid,
+    gridtext,
     lubridate,
+    magrittr,
     rlang,
     scales,
-    sysfonts,
-    magrittr
+    sysfonts
+Suggests:
+    testthat
 RoxygenNote: 7.1.1
