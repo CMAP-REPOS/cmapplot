@@ -195,8 +195,8 @@ finalize_plot <- function(input_plot = NULL,
     )
 
   # Pre-processing of legend margins and font size discrepancy. This allows the
-  # proper width and heights of the legend element to be extracted for viewport
-  # creation.
+  #  proper width and heights of the legend element to be extracted for size
+  #  adjustments
   processed_plot <- input_plot + ggplot2::theme(
     # **FONT SIZE ADJUSTMENTS ARE NECESSARY BUT NOT UNDERSTOOD**
     text = ggplot2::element_text(size = cmapplot_globals$font$main$size * 1.25),
@@ -213,6 +213,7 @@ finalize_plot <- function(input_plot = NULL,
                                      "bigpts",
                                      valueOnly = TRUE)
 
+  # set outline color to black if debugging or transparent otherwise.
   if(debug){ grob_outline_color = "black" } else { grob_outline_color = "transparent" }
 
   # Build necessary viewports -----------------------------------------------------
@@ -234,8 +235,7 @@ finalize_plot <- function(input_plot = NULL,
     y = plot_constants$margin_v4,
     just = c(0,0),
     default.units = "bigpts",
-    height = plot_constants$height - plot_constants$margin_v1_v2 -
-      plot_constants$margin_v4,
+    height = plot_constants$height - plot_constants$margin_v1_v2 - plot_constants$margin_v4,
     width = plot_constants$width - plot_constants$title_width - plot_constants$margin_h3,
     clip = "on"
   )
@@ -343,14 +343,15 @@ finalize_plot <- function(input_plot = NULL,
   )
 
   # Use helper function to develop full stack of legend, buffer, and plot
-  plot_legend_stack <- buildChart(input_plot = processed_plot,
-                          legend_margins = plot_constants$padding_legend,
-                          plot_margins = plot_constants$padding_plot,
-                          legend_indent = plot_constants$legend_indent,
-                          legend_height = legend_height,
-                          plot_height = plot_constants$height - legend_height - plot_constants$margin_v1_v2_v4_v5,
-                          legend_plot_spacing = plot_constants$margin_v5,
-                          debug_color = grob_outline_color)
+  plot_legend_stack <-
+    buildChart(input_plot = processed_plot,
+               legend_margins = plot_constants$padding_legend,
+               plot_margins = plot_constants$padding_plot,
+               legend_indent = plot_constants$legend_indent,
+               legend_height = legend_height,
+               plot_height = plot_constants$height - legend_height - plot_constants$margin_v1_v2_v4_v5,
+               legend_plot_spacing = plot_constants$margin_v5,
+               debug_color = grob_outline_color)
 
   # ggplot as grob (vp.plot)
   grob_plot <- grid::grobTree(
@@ -359,7 +360,7 @@ finalize_plot <- function(input_plot = NULL,
     name = "plot"
   )
 
-  # If debug is called, assemble additional outlines for overlay
+  # If debug is called, assemble additional outlines for overlay on plot and legend
   if (debug) {
     debug_rects <- grid::rectGrob(gp = gpar(col = "black", fill = "transparent"))
 
@@ -503,31 +504,33 @@ buildChart <- function(input_plot,
   updated_legend_margins <- c(legend_margins[1:3],
                               legend_margins[4] + legend_indent)
 
-  # Create a ggplot table of the updated plot element, including a left-aligned legend
-  format_plot <- input_plot + theme(legend.position = "left",
-                                       legend.justification = "left",
-                                       legend.direction = "horizontal",
-                                       plot.title = element_blank(),
-                                       plot.margin = grid::unit(plot_margins,"bigpts"),
-                                       legend.margin = margin(t = updated_legend_margins[1],
-                                                              r = updated_legend_margins[2],
-                                                              b = updated_legend_margins[3],
-                                                              l = updated_legend_margins[4],
-                                                              "bigpts")
+  # Reformat plot
+  format_plot <- input_plot + theme(
+    # ensure legend is left aligned and horizontal
+    legend.position = "left",
+    legend.justification = "left",
+    legend.direction = "horizontal",
+    # remove title
+    plot.title = element_blank(),
+    # update margins to account for possible indent
+    plot.margin = grid::unit(plot_margins,"bigpts"),
+    legend.margin = margin(t = updated_legend_margins[1],
+                           r = updated_legend_margins[2],
+                           b = updated_legend_margins[3],
+                           l = updated_legend_margins[4],
+                           "bigpts")
     )
 
   # Extract the legend and make it a grob
-  legend <- grob(ggpubr::get_legend(format_plot),
-                 gp = grid::gpar(col = debug_color))
+  legend <- grob(ggpubr::get_legend(format_plot))
 
   # Remove the legend from the plot and make it a grob
-  just_plot <- grob(format_plot + ggplot2::theme(legend.position = "none"),
-                    gp = grid::gpar(col = debug_color))
+  just_plot <- grob(format_plot + ggplot2::theme(legend.position = "none"))
 
   # Create a buffer
   buffer <- grid::rectGrob(gp = grid::gpar(col = debug_color, fill = "transparent"))
 
-  # Assemble
+  # Assemble into a combined grob
   built <- gridExtra::arrangeGrob(
     legend[[1]],
     buffer,
@@ -539,6 +542,6 @@ buildChart <- function(input_plot,
                          "bigpts")
   )
 
-
+  # return the combined grob
   return(built)
 }
