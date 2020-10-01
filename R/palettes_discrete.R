@@ -61,10 +61,6 @@ viz_palette <- function(pal, ttl = deparse(substitute(pal)), num = length(pal)) 
 
 #' Discrete palette prep function
 #'
-#' @param palette Choose from 'cmap_palettes' list
-#' @param reverse Logical; reverse color order?
-#'
-#' @export
 cmap_pal_discrete <- function(palette = "prosperity", reverse = FALSE) {
     pal <- cmap_palettes[[palette]]
     if (reverse) {

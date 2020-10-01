@@ -6,11 +6,6 @@
 \usage{
 cmap_pal_discrete(palette = "prosperity", reverse = FALSE)
 }
-\arguments{
-\item{palette}{Choose from 'cmap_palettes' list}
-
-\item{reverse}{Logical; reverse color order?}
-}
 \description{
 Discrete palette prep function
 }

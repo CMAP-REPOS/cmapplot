@@ -6,16 +6,18 @@
 \alias{cmap_colour_highlight}
 \title{Highlight one discrete group in a comparison graph}
 \usage{
-cmap_fill_highlight(variable, highlight)
+cmap_fill_highlight(variable, highlight, color = "#009ccc")
 
-cmap_color_highlight(variable, highlight)
+cmap_color_highlight(variable, highlight, color = "#009ccc")
 
-cmap_colour_highlight(variable, highlight)
+cmap_colour_highlight(variable, highlight, color = "#009ccc")
 }
 \arguments{
 \item{variable}{group vector, same as what is in your color/fill aesthetic. Include as 'data$variable' format}
 
 \item{highlight}{name of group of interest, as character string}
+
+\item{color}{(optional) Specify the highlighted color as a hexcode string. Default is #009ccc (blue)}
 }
 \description{
 Pick the function depending on the aesthetic of your ggplot object (fill or color).

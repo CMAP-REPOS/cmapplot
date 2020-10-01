@@ -6,11 +6,6 @@
 \usage{
 cmap_pal_continuous(palette = "seq_reds", reverse = FALSE)
 }
-\arguments{
-\item{palette}{Choose from 'cmap_gradients' list}
-
-\item{reverse}{Logical; reverse color order?}
-}
 \description{
 Continuous palette prep function
 }

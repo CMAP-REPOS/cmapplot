@@ -91,10 +91,6 @@ viz_gradient <- function(pal, ttl = deparse(substitute(pal))) {
 
 #' Continuous palette prep function
 #'
-#' @param palette Choose from 'cmap_gradients' list
-#' @param reverse Logical; reverse color order?
-#'
-#' @export
 cmap_pal_continuous <- function(palette = "seq_reds", reverse = FALSE) {
     pal <- cmap_gradients[[palette]]
     if (reverse) {
