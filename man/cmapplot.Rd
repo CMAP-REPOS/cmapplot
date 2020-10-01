@@ -34,6 +34,7 @@ Authors:
 \itemize{
   \item Noel Peterson \email{npeterson@cmap.illinois.gov} (\href{https://orcid.org/0000-0003-1290-2362}{ORCID})
   \item Greta Ritzenthaler \email{gritzenthaler@cmap.illinois.gov}
+  \item Daniel Comeaux \email{dcomeaux@cmap.illinois.gov} (\href{https://orcid.org/0000-0002-8412-9092}{ORCID})
 }
 
 Other contributors:
