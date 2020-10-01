@@ -176,7 +176,6 @@ theme_cmap <- function(
       )
     },
 
-    # FLAG FOR REVIEW - experimental functionality
     # only edit legend columns if value is added
     if (!is.null(max_columns)){
         # set maximum number of columns for legend based on either "fill" or "col" to reflect different geom structures
