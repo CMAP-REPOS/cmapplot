@@ -91,6 +91,10 @@ viz_gradient <- function(pal, ttl = deparse(substitute(pal))) {
 
 #' Continuous palette prep function
 #'
+#' @param palette Choose from 'cmap_gradients' list
+#' @param reverse Logical; reverse color order?
+#'
+#' @noRd
 cmap_pal_continuous <- function(palette = "seq_reds", reverse = FALSE) {
     pal <- cmap_gradients[[palette]]
     if (reverse) {
@@ -115,6 +119,7 @@ cmap_pal_continuous <- function(palette = "seq_reds", reverse = FALSE) {
 #'     geom_line() +
 #'     cmap_color_continuous(palette = "seq_red_purple")
 #'
+#' @describeIn cmap_fill_continuous For fill aesthetic
 #' @export
 cmap_fill_continuous <- function(palette = "seq_reds", reverse = FALSE) {
     ggplot2::scale_fill_gradientn(
@@ -122,7 +127,7 @@ cmap_fill_continuous <- function(palette = "seq_reds", reverse = FALSE) {
     )
 }
 
-#' @rdname cmap_fill_continuous
+#' @describeIn cmap_fill_continuous For color aesthetic
 #' @export
 cmap_color_continuous <- function(palette = "seq_reds", reverse = FALSE) {
     ggplot2::scale_colour_gradientn(
@@ -130,6 +135,6 @@ cmap_color_continuous <- function(palette = "seq_reds", reverse = FALSE) {
     )
 }
 
-#' @rdname cmap_fill_continuous
+#' @describeIn cmap_fill_continuous For color aesthetic
 #' @export
 cmap_colour_continuous <- cmap_color_continuous

@@ -6,23 +6,49 @@
 \alias{cmap_colour_highlight}
 \title{Highlight one discrete group in a comparison graph}
 \usage{
-cmap_fill_highlight(variable, highlight, color = "#009ccc")
+cmap_fill_highlight(
+  variable,
+  highlight,
+  color_main = "#009ccc",
+  color_other = "#9daab3"
+)
 
-cmap_color_highlight(variable, highlight, color = "#009ccc")
+cmap_color_highlight(
+  variable,
+  highlight,
+  color_main = "#009ccc",
+  color_other = "#9daab3"
+)
 
-cmap_colour_highlight(variable, highlight, color = "#009ccc")
+cmap_colour_highlight(
+  variable,
+  highlight,
+  color_main = "#009ccc",
+  color_other = "#9daab3"
+)
 }
 \arguments{
 \item{variable}{group vector, same as what is in your color/fill aesthetic. Include as 'data$variable' format}
 
 \item{highlight}{name of group of interest, as character string}
 
-\item{color}{(optional) Specify the highlighted color as a hexcode string. Default is #009ccc (blue)}
+\item{color_main}{(optional) Specify the highlighted color as a hexcode string. Default is #009ccc (blue)}
+
+\item{color_other}{(optional) Specify non-highlighted color. Default is #9daab3 (gray)}
 }
 \description{
 Pick the function depending on the aesthetic of your ggplot object (fill or color).
 Specify the unique factor name of the group you're highlighting (as a case-sensitive string), and the vector it's found in.
 }
+\section{Functions}{
+\itemize{
+\item \code{cmap_fill_highlight}: For fill aesthetic
+
+\item \code{cmap_color_highlight}: For color aesthetic
+
+\item \code{cmap_colour_highlight}: For color aesthetic
+}}
+
 \examples{
 ggplot(dplyr::filter(transit_ridership, year=="2019"),
        aes(x = system, y = ridership, fill = system)) +

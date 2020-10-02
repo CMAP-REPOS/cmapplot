@@ -28,6 +28,15 @@ Pick the function depending on the aesthetic of your ggplot object (fill or colo
 Specify your dataset's unique race factor names (as case-sensitive strings) in the arguments.
 All categories are optional in case your dataset does not have all of them.
 }
+\section{Functions}{
+\itemize{
+\item \code{cmap_fill_race}: For fill aesthetic
+
+\item \code{cmap_color_race}: For color aesthetic
+
+\item \code{cmap_colour_race}: For color aesthetic
+}}
+
 \examples{
 library(dplyr)
 traded_emp_by_race \%>\%
