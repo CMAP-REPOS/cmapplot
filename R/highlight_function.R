@@ -2,21 +2,21 @@
 #'
 #' Create named list to serve as palette input for following fill/color highlight functions
 #'
-#' @param variable group vector
-#' @param highlight name of group of interest
+#' @param field group vector
+#' @param value name of group of interest
 #' @param color_main hexcode of highlighted color
 #' @param color_other hexcode of non-highlighted color
 #'
 #' @noRd
-make_highlight_palette <- function(variable, highlight, color_main, color_other){
+make_highlight_palette <- function(field, value, color_main, color_other){
 
-  n <- length(unique(variable))
+  n <- length(unique(field))
 
   palette <- rep.int(c(other = color_other), n)
 
-  names(palette) <- levels(factor(variable))
+  names(palette) <- levels(factor(field))
 
-  palette[[highlight]] <- color_main
+  palette[[value]] <- color_main
 
   return(palette)
 
@@ -27,8 +27,8 @@ make_highlight_palette <- function(variable, highlight, color_main, color_other)
 #' Pick the function depending on the aesthetic of your ggplot object (fill or color).
 #' Specify the unique factor name of the group you're highlighting (as a case-sensitive string), and the vector it's found in.
 #'
-#' @param variable group vector, same as what is in your color/fill aesthetic. Include as 'data$variable' format
-#' @param highlight name of group of interest, as character string
+#' @param field group vector, same as what is in your color/fill aesthetic. Include as `table$field` format
+#' @param value name of group of interest, as character string
 #' @param color_main (optional) Specify the highlighted color as a hexcode string. Default is #009ccc (blue)
 #' @param color_other (optional) Specify non-highlighted color. Default is #9daab3 (gray)
 #'
@@ -40,11 +40,11 @@ make_highlight_palette <- function(variable, highlight, color_main, color_other)
 #'
 #' @describeIn cmap_fill_highlight For fill aesthetic
 #' @export
-cmap_fill_highlight <- function(variable, highlight,
+cmap_fill_highlight <- function(field, value,
                                 color_main = "#009ccc",
                                 color_other = "#9daab3") {
 
-  palette <- make_highlight_palette(variable, highlight, color_main, color_other)
+  palette <- make_highlight_palette(field, value, color_main, color_other)
 
   ggplot2::scale_fill_manual(values = palette)
 
@@ -52,11 +52,11 @@ cmap_fill_highlight <- function(variable, highlight,
 
 #' @describeIn cmap_fill_highlight For color aesthetic
 #' @export
-cmap_color_highlight <- function(variable, highlight,
+cmap_color_highlight <- function(field, value,
                                  color_main = "#009ccc",
                                  color_other = "#9daab3") {
 
-  palette <- make_highlight_palette(variable, highlight, color_main, color_other)
+  palette <- make_highlight_palette(field, value, color_main, color_other)
 
   ggplot2::scale_color_manual(values = palette)
 
