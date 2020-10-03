@@ -127,26 +127,24 @@ ggplot_size_conversion <- function(value, type = "bigpts") {
 cmapplot_globals$plot_constants <- list(
   lwd_plotline = 3,     # Width of line graph lines
   lwd_originline = 1.6, # Width of origin lines. This appears to be the minimum
-                        #  for variation between origin lines and other
-                        #  background lines
+                        #   for variation between origin lines and other
+                        #   background lines
   lwd_gridline = 0.3,   # Width of grid lines (non-origin)
   lwd_topline = 2,      # Width of top line
   margin_v1 = 5,        # Margin between top edge of image and top line
-  margin_v2 = 5,        # Margin between top line and top of title/legend
+  margin_v2 = 5,        # Margin between top line and top of title/plotbox
   margin_v3 = 5,        # Margin between title and caption
   margin_v4 = 0,        # Margin between bottom of plot and bottom edge of image
-  margin_v5 = 10,       # Margin between legend and plot
+  margin_v5 = 10,       # Margin between legend and plot within plotbox, if called
   margin_h1 = 2,        # Margin between left edge of image and title/caption
   margin_h2 = 10,       # Margin between title/caption and legend/plot
-  margin_h3 = 10,       # Margin between legend/plot and right edge of image
-
+                        #   (Both h1 and h2 are deducted from `titlewidth`)
+  margin_h3 = 10,       # Margin between plotbox and right edge of image
   padding_plot = c(0,0,0,0),
                         # Padding for the plot element
-
   padding_legend = c(0,0,0,-5),
                         # Padding for the legend element. The -5 adjustment is
                         #  necessary to left align key with plot elements
-
   leading_title = 0.93, # Text leading for Title text
   leading_caption = 1,  # Text leading for Caption text
   legend_indent = 0     # Indentation of legend

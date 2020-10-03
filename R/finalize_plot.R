@@ -156,16 +156,24 @@ finalize_plot <- function(input_plot = NULL,
   # create list of plot constants, from globals unless overridden by user
   plot_constants <- utils::modifyList(cmapplot_globals$plot_constants, overrides)
 
-  # for brevity and unit consistency, add some extra constants to list
+  # convert function arguments (given in inches) to bigpoints
   plot_constants <- append(
     plot_constants,
     list(
-      margin_v1_v2 = plot_constants$margin_v1 + plot_constants$margin_v2,
       height = convertUnit(unit(height, "in"), "bigpts", valueOnly = TRUE),
       width = convertUnit(unit(width, "in"), "bigpts", valueOnly = TRUE),
-      title_width = convertUnit(unit(title_width, "in"), "bigpts", valueOnly = TRUE),
-      margin_v1_v2_v4_v5 = plot_constants$margin_v1 + plot_constants$margin_v2 +
-        plot_constants$margin_v4 + plot_constants$margin_v5
+      title_width = convertUnit(unit(title_width, "in"), "bigpts", valueOnly = TRUE)
+    )
+  )
+
+  # for brevity, do some math on some constants to create others
+  plot_constants <- append(
+    plot_constants,
+    list(
+      margin_v1_v2 =   plot_constants$margin_v1 + plot_constants$margin_v2,
+      plotbox_height = plot_constants$height - plot_constants$margin_v1 -
+                          plot_constants$margin_v2 - plot_constants$margin_v4,
+      plotbox_width =  plot_constants$width - plot_constants$title_width - plot_constants$margin_h3
     )
   )
 
@@ -227,16 +235,20 @@ finalize_plot <- function(input_plot = NULL,
     clip = "on"
   )
 
+  print(plot_constants$plotbox_height)
+  print(plot_constants$plotbox_width)
 
-  # create viewport for plot
-  vp.plot <- grid::viewport(
-    name = "vp.plot",
+
+
+  # create plotbox viewport
+  vp.plotbox <- grid::viewport(
+    name = "vp.plotbox",
     x = plot_constants$title_width,
     y = plot_constants$margin_v4,
     just = c(0,0),
     default.units = "bigpts",
-    height = plot_constants$height - plot_constants$margin_v1_v2 - plot_constants$margin_v4,
-    width = plot_constants$width - plot_constants$title_width - plot_constants$margin_h3,
+    height = plot_constants$plotbox_height,
+    width = plot_constants$plotbox_width,
     clip = "on"
   )
 
@@ -349,14 +361,14 @@ finalize_plot <- function(input_plot = NULL,
                plot_margins = plot_constants$padding_plot,
                legend_indent = plot_constants$legend_indent,
                legend_height = legend_height,
-               plot_height = plot_constants$height - legend_height - plot_constants$margin_v1_v2_v4_v5,
+               plot_height = plot_constants$plotbox_height - legend_height - plot_constants$margin_v5,
                legend_plot_spacing = plot_constants$margin_v5,
                debug_color = grob_outline_color)
 
-  # ggplot as grob (vp.plot)
+  # ggplot as grob (vp.plotbox)
   grob_plot <- grid::grobTree(
     plot_legend_stack,
-    vp = vp.plot,
+    vp = vp.plotbox,
     name = "plot"
   )
 
@@ -378,7 +390,7 @@ finalize_plot <- function(input_plot = NULL,
 
     debug_plot <- grid::grobTree(
       debug_stack,
-      vp = vp.plot,
+      vp = vp.plotbox,
       name = "debug_plot"
     )
   }
