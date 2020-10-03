@@ -64,7 +64,7 @@ viz_palette <- function(pal, ttl = deparse(substitute(pal)), num = length(pal)) 
 #' @param palette Choose from 'cmap_palettes' list
 #' @param reverse Logical; reverse color order?
 #'
-#' @export
+#' @noRd
 cmap_pal_discrete <- function(palette = "prosperity", reverse = FALSE) {
     pal <- cmap_palettes[[palette]]
     if (reverse) {
@@ -91,6 +91,7 @@ cmap_pal_discrete <- function(palette = "prosperity", reverse = FALSE) {
 #'    geom_line() +
 #'    cmap_color_discrete(palette = "prosperity")
 #'
+#' @describeIn cmap_fill_discrete For fill aesthetic
 #' @export
 cmap_fill_discrete <- function(palette = "prosperity", reverse = FALSE) {
     ggplot2::discrete_scale(
@@ -98,7 +99,7 @@ cmap_fill_discrete <- function(palette = "prosperity", reverse = FALSE) {
     )
 }
 
-#' @rdname cmap_fill_discrete
+#' @describeIn cmap_fill_discrete For color aesthetic
 #' @export
 cmap_color_discrete <- function(palette = "prosperity", reverse = FALSE) {
     ggplot2::discrete_scale(
@@ -106,6 +107,6 @@ cmap_color_discrete <- function(palette = "prosperity", reverse = FALSE) {
     )
 }
 
-#' @rdname cmap_fill_discrete
+#' @describeIn cmap_fill_discrete For color aesthetic
 #' @export
 cmap_colour_discrete <- cmap_color_discrete

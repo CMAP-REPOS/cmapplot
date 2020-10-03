@@ -20,6 +20,15 @@ cmap_colour_discrete(palette = "prosperity", reverse = FALSE)
 \description{
 Pick the function depending on the aesthetic of your ggplot object (fill or color)
 }
+\section{Functions}{
+\itemize{
+\item \code{cmap_fill_discrete}: For fill aesthetic
+
+\item \code{cmap_color_discrete}: For color aesthetic
+
+\item \code{cmap_colour_discrete}: For color aesthetic
+}}
+
 \examples{
 ggplot(pop_and_laborforce_by_age, aes(x = variable, y = value, fill = age)) +
    geom_col(position = position_stack(reverse = TRUE)) +
