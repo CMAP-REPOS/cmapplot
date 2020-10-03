@@ -43,8 +43,8 @@ will be added for you.}
 
 \item{caption_valign}{Char, align the caption text at the top or the bottom of
 the available space between the title and gutter created by
-\code{margin_v4}. This argument accepts abbreviations, too: \code{c("top",
-"t", "bottom", "b")}. Note that \code{margin_v3} creates space above the
+\code{margin_v3}. This argument accepts abbreviations, too: \code{c("top",
+"t", "bottom", "b")}. Note that \code{margin_v4} creates space above the
 caption when it is aligned top, and below the caption when it is aligned
 bottom.}
 
