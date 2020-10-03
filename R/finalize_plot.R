@@ -45,8 +45,8 @@
 #'  will be added for you.
 #'@param caption_valign Char, align the caption text at the top or the bottom of
 #'  the available space between the title and gutter created by
-#'  \code{margin_v4}. This argument accepts abbreviations, too: \code{c("top",
-#'  "t", "bottom", "b")}. Note that \code{margin_v3} creates space above the
+#'  \code{margin_v3}. This argument accepts abbreviations, too: \code{c("top",
+#'  "t", "bottom", "b")}. Note that \code{margin_v4} creates space above the
 #'  caption when it is aligned top, and below the caption when it is aligned
 #'  bottom.
 #'@param fill_bg,fill_canvas Char, strings that represent colors R can
@@ -172,7 +172,7 @@ finalize_plot <- function(input_plot = NULL,
     list(
       margin_v1_v2 =   plot_constants$margin_v1 + plot_constants$margin_v2,
       plotbox_height = plot_constants$height - plot_constants$margin_v1 -
-                          plot_constants$margin_v2 - plot_constants$margin_v4,
+                          plot_constants$margin_v2 - plot_constants$margin_v3,
       plotbox_width =  plot_constants$width - plot_constants$title_width - plot_constants$margin_h3
     )
   )
@@ -235,16 +235,11 @@ finalize_plot <- function(input_plot = NULL,
     clip = "on"
   )
 
-  print(plot_constants$plotbox_height)
-  print(plot_constants$plotbox_width)
-
-
-
   # create plotbox viewport
   vp.plotbox <- grid::viewport(
     name = "vp.plotbox",
     x = plot_constants$title_width,
-    y = plot_constants$margin_v4,
+    y = plot_constants$margin_v3,
     just = c(0,0),
     default.units = "bigpts",
     height = plot_constants$plotbox_height,
@@ -313,16 +308,16 @@ finalize_plot <- function(input_plot = NULL,
       y = grid::unit(plot_constants$height - plot_constants$margin_v1_v2, "bigpts") - grid::grobHeight(grob_title),
       vjust = 1,
       maxheight = grid::unit(plot_constants$height - plot_constants$margin_v1_v2, "bigpts") - grid::grobHeight(grob_title),
-      padding_top = plot_constants$margin_v3,
+      padding_top = plot_constants$margin_v4,
       padding_bottom = 0
     )
   } else {
     captionvars <- list(
-      y = plot_constants$margin_v4,
+      y = plot_constants$margin_v3,
       vjust = 0,
       maxheight = plot_constants$height - plot_constants$margin_v1_v2,
       padding_top = 0,
-      padding_bottom = plot_constants$margin_v3
+      padding_bottom = plot_constants$margin_v4
     )
   }
 

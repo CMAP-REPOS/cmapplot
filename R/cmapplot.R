@@ -133,8 +133,8 @@ cmapplot_globals$plot_constants <- list(
   lwd_topline = 2,      # Width of top line
   margin_v1 = 5,        # Margin between top edge of image and top line
   margin_v2 = 5,        # Margin between top line and top of title/plotbox
-  margin_v3 = 5,        # Margin between title and caption
-  margin_v4 = 0,        # Margin between bottom of plot and bottom edge of image
+  margin_v3 = 0,        # Margin between bottom of plot and bottom edge of image
+  margin_v4 = 5,        # Margin above or below caption
   margin_v5 = 10,       # Margin between legend and plot within plotbox, if called
   margin_h1 = 2,        # Margin between left edge of image and title/caption
   margin_h2 = 10,       # Margin between title/caption and legend/plot
