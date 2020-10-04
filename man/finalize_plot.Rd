@@ -4,18 +4,31 @@
 \alias{finalize_plot}
 \title{Arrange and save CMAP ggplot chart}
 \usage{
-finalize_plot(input_plot = NULL, title = "", caption = "", width =
- 670/72, height = 400/72, title_width = NULL, ppi = 300, mode = c("plot"),
- filename = "", caption_valign = c("top", "bottom"), fill_bg = "white",
- fill_canvas = "gray90", overrides = list(), debug = FALSE)
+finalize_plot(
+  plot = NULL,
+  title = "",
+  caption = "",
+  width = 670/72,
+  height = 400/72,
+  title_width = NULL,
+  ppi = 300,
+  mode = c("plot"),
+  filename = "",
+  caption_valign = c("top", "bottom"),
+  fill_bg = "white",
+  fill_canvas = "gray90",
+  overrides = list(),
+  debug = FALSE,
+  legend_build = c("adjust", "safe", "none")
+)
 }
 \arguments{
-\item{input_plot}{ggplot object, the variable name of the plot you have
-created that you want to finalize. If null (the default), the most recent
-plot will be retrieved via \code{ggplot2::last_plot()}.}
+\item{plot}{ggplot object, the variable name of the plot you have created that
+you want to finalize. If null (the default), the most recent plot will be
+retrieved via \code{ggplot2::last_plot()}.}
 
 \item{title, caption}{Char, the text you want to appear in the title and
-caption blocks. If empty, any non-Null values from \code{input_plot} will be
+caption blocks. If empty, any non-Null values from \code{plot} will be
 retrieved. These blocks take html formatting, so manual text breaks can be
 created with \code{<br>} and formatting can be changed with \code{<span>}.}
 
@@ -59,6 +72,12 @@ an inch).}
 
 \item{debug}{Bool, TRUE enables outlines around components of finalized plot.
 Default = FALSE.}
+
+\item{legend_build}{Char, how the function attempts to build the legend.
+\code{"adjust"}, the default, attempts to align the legend all the way left
+(on top of the y axis labels) per CMAP design standards. \code{"safe"}
+aligns the legend left, but not over the y axis labels: less ideal, but less
+buggy. \code{"none"} removes the legend entirely.}
 }
 \value{
 If and only if \code{"object"} is one of the modes specified, a gTree

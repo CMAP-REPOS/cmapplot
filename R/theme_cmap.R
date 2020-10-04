@@ -4,7 +4,7 @@
 #'plot area in accordance with CMAP design standards.
 #'
 #'@usage theme_cmap(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL,
-#'  gridlines = c("h", "v", "hv", "none"), max_columns = NULL)
+#'  gridlines = c("h", "v", "hv", "none"), legend.max.columns = NULL)
 #'
 #'@param xlab,ylab Char, the string used to label the x and y axes,
 #'  respectively. If unspecified, the axis label will be left off the graph.
@@ -15,7 +15,7 @@
 #'  default, horizontal grid lines will be displayed while vertical grid lines
 #'  will be masked. Acceptable values are "h" (horizontal only), "v" (vertical
 #'  only), "hv" (both horizontal and vertical), and "none" (neither).
-#'@param max_columns Integer, the maximum number of columns in the legend. If no
+#'@param legend.max.columns Integer, the maximum number of columns in the legend. If no
 #'  value is set, the chart will rely on `ggplot`'s default and automatic column
 #'  handling behavior, which should work for most cases. Manual adjustment may
 #'  be required if legend entries are particularly numerous and/or lengthy. Note
@@ -55,7 +55,7 @@ theme_cmap <- function(
   xlab = NULL, ylab = NULL,
   hline = NULL, vline = NULL,
   gridlines = c("h", "v", "hv", "none"),
-  max_columns = NULL
+  legend.max.columns = NULL
 ) {
 
   # Generate an explicit message to user if Whitney font family is not available
@@ -93,8 +93,14 @@ theme_cmap <- function(
 
       # Legend format
       legend.position = "top",
+      legend.justification = "left",
       legend.text.align = 0,
-      legend.background = ggplot2::element_blank(),
+      legend.margin = margin(cmapplot_globals$plot_constants$padding_legend[1],
+                             cmapplot_globals$plot_constants$padding_legend[2],
+                             cmapplot_globals$plot_constants$padding_legend[3],
+                             cmapplot_globals$plot_constants$padding_legend[4],
+                             "bigpts"),
+      legend.box.background = ggplot2::element_blank(),
       legend.text = ggplot2::element_text(),
       legend.title = ggplot2::element_blank(),
       legend.key = ggplot2::element_blank(),
@@ -103,9 +109,16 @@ theme_cmap <- function(
       axis.title.y = ggplot2::element_blank(),
       axis.title.x = ggplot2::element_blank(),
       axis.text = ggplot2::element_text(color = cmapplot_globals$colors$blackish),
-      axis.text.x = ggplot2::element_text(margin = ggplot2::margin(5, b = 10)),
+      axis.text.x = ggplot2::element_text(margin = ggplot2::margin(t = 5, b = 5)),
       axis.ticks = ggplot2::element_blank(),
       axis.line = ggplot2::element_blank(),
+
+      # panel placement
+      plot.margin = ggplot2::margin(cmapplot_globals$plot_constants$padding_plot[1],
+                                    cmapplot_globals$plot_constants$padding_plot[2],
+                                    cmapplot_globals$plot_constants$padding_plot[3],
+                                    cmapplot_globals$plot_constants$padding_plot[4],
+                                    "bigpts"),
 
       # Blank background
       panel.background = ggplot2::element_blank(),
@@ -177,10 +190,10 @@ theme_cmap <- function(
     },
 
     # only edit legend columns if value is added
-    if (!is.null(max_columns)){
+    if (!is.null(legend.max.columns)){
         # set maximum number of columns for legend based on either "fill" or "col" to reflect different geom structures
-        ggplot2::guides(fill = guide_legend(ncol = max_columns),
-                        col  = guide_legend(ncol = max_columns))
+        ggplot2::guides(fill = guide_legend(ncol = legend.max.columns),
+                        col  = guide_legend(ncol = legend.max.columns))
     }
 
   )

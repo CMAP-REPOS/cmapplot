@@ -5,7 +5,7 @@
 \title{Add CMAP theme to ggplot chart}
 \usage{
 theme_cmap(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL,
- gridlines = c("h", "v", "hv", "none"), max_columns = NULL)
+ gridlines = c("h", "v", "hv", "none"), legend.max.columns = NULL)
 }
 \arguments{
 \item{xlab, ylab}{Char, the string used to label the x and y axes,
@@ -20,7 +20,7 @@ default, horizontal grid lines will be displayed while vertical grid lines
 will be masked. Acceptable values are "h" (horizontal only), "v" (vertical
 only), "hv" (both horizontal and vertical), and "none" (neither).}
 
-\item{max_columns}{Integer, the maximum number of columns in the legend. If no
+\item{legend.max.columns}{Integer, the maximum number of columns in the legend. If no
 value is set, the chart will rely on `ggplot`'s default and automatic column
 handling behavior, which should work for most cases. Manual adjustment may
 be required if legend entries are particularly numerous and/or lengthy. Note

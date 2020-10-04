@@ -14,16 +14,11 @@
 #'\code{cmapplot_globals$plot_constants$lwd_plotline}) in all outputs except for
 #'when exporting as an object.
 #'
-#'@usage finalize_plot(input_plot = NULL, title = "", caption = "", width =
-#'  670/72, height = 400/72, title_width = NULL, ppi = 300, mode = c("plot"),
-#'  filename = "", caption_valign = c("top", "bottom"), fill_bg = "white",
-#'  fill_canvas = "gray90", overrides = list(), debug = FALSE)
-#'
-#'@param input_plot ggplot object, the variable name of the plot you have
-#'  created that you want to finalize. If null (the default), the most recent
-#'  plot will be retrieved via \code{ggplot2::last_plot()}.
+#'@param plot ggplot object, the variable name of the plot you have created that
+#'  you want to finalize. If null (the default), the most recent plot will be
+#'  retrieved via \code{ggplot2::last_plot()}.
 #'@param title,caption Char, the text you want to appear in the title and
-#'  caption blocks. If empty, any non-Null values from \code{input_plot} will be
+#'  caption blocks. If empty, any non-Null values from \code{plot} will be
 #'  retrieved. These blocks take html formatting, so manual text breaks can be
 #'  created with \code{<br>} and formatting can be changed with \code{<span>}.
 #'@param width,height Numeric, the dimensions for the output image, including
@@ -58,6 +53,11 @@
 #'  an inch).
 #'@param debug Bool, TRUE enables outlines around components of finalized plot.
 #'  Default = FALSE.
+#'@param legend_build Char, how the function attempts to build the legend.
+#'  \code{"adjust"}, the default, attempts to align the legend all the way left
+#'  (on top of the y axis labels) per CMAP design standards. \code{"safe"}
+#'  aligns the legend left, but not over the y axis labels: less ideal, but less
+#'  buggy. \code{"none"} removes the legend entirely.
 #'
 #'@return If and only if \code{"object"} is one of the modes specified, a gTree
 #'  object is returned. gTree is an assembly of grobs, or graphical objects,
@@ -108,33 +108,38 @@
 #'                filename = "foo")
 #'}
 #'@export
-finalize_plot <- function(input_plot = NULL,
-                           title = "",
-                           caption = "",
-                           width = 670/72, # comms spec: 670px @ 72ppi
-                           height = 400/72, # comms spec: 400px @ 72ppi
-                           title_width = NULL, # if unspecified, default to width/4
-                           ppi = 300,
-                           mode = c("plot"),
-                           filename = "",
-                           caption_valign = c("top", "bottom"),
-                           fill_bg = "white",
-                           fill_canvas = "gray90",
-                           overrides = list(),
-                           debug = FALSE
-                           ){
+finalize_plot <- function(plot = NULL,
+                          title = "",
+                          caption = "",
+                          width = 670/72, # comms spec: 670px @ 72ppi
+                          height = 400/72, # comms spec: 400px @ 72ppi
+                          title_width = NULL, # if unspecified, default to width/4
+                          ppi = 300,
+                          mode = c("plot"),
+                          filename = "",
+                          caption_valign = c("top", "bottom"),
+                          fill_bg = "white",
+                          fill_canvas = "gray90",
+                          overrides = list(),
+                          debug = FALSE,
+                          legend_build = c("adjust", "safe", "none")
+                          ){
 
   # Validation and initialization -----------------------------
 
   # Seek last plot if user did not specify one
-  if (is.null(input_plot)) {
-    input_plot <- ggplot2::last_plot()
+  if (is.null(plot)) {
+    plot <- ggplot2::last_plot()
   }
 
   # Set title_width to 25% of total width if unspecified
   if (is.null(title_width)) {
     title_width <- width / 4
   }
+
+  # check args with default vectors
+  caption_valign <- match.arg(caption_valign)
+  legend_build <- match.arg(legend_build)
 
   # check mode argument and validate filename
   savetypes_raster <- c("png","tiff","jpeg","bmp")
@@ -177,11 +182,8 @@ finalize_plot <- function(input_plot = NULL,
     )
   )
 
-  # check caption_valign
-  caption_valign <- match.arg(caption_valign)
-
   # If title/caption unspecified, try to extract from plot
-  input_title <- input_plot$labels$title
+  input_title <- plot$labels$title
   if (title == "") {
     if(!is.null(input_title)) {
       title <- input_title
@@ -190,7 +192,7 @@ finalize_plot <- function(input_plot = NULL,
     }
   }
 
-  input_caption <- input_plot$labels$caption
+  input_caption <- plot$labels$caption
   if (caption == "" & !is.null(input_caption)) {
     caption <- input_caption
   }
@@ -205,23 +207,18 @@ finalize_plot <- function(input_plot = NULL,
     new = list(size = ggplot_size_conversion(plot_constants$lwd_plotline))
     )
 
-  # Pre-processing of legend margins and font size discrepancy. This allows the
-  #  proper width and heights of the legend element to be extracted for size
-  #  adjustments
-  processed_plot <- input_plot + ggplot2::theme(
-    # **FONT SIZE ADJUSTMENTS ARE NECESSARY BUT NOT UNDERSTOOD**
-    text = ggplot2::element_text(size = cmapplot_globals$font$main$size * 1.25),
-    # for debug. Change these to element_blank OR element_rect
-    legend.background = element_rect(color = debug_color),
-    legend.box.background = element_rect(color = debug_color),
-    plot.background = element_rect(color = debug_color),
-    # Eliminate margin around legend for size extraction
-    legend.margin = margin(t = plot_constants$padding_legend[1],
-                           r = plot_constants$padding_legend[2],
-                           b = plot_constants$padding_legend[3],
-                           l = plot_constants$padding_legend[4],
-                           "bigpts")
-  )
+  # adjust font size **NECESSARY BUT NOT UNDERSTOOD**
+  plot <- plot + ggplot2::theme(
+    text = ggplot2::element_text(size = cmapplot_globals$font$main$size * 1.25))
+
+  # draw boxes around plot elements in debug mode
+  if(debug){
+    plot <- plot + ggplot2::theme(
+      legend.background = element_rect(color = debug_color, fill = "transparent"),
+      legend.box.background = element_rect(color = debug_color, fill = "transparent"),
+      plot.background = element_rect(color = debug_color, fill = "transparent")
+    )
+  }
 
 
   # Build necessary viewports -----------------------------------------------------
@@ -299,7 +296,8 @@ finalize_plot <- function(input_plot = NULL,
                     fontface=cmapplot_globals$font$title$face,
                     lineheight=plot_constants$leading_title,
                     col=cmapplot_globals$colors$blackish),
-    box_gp = grid::gpar(col = debug_color)
+    box_gp = grid::gpar(col = debug_color,
+                        fill = "transparent")
   )
 
   # set caption textbox alignment options
@@ -346,13 +344,15 @@ finalize_plot <- function(input_plot = NULL,
                     fontface = cmapplot_globals$font$note$face,
                     lineheight = plot_constants$leading_caption,
                     col = cmapplot_globals$colors$blackish),
-    box_gp = grid::gpar(col = debug_color)
+    box_gp = grid::gpar(col = debug_color,
+                        fill = "transparent")
   )
 
   # Use helper function to develop full stack of legend, buffer, and plot
   plot_legend_stack <-
-    buildChart(input_plot = processed_plot,
-               plot_constants = plot_constants)
+    buildChart(input_plot = plot,
+               plot_constants = plot_constants,
+               legend_build = legend_build)
 
   # ggplot as grob (vp.plotbox)
   grob_plot <- grid::grobTree(
@@ -469,7 +469,20 @@ finalize_plot <- function(input_plot = NULL,
 #' @noRd
 # Function to create plot object with left aligned legend on top
 buildChart <- function(input_plot,
-                       plot_constants) {
+                       plot_constants,
+                       legend_build) {
+
+  # in safe mode, don't extract legend
+  if(legend_build == "safe"){
+    return(ggplotGrob(input_plot))
+  }
+
+  # in no legend mode, remove legend altogether
+  if(legend_build == "none"){
+    input_plot <- input_plot + theme(legend.position = "none")
+    return(ggplotGrob(input_plot))
+  }
+
 
   # extract height of legend object within ggplot plot
   legend_height <- grid::convertUnit(ggpubr::get_legend(input_plot)$heights[[3]],

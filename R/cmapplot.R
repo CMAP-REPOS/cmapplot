@@ -140,11 +140,11 @@ cmapplot_globals$plot_constants <- list(
   margin_h2 = 10,       # Margin between title/caption and legend/plot
                         #   (Both h1 and h2 are deducted from `titlewidth`)
   margin_h3 = 10,       # Margin between plotbox and right edge of image
-  padding_plot = c(0,0,0,0),
-                        # Padding for the plot element
-  padding_legend = c(0,0,0,-5),
-                        # Padding for the legend element. The -5 adjustment is
-                        #  necessary to left align key with plot elements
+  padding_plot = c(0,10,0,0),
+                        # Padding around the entire plot
+  padding_legend = c(1,1,0,-6),
+                        # Padding for the legend element. The -6 adjustment is
+                        #  necessary to left align legend key with plot elements
   leading_title = 0.93, # Text leading for Title text
   leading_caption = 1,  # Text leading for Caption text
   legend_indent = 0     # Indentation of legend
