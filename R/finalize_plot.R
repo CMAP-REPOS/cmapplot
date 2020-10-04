@@ -207,9 +207,11 @@ finalize_plot <- function(plot = NULL,
     new = list(size = ggplot_size_conversion(plot_constants$lwd_plotline))
     )
 
-  # adjust font size **NECESSARY BUT NOT UNDERSTOOD**
+  # preformat plot **FONT SIZE ADJUSTMENT IS NECESSARY BUT NOT UNDERSTOOD**
   plot <- plot + ggplot2::theme(
-    text = ggplot2::element_text(size = cmapplot_globals$font$main$size * 1.25))
+    text = ggplot2::element_text(size = cmapplot_globals$font$main$size * 1.25),
+    plot.title = element_blank(),
+    plot.caption = element_blank())
 
   # draw boxes around plot elements in debug mode
   if(debug){
@@ -348,15 +350,12 @@ finalize_plot <- function(plot = NULL,
                         fill = "transparent")
   )
 
-  # Use helper function to develop full stack of legend, buffer, and plot
-  plot_legend_stack <-
-    buildChart(input_plot = plot,
-               plot_constants = plot_constants,
-               legend_build = legend_build)
-
   # ggplot as grob (vp.plotbox)
   grob_plot <- grid::grobTree(
-    plot_legend_stack,
+    # Use helper function to develop full stack of legend, buffer, and plot
+    buildChart(input_plot = plot,
+               plot_constants = plot_constants,
+               legend_build = legend_build),
     vp = vp.plotbox,
     name = "plot"
   )
@@ -466,6 +465,7 @@ finalize_plot <- function(plot = NULL,
 }
 
 
+
 #' @noRd
 # Function to create plot object with left aligned legend on top
 buildChart <- function(input_plot,
@@ -479,8 +479,8 @@ buildChart <- function(input_plot,
 
   # in no legend mode, remove legend altogether
   if(legend_build == "none"){
-    input_plot <- input_plot + theme(legend.position = "none")
-    return(ggplotGrob(input_plot))
+    output_plot <- input_plot + theme(legend.position = "none")
+    return(ggplotGrob(output_plot))
   }
 
 
@@ -497,12 +497,8 @@ buildChart <- function(input_plot,
 
   # Reformat plot
   format_plot <- input_plot + theme(
-    # ensure legend is left aligned and horizontal
+    # ensure legend is left aligned
     legend.position = "left",
-    legend.justification = "left",
-    legend.direction = "horizontal",
-    # remove title
-    plot.title = element_blank(),
     # update margins to account for possible indent
     plot.margin = grid::unit(plot_constants$padding_plot,"bigpts"),
     legend.margin = margin(t = updated_legend_margins[1],

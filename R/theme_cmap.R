@@ -94,6 +94,7 @@ theme_cmap <- function(
       # Legend format
       legend.position = "top",
       legend.justification = "left",
+      legend.direction = "horizontal",
       legend.text.align = 0,
       legend.margin = margin(cmapplot_globals$plot_constants$padding_legend[1],
                              cmapplot_globals$plot_constants$padding_legend[2],
