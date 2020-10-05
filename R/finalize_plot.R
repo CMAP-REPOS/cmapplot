@@ -483,14 +483,6 @@ buildChart <- function(input_plot,
     return(ggplotGrob(output_plot))
   }
 
-
-  # extract height of legend object within ggplot plot
-  legend_height <- grid::convertUnit(ggpubr::get_legend(input_plot)$heights[[3]],
-                                     "bigpts",
-                                     valueOnly = TRUE)
-
-  plot_height = plot_constants$plotbox_height - legend_height - plot_constants$margin_v5
-
   # Add left indent to plot margins
   updated_legend_margins <- c(plot_constants$padding_legend[1:3],
                               plot_constants$padding_legend[4] + plot_constants$legend_indent)
@@ -509,7 +501,25 @@ buildChart <- function(input_plot,
     )
 
   # Extract the legend and make it a grob
-  legend <- grob(ggpubr::get_legend(format_plot))
+  legend <- ggpubr::get_legend(format_plot)
+  legend_grob <- grob(legend)
+
+  # extract the total number of "heights" in the legend (5 is standard for one
+  # legend, with each additional legend adding two additional height elements to
+  # the total)
+
+  legend_total <- length(legend$heights)
+
+  # extract height of legend object within ggplot plot. For plots with only one
+  # legend, this returns the 3rd element, which is the height of the legend
+  # component. For plots with two or more, it returns the sum of the heights of
+  # every element from the third element to the third-to-last element, which
+  # includes both text/key heights and buffers between legends)
+  legend_height <- grid::convertUnit(sum(legend$heights[3:(legend_total - 2)]),
+                                     "bigpts",
+                                     valueOnly = TRUE)
+
+  plot_height = plot_constants$plotbox_height - legend_height - plot_constants$margin_v5
 
   # Remove the legend from the plot and make it a grob
   just_plot <- grob(format_plot + ggplot2::theme(legend.position = "none"))
@@ -519,7 +529,7 @@ buildChart <- function(input_plot,
 
   # Assemble into a combined grob
   built <- gridExtra::arrangeGrob(
-    legend[[1]],
+    legend_grob[[1]],
     buffer,
     just_plot[[1]],
     nrow = 3,
