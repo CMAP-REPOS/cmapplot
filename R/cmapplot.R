@@ -146,10 +146,11 @@ cmapplot_globals$plot_constants <- list(
                         # Padding around the entire plot
   padding_legend = c(0,1,0,-9.5),
                         # Padding for the legend element. The -9.5 adjustment is
-                        #  necessary to left align legend key with plot elements
+                        #   necessary to left align legend key with plot elements
   leading_title = 0.93, # Text leading for Title text
   leading_caption = 1,  # Text leading for Caption text
-  legend_indent = 0     # Indentation of legend
+  legend_indent = 0     # Indentation of legend (this is an easy modifier to the
+                        #   last term in `padding_legend`)
 )
 
 # Define common colors

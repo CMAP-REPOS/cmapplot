@@ -483,26 +483,22 @@ buildChart <- function(input_plot,
     return(ggplotGrob(output_plot))
   }
 
-  # Add left indent to plot margins
-  updated_legend_margins <- c(plot_constants$padding_legend[1:3],
-                              plot_constants$padding_legend[4] + plot_constants$legend_indent)
-
   # Reformat plot
+  ## IS ANY OF THIS ACTUALLY NECESSARY? CAN WE MOVE MORE OF THIS OVER TO THEME_CMAP?
   format_plot <- input_plot + theme(
     # ensure legend is left aligned
     legend.position = "left",
     # update margins to account for possible indent
     plot.margin = grid::unit(plot_constants$padding_plot,"bigpts"),
-    legend.margin = margin(t = updated_legend_margins[1],
-                           r = updated_legend_margins[2],
-                           b = updated_legend_margins[3],
-                           l = updated_legend_margins[4],
+    legend.margin = margin(t = plot_constants$padding_legend[1],
+                           r = plot_constants$padding_legend[2],
+                           b = plot_constants$padding_legend[3],
+                           l = plot_constants$padding_legend[4] + plot_constants$legend_indent,
                            "bigpts")
     )
 
-  # Extract the legend and make it a grob
+  # Extract the legend
   legend <- ggpubr::get_legend(format_plot)
-  legend_grob <- grob(legend)
 
   # extract the total number of "heights" in the legend (5 is standard for one
   # legend, with each additional legend adding two additional height elements to
@@ -519,19 +515,16 @@ buildChart <- function(input_plot,
                                      "bigpts",
                                      valueOnly = TRUE)
 
-  plot_height = plot_constants$plotbox_height - legend_height - plot_constants$margin_v5
+  plot_height <- plot_constants$plotbox_height - legend_height - plot_constants$margin_v5
 
-  # Remove the legend from the plot and make it a grob
-  just_plot <- grob(format_plot + ggplot2::theme(legend.position = "none"))
-
-  # Create a buffer
-  buffer <- grid::rectGrob(gp = grid::gpar(col = "transparent", fill = "transparent"))
-
-  # Assemble into a combined grob
+  # Assemble a combined grob
   built <- gridExtra::arrangeGrob(
-    legend_grob[[1]],
-    buffer,
-    just_plot[[1]],
+    # the legend, as a grob
+    grob(legend)[[1]],
+    # an empty rectangle for buffer
+    grid::rectGrob(gp = grid::gpar(col = "transparent", fill = "transparent")),
+    # the plot, without the legend
+    ggplotGrob(format_plot + ggplot2::theme(legend.position = "none")),
     nrow = 3,
     heights = grid::unit(c(legend_height,
                            plot_constants$margin_v5,
