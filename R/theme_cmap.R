@@ -102,6 +102,8 @@ theme_cmap <- function(
                              cmapplot_globals$plot_constants$padding_legend[4],
                              "bigpts"),
       legend.box.background = ggplot2::element_blank(),
+      legend.box = "vertical",
+      legend.spacing.y = cmapplot_globals$plot_constants$margin_v5,
       legend.text = ggplot2::element_text(),
       legend.title = ggplot2::element_blank(),
       legend.key = ggplot2::element_blank(),
