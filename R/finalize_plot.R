@@ -39,11 +39,11 @@
 #'  You may specify an extension to use. If you don't, the correct extension
 #'  will be added for you.
 #'@param caption_valign Char, align the caption text at the top or the bottom of
-#'  the available space between the title and gutter created by
-#'  \code{margin_v3}. This argument accepts abbreviations, too: \code{c("top",
-#'  "t", "bottom", "b")}. Note that \code{margin_v4} creates space above the
-#'  caption when it is aligned top, and below the caption when it is aligned
-#'  bottom.
+#'  the available space between the title and bottom of image. This argument
+#'  accepts abbreviations, too: \code{c("top", "t", "bottom", "b")}. Note that
+#'  \code{margin_v3} changes meaning based on the value of this argument. When
+#'  aligned top, this value spaces the caption away from the title. When aligned
+#'  bottom, it spaces the caption away from the bottom of the image.
 #'@param fill_bg,fill_canvas Char, strings that represent colors R can
 #'  interpret. They are used to fill behind and around the finished plot,
 #'  respectively.
@@ -167,17 +167,17 @@ finalize_plot <- function(plot = NULL,
     list(
       height = convertUnit(unit(height, "in"), "bigpts", valueOnly = TRUE),
       width = convertUnit(unit(width, "in"), "bigpts", valueOnly = TRUE),
-      title_width = convertUnit(unit(title_width, "in"), "bigpts", valueOnly = TRUE)
+      title_width = convertUnit(unit(title_width, "in"), "bigpts", valueOnly = TRUE),
+      margin_v1_v2 = plot_constants$margin_v1 + plot_constants$margin_v2
     )
   )
 
-  # for brevity, do some math on some constants to create others
+  # calculate the size of the plot box
   plot_constants <- append(
     plot_constants,
     list(
-      margin_v1_v2 =   plot_constants$margin_v1 + plot_constants$margin_v2,
       plotbox_height = plot_constants$height - plot_constants$margin_v1 -
-                         plot_constants$margin_v2 - plot_constants$margin_v3,
+                         plot_constants$margin_v4 - plot_constants$margin_v6,
       plotbox_width =  plot_constants$width - plot_constants$title_width - plot_constants$margin_h3
     )
   )
@@ -238,7 +238,7 @@ finalize_plot <- function(plot = NULL,
   vp.plotbox <- grid::viewport(
     name = "vp.plotbox",
     x = plot_constants$title_width,
-    y = plot_constants$margin_v3,
+    y = plot_constants$margin_v6,
     just = c(0,0),
     default.units = "bigpts",
     height = plot_constants$plotbox_height,
@@ -285,13 +285,13 @@ finalize_plot <- function(plot = NULL,
     vjust = 1,
     # set dimensions
     width = plot_constants$title_width,
-    maxheight = plot_constants$height - plot_constants$margin_v1_v2,
-    # set margins within textbox
-    padding = grid::unit(c(0,                        # top
-                           plot_constants$margin_h2, # right
-                           0,                        # bottom
-                           plot_constants$margin_h1),# left
-                         "bigpts"),
+    maxheight = plot_constants$height - plot_constants$margin_v1_v2 - plot_constants$margin_v3,
+    # set margins around textbox
+    margin = grid::unit(c(0,                        # top
+                          plot_constants$margin_h2, # right
+                          0,                        # bottom
+                          plot_constants$margin_h1),# left
+                        "bigpts"),
     # set font aesthetic variables
     gp = grid::gpar(fontsize=cmapplot_globals$font$title$size,
                     fontfamily=cmapplot_globals$font$title$family,
@@ -307,8 +307,8 @@ finalize_plot <- function(plot = NULL,
     captionvars <- list(
       y = grid::unit(plot_constants$height - plot_constants$margin_v1_v2, "bigpts") - grid::grobHeight(grob_title),
       vjust = 1,
-      maxheight = grid::unit(plot_constants$height - plot_constants$margin_v1_v2, "bigpts") - grid::grobHeight(grob_title),
-      padding_top = plot_constants$margin_v4,
+      maxheight = grid::unit(plot_constants$height - plot_constants$margin_v1_v2 - plot_constants$margin_v3, "bigpts") - grid::grobHeight(grob_title),
+      padding_top = plot_constants$margin_v3,
       padding_bottom = 0
     )
   } else {
@@ -317,7 +317,7 @@ finalize_plot <- function(plot = NULL,
       vjust = 0,
       maxheight = plot_constants$height - plot_constants$margin_v1_v2,
       padding_top = 0,
-      padding_bottom = plot_constants$margin_v4
+      padding_bottom = plot_constants$margin_v3
     )
   }
 
@@ -335,11 +335,11 @@ finalize_plot <- function(plot = NULL,
     width = plot_constants$title_width,
     maxheight = captionvars$maxheight,
     # set margins within textbox
-    padding = grid::unit(c(captionvars$padding_top,   # top
-                           plot_constants$margin_h2,  # right
-                           captionvars$padding_bottom,# bottom
-                           plot_constants$margin_h1), # left
-                         "bigpts"),
+    margin = grid::unit(c(captionvars$padding_top,   # top
+                          plot_constants$margin_h2,  # right
+                          captionvars$padding_bottom,# bottom
+                          plot_constants$margin_h1), # left
+                        "bigpts"),
     # set aesthetic variables
     gp = grid::gpar(fontsize = cmapplot_globals$font$note$size,
                     fontfamily = cmapplot_globals$font$note$family,

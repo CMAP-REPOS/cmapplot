@@ -132,10 +132,12 @@ cmapplot_globals$plot_constants <- list(
   lwd_gridline = 0.3,   # Width of grid lines (non-origin)
   lwd_topline = 2,      # Width of top line
   margin_v1 = 5,        # Margin between top edge of image and top line
-  margin_v2 = 5,        # Margin between top line and top of title/plotbox
-  margin_v3 = 0,        # Margin between bottom of plot and bottom edge of image
-  margin_v4 = 5,        # Margin above or below caption
-  margin_v5 = 10,       # Margin between legend and plot within plotbox, if called
+  margin_v2 = 5,        # Margin between top line and title
+  margin_v3 = 5,        # Margin between caption and bottom edge of image,
+                        #   or between title and caption if `caption_valign = "top"`
+  margin_v4 = 5,        # Margin between top line and plotbox
+  margin_v5 = 10,       # Margin between legend and plot (within plotbox)
+  margin_v6 = 0,        # Margin between plotbox and bottom edge of image
   margin_h1 = 2,        # Margin between left edge of image and title/caption
   margin_h2 = 10,       # Margin between title/caption and legend/plot
                         #   (Both h1 and h2 are deducted from `titlewidth`)

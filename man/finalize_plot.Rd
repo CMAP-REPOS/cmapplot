@@ -55,11 +55,11 @@ You may specify an extension to use. If you don't, the correct extension
 will be added for you.}
 
 \item{caption_valign}{Char, align the caption text at the top or the bottom of
-the available space between the title and gutter created by
-\code{margin_v3}. This argument accepts abbreviations, too: \code{c("top",
-"t", "bottom", "b")}. Note that \code{margin_v4} creates space above the
-caption when it is aligned top, and below the caption when it is aligned
-bottom.}
+the available space between the title and bottom of image. This argument
+accepts abbreviations, too: \code{c("top", "t", "bottom", "b")}. Note that
+\code{margin_v3} changes meaning based on the value of this argument. When
+aligned top, this value spaces the caption away from the title. When aligned
+bottom, it spaces the caption away from the bottom of the image.}
 
 \item{fill_bg, fill_canvas}{Char, strings that represent colors R can
 interpret. They are used to fill behind and around the finished plot,
