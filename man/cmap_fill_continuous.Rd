@@ -20,6 +20,15 @@ cmap_colour_continuous(palette = "seq_reds", reverse = FALSE)
 \description{
 Pick the function depending on the aesthetic of your ggplot object (fill or color)
 }
+\section{Functions}{
+\itemize{
+\item \code{cmap_fill_continuous}: For fill aesthetic
+
+\item \code{cmap_color_continuous}: For color aesthetic
+
+\item \code{cmap_colour_continuous}: For color aesthetic
+}}
+
 \examples{
 library(dplyr)
 grp_over_time \%>\%
