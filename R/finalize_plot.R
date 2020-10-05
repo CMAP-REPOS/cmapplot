@@ -97,7 +97,7 @@
 #'   )) %>%
 #'   ggplot(aes(x = year, y = ridership, color = system)) +
 #'   geom_line() +
-#'   theme_cmap(max_columns = 3)
+#'   theme_cmap(legend.max.columns = 3)
 #'
 #' finalize_plot(transit_plot,
 #'                "Transit ridership in the RTA region over time, 1980-2019
