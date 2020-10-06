@@ -103,7 +103,7 @@ theme_cmap <- function(
                              "bigpts"),
       legend.box.background = ggplot2::element_blank(),
       legend.box = "vertical",
-      legend.spacing.y = cmapplot_globals$plot_constants$margin_v5,
+      legend.spacing.y = grid::unit(cmapplot_globals$plot_constants$margin_v5, "bigpts"),
       legend.text = ggplot2::element_text(),
       legend.title = ggplot2::element_blank(),
       legend.key = ggplot2::element_blank(),

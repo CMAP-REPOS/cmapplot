@@ -366,7 +366,7 @@ finalize_plot <- function(plot = NULL,
   final_plot <- grid::grobTree(
     grob_background, grob_topline, grob_title, grob_caption, grob_plot,
     name = "final_plot"
-    )
+  )
 
   # Output the figure based on mode selected -----------------------------------
 
@@ -495,7 +495,7 @@ buildChart <- function(input_plot,
                            b = plot_constants$padding_legend[3],
                            l = plot_constants$padding_legend[4] + plot_constants$legend_indent,
                            "bigpts")
-    )
+  )
 
   # Extract the legend
   legend <- ggpubr::get_legend(format_plot)
