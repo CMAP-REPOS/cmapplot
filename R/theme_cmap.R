@@ -3,9 +3,6 @@
 #'\code{theme_cmap} returns one or more ggplot objects that together construct a
 #'plot area in accordance with CMAP design standards.
 #'
-#'@usage theme_cmap(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL,
-#'  gridlines = c("h", "v", "hv", "none"), legend.max.columns = NULL)
-#'
 #'@param xlab,ylab Char, the string used to label the x and y axes,
 #'  respectively. If unspecified, the axis label will be left off the graph.
 #'@param hline,vline Numeric, the location of a strong horizontal or vertical
@@ -23,6 +20,11 @@
 #'  of columns is less than the maximum (e.g., if there are five items in a
 #'  legend with four columns as the maximum, the output will be one row of three
 #'  and another row of two).
+#'@param overrides Named list, overrides the default drawing attributes defined
+#'  in \code{cmapplot_globals$plot_constants} which are drawn by
+#'  \code{theme_cmap()} (only a few of them). Units are in bigpts (1/72 of an inch).
+#'@param ... pass additional arguments to \code{ggplot2::theme()} to override any
+#'  elements of the default CMAP theme.
 #'
 #'@examples
 #'
@@ -55,13 +57,18 @@ theme_cmap <- function(
   xlab = NULL, ylab = NULL,
   hline = NULL, vline = NULL,
   gridlines = c("h", "v", "hv", "none"),
-  legend.max.columns = NULL
+  legend.max.columns = NULL,
+  overrides = list(),
+  ...
 ) {
 
   # Generate an explicit message to user if Whitney font family is not available
   if (!(cmapplot_globals$use_whitney)) {
     message("'Whitney' font family not found. Using a substitute...")
   }
+
+  # create list of plot constants, from globals unless overridden by user
+  plot_constants <- utils::modifyList(cmapplot_globals$plot_constants, overrides)
 
   # Validate gridlines parameter, throw error if invalid
   gridlines <- match.arg(gridlines)
@@ -96,16 +103,15 @@ theme_cmap <- function(
       legend.justification = "left",
       legend.direction = "horizontal",
       legend.text.align = 0,
-      legend.margin = margin(cmapplot_globals$plot_constants$padding_legend[1],
-                             cmapplot_globals$plot_constants$padding_legend[2],
-                             cmapplot_globals$plot_constants$padding_legend[3],
-                             cmapplot_globals$plot_constants$padding_legend[4],
+      legend.margin = margin(plot_constants$padding_legend[1],
+                             plot_constants$padding_legend[2],
+                             plot_constants$padding_legend[3],
+                             plot_constants$padding_legend[4],
                              "bigpts"),
       legend.box.background = ggplot2::element_blank(),
       legend.box = "vertical",
       legend.box.just = "left",
-      legend.spacing.y = grid::unit(cmapplot_globals$plot_constants$margin_v5, "bigpts"),
-      legend.box.spacing = grid::unit(cmapplot_globals$plot_constants$margin_v5, "bigpts"),
+      legend.box.spacing = grid::unit(plot_constants$margin_v5, "bigpts"),
       legend.text = ggplot2::element_text(),
       legend.title = ggplot2::element_blank(),
       legend.key = ggplot2::element_blank(),
@@ -119,10 +125,10 @@ theme_cmap <- function(
       axis.line = ggplot2::element_blank(),
 
       # panel placement
-      plot.margin = ggplot2::margin(cmapplot_globals$plot_constants$padding_plot[1],
-                                    cmapplot_globals$plot_constants$padding_plot[2],
-                                    cmapplot_globals$plot_constants$padding_plot[3],
-                                    cmapplot_globals$plot_constants$padding_plot[4],
+      plot.margin = ggplot2::margin(plot_constants$padding_plot[1],
+                                    plot_constants$padding_plot[2],
+                                    plot_constants$padding_plot[3],
+                                    plot_constants$padding_plot[4],
                                     "bigpts"),
 
       # Blank background
@@ -165,14 +171,14 @@ theme_cmap <- function(
     # Add x origin line, if specified
     if(!is.null(hline)){
       ggplot2::geom_hline(yintercept = hline,
-                          size = ggplot_size_conversion(cmapplot_globals$plot_constants$lwd_originline),
+                          size = ggplot_size_conversion(plot_constants$lwd_originline),
                           color = cmapplot_globals$colors$blackish)
     },
 
     # Add y origin line, if specified
     if(!is.null(vline)){
       ggplot2::geom_vline(xintercept = vline,
-                          size = ggplot_size_conversion(cmapplot_globals$plot_constants$lwd_originline),
+                          size = ggplot_size_conversion(plot_constants$lwd_originline),
                           color = cmapplot_globals$colors$blackish)
     },
 
@@ -180,7 +186,7 @@ theme_cmap <- function(
     if (grepl("h", gridlines)) {
       ggplot2::theme(
         panel.grid.major.y = ggplot2::element_line(
-          size = ggplot_size_conversion(cmapplot_globals$plot_constants$lwd_gridline),
+          size = ggplot_size_conversion(plot_constants$lwd_gridline),
           color = cmapplot_globals$colors$blackish)
       )
     },
@@ -189,7 +195,7 @@ theme_cmap <- function(
     if (grepl("v", gridlines)) {
       ggplot2::theme(
         panel.grid.major.x = ggplot2::element_line(
-          size = ggplot_size_conversion(cmapplot_globals$plot_constants$lwd_gridline),
+          size = ggplot_size_conversion(plot_constants$lwd_gridline),
           color = cmapplot_globals$colors$blackish)
       )
     },
@@ -199,8 +205,10 @@ theme_cmap <- function(
         # set maximum number of columns for legend based on either "fill" or "col" to reflect different geom structures
         ggplot2::guides(fill = guide_legend(ncol = legend.max.columns),
                         col  = guide_legend(ncol = legend.max.columns))
-    }
+    },
 
+    # add in any custom theme overrides
+    ggplot2::theme(...)
   )
 
   # Filter out NA elements before returning

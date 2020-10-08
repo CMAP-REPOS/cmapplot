@@ -4,8 +4,16 @@
 \alias{theme_cmap}
 \title{Add CMAP theme to ggplot chart}
 \usage{
-theme_cmap(xlab = NULL, ylab = NULL, hline = NULL, vline = NULL,
- gridlines = c("h", "v", "hv", "none"), legend.max.columns = NULL)
+theme_cmap(
+  xlab = NULL,
+  ylab = NULL,
+  hline = NULL,
+  vline = NULL,
+  gridlines = c("h", "v", "hv", "none"),
+  legend.max.columns = NULL,
+  overrides = list(),
+  ...
+)
 }
 \arguments{
 \item{xlab, ylab}{Char, the string used to label the x and y axes,
@@ -28,6 +36,13 @@ that `ggplot` will still auto-adjust in ways that may mean the total number
 of columns is less than the maximum (e.g., if there are five items in a
 legend with four columns as the maximum, the output will be one row of three
 and another row of two).}
+
+\item{overrides}{Named list, overrides the default drawing attributes defined
+in \code{cmapplot_globals$plot_constants} which are drawn by
+\code{theme_cmap()} (only a few of them). Units are in bigpts (1/72 of an inch).}
+
+\item{...}{pass additional arguments to \code{ggplot2::theme()} to override any
+elements of the default CMAP theme.}
 }
 \description{
 \code{theme_cmap} returns one or more ggplot objects that together construct a
