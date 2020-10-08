@@ -112,6 +112,7 @@ theme_cmap <- function(
       legend.box = "vertical",
       legend.box.just = "left",
       legend.box.spacing = grid::unit(plot_constants$margin_v5, "bigpts"),
+      legend.box.margin = margin(plot_constants$margin_v4),
       legend.text = ggplot2::element_text(),
       legend.title = ggplot2::element_blank(),
       legend.key = ggplot2::element_blank(),

@@ -210,17 +210,25 @@ finalize_plot <- function(plot = NULL,
     new = list(size = ggplot_size_conversion(plot_constants$lwd_plotline))
     )
 
-  # preformat plot **FONT SIZE ADJUSTMENT IS NECESSARY BUT NOT UNDERSTOOD**
+  # preformat plot
   plot <- plot + ggplot2::theme(
+    # **FONT SIZE ADJUSTMENT IS NECESSARY BUT NOT UNDERSTOOD**
     text = ggplot2::element_text(size = cmapplot_globals$font$main$size * 1.25),
+    # remove any in-plot titles
     plot.title = element_blank(),
     plot.caption = element_blank(),
+    # remove the above-legend spacing applied in theme_cmap()
+    # (this is now applied outside of the viewport)
+    legend.box.margin = margin(t = 0),
+    # re-apply plot and legend margins, so they can be adjusted in
+    # `overrides` argument of this function
     plot.margin = grid::unit(plot_constants$padding_plot,"bigpts"),
     legend.margin = margin(t = plot_constants$padding_legend[1],
                            r = plot_constants$padding_legend[2],
                            b = plot_constants$padding_legend[3],
                            l = plot_constants$padding_legend[4] + plot_constants$legend_indent,
                            "bigpts"),
+    # apply any extra `ggplot2::theme()` args
     ...
   )
 
