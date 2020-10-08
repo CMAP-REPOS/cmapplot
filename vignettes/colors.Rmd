@@ -1,0 +1,74 @@
+---
+title: "colors"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{colors}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/COLORS-"
+)
+
+library(tidyverse)
+library(cmapplot)
+```
+
+# Applying CMAP color schemes
+
+Palettes based on the CMAP color palette can be applied directly to ggplot graphics. The package contains both discrete and continuous color palettes. Each type of palette can be applied to either the color or fill attributes of a ggplot.
+
+
+## Discrete palettes
+
+Add discrete palettes by adding either a `cmap_fill_discrete` or `cmap_color_discrete` object to a ggplot. Note that discrete palettes will automatically interpolate additional colors if the dataset has more colors than the palette. This can be helpful but is not ideal for finished graphics.
+
+```{r disc, eval=TRUE}
+ggplot(percentile_wages, aes(x = percentile, y = wage, color = cluster)) +
+  geom_line() +
+  scale_y_continuous(labels = scales::dollar) +
+  theme_cmap() +
+  cmap_color_discrete(palette = "prosperity")
+```
+
+The following gradients are available:
+
+```{r pal, echo=FALSE, out.height="40%", out.width="50%"}
+walk2(cmap_palettes, names(cmap_palettes), viz_palette)
+```
+
+
+## Continuous palettes
+
+Add continuous palettes by adding either a `cmap_fill_continuous` or `cmap_color_continuous` object to a ggplot. For example:
+
+```{r cont, eval=TRUE}
+percentile_wages %>%
+  filter(cluster %in% c("Biopharmaceuticals", "Hospitality and Tourism", "Paper and Packaging")) %>%
+  ggplot(aes(x = cluster, y = wage, color = percentile)) +
+  geom_point(size = 5) +
+  scale_y_continuous(labels = scales::dollar) +
+  coord_flip() +
+  theme_cmap() +
+  cmap_color_continuous(palette = "seq_red_purple")
+```
+
+### Sequential gradients (single- and multi-hue)
+
+```{r seq, echo=FALSE, out.height="40%", out.width="50%"}
+cmap_gradients %>%
+  keep(str_detect(names(.), "^seq")) %>%
+  walk2(., names(.), viz_gradient)
+```
+
+### Diverging gradients
+
+```{r div, echo=FALSE, out.height="40%", out.width="50%"}
+cmap_gradients %>%
+  keep(str_detect(names(.), "^div")) %>%
+  walk2(., names(.), viz_gradient)
+```
