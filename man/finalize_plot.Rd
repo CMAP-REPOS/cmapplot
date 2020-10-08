@@ -57,10 +57,7 @@ will be added for you.}
 
 \item{caption_valign}{Char, align the caption text at the top or the bottom of
 the available space between the title and bottom of image. This argument
-accepts abbreviations, too: \code{c("top", "t", "bottom", "b")}. Note that
-\code{margin_v3} changes meaning based on the value of this argument. When
-aligned top, this value spaces the caption away from the title. When aligned
-bottom, it spaces the caption away from the bottom of the image.}
+accepts abbreviations, too: \code{c("top", "t", "bottom", "b")}.}
 
 \item{fill_bg, fill_canvas}{Char, strings that represent colors R can
 interpret. They are used to fill behind and around the finished plot,
@@ -138,11 +135,11 @@ transit_plot <- transit_ridership \%>\%
   theme_cmap(legend.max.columns = 3)
 
 finalize_plot(transit_plot,
-               "Transit ridership in the RTA region over time, 1980-2019
-               (in millions).",
-               "Source: Chicago Metropolitan Agency for Planning
-               analysis of data from the Regional Transportation Authority.",
-               mode=c("plot", "pdf"),
-               filename = "foo")
+              "Transit ridership in the RTA region over time, 1980-2019
+              (in millions).",
+              "Source: Chicago Metropolitan Agency for Planning
+              analysis of data from the Regional Transportation Authority.",
+              mode=c("plot", "pdf"),
+              filename = "foo")
 }
 }

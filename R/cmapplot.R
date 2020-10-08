@@ -128,18 +128,20 @@ ggplot_size_conversion <- function(value, type = "bigpts") {
 # [t]heme_cmap() and/or [f]inalize_plot().
 cmapplot_globals$plot_constants <- list(
   lwd_plotline = 3,     # [ ,f] Width of line graph lines
-  lwd_originline = 1.6, # [t, ] Width of origin lines. This appears to be the minimum
-                        #        for variation between origin lines and other
-                        #        background lines
+  lwd_originline = 1.6, # [t, ] Width of origin lines. This appears to be the
+                        #       minimum for variation between origin lines and
+                        #        other background lines
   lwd_gridline = 0.3,   # [t, ] Width of grid lines (non-origin)
   lwd_topline = 2,      # [ ,f] Width of top line
   margin_v1 = 5,        # [ ,f] Margin between top edge of image and top line
   margin_v2 = 5,        # [ ,f] Margin between top line and title
-  margin_v3 = 5,        # [ ,f] Margin between caption and bottom edge of image,
-                        #        or between title and caption if `caption_valign = "top"`
+  margin_v3 = 5,        # [ ,f] Margin between title and caption if
+                        #        `caption_valign = "top"`
   margin_v4 = 5,        # [t,f] Margin between top line and plotbox
   margin_v5 = 10,       # [t,f] Margin between legend and plot (within plotbox)
-  margin_v6 = 0,        # [ ,f] Margin between plotbox and bottom edge of image
+  margin_v6 = 5,        # [ ,f] Margin between caption and bottom edge of image
+                        #        if 'caption_valign = "bottom"'
+  margin_v7 = 0,        # [ ,f] Margin between plotbox and bottom edge of image
   margin_h1 = 2,        # [ ,f] Margin between left edge of image and title/caption
   margin_h2 = 10,       # [ ,f] Margin between title/caption and legend/plot
                         #        (Both h1 and h2 are deducted from `titlewidth`)
@@ -147,8 +149,8 @@ cmapplot_globals$plot_constants <- list(
   padding_plot = c(0,10,0,0),
                         # [t,f] Padding around the entire plot
   padding_legend = c(0,1,0,-9),
-                        # [t,f] Padding for the legend element. The -9.5 adjustment is
-                        #   necessary to left align legend key with plot elements
+                        # [t,f] Padding for the legend element. The -9 adjustment is
+                        #        necessary to left align legend key with plot elements
   leading_title = 0.93, # [ ,f] Text leading for Title text
   leading_caption = 1,  # [ ,f] Text leading for Caption text
   legend_indent = 0     # [ ,f] Indentation of legend (this is an easy modifier to the

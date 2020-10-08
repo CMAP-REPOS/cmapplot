@@ -40,10 +40,7 @@
 #'  will be added for you.
 #'@param caption_valign Char, align the caption text at the top or the bottom of
 #'  the available space between the title and bottom of image. This argument
-#'  accepts abbreviations, too: \code{c("top", "t", "bottom", "b")}. Note that
-#'  \code{margin_v3} changes meaning based on the value of this argument. When
-#'  aligned top, this value spaces the caption away from the title. When aligned
-#'  bottom, it spaces the caption away from the bottom of the image.
+#'  accepts abbreviations, too: \code{c("top", "t", "bottom", "b")}.
 #'@param fill_bg,fill_canvas Char, strings that represent colors R can
 #'  interpret. They are used to fill behind and around the finished plot,
 #'  respectively.
@@ -102,12 +99,12 @@
 #'   theme_cmap(legend.max.columns = 3)
 #'
 #' finalize_plot(transit_plot,
-#'                "Transit ridership in the RTA region over time, 1980-2019
-#'                (in millions).",
-#'                "Source: Chicago Metropolitan Agency for Planning
-#'                analysis of data from the Regional Transportation Authority.",
-#'                mode=c("plot", "pdf"),
-#'                filename = "foo")
+#'               "Transit ridership in the RTA region over time, 1980-2019
+#'               (in millions).",
+#'               "Source: Chicago Metropolitan Agency for Planning
+#'               analysis of data from the Regional Transportation Authority.",
+#'               mode=c("plot", "pdf"),
+#'               filename = "foo")
 #'}
 #'@export
 finalize_plot <- function(plot = NULL,
@@ -180,7 +177,7 @@ finalize_plot <- function(plot = NULL,
     plot_constants,
     list(
       plotbox_height = plot_constants$height - plot_constants$margin_v1 -
-                         plot_constants$margin_v4 - plot_constants$margin_v6,
+                         plot_constants$margin_v4 - plot_constants$margin_v7,
       plotbox_width =  plot_constants$width - plot_constants$title_width - plot_constants$margin_h3
     )
   )
@@ -257,7 +254,7 @@ finalize_plot <- function(plot = NULL,
   vp.plotbox <- grid::viewport(
     name = "vp.plotbox",
     x = plot_constants$title_width,
-    y = plot_constants$margin_v6,
+    y = plot_constants$margin_v7,
     just = c(0,0),
     default.units = "bigpts",
     height = plot_constants$plotbox_height,
@@ -332,11 +329,11 @@ finalize_plot <- function(plot = NULL,
     )
   } else {
     captionvars <- list(
-      y = plot_constants$margin_v3,
+      y = 0,
       vjust = 0,
       maxheight = plot_constants$height - plot_constants$margin_v1_v2,
       padding_top = 0,
-      padding_bottom = plot_constants$margin_v3
+      padding_bottom = plot_constants$margin_v6
     )
   }
 
