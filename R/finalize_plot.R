@@ -58,6 +58,8 @@
 #'  (on top of the y axis labels) per CMAP design standards. \code{"safe"}
 #'  aligns the legend left, but not over the y axis labels: less ideal, but less
 #'  buggy. \code{"none"} removes the legend entirely.
+#'@param ... pass additional arguments to \code{ggplot2::theme()} to override any
+#'  elements of the default CMAP theme.
 #'
 #'@return If and only if \code{"object"} is one of the modes specified, a gTree
 #'  object is returned. gTree is an assembly of grobs, or graphical objects,
@@ -122,7 +124,8 @@ finalize_plot <- function(plot = NULL,
                           fill_canvas = "gray90",
                           overrides = list(),
                           debug = FALSE,
-                          legend_build = c("adjust", "safe", "none")
+                          legend_build = c("adjust", "safe", "none"),
+                          ...
                           ){
 
   # Validation and initialization -----------------------------
@@ -217,7 +220,8 @@ finalize_plot <- function(plot = NULL,
                            r = plot_constants$padding_legend[2],
                            b = plot_constants$padding_legend[3],
                            l = plot_constants$padding_legend[4] + plot_constants$legend_indent,
-                           "bigpts")
+                           "bigpts"),
+    ...
   )
 
   # draw boxes around plot elements in debug mode

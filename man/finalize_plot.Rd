@@ -19,7 +19,8 @@ finalize_plot(
   fill_canvas = "gray90",
   overrides = list(),
   debug = FALSE,
-  legend_build = c("adjust", "safe", "none")
+  legend_build = c("adjust", "safe", "none"),
+  ...
 )
 }
 \arguments{
@@ -78,6 +79,9 @@ Default = FALSE.}
 (on top of the y axis labels) per CMAP design standards. \code{"safe"}
 aligns the legend left, but not over the y axis labels: less ideal, but less
 buggy. \code{"none"} removes the legend entirely.}
+
+\item{...}{pass additional arguments to \code{ggplot2::theme()} to override any
+elements of the default CMAP theme.}
 }
 \value{
 If and only if \code{"object"} is one of the modes specified, a gTree
