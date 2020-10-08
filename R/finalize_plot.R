@@ -211,7 +211,14 @@ finalize_plot <- function(plot = NULL,
   plot <- plot + ggplot2::theme(
     text = ggplot2::element_text(size = cmapplot_globals$font$main$size * 1.25),
     plot.title = element_blank(),
-    plot.caption = element_blank())
+    plot.caption = element_blank(),
+    plot.margin = grid::unit(plot_constants$padding_plot,"bigpts"),
+    legend.margin = margin(t = plot_constants$padding_legend[1],
+                           r = plot_constants$padding_legend[2],
+                           b = plot_constants$padding_legend[3],
+                           l = plot_constants$padding_legend[4] + plot_constants$legend_indent,
+                           "bigpts")
+  )
 
   # draw boxes around plot elements in debug mode
   if(debug){
@@ -353,7 +360,7 @@ finalize_plot <- function(plot = NULL,
   # ggplot as grob (vp.plotbox)
   grob_plot <- grid::grobTree(
     # Use helper function to develop full stack of legend, buffer, and plot
-    buildChart(input_plot = plot,
+    buildChart(plot = plot,
                plot_constants = plot_constants,
                legend_build = legend_build),
     vp = vp.plotbox,
@@ -468,39 +475,27 @@ finalize_plot <- function(plot = NULL,
 
 #' @noRd
 # Function to create plot object with left aligned legend on top
-buildChart <- function(input_plot,
+buildChart <- function(plot,
                        plot_constants,
                        legend_build) {
 
   # in safe mode, don't extract legend
   if(legend_build == "safe"){
-    return(ggplotGrob(input_plot))
+    return(ggplotGrob(plot))
   }
 
   # in no legend mode, remove legend altogether
   if(legend_build == "none"){
-    output_plot <- input_plot + theme(legend.position = "none")
+    output_plot <- plot + theme(legend.position = "none")
     return(ggplotGrob(output_plot))
   }
 
-  # Reformat plot
-  ## IS ANY OF THIS ACTUALLY NECESSARY? CAN WE MOVE MORE OF THIS OVER TO THEME_CMAP?
-  format_plot <- input_plot + theme(
-    # ensure legend is left aligned
-    legend.position = "left",
-    # update margins to account for possible indent
-    plot.margin = grid::unit(plot_constants$padding_plot,"bigpts"),
-    legend.margin = margin(t = plot_constants$padding_legend[1],
-                           r = plot_constants$padding_legend[2],
-                           b = plot_constants$padding_legend[3],
-                           l = plot_constants$padding_legend[4] + plot_constants$legend_indent,
-                           "bigpts")
-  )
+  # In "adjust" mode...
 
   # Extract the legend
-  legend <- ggpubr::get_legend(format_plot)
+  legend <- ggpubr::get_legend(plot)
 
-  # extract the total number of "heights" in the legend (5 is standard for one
+  # count the total number of "heights" in the legend (5 is standard for one
   # legend, with each additional legend adding two additional height elements to
   # the total)
 
@@ -515,16 +510,14 @@ buildChart <- function(input_plot,
                                      "bigpts",
                                      valueOnly = TRUE)
 
+  # calculate the height remaining for the plot
   plot_height <- plot_constants$plotbox_height - legend_height - plot_constants$margin_v5
 
   # Assemble a combined grob
   built <- gridExtra::arrangeGrob(
-    # the legend, as a grob
-    grob(legend)[[1]],
-    # an empty rectangle for buffer
+    legend,
     grid::rectGrob(gp = grid::gpar(col = "transparent", fill = "transparent")),
-    # the plot, without the legend
-    ggplotGrob(format_plot + ggplot2::theme(legend.position = "none")),
+    ggplotGrob(plot + ggplot2::theme(legend.position = "none")),
     nrow = 3,
     heights = grid::unit(c(legend_height,
                            plot_constants$margin_v5,
