@@ -121,7 +121,8 @@ when exporting as an object.
    plot box (i.e., the top of the legend).
    \item \code{margin_legend_i}: The margin between legends (this only
    applies in plots with two or more legends and does not affect legend
-   spacing on plots with single legends that have multiple rows).
+   spacing on plots with single legends that have multiple rows). This is not
+   applied when \code{legend_build = "safe"}.
    \item \code{margin_legend_b}: The margin between the bottom of the legend
    and the rest of the plot.
    \item \code{margin_caption_b}: The margin between the bottom of the
