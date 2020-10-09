@@ -11,7 +11,7 @@
 #'gTree object that can be stored and drawn later with \code{grid::grid.draw()}.
 #'Lines drawn by any \code{geom_line()} geoms without line widths explicitly
 #'specified are assigned a thicker width (specifically,
-#'\code{cmapplot_globals$plot_constants$lwd_plotline}) in all outputs except for
+#'\code{cmapplot_globals$consts$lwd_plotline}) in all outputs except for
 #'when exporting as an object.
 #'
 #'@param plot ggplot object, the variable name of the plot you have created that
@@ -45,7 +45,7 @@
 #'  interpret. They are used to fill behind and around the finished plot,
 #'  respectively.
 #'@param overrides Named list, overrides the default drawing attributes defined
-#'  in \code{cmapplot_globals$plot_constants} which are drawn by
+#'  in \code{cmapplot_globals$consts} which are drawn by
 #'  \code{finalize_plot()} (this is most of them). Units are in bigpts (1/72 of
 #'  an inch).
 #'@param debug Bool, TRUE enables outlines around components of finalized plot.
@@ -84,7 +84,7 @@
 #'                height = 6,
 #'                width = 8,
 #'                title_width = 2.5,
-#'                overrides = list(margin_h3 = 30))
+#'                overrides = list(margin_plot_r = 30))
 #'
 #' transit_plot <- transit_ridership %>%
 #'   mutate(system = case_when(
@@ -159,26 +159,26 @@ finalize_plot <- function(plot = NULL,
   }
 
   # create list of plot constants, from globals unless overridden by user
-  plot_constants <- utils::modifyList(cmapplot_globals$plot_constants, overrides)
+  consts <- utils::modifyList(cmapplot_globals$consts, overrides)
 
   # convert function arguments (given in inches) to bigpoints
-  plot_constants <- append(
-    plot_constants,
+  consts <- append(
+    consts,
     list(
       height = convertUnit(unit(height, "in"), "bigpts", valueOnly = TRUE),
       width = convertUnit(unit(width, "in"), "bigpts", valueOnly = TRUE),
       title_width = convertUnit(unit(title_width, "in"), "bigpts", valueOnly = TRUE),
-      margin_v1_v2 = plot_constants$margin_v1 + plot_constants$margin_v2
+      margin_topline_tb = consts$margin_topline_t + consts$margin_title_t
     )
   )
 
   # calculate the size of the plot box
-  plot_constants <- append(
-    plot_constants,
+  consts <- append(
+    consts,
     list(
-      plotbox_height = plot_constants$height - plot_constants$margin_v1 -
-                         plot_constants$margin_v4 - plot_constants$margin_v7,
-      plotbox_width =  plot_constants$width - plot_constants$title_width - plot_constants$margin_h3
+      plotbox_height = consts$height - consts$margin_topline_t -
+                         consts$margin_legend_t - consts$margin_plot_b,
+      plotbox_width =  consts$width - consts$title_width - consts$margin_plot_r
     )
   )
 
@@ -204,7 +204,7 @@ finalize_plot <- function(plot = NULL,
   default_lwd <- ggplot2::GeomLine$default_aes$size
   ggplot2::update_geom_defaults(
     geom = "line",
-    new = list(size = ggplot_size_conversion(plot_constants$lwd_plotline))
+    new = list(size = ggplot_size_conversion(consts$lwd_plotline))
     )
 
   # preformat plot
@@ -219,11 +219,11 @@ finalize_plot <- function(plot = NULL,
     legend.box.margin = margin(t = 0),
     # re-apply plot and legend margins, so they can be adjusted in
     # `overrides` argument of this function
-    plot.margin = grid::unit(plot_constants$padding_plot,"bigpts"),
-    legend.margin = margin(t = plot_constants$padding_legend[1],
-                           r = plot_constants$padding_legend[2],
-                           b = plot_constants$padding_legend[3],
-                           l = plot_constants$padding_legend[4] + plot_constants$legend_indent,
+    plot.margin = grid::unit(consts$padding_plot,"bigpts"),
+    legend.margin = margin(t = consts$padding_legend[1],
+                           r = consts$padding_legend[2],
+                           b = consts$padding_legend[3],
+                           l = consts$padding_legend[4] + consts$legend_indent,
                            "bigpts"),
     # apply any extra `ggplot2::theme()` args
     ...
@@ -245,20 +245,20 @@ finalize_plot <- function(plot = NULL,
   vp.centerframe <- grid::viewport(
     name = "vp.centerframe",
     default.units = "bigpts",
-    width = plot_constants$width,
-    height = plot_constants$height,
+    width = consts$width,
+    height = consts$height,
     clip = "on"
   )
 
   # create plotbox viewport
   vp.plotbox <- grid::viewport(
     name = "vp.plotbox",
-    x = plot_constants$title_width,
-    y = plot_constants$margin_v7,
+    x = consts$title_width,
+    y = consts$margin_plot_b,
     just = c(0,0),
     default.units = "bigpts",
-    height = plot_constants$plotbox_height,
-    width = plot_constants$plotbox_width,
+    height = consts$plotbox_height,
+    width = consts$plotbox_width,
     clip = "on"
   )
 
@@ -282,11 +282,11 @@ finalize_plot <- function(plot = NULL,
   grob_topline <- grid::linesGrob(
     name = "topline",
     default.units = "bigpts",
-    x = c(0, plot_constants$width),
-    y = plot_constants$height - plot_constants$margin_v1,
+    x = c(0, consts$width),
+    y = consts$height - consts$margin_topline_t,
     gp = grid::gpar(col = cmapplot_globals$colors$blackish,
                     lineend = "butt",
-                    lwd = plot_constants$lwd_topline)
+                    lwd = consts$lwd_topline)
   )
 
   # title textbox (ROOT vp)
@@ -296,23 +296,23 @@ finalize_plot <- function(plot = NULL,
     default.units = "bigpts",
     # set location down from top left corner
     x = 0,
-    y = plot_constants$height - plot_constants$margin_v1_v2,
+    y = consts$height - consts$margin_topline_tb,
     hjust = 0,
     vjust = 1,
     # set dimensions
-    width = plot_constants$title_width,
-    maxheight = plot_constants$height - plot_constants$margin_v1_v2 - plot_constants$margin_v3,
+    width = consts$title_width,
+    maxheight = consts$height - consts$margin_topline_tb - consts$margin_title_b,
     # set margins around textbox
     margin = grid::unit(c(0,                        # top
-                          plot_constants$margin_h2, # right
+                          consts$margin_title_r, # right
                           0,                        # bottom
-                          plot_constants$margin_h1),# left
+                          consts$margin_title_l),# left
                         "bigpts"),
     # set font aesthetic variables
     gp = grid::gpar(fontsize=cmapplot_globals$font$title$size,
                     fontfamily=cmapplot_globals$font$title$family,
                     fontface=cmapplot_globals$font$title$face,
-                    lineheight=plot_constants$leading_title,
+                    lineheight=consts$leading_title,
                     col=cmapplot_globals$colors$blackish),
     box_gp = grid::gpar(col = debug_color,
                         fill = "transparent")
@@ -321,19 +321,19 @@ finalize_plot <- function(plot = NULL,
   # set caption textbox alignment options
   if(caption_valign == "top"){
     captionvars <- list(
-      y = grid::unit(plot_constants$height - plot_constants$margin_v1_v2, "bigpts") - grid::grobHeight(grob_title),
+      y = grid::unit(consts$height - consts$margin_topline_tb, "bigpts") - grid::grobHeight(grob_title),
       vjust = 1,
-      maxheight = grid::unit(plot_constants$height - plot_constants$margin_v1_v2 - plot_constants$margin_v3, "bigpts") - grid::grobHeight(grob_title),
-      padding_top = plot_constants$margin_v3,
+      maxheight = grid::unit(consts$height - consts$margin_topline_tb - consts$margin_title_b, "bigpts") - grid::grobHeight(grob_title),
+      padding_top = consts$margin_title_b,
       padding_bottom = 0
     )
   } else {
     captionvars <- list(
       y = 0,
       vjust = 0,
-      maxheight = plot_constants$height - plot_constants$margin_v1_v2,
+      maxheight = consts$height - consts$margin_topline_tb,
       padding_top = 0,
-      padding_bottom = plot_constants$margin_v6
+      padding_bottom = consts$margin_caption_b
     )
   }
 
@@ -348,19 +348,19 @@ finalize_plot <- function(plot = NULL,
     hjust = 0,
     vjust = captionvars$vjust,
     # set dimensions
-    width = plot_constants$title_width,
+    width = consts$title_width,
     maxheight = captionvars$maxheight,
     # set margins within textbox
     margin = grid::unit(c(captionvars$padding_top,   # top
-                          plot_constants$margin_h2,  # right
+                          consts$margin_title_r,  # right
                           captionvars$padding_bottom,# bottom
-                          plot_constants$margin_h1), # left
+                          consts$margin_title_l), # left
                         "bigpts"),
     # set aesthetic variables
     gp = grid::gpar(fontsize = cmapplot_globals$font$note$size,
                     fontfamily = cmapplot_globals$font$note$family,
                     fontface = cmapplot_globals$font$note$face,
-                    lineheight = plot_constants$leading_caption,
+                    lineheight = consts$leading_caption,
                     col = cmapplot_globals$colors$blackish),
     box_gp = grid::gpar(col = debug_color,
                         fill = "transparent")
@@ -370,7 +370,7 @@ finalize_plot <- function(plot = NULL,
   grob_plot <- grid::grobTree(
     # Use helper function to develop full stack of legend, buffer, and plot
     buildChart(plot = plot,
-               plot_constants = plot_constants,
+               consts = consts,
                legend_build = legend_build),
     vp = vp.plotbox,
     name = "plot"
@@ -485,7 +485,7 @@ finalize_plot <- function(plot = NULL,
 #' @noRd
 # Function to create plot object with left aligned legend on top
 buildChart <- function(plot,
-                       plot_constants,
+                       consts,
                        legend_build) {
 
   # in safe mode, don't extract legend
@@ -506,21 +506,35 @@ buildChart <- function(plot,
 
   # count the total number of "heights" in the legend (5 is standard for one
   # legend, with each additional legend adding two additional height elements to
-  # the total)
+  # the total). Use this to determine the number of legends in the plot.
 
-  legend_total <- length(legend$heights)
+  number_of_legends <- (length(legend$heights) - 3) / 2
+
+  # If multilegend plot (i.e., if legend_total >= 7), replace interior margins
+  # with overrides if called. For a plot with n legends, there are n - 1
+  # interior margins. These are the 4th legend height element and every second
+  # one beyond that, up to the 4th-to-last legend height element.
+
+  # determine if multilegend plot
+  if (number_of_legends > 1) {
+    # if multilegend plot, establish loop to change margins
+    for (i in 1:(number_of_legends-1)) {
+      margin_index <- 2*(i+1) # e.g., for a 2-legend item, this modifies element 4
+      legend$heights[[margin_index]] <- grid::unit(consts$margin_legend_i,"bigpts")
+    }
+  }
 
   # extract height of legend object within ggplot plot. For plots with only one
   # legend, this returns the 3rd element, which is the height of the legend
   # component. For plots with two or more, it returns the sum of the heights of
   # every element from the third element to the third-to-last element, which
   # includes both text/key heights and buffers between legends)
-  legend_height <- grid::convertUnit(sum(legend$heights[3:(legend_total - 2)]),
+  legend_height <- grid::convertUnit(sum(legend$heights[3:(3 + number_of_legends * 2)]),
                                      "bigpts",
                                      valueOnly = TRUE)
 
   # calculate the height remaining for the plot
-  plot_height <- plot_constants$plotbox_height - legend_height - plot_constants$margin_v5
+  plot_height <- consts$plotbox_height - legend_height - consts$margin_legend_b
 
   # Assemble a combined grob
   built <- gridExtra::arrangeGrob(
@@ -529,7 +543,7 @@ buildChart <- function(plot,
     ggplotGrob(plot + ggplot2::theme(legend.position = "none")),
     nrow = 3,
     heights = grid::unit(c(legend_height,
-                           plot_constants$margin_v5,
+                           consts$margin_legend_b,
                            plot_height),
                          "bigpts")
   )

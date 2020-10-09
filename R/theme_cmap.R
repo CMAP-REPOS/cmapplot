@@ -21,7 +21,7 @@
 #'  are five items in a legend with four columns as the maximum, the output will
 #'  be one row of three and another row of two).
 #'@param overrides Named list, overrides the default drawing attributes defined
-#'  in \code{cmapplot_globals$plot_constants} which are drawn by
+#'  in \code{cmapplot_globals$consts} which are drawn by
 #'  \code{theme_cmap()} (only a few of them). Units are in bigpts (1/72 of an
 #'  inch).
 #'@param ... pass additional arguments to \code{ggplot2::theme()} to override
@@ -30,7 +30,7 @@
 #'@section Overrides: In the \code{overrides} argument, the user can modify
 #'  certain default constants that define certain plot aesthetics. Units of all
 #'  plot constants are "bigpts": 1/72 of an inch. Most plot constants (stored in
-#'  \code{cmapplot_globals$plot_constants}) are used in \code{finalize_plot()},
+#'  \code{cmapplot_globals$consts}) are used in \code{finalize_plot()},
 #'  but a few are used in this function. They are:
 #'
 #'  \itemize{
@@ -87,7 +87,7 @@ theme_cmap <- function(
   }
 
   # create list of plot constants, from globals unless overridden by user
-  plot_constants <- utils::modifyList(cmapplot_globals$plot_constants, overrides)
+  consts <- utils::modifyList(cmapplot_globals$consts, overrides)
 
   # Validate gridlines parameter, throw error if invalid
   gridlines <- match.arg(gridlines)
@@ -122,15 +122,15 @@ theme_cmap <- function(
       legend.justification = "left",
       legend.direction = "horizontal",
       legend.text.align = 0,
-      legend.margin = margin(plot_constants$padding_legend[1],
-                             plot_constants$padding_legend[2],
-                             plot_constants$padding_legend[3],
-                             plot_constants$padding_legend[4],
+      legend.margin = margin(consts$padding_legend[1],
+                             consts$padding_legend[2],
+                             consts$padding_legend[3],
+                             consts$padding_legend[4],
                              "bigpts"),
       legend.box.background = ggplot2::element_blank(),
       legend.box = "vertical",
       legend.box.just = "left",
-      legend.box.spacing = grid::unit(plot_constants$margin_v5, "bigpts"),
+      legend.box.spacing = grid::unit(consts$margin_legend_b, "bigpts"),
       legend.box.margin = margin(t = 5, unit = "bigpts"),
       legend.text = ggplot2::element_text(),
       legend.title = ggplot2::element_blank(),
@@ -145,10 +145,10 @@ theme_cmap <- function(
       axis.line = ggplot2::element_blank(),
 
       # panel placement
-      plot.margin = ggplot2::margin(plot_constants$padding_plot[1],
-                                    plot_constants$padding_plot[2],
-                                    plot_constants$padding_plot[3],
-                                    plot_constants$padding_plot[4],
+      plot.margin = ggplot2::margin(consts$padding_plot[1],
+                                    consts$padding_plot[2],
+                                    consts$padding_plot[3],
+                                    consts$padding_plot[4],
                                     "bigpts"),
 
       # Blank background
@@ -191,14 +191,14 @@ theme_cmap <- function(
     # Add x origin line, if specified
     if(!is.null(hline)){
       ggplot2::geom_hline(yintercept = hline,
-                          size = ggplot_size_conversion(plot_constants$lwd_originline),
+                          size = ggplot_size_conversion(consts$lwd_originline),
                           color = cmapplot_globals$colors$blackish)
     },
 
     # Add y origin line, if specified
     if(!is.null(vline)){
       ggplot2::geom_vline(xintercept = vline,
-                          size = ggplot_size_conversion(plot_constants$lwd_originline),
+                          size = ggplot_size_conversion(consts$lwd_originline),
                           color = cmapplot_globals$colors$blackish)
     },
 
@@ -206,7 +206,7 @@ theme_cmap <- function(
     if (grepl("h", gridlines)) {
       ggplot2::theme(
         panel.grid.major.y = ggplot2::element_line(
-          size = ggplot_size_conversion(plot_constants$lwd_gridline),
+          size = ggplot_size_conversion(consts$lwd_gridline),
           color = cmapplot_globals$colors$blackish)
       )
     },
@@ -215,7 +215,7 @@ theme_cmap <- function(
     if (grepl("v", gridlines)) {
       ggplot2::theme(
         panel.grid.major.x = ggplot2::element_line(
-          size = ggplot_size_conversion(plot_constants$lwd_gridline),
+          size = ggplot_size_conversion(consts$lwd_gridline),
           color = cmapplot_globals$colors$blackish)
       )
     },
