@@ -218,7 +218,7 @@ finalize_plot <- function(plot = NULL,
       height = convertUnit(unit(height, "in"), "bigpts", valueOnly = TRUE),
       width = convertUnit(unit(width, "in"), "bigpts", valueOnly = TRUE),
       title_width = convertUnit(unit(title_width, "in"), "bigpts", valueOnly = TRUE),
-      margin_topline_tb = consts$margin_topline_t + consts$margin_title_t
+      margin_topline_tb = consts$margin_topline_t + consts$margin_title_b
     )
   )
 
