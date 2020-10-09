@@ -25,10 +25,9 @@ reference:
 - contents:
   - cmap_gradients
   - cmap_palettes
-  - ends_with("_continuous")
-  - ends_with("_discrete")
-  - ends_with("_race")
-  - ends_with("_highlight")
+  - starts_with("cmap_fill_")
+  - starts_with("cmap_color_")
+  - starts_with("cmap_colour_")
   - starts_with("viz_")
 - title: Sample Datasets
 - contents:
