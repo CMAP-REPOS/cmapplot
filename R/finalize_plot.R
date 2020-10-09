@@ -368,25 +368,6 @@ finalize_plot <- function(plot = NULL,
                         fill = "transparent")
   )
 
-  # set caption textbox alignment options
-  if(caption_valign == "top"){
-    captionvars <- list(
-      y = grid::unit(consts$height - consts$margin_topline_tb, "bigpts") - grid::grobHeight(grob_title),
-      vjust = 1,
-      maxheight = grid::unit(consts$height - consts$margin_topline_tb - consts$margin_title_b, "bigpts") - grid::grobHeight(grob_title),
-      padding_top = consts$margin_title_b,
-      padding_bottom = 0
-    )
-  } else {
-    captionvars <- list(
-      y = 0,
-      vjust = 0,
-      maxheight = consts$height - consts$margin_topline_tb,
-      padding_top = 0,
-      padding_bottom = consts$margin_caption_b
-    )
-  }
-
   # caption textbox (ROOT vp)
   grob_caption <- gridtext::textbox_grob(
     name = "caption",
@@ -394,16 +375,18 @@ finalize_plot <- function(plot = NULL,
     default.units = "bigpts",
     # set location down from top left corner
     x = 0,
-    y = captionvars$y,
+    y = if (caption_valign == "top") {
+      grid::unit(consts$height - consts$margin_topline_tb, "bigpts") - grid::grobHeight(grob_title)
+      } else {0},
     hjust = 0,
-    vjust = captionvars$vjust,
+    vjust = if (caption_valign == "top") {1} else {0},
     # set dimensions
     width = consts$title_width,
-    maxheight = captionvars$maxheight,
+    maxheight = grid::unit(consts$height - consts$margin_topline_tb - consts$margin_title_b - consts$margin_caption_b, "bigpts") - grid::grobHeight(grob_title),
     # set margins within textbox
-    margin = grid::unit(c(captionvars$padding_top,   # top
+    margin = grid::unit(c(consts$margin_title_b,  # top
                           consts$margin_title_r,  # right
-                          captionvars$padding_bottom,# bottom
+                          consts$margin_caption_b,# bottom
                           consts$margin_title_l), # left
                         "bigpts"),
     # set aesthetic variables
