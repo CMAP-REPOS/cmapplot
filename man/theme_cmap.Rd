@@ -57,15 +57,16 @@ plot area in accordance with CMAP design standards.
  but a few are used in this function. They are:
 
  \itemize{
-   \item \code{lwd_originline}: the width of any origin lines drawn by \code{hline}
-   or \code{vline}.
+   \item \code{lwd_originline}: the width of any origin lines drawn by
+   \code{hline} or \code{vline}.
    \item \code{lwd_gridline}: the width of gridlines in the plot, if drawn by
    \code{gridlines}.
-   \item \code{padding_plot}: A numeric vector of length 4 (top, right, bottom,
-   left) that creates padding between the plot and its drawing extent.
-   \item \code{padding_legend}: A numeric vector of length 4 (top, right, bottom,
-   left) that creates padding around the margin. These numbers can be negative to
-   reduce space around the legend.
+   \item \code{padding_plot}: A numeric vector of length 4 (top, right,
+   bottom, left) that creates padding between the plot and its drawing
+   extent.
+   \item \code{padding_legend}: A numeric vector of length 4 (top, right,
+   bottom, left) that creates padding around the margin. These numbers can be
+   negative to reduce space around the legend.
  }
 }
 

@@ -65,6 +65,55 @@
 #'@importFrom utils modifyList
 #'@importFrom generics intersect
 #'
+#'
+#'@section Overrides: In the \code{overrides} argument, the user can modify
+#'  certain default constants that define certain plot aesthetics. Units of all
+#'  plot constants are "bigpts": 1/72 of an inch. Most plot constants (stored in
+#'  \code{cmapplot_globals$consts}) are used in this function, while the few
+#'  unused here are used in  \code{theme_cmap()},
+#'
+#'  \itemize{
+#'    \item \code{lwd_plotline}: The width of line graph lines.
+#'    \item \code{lwd_topline}: The width of the line above the plot and title.
+#'    \item \code{margin_topline_t}: The margin between the top edge of the
+#'    image and the top line.
+#'    \item \code{margin_title_t}: The margin between the top line and the
+#'    title.
+#'    \item \code{margin_title_b}: The margin between the title and the caption
+#'    if \code{caption_valign = "top"}.
+#'    \item \code{margin_legend_t}: The margin between the top line and the
+#'    plot box (i.e., the top of the legend).
+#'    \item \code{margin_legend_i}: The margin between legends (this only
+#'    applies in plots with two or more legends and does not affect legend
+#'    spacing on plots with single legends that have multiple rows).
+#'    \item \code{margin_legend_b}: The margin between the bottom of the legend
+#'    and the rest of the plot.
+#'    \item \code{margin_caption_b}: The margin between the bottom of the
+#'    caption and the bottom edge of the image. This is only called if
+#'    \code{caption_valign = "bottom"}.
+#'    \item \code{margin_plot_b}: The margin between the bottom of the plot and
+#'    the bottom edge of the image.
+#'    \item \code{margin_title_l}: The margin between the left edge of the image
+#'    and the title. This also applies to the caption. Both this and
+#'    \code{margin_title_r} are deducted from \code{title_width}.
+#'    \item \code{margin_title_r}: The margin between the right edge of the
+#'    image and the title. This also applies to the caption.
+#'    \item \code{margin_plot_r}: The margin between the right edge of the plot
+#'    and the edge of the image.
+#'    \item \code{padding_plot}: A numeric vector of length 4 (top, right,
+#'    bottom, left) that creates padding between the plot and its drawing
+#'    extent.
+#'    \item \code{padding_legend}: A numeric vector of length 4 (top, right,
+#'    bottom, left) that creates padding around the margin. These numbers can be
+#'    negative to reduce space around the legend.
+#'    \item \code{leading_title}: Text leading for Title text.
+#'    \item \code{leading_caption}: Text leading for Caption text.
+#'    \item \code{legend_indent}: Indentation of legend (this is an easy
+#'    modifier to the last term in \code{padding_legend}).
+#'  }
+#'
+#'
+#'
 #'@examples
 #' \dontrun{
 #' econ_plot <- ggplot(data = cluster_jobchange,
