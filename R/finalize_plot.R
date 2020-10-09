@@ -353,11 +353,11 @@ finalize_plot <- function(plot = NULL,
     width = consts$title_width,
     maxheight = consts$height - consts$margin_title_to_top - consts$margin_title_b,
     # set margins around textbox
-    margin = grid::unit(c(0,                        # top
-                          consts$margin_title_r, # right
-                          0,                        # bottom
-                          consts$margin_title_l),# left
-                        "bigpts"),
+    padding = grid::unit(c(0,                     # top
+                           consts$margin_title_r, # right
+                           0,                     # bottom
+                           consts$margin_title_l),# left
+                           "bigpts"),
     # set font aesthetic variables
     gp = grid::gpar(fontsize=cmapplot_globals$font$title$size,
                     fontfamily=cmapplot_globals$font$title$family,
@@ -384,11 +384,11 @@ finalize_plot <- function(plot = NULL,
     width = consts$title_width,
     maxheight = grid::unit(consts$height - consts$margin_title_to_top - consts$margin_title_b - consts$margin_caption_b, "bigpts") - grid::grobHeight(grob_title),
     # set margins within textbox
-    margin = grid::unit(c(consts$margin_title_b,  # top
-                          consts$margin_title_r,  # right
-                          consts$margin_caption_b,# bottom
-                          consts$margin_title_l), # left
-                        "bigpts"),
+    padding = grid::unit(c(consts$margin_title_b,  # top
+                           consts$margin_title_r,  # right
+                           consts$margin_caption_b,# bottom
+                           consts$margin_title_l), # left
+                           "bigpts"),
     # set aesthetic variables
     gp = grid::gpar(fontsize = cmapplot_globals$font$note$size,
                     fontfamily = cmapplot_globals$font$note$family,
