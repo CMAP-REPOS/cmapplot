@@ -12,19 +12,38 @@
 #'  default, horizontal grid lines will be displayed while vertical grid lines
 #'  will be masked. Acceptable values are "h" (horizontal only), "v" (vertical
 #'  only), "hv" (both horizontal and vertical), and "none" (neither).
-#'@param legend.max.columns Integer, the maximum number of columns in the legend. If no
-#'  value is set, the chart will rely on `ggplot`'s default and automatic column
-#'  handling behavior, which should work for most cases. Manual adjustment may
-#'  be required if legend entries are particularly numerous and/or lengthy. Note
-#'  that `ggplot` will still auto-adjust in ways that may mean the total number
-#'  of columns is less than the maximum (e.g., if there are five items in a
-#'  legend with four columns as the maximum, the output will be one row of three
-#'  and another row of two).
+#'@param legend.max.columns Integer, the maximum number of columns in the
+#'  legend. If no value is set, the chart will rely on `ggplot`'s default and
+#'  automatic column handling behavior, which should work for most cases. Manual
+#'  adjustment may be required if legend entries are particularly numerous
+#'  and/or lengthy. Note that `ggplot` will still auto-adjust in ways that may
+#'  mean the total number of columns is less than the maximum (e.g., if there
+#'  are five items in a legend with four columns as the maximum, the output will
+#'  be one row of three and another row of two).
 #'@param overrides Named list, overrides the default drawing attributes defined
 #'  in \code{cmapplot_globals$plot_constants} which are drawn by
-#'  \code{theme_cmap()} (only a few of them). Units are in bigpts (1/72 of an inch).
-#'@param ... pass additional arguments to \code{ggplot2::theme()} to override any
-#'  elements of the default CMAP theme.
+#'  \code{theme_cmap()} (only a few of them). Units are in bigpts (1/72 of an
+#'  inch).
+#'@param ... pass additional arguments to \code{ggplot2::theme()} to override
+#'  any elements of the default CMAP theme.
+#'
+#'@section Overrides: In the \code{overrides} argument, the user can modify
+#'  certain default constants that define certain plot aesthetics. Units of all
+#'  plot constants are "bigpts": 1/72 of an inch. Most plot constants (stored in
+#'  \code{cmapplot_globals$plot_constants}) are used in \code{finalize_plot()},
+#'  but a few are used in this function. They are:
+#'
+#'  \itemize{
+#'    \item \code{lwd_originline}: the width of any origin lines drawn by \code{hline}
+#'    or \code{vline}.
+#'    \item \code{lwd_gridline}: the width of gridlines in the plot, if drawn by
+#'    \code{gridlines}.
+#'    \item \code{padding_plot}: A numeric vector of length 4 (top, right, bottom,
+#'    left) that creates padding between the plot and its drawing extent.
+#'    \item \code{padding_legend}: A numeric vector of length 4 (top, right, bottom,
+#'    left) that creates padding around the margin. These numbers can be negative to
+#'    reduce space around the legend.
+#'  }
 #'
 #'@examples
 #'
