@@ -218,7 +218,7 @@ finalize_plot <- function(plot = NULL,
       height = convertUnit(unit(height, "in"), "bigpts", valueOnly = TRUE),
       width = convertUnit(unit(width, "in"), "bigpts", valueOnly = TRUE),
       title_width = convertUnit(unit(title_width, "in"), "bigpts", valueOnly = TRUE),
-      margin_topline_tb = consts$margin_topline_t + consts$margin_title_t
+      margin_title_to_top = consts$margin_topline_t + consts$margin_title_t
     )
   )
 
@@ -346,12 +346,12 @@ finalize_plot <- function(plot = NULL,
     default.units = "bigpts",
     # set location down from top left corner
     x = 0,
-    y = consts$height - consts$margin_topline_tb,
+    y = consts$height - consts$margin_title_to_top,
     hjust = 0,
     vjust = 1,
     # set dimensions
     width = consts$title_width,
-    maxheight = consts$height - consts$margin_topline_tb - consts$margin_title_b,
+    maxheight = consts$height - consts$margin_title_to_top - consts$margin_title_b,
     # set margins around textbox
     margin = grid::unit(c(0,                        # top
                           consts$margin_title_r, # right
@@ -376,13 +376,13 @@ finalize_plot <- function(plot = NULL,
     # set location down from top left corner
     x = 0,
     y = if (caption_valign == "top") {
-      grid::unit(consts$height - consts$margin_topline_tb, "bigpts") - grid::grobHeight(grob_title)
+      grid::unit(consts$height - consts$margin_title_to_top, "bigpts") - grid::grobHeight(grob_title)
       } else {0},
     hjust = 0,
     vjust = if (caption_valign == "top") {1} else {0},
     # set dimensions
     width = consts$title_width,
-    maxheight = grid::unit(consts$height - consts$margin_topline_tb - consts$margin_title_b - consts$margin_caption_b, "bigpts") - grid::grobHeight(grob_title),
+    maxheight = grid::unit(consts$height - consts$margin_title_to_top - consts$margin_title_b - consts$margin_caption_b, "bigpts") - grid::grobHeight(grob_title),
     # set margins within textbox
     margin = grid::unit(c(consts$margin_title_b,  # top
                           consts$margin_title_r,  # right
