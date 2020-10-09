@@ -102,7 +102,7 @@
   <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span>()
 <span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span>
 </pre></div>
-<p><img src="man/figures/PLOTS-bars-1.png" width="700"></p>
+<p><img src="../man/figures/PLOTS-bars-1.png" width="700"></p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="co"># a stacked bar chart</span>
 <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">traded_emp_by_race</span>, <span class="kw">variable</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"SpecializedTraded"</span>, <span class="st">"UnspecializedTraded"</span>)) <span class="op">%&gt;%</span>
@@ -112,7 +112,7 @@
   <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span>()
 <span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span>
 </pre></div>
-<p><img src="man/figures/PLOTS-stackedbars1-1.png" width="700"></p>
+<p><img src="../man/figures/PLOTS-stackedbars1-1.png" width="700"></p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="co"># a grouped and stacked bar chart (via `interaction()`)</span>
 <span class="fu">ggplot</span>(<span class="kw">pop_and_laborforce_by_age</span>, <span class="fu">aes</span>(x = <span class="fu"><a href="https://rdrr.io/r/base/interaction.html">interaction</a></span>(<span class="kw">year</span>, <span class="kw">variable</span>), y = <span class="kw">value</span>, fill = <span class="kw">age</span>)) <span class="op">+</span>
@@ -121,7 +121,7 @@
   <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span>()
 <span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span>
 </pre></div>
-<p><img src="man/figures/PLOTS-stackedbars2-1.png" width="700"></p>
+<p><img src="../man/figures/PLOTS-stackedbars2-1.png" width="700"></p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
 <span class="co"># a grouped and stacked bar chart (via `interaction()`)</span>
 <span class="fu">ggplot</span>(<span class="kw">economy_basic</span>, <span class="fu">aes</span>(x = <span class="fu"><a href="https://rdrr.io/r/base/interaction.html">interaction</a></span>(<span class="kw">year</span>, <span class="kw">variable</span>), y = <span class="kw">value</span>, fill = <span class="kw">sector</span>)) <span class="op">+</span>
@@ -131,7 +131,7 @@
   <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span>()
 <span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span>
 </pre></div>
-<p><img src="man/figures/PLOTS-stackedbars3-1.png" width="700"></p>
+<p><img src="../man/figures/PLOTS-stackedbars3-1.png" width="700"></p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="co"># a non-time-series line chart</span>
 <span class="fu">ggplot</span>(<span class="kw">percentile_wages</span>, <span class="fu">aes</span>(x = <span class="kw">percentile</span>, y = <span class="kw">wage</span>, color = <span class="kw">cluster</span>)) <span class="op">+</span>
@@ -140,7 +140,7 @@
   <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span>()
 <span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span>
 </pre></div>
-<p><img src="man/figures/PLOTS-lines1-1.png" width="700"></p>
+<p><img src="../man/figures/PLOTS-lines1-1.png" width="700"></p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
 <span class="co"># a time-series line chart</span>
 <span class="fu">ggplot</span>(<span class="kw">grp_over_time</span>, <span class="fu">aes</span>(x = <span class="kw">year</span>, y = <span class="kw">realgrp</span>, color = <span class="kw">cluster</span>)) <span class="op">+</span>
@@ -152,7 +152,7 @@
              size = <span class="fl">1</span>)
 <span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span>
 </pre></div>
-<p><img src="man/figures/PLOTS-lines2-1.png" width="700"></p>
+<p><img src="../man/figures/PLOTS-lines2-1.png" width="700"></p>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
