@@ -64,7 +64,7 @@ interpret. They are used to fill behind and around the finished plot,
 respectively.}
 
 \item{overrides}{Named list, overrides the default drawing attributes defined
-in \code{cmapplot_globals$plot_constants} which are drawn by
+in \code{cmapplot_globals$consts} which are drawn by
 \code{finalize_plot()} (this is most of them). Units are in bigpts (1/72 of
 an inch).}
 
@@ -98,7 +98,7 @@ is done with default (Windows) drivers. \code{mode = "object"} also returns a
 gTree object that can be stored and drawn later with \code{grid::grid.draw()}.
 Lines drawn by any \code{geom_line()} geoms without line widths explicitly
 specified are assigned a thicker width (specifically,
-\code{cmapplot_globals$plot_constants$lwd_plotline}) in all outputs except for
+\code{cmapplot_globals$consts$lwd_plotline}) in all outputs except for
 when exporting as an object.
 }
 \examples{
@@ -120,7 +120,7 @@ finalize_plot(econ_plot,
                height = 6,
                width = 8,
                title_width = 2.5,
-               overrides = list(margin_h3 = 30))
+               overrides = list(margin_plot_r = 30))
 
 transit_plot <- transit_ridership \%>\%
   mutate(system = case_when(

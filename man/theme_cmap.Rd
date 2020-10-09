@@ -38,7 +38,7 @@ are five items in a legend with four columns as the maximum, the output will
 be one row of three and another row of two).}
 
 \item{overrides}{Named list, overrides the default drawing attributes defined
-in \code{cmapplot_globals$plot_constants} which are drawn by
+in \code{cmapplot_globals$consts} which are drawn by
 \code{theme_cmap()} (only a few of them). Units are in bigpts (1/72 of an
 inch).}
 
@@ -51,9 +51,9 @@ plot area in accordance with CMAP design standards.
 }
 \section{Overrides}{
  In the \code{overrides} argument, the user can modify
- certain default constants that define certain plot aesthetics. units of all
+ certain default constants that define certain plot aesthetics. Units of all
  plot constants are "bigpts": 1/72 of an inch. Most plot constants (stored in
- \code{cmapplot_globals$plot_constants}) are used in \code{finalize_plot()},
+ \code{cmapplot_globals$consts}) are used in \code{finalize_plot()},
  but a few are used in this function. They are:
 
  \itemize{
