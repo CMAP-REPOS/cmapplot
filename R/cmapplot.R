@@ -127,17 +127,17 @@ ggplot_size_conversion <- function(value, type = "bigpts") {
 # [t] and [f] in comments indicate whether the constant is called in
 # [t]heme_cmap() and/or [f]inalize_plot().
 cmapplot_globals$plot_constants <- list(
-  lwd_plotline = 3,     # [ ,f] Width of line graph lines
   lwd_originline = 1.6, # [t, ] Width of origin lines. This appears to be the
-                        #       minimum for variation between origin lines and
+                        #        minimum for variation between origin lines and
                         #        other background lines
   lwd_gridline = 0.3,   # [t, ] Width of grid lines (non-origin)
+  lwd_plotline = 3,     # [ ,f] Width of line graph lines
   lwd_topline = 2,      # [ ,f] Width of top line
   margin_v1 = 5,        # [ ,f] Margin between top edge of image and top line
   margin_v2 = 5,        # [ ,f] Margin between top line and title
   margin_v3 = 5,        # [ ,f] Margin between title and caption if
                         #        `caption_valign = "top"`
-  margin_v4 = 5,        # [t,f] Margin between top line and plotbox
+  margin_v4 = 5,        # [ ,f] Margin between top line and plotbox
   margin_v5 = 10,       # [t,f] Margin between legend and plot (within plotbox)
   margin_v6 = 5,        # [ ,f] Margin between caption and bottom edge of image
                         #        if 'caption_valign = "bottom"'

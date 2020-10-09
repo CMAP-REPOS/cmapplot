@@ -198,7 +198,7 @@ finalize_plot <- function(plot = NULL,
   }
 
   # set outline color to black if debugging or transparent otherwise.
-  if(debug){ debug_color = "red" } else { debug_color = "transparent" }
+  if(debug){ debug_color = "red" } else { debug_color = NA }
 
   # Size conversion for line widths in line graphs
   default_lwd <- ggplot2::GeomLine$default_aes$size
@@ -232,9 +232,9 @@ finalize_plot <- function(plot = NULL,
   # draw boxes around plot elements in debug mode
   if(debug){
     plot <- plot + ggplot2::theme(
-      legend.background = element_rect(color = debug_color, fill = "transparent"),
-      legend.box.background = element_rect(color = debug_color, fill = "transparent"),
-      plot.background = element_rect(color = debug_color, fill = "transparent")
+      legend.background = element_rect(color = debug_color, fill = NA),
+      legend.box.background = element_rect(color = debug_color, fill = NA),
+      plot.background = element_rect(color = debug_color, fill = NA)
     )
   }
 
