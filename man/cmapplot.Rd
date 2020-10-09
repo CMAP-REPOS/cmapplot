@@ -24,6 +24,7 @@ Please report issues and suggest improvements at Github:
 Useful links:
 \itemize{
   \item \url{https://cmap-repos.github.io/cmapplot}
+  \item \url{https://github.com/CMAP-REPOS/cmapplot}
 }
 
 }

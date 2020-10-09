@@ -1,19 +1,27 @@
+url: https://cmap-repos.github.io/cmapplot
+
 home:
-  title: "CMAP Themes and Color Palettes"
-  description: "Provides themes and color scales for 'ggplot2', based on Chicago Metropolitan Agency for Planning (CMAP) design guidelines."
+  title: CMAP Themes and Color Palettes
+  description: >
+    Provides themes and color scales for 'ggplot2', based on Chicago
+    Metropolitan Agency for Planning (CMAP) design guidelines.
+
+authors:
+  Chicago Metropolitan Agency for Planning:
+    href: https://www.cmap.illinois.gov
 
 template:
   params:
     bootswatch: flatly
 
 reference:
-- title: "Theme and Plotting Functions"
+- title: Theme and Plotting Functions
 - contents:
   - theme_cmap
   - finalize_plot
   - starts_with("geom_")
   - integer_breaks
-- title: "Color Palettes and Gradients"
+- title: Color Palettes and Gradients
 - contents:
   - cmap_gradients
   - cmap_palettes
@@ -22,7 +30,7 @@ reference:
   - ends_with("_race")
   - ends_with("_highlight")
   - starts_with("viz_")
-- title: "Sample Datasets"
+- title: Sample Datasets
 - contents:
   - cluster_jobchange
   - economy_basic

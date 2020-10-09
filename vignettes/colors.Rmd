@@ -1,8 +1,8 @@
 ---
-title: "colors"
+title: "Applying CMAP color schemes"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{colors}
+  %\VignetteIndexEntry{Applying CMAP color schemes}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -11,14 +11,12 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "man/figures/COLORS-"
+  fig.path = "../man/figures/COLORS-"
 )
 
 library(tidyverse)
 library(cmapplot)
 ```
-
-# Applying CMAP color schemes
 
 Palettes based on the CMAP color palette can be applied directly to ggplot graphics. The package contains both discrete and continuous color palettes. Each type of palette can be applied to either the color or fill attributes of a ggplot.
 
