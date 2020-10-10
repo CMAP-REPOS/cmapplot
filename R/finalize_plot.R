@@ -522,7 +522,9 @@ buildChart <- function(plot,
 
   # in safe mode, don't extract legend
   if(legend_build == "safe"){
-    return(ggplotGrob(plot))
+    output_plot <- plot + theme(
+      legend.spacing.y = grid::unit(consts$margin_legend_i, "bigpts"))
+    return(ggplotGrob(output_plot))
   }
 
   # in no legend mode, remove legend altogether

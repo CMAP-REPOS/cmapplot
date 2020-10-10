@@ -134,7 +134,7 @@ theme_cmap <- function(
       legend.direction = "horizontal", # arrangement of items within legend
       legend.box = "vertical",         # arrangement of multiple legends
       legend.box.just = "left",        # justification of multiple legends within box
-      legend.spacing.x =               # vertical spacing between multiple legends
+      legend.spacing.y =               # vertical spacing between multiple legends
         grid::unit(consts$margin_legend_i, "bigpts"),
       legend.text.align = 0,           # alignment of legend text
       legend.margin = margin(          # four-sided margins of each legend (T,R,B,L)
