@@ -28,20 +28,26 @@
 #'  any elements of the default CMAP theme.
 #'
 #'@section Overrides: In the \code{overrides} argument, the user can modify
-#'  certain default constants that define certain plot aesthetics. Units of all
+#'  the default constants that define certain plot aesthetics. Units of all
 #'  plot constants are "bigpts": 1/72 of an inch. Most plot constants (stored in
 #'  \code{cmapplot_globals$consts}) are used in \code{finalize_plot()},
-#'  but a few are used in this function. They are:
+#'  but a few are used in this function. Overrides with astirisks are not
+#'  "sticky" -- they will need to be re-specified in \code{finalize_plot}.
 #'
 #'  \itemize{
 #'    \item \code{lwd_originline}: the width of any origin lines drawn by
 #'    \code{hline} or \code{vline}.
 #'    \item \code{lwd_gridline}: the width of gridlines in the plot, if drawn by
 #'    \code{gridlines}.
-#'    \item \code{padding_plot}: A numeric vector of length 4 (top, right,
+#'    \item \code{margin_legend_i}*: The margin between legends (this only
+#'    applies in plots with two or more legends and does not affect legend
+#'    spacing on plots with single legends that have multiple rows).
+#'    \item \code{margin_legend_b}*: The margin between the bottom of the legend
+#'    and the rest of the plot.
+#'    \item \code{padding_plot}*: A numeric vector of length 4 (top, right,
 #'    bottom, left) that creates padding between the plot and its drawing
 #'    extent.
-#'    \item \code{padding_legend}: A numeric vector of length 4 (top, right,
+#'    \item \code{padding_legend}*: A numeric vector of length 4 (top, right,
 #'    bottom, left) that creates padding around the margin. These numbers can be
 #'    negative to reduce space around the legend.
 #'  }

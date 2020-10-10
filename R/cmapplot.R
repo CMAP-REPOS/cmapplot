@@ -137,12 +137,11 @@ cmapplot_globals$consts <- list(
   margin_title_t = 5,   # [ ,f] Margin between top line and title
   margin_title_b = 5,   # [ ,f] Margin between title and caption if
                         #        `caption_valign = "top"`
+  margin_caption_b = 5, # [ ,f] Margin between caption and bottom edge of image
   margin_legend_t = 5,  # [ ,f] Margin between top line and plotbox
   margin_legend_i = 5,  # [t,f] Vertical margin between legends (only applies
                         #        to multilegend plots)
   margin_legend_b = 10, # [t,f] Margin between legend and plot (within plotbox)
-  margin_caption_b = 5, # [ ,f] Margin between caption and bottom edge of image
-                        #        if 'caption_valign = "bottom"'
   margin_plot_b = 0,    # [ ,f] Margin between plotbox and bottom edge of image
   margin_title_l = 2,   # [ ,f] Margin between left edge of image and title/caption
   margin_title_r = 10,  # [ ,f] Margin between title/caption and legend/plot
@@ -154,7 +153,7 @@ cmapplot_globals$consts <- list(
                         # [t,f] Padding for the legend element. The -9 adjustment is
                         #        necessary to left align legend key with plot elements
   leading_title = 0.93, # [ ,f] Text leading for Title text
-  leading_caption = 1  # [ ,f] Text leading for Caption text
+  leading_caption = 1  #  [ ,f] Text leading for Caption text
 )
 
 # Define common colors
