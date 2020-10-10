@@ -365,7 +365,7 @@ finalize_plot <- function(plot = NULL,
                     lineheight=consts$leading_title,
                     col=cmapplot_globals$colors$blackish),
     box_gp = grid::gpar(col = debug_color,
-                        fill = "transparent")
+                        fill = NA)
   )
 
   # caption textbox (ROOT vp)
@@ -395,7 +395,7 @@ finalize_plot <- function(plot = NULL,
                     lineheight = consts$leading_caption,
                     col = cmapplot_globals$colors$blackish),
     box_gp = grid::gpar(col = debug_color,
-                        fill = "transparent")
+                        fill = NA)
   )
 
   # ggplot as grob (vp.plotbox)
@@ -573,7 +573,7 @@ buildChart <- function(plot,
   # Assemble a combined grob
   built <- gridExtra::arrangeGrob(
     legend,
-    grid::rectGrob(gp = grid::gpar(col = "transparent", fill = "transparent")),
+    grid::rectGrob(gp = grid::gpar(col = NA, fill = NA)),
     ggplotGrob(plot + ggplot2::theme(legend.position = "none")),
     nrow = 3,
     heights = grid::unit(c(legend_height,
