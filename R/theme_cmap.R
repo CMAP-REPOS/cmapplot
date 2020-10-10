@@ -118,24 +118,29 @@ theme_cmap <- function(
       # Text elements not displayed
       plot.subtitle = ggplot2::element_blank(),
 
-      # Legend format
+      # Legend location and format
       legend.position = "top",
       legend.justification = "left",
-      legend.direction = "horizontal",
-      legend.text.align = 0,
-      legend.margin = margin(consts$padding_legend[1],
-                             consts$padding_legend[2],
-                             consts$padding_legend[3],
-                             consts$padding_legend[4],
-                             "bigpts"),
       legend.box.background = ggplot2::element_blank(),
-      legend.box = "vertical",
-      legend.box.just = "left",
-      legend.box.spacing = grid::unit(consts$margin_legend_b, "bigpts"),
-      legend.box.margin = margin(t = 5, unit = "bigpts"),
       legend.text = ggplot2::element_text(),
       legend.title = ggplot2::element_blank(),
       legend.key = ggplot2::element_blank(),
+      legend.direction = "horizontal", # arrangement of items within legend
+      legend.box = "vertical",         # arrangement of multiple legends
+      legend.box.just = "left",        # justification of multiple legends within box
+      legend.spacing.x =               # vertical spacing between multiple legends
+        grid::unit(consts$margin_legend_i, "bigpts"),
+      legend.text.align = 0,           # alignment of legend text
+      legend.margin = margin(          # four-sided margins of each legend (T,R,B,L)
+        consts$padding_legend[1],
+        consts$padding_legend[2],
+        consts$padding_legend[3],
+        consts$padding_legend[4],
+        "bigpts"),
+      legend.box.spacing =             # space between legend box and plot
+        grid::unit(consts$margin_legend_b, "bigpts"),
+      legend.box.margin =              # space between top of image and top of legend
+        margin(t = 5, unit = "bigpts"),
 
       # Axis format
       axis.title.y = ggplot2::element_blank(),

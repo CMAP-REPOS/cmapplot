@@ -6,14 +6,6 @@
 #'export it as a raster or vector file. This function will not apply CMAP design
 #'standards to the plot itself: use with \code{theme_cmap()} for that.
 #'
-#'Exports from this function use Cairo graphics drivers, while drawing within R
-#'is done with default (Windows) drivers. \code{mode = "object"} also returns a
-#'gTree object that can be stored and drawn later with \code{grid::grid.draw()}.
-#'Lines drawn by any \code{geom_line()} geoms without line widths explicitly
-#'specified are assigned a thicker width (specifically,
-#'\code{cmapplot_globals$consts$lwd_plotline}) in all outputs except for
-#'when exporting as an object.
-#'
 #'@param plot ggplot object, the variable name of the plot you have created that
 #'  you want to finalize. If null (the default), the most recent plot will be
 #'  retrieved via \code{ggplot2::last_plot()}.
@@ -58,19 +50,25 @@
 #'@param ... pass additional arguments to \code{ggplot2::theme()} to override any
 #'  elements of the default CMAP theme.
 #'
-#'@return If and only if \code{"object"} is one of the modes specified, a gTree
+#'@return
+#'  Exports from this function use Cairo graphics drivers, while drawing within R
+#'  is done with default (Windows) drivers. \code{mode = "object"} also returns a
+#'  gTree object that can be stored and drawn later with \code{grid::grid.draw()}.
+#'  Lines drawn by any \code{geom_line()} geoms without line widths explicitly
+#'  specified are assigned a thicker width (specifically,
+#'  \code{cmapplot_globals$consts$lwd_plotline}) in all outputs except for
+#'  when exporting as an object.
+#'
+#'  If and only if \code{"object"} is one of the modes specified, a gTree
 #'  object is returned. gTree is an assembly of grobs, or graphical objects,
 #'  that can be drawn using the grid package.
-#'
-#'@importFrom utils modifyList
-#'@importFrom generics intersect
-#'
 #'
 #'@section Overrides: In the \code{overrides} argument, the user can modify
 #'  certain default constants that define certain plot aesthetics. Units of all
 #'  plot constants are "bigpts": 1/72 of an inch. Most plot constants (stored in
 #'  \code{cmapplot_globals$consts}) are used in this function, while the few
-#'  unused here are used in  \code{theme_cmap()},
+#'  are used in \code{theme_cmap()}. For constants used in both functions, any
+#'  overrides specified in \code{theme_cmap()} must be specified again here.
 #'
 #'  \itemize{
 #'    \item \code{lwd_plotline}: The width of line graph lines.
@@ -81,24 +79,23 @@
 #'    title.
 #'    \item \code{margin_title_b}: The margin between the title and the caption
 #'    if \code{caption_valign = "top"}.
+#'    \item \code{margin_caption_b}: The margin between the bottom of the
+#'    caption and the bottom edge of the image.
 #'    \item \code{margin_legend_t}: The margin between the top line and the
 #'    plot box (i.e., the top of the legend).
 #'    \item \code{margin_legend_i}: The margin between legends (this only
 #'    applies in plots with two or more legends and does not affect legend
-#'    spacing on plots with single legends that have multiple rows). This is not
-#'    applied when \code{legend_build = "safe"}.
+#'    spacing on plots with single legends that have multiple rows).
 #'    \item \code{margin_legend_b}: The margin between the bottom of the legend
 #'    and the rest of the plot.
-#'    \item \code{margin_caption_b}: The margin between the bottom of the
-#'    caption and the bottom edge of the image. This is only called if
-#'    \code{caption_valign = "bottom"}.
 #'    \item \code{margin_plot_b}: The margin between the bottom of the plot and
 #'    the bottom edge of the image.
 #'    \item \code{margin_title_l}: The margin between the left edge of the image
-#'    and the title. This also applies to the caption. Both this and
-#'    \code{margin_title_r} are deducted from \code{title_width}.
+#'    and the title. This also applies to the caption. Deducted from
+#'    \code{title_width}.
 #'    \item \code{margin_title_r}: The margin between the right edge of the
-#'    image and the title. This also applies to the caption.
+#'    image and the title. This also applies to the caption. Deducted from
+#'    \code{title_width}.
 #'    \item \code{margin_plot_r}: The margin between the right edge of the plot
 #'    and the edge of the image.
 #'    \item \code{padding_plot}: A numeric vector of length 4 (top, right,
@@ -107,13 +104,14 @@
 #'    \item \code{padding_legend}: A numeric vector of length 4 (top, right,
 #'    bottom, left) that creates padding around the margin. These numbers can be
 #'    negative to reduce space around the legend.
-#'    \item \code{leading_title}: Text leading for Title text.
-#'    \item \code{leading_caption}: Text leading for Caption text.
 #'    \item \code{legend_indent}: Indentation of legend (this is an easy
 #'    modifier to the last term in \code{padding_legend}).
+#'    \item \code{leading_title}: Text leading for Title text.
+#'    \item \code{leading_caption}: Text leading for Caption text.
 #'  }
 #'
-#'
+#'@importFrom utils modifyList
+#'@importFrom generics intersect
 #'
 #'@examples
 #' \dontrun{
@@ -352,12 +350,12 @@ finalize_plot <- function(plot = NULL,
     # set dimensions
     width = consts$title_width,
     maxheight = consts$height - consts$margin_title_to_top - consts$margin_title_b,
-    # set margins around textbox
-    padding = grid::unit(c(0,                     # top
-                           consts$margin_title_r, # right
-                           0,                     # bottom
-                           consts$margin_title_l),# left
-                           "bigpts"),
+    # retract texbox size on left and right
+    margin = grid::unit(c(0,                     # top
+                          consts$margin_title_r, # right
+                          0,                     # bottom
+                          consts$margin_title_l),# left
+                          "bigpts"),
     # set font aesthetic variables
     gp = grid::gpar(fontsize=cmapplot_globals$font$title$size,
                     fontfamily=cmapplot_globals$font$title$family,
@@ -375,21 +373,20 @@ finalize_plot <- function(plot = NULL,
     default.units = "bigpts",
     # set location down from top left corner
     x = 0,
-    y = if (caption_valign == "top") {
-      grid::unit(consts$height - consts$margin_title_to_top, "bigpts") - grid::grobHeight(grob_title)
-      } else {0},
+    y = 0,
     hjust = 0,
-    vjust = if (caption_valign == "top") {1} else {0},
+    vjust = 0,
     # set dimensions
     width = consts$title_width,
-    maxheight = grid::unit(consts$height - consts$margin_title_to_top - consts$margin_title_b - consts$margin_caption_b, "bigpts") - grid::grobHeight(grob_title),
-    # set margins within textbox
-    padding = grid::unit(c(consts$margin_title_b,  # top
-                           consts$margin_title_r,  # right
-                           consts$margin_caption_b,# bottom
-                           consts$margin_title_l), # left
-                           "bigpts"),
+    height = grid::unit(consts$height - consts$margin_title_to_top, "bigpts") - grid::grobHeight(grob_title),
+    # retract texbox size on each side
+    margin = grid::unit(c(consts$margin_title_b,  # top
+                          consts$margin_title_r,  # right
+                          consts$margin_caption_b,# bottom
+                          consts$margin_title_l), # left
+                        "bigpts"),
     # set aesthetic variables
+    valign = if(caption_valign == "top"){ 1 } else { 0 },
     gp = grid::gpar(fontsize = cmapplot_globals$font$note$size,
                     fontfamily = cmapplot_globals$font$note$family,
                     fontface = cmapplot_globals$font$note$face,
