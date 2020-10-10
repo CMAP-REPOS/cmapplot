@@ -20,6 +20,7 @@ finalize_plot(
   overrides = list(),
   debug = FALSE,
   legend_build = c("adjust", "safe", "none"),
+  legend_bump = 0,
   ...
 )
 }
@@ -48,7 +49,7 @@ Default = 300.}
 \item{mode}{Vector, the action(s) to be taken with the plot. Save using any of
 the following: \code{png}, \code{tiff}, \code{jpeg}, \code{bmp}, \code{svg},
 \code{pdf}, \code{ps}. View in R with: \code{plot}, \code{window} (`window`
-currently works on computers running Windows). Return an object with
+currently works only on computers running Windows). Return an object with
 \code{object}.}
 
 \item{filename}{Char, the file path and name you want the plot to be saved to.
@@ -74,14 +75,24 @@ Default = FALSE.}
 \item{legend_build}{Char, how the function attempts to build the legend.
 \code{"adjust"}, the default, attempts to align the legend all the way left
 (on top of the y axis labels) per CMAP design standards. \code{"safe"}
-aligns the legend left, but not over the y axis labels: less ideal, but less
-buggy. \code{"none"} removes the legend entirely.}
+maintains the alignment used in the original plot.}
+
+\item{legend_bump}{Numeric, shift the legend left (positive) or right
+(negative) this amount. Expressed in bigpts.}
 
 \item{...}{pass additional arguments to \code{ggplot2::theme()} to override any
 elements of the default CMAP theme.}
 }
 \value{
-If and only if \code{"object"} is one of the modes specified, a gTree
+Exports from this function use Cairo graphics drivers, while drawing
+ within R is done with default (Windows) drivers. \code{mode = "object"} also
+ returns a gTree object that can be stored and drawn later with
+ \code{grid::grid.draw()}. Lines drawn by any \code{geom_line()} geoms
+ without line widths explicitly specified are assigned a thicker width
+ (specifically, \code{cmapplot_globals$consts$lwd_plotline}) in all outputs
+ except for when exporting as an object.
+
+ If and only if \code{"object"} is one of the modes specified, a gTree
  object is returned. gTree is an assembly of grobs, or graphical objects,
  that can be drawn using the grid package.
 }
@@ -92,21 +103,13 @@ line on top, and make other adjustments. It can show you the final plot and/or
 export it as a raster or vector file. This function will not apply CMAP design
 standards to the plot itself: use with \code{theme_cmap()} for that.
 }
-\details{
-Exports from this function use Cairo graphics drivers, while drawing within R
-is done with default (Windows) drivers. \code{mode = "object"} also returns a
-gTree object that can be stored and drawn later with \code{grid::grid.draw()}.
-Lines drawn by any \code{geom_line()} geoms without line widths explicitly
-specified are assigned a thicker width (specifically,
-\code{cmapplot_globals$consts$lwd_plotline}) in all outputs except for
-when exporting as an object.
-}
 \section{Overrides}{
  In the \code{overrides} argument, the user can modify
  certain default constants that define certain plot aesthetics. Units of all
  plot constants are "bigpts": 1/72 of an inch. Most plot constants (stored in
  \code{cmapplot_globals$consts}) are used in this function, while the few
- unused here are used in  \code{theme_cmap()},
+ are used in \code{theme_cmap()}. For constants used in both functions, any
+ overrides specified in \code{theme_cmap()} must be specified again here.
 
  \itemize{
    \item \code{lwd_plotline}: The width of line graph lines.
@@ -117,24 +120,23 @@ when exporting as an object.
    title.
    \item \code{margin_title_b}: The margin between the title and the caption
    if \code{caption_valign = "top"}.
+   \item \code{margin_caption_b}: The margin between the bottom of the
+   caption and the bottom edge of the image.
    \item \code{margin_legend_t}: The margin between the top line and the
    plot box (i.e., the top of the legend).
    \item \code{margin_legend_i}: The margin between legends (this only
    applies in plots with two or more legends and does not affect legend
-   spacing on plots with single legends that have multiple rows). This is not
-   applied when \code{legend_build = "safe"}.
+   spacing on plots with single legends that have multiple rows).
    \item \code{margin_legend_b}: The margin between the bottom of the legend
    and the rest of the plot.
-   \item \code{margin_caption_b}: The margin between the bottom of the
-   caption and the bottom edge of the image. This is only called if
-   \code{caption_valign = "bottom"}.
    \item \code{margin_plot_b}: The margin between the bottom of the plot and
    the bottom edge of the image.
    \item \code{margin_title_l}: The margin between the left edge of the image
-   and the title. This also applies to the caption. Both this and
-   \code{margin_title_r} are deducted from \code{title_width}.
+   and the title. This also applies to the caption. Deducted from
+   \code{title_width}.
    \item \code{margin_title_r}: The margin between the right edge of the
-   image and the title. This also applies to the caption.
+   image and the title. This also applies to the caption. Deducted from
+   \code{title_width}.
    \item \code{margin_plot_r}: The margin between the right edge of the plot
    and the edge of the image.
    \item \code{padding_plot}: A numeric vector of length 4 (top, right,
@@ -143,10 +145,10 @@ when exporting as an object.
    \item \code{padding_legend}: A numeric vector of length 4 (top, right,
    bottom, left) that creates padding around the margin. These numbers can be
    negative to reduce space around the legend.
-   \item \code{leading_title}: Text leading for Title text.
-   \item \code{leading_caption}: Text leading for Caption text.
    \item \code{legend_indent}: Indentation of legend (this is an easy
    modifier to the last term in \code{padding_legend}).
+   \item \code{leading_title}: Text leading for Title text.
+   \item \code{leading_caption}: Text leading for Caption text.
  }
 }
 

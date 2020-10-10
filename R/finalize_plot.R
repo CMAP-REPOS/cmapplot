@@ -25,7 +25,7 @@
 #'@param mode Vector, the action(s) to be taken with the plot. Save using any of
 #'  the following: \code{png}, \code{tiff}, \code{jpeg}, \code{bmp}, \code{svg},
 #'  \code{pdf}, \code{ps}. View in R with: \code{plot}, \code{window} (`window`
-#'  currently works on computers running Windows). Return an object with
+#'  currently works only on computers running Windows). Return an object with
 #'  \code{object}.
 #'@param filename Char, the file path and name you want the plot to be saved to.
 #'  You may specify an extension to use. If you don't, the correct extension
@@ -45,19 +45,19 @@
 #'@param legend_build Char, how the function attempts to build the legend.
 #'  \code{"adjust"}, the default, attempts to align the legend all the way left
 #'  (on top of the y axis labels) per CMAP design standards. \code{"safe"}
-#'  aligns the legend left, but not over the y axis labels: less ideal, but less
-#'  buggy. \code{"none"} removes the legend entirely.
+#'  maintains the alignment used in the original plot.
+#'@param legend_bump Numeric, shift the legend left (positive) or right
+#'  (negative) this amount. Expressed in bigpts.
 #'@param ... pass additional arguments to \code{ggplot2::theme()} to override any
 #'  elements of the default CMAP theme.
 #'
-#'@return
-#'  Exports from this function use Cairo graphics drivers, while drawing within R
-#'  is done with default (Windows) drivers. \code{mode = "object"} also returns a
-#'  gTree object that can be stored and drawn later with \code{grid::grid.draw()}.
-#'  Lines drawn by any \code{geom_line()} geoms without line widths explicitly
-#'  specified are assigned a thicker width (specifically,
-#'  \code{cmapplot_globals$consts$lwd_plotline}) in all outputs except for
-#'  when exporting as an object.
+#'@return Exports from this function use Cairo graphics drivers, while drawing
+#'  within R is done with default (Windows) drivers. \code{mode = "object"} also
+#'  returns a gTree object that can be stored and drawn later with
+#'  \code{grid::grid.draw()}. Lines drawn by any \code{geom_line()} geoms
+#'  without line widths explicitly specified are assigned a thicker width
+#'  (specifically, \code{cmapplot_globals$consts$lwd_plotline}) in all outputs
+#'  except for when exporting as an object.
 #'
 #'  If and only if \code{"object"} is one of the modes specified, a gTree
 #'  object is returned. gTree is an assembly of grobs, or graphical objects,
@@ -170,6 +170,7 @@ finalize_plot <- function(plot = NULL,
                           overrides = list(),
                           debug = FALSE,
                           legend_build = c("adjust", "safe", "none"),
+                          legend_bump = 0,
                           ...
                           ){
 
@@ -209,13 +210,14 @@ finalize_plot <- function(plot = NULL,
   # create list of plot constants, from globals unless overridden by user
   consts <- utils::modifyList(cmapplot_globals$consts, overrides)
 
-  # convert function arguments (given in inches) to bigpoints
+  # add various arguments to constants, with conversions where necessary
   consts <- append(
     consts,
     list(
       height = convertUnit(unit(height, "in"), "bigpts", valueOnly = TRUE),
       width = convertUnit(unit(width, "in"), "bigpts", valueOnly = TRUE),
       title_width = convertUnit(unit(title_width, "in"), "bigpts", valueOnly = TRUE),
+      legend_bump = legend_bump,
       margin_title_to_top = consts$margin_topline_t + consts$margin_title_t
     )
   )
@@ -271,7 +273,7 @@ finalize_plot <- function(plot = NULL,
     legend.margin = margin(t = consts$padding_legend[1],
                            r = consts$padding_legend[2],
                            b = consts$padding_legend[3],
-                           l = consts$padding_legend[4] + consts$legend_indent,
+                           l = consts$padding_legend[4] + consts$legend_bump,
                            "bigpts"),
     # apply any extra `ggplot2::theme()` args
     ...
