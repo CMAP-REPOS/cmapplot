@@ -44,6 +44,7 @@
 #'    spacing on plots with single legends that have multiple rows).
 #'    \item \code{margin_legend_b}*: The margin between the bottom of the legend
 #'    and the rest of the plot.
+#'    \item \code{legend_key_size}*: The size of legend key elements.
 #'    \item \code{padding_plot}*: A numeric vector of length 4 (top, right,
 #'    bottom, left) that creates padding between the plot and its drawing
 #'    extent.
@@ -147,6 +148,8 @@ theme_cmap <- function(
         grid::unit(consts$margin_legend_b, "bigpts"),
       legend.box.margin =              # space between top of image and top of legend
         margin(t = 5, unit = "bigpts"),
+      legend.key.size =                # size of the legend key element
+        grid::unit(consts$legend_key_size, "bigpts"),
 
       # Axis format
       axis.title.y = ggplot2::element_blank(),

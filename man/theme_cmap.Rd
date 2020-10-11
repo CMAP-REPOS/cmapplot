@@ -67,6 +67,7 @@ plot area in accordance with CMAP design standards.
    spacing on plots with single legends that have multiple rows).
    \item \code{margin_legend_b}*: The margin between the bottom of the legend
    and the rest of the plot.
+   \item \code{legend_key_size}*: The size of legend key elements.
    \item \code{padding_plot}*: A numeric vector of length 4 (top, right,
    bottom, left) that creates padding between the plot and its drawing
    extent.

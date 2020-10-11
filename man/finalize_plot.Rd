@@ -140,6 +140,7 @@ standards to the plot itself: use with \code{theme_cmap()} for that.
    \item \code{padding_legend}: A numeric vector of length 4 (top, right,
    bottom, left) that creates padding around the margin. These numbers can be
    negative to reduce space around the legend.
+   \item \code{legend_key_size}: The size of legend key elements.
    \item \code{leading_title}: Text leading for Title text.
    \item \code{leading_caption}: Text leading for Caption text.
  }

@@ -99,6 +99,7 @@
 #'    \item \code{padding_legend}: A numeric vector of length 4 (top, right,
 #'    bottom, left) that creates padding around the margin. These numbers can be
 #'    negative to reduce space around the legend.
+#'    \item \code{legend_key_size}: The size of legend key elements.
 #'    \item \code{leading_title}: Text leading for Title text.
 #'    \item \code{leading_caption}: Text leading for Caption text.
 #'  }
@@ -270,6 +271,8 @@ finalize_plot <- function(plot = NULL,
                            b = consts$padding_legend[3],
                            l = consts$padding_legend[4] + consts$legend_bump,
                            "bigpts"),
+    # re-apply legend key size for `overrides`
+    legend.key.size = grid::unit(consts$legend_key_size,"bigpts"),
     # apply any extra `ggplot2::theme()` args
     ...
   )
