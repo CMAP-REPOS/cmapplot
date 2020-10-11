@@ -47,7 +47,9 @@
 #'  (on top of the y axis labels) per CMAP design standards. \code{"safe"}
 #'  maintains the alignment used in the original plot.
 #'@param legend_bump Numeric, shift the legend left (positive) or right
-#'  (negative) this amount. Expressed in bigpts.
+#'  (negative) this amount. Depending on system configuration, it may be
+#'  necessary to use this parameter to achieve exact left alignment (this can
+#'  most easily be tested using \code{debug = TRUE}). Expressed in bigpts.
 #'@param ... pass additional arguments to \code{ggplot2::theme()} to override any
 #'  elements of the default CMAP theme.
 #'
