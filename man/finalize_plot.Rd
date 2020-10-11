@@ -91,10 +91,6 @@ Exports from this function use Cairo graphics drivers, while drawing
  without line widths explicitly specified are assigned a thicker width
  (specifically, \code{cmapplot_globals$consts$lwd_plotline}) in all outputs
  except for when exporting as an object.
-
- If and only if \code{"object"} is one of the modes specified, a gTree
- object is returned. gTree is an assembly of grobs, or graphical objects,
- that can be drawn using the grid package.
 }
 \description{
 \code{finalize_plot} will place a ggplot into a frame defined by CMAP design
@@ -118,8 +114,7 @@ standards to the plot itself: use with \code{theme_cmap()} for that.
    image and the top line.
    \item \code{margin_title_t}: The margin between the top line and the
    title.
-   \item \code{margin_title_b}: The margin between the title and the caption
-   if \code{caption_valign = "top"}.
+   \item \code{margin_title_b}: The margin between the title and the caption.
    \item \code{margin_caption_b}: The margin between the bottom of the
    caption and the bottom edge of the image.
    \item \code{margin_legend_t}: The margin between the top line and the
@@ -145,8 +140,6 @@ standards to the plot itself: use with \code{theme_cmap()} for that.
    \item \code{padding_legend}: A numeric vector of length 4 (top, right,
    bottom, left) that creates padding around the margin. These numbers can be
    negative to reduce space around the legend.
-   \item \code{legend_indent}: Indentation of legend (this is an easy
-   modifier to the last term in \code{padding_legend}).
    \item \code{leading_title}: Text leading for Title text.
    \item \code{leading_caption}: Text leading for Caption text.
  }
@@ -187,9 +180,9 @@ transit_plot <- transit_ridership \%>\%
 
 finalize_plot(transit_plot,
               "Transit ridership in the RTA region over time, 1980-2019
-              (in millions).",
+              (in millions)",
               "Source: Chicago Metropolitan Agency for Planning
-              analysis of data from the Regional Transportation Authority.",
+              analysis of data from the Regional Transportation Authority",
               mode=c("plot", "pdf"),
               filename = "foo")
 }

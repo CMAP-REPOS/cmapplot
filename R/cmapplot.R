@@ -16,8 +16,6 @@
 #' @name cmapplot
 #' @docType package
 #' @import ggplot2 dplyr grid scales grDevices graphics rlang gridtext
-#' @importFrom gridExtra arrangeGrob
-#' @importFrom ggpubr get_legend
 #' @importFrom glue glue glue_collapse
 #' @importFrom lubridate date_decimal
 #' @importFrom sysfonts font_files
@@ -142,7 +140,7 @@ cmapplot_globals$consts <- list(
   margin_legend_i = 5,  # [t,f] Vertical margin between legends (only applies
                         #        to multilegend plots)
   margin_legend_b = 10, # [t,f] Margin between legend and plot (within plotbox)
-  margin_plot_b = 0,    # [ ,f] Margin between plotbox and bottom edge of image
+  margin_plot_b = 5,    # [ ,f] Margin between plotbox and bottom edge of image
   margin_title_l = 2,   # [ ,f] Margin between left edge of image and title/caption
   margin_title_r = 10,  # [ ,f] Margin between title/caption and legend/plot
                         #        (Both title_l and title_r are deducted from `titlewidth`)

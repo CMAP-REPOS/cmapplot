@@ -152,14 +152,14 @@ theme_cmap <- function(
       axis.title.y = ggplot2::element_blank(),
       axis.title.x = ggplot2::element_blank(),
       axis.text = ggplot2::element_text(color = cmapplot_globals$colors$blackish),
-      axis.text.x = ggplot2::element_text(margin = ggplot2::margin(t = 5, b = 5)),
+      axis.text.x = ggplot2::element_text(margin = ggplot2::margin(t = 5)),
       axis.ticks = ggplot2::element_blank(),
       axis.line = ggplot2::element_blank(),
 
       # panel placement
       plot.margin = ggplot2::margin(consts$padding_plot[1],
                                     consts$padding_plot[2],
-                                    consts$padding_plot[3],
+                                    consts$padding_plot[3] + consts$margin_plot_b,
                                     consts$padding_plot[4],
                                     "bigpts"),
 

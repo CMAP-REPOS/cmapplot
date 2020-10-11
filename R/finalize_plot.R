@@ -59,10 +59,6 @@
 #'  (specifically, \code{cmapplot_globals$consts$lwd_plotline}) in all outputs
 #'  except for when exporting as an object.
 #'
-#'  If and only if \code{"object"} is one of the modes specified, a gTree
-#'  object is returned. gTree is an assembly of grobs, or graphical objects,
-#'  that can be drawn using the grid package.
-#'
 #'@section Overrides: In the \code{overrides} argument, the user can modify
 #'  certain default constants that define certain plot aesthetics. Units of all
 #'  plot constants are "bigpts": 1/72 of an inch. Most plot constants (stored in
@@ -77,8 +73,7 @@
 #'    image and the top line.
 #'    \item \code{margin_title_t}: The margin between the top line and the
 #'    title.
-#'    \item \code{margin_title_b}: The margin between the title and the caption
-#'    if \code{caption_valign = "top"}.
+#'    \item \code{margin_title_b}: The margin between the title and the caption.
 #'    \item \code{margin_caption_b}: The margin between the bottom of the
 #'    caption and the bottom edge of the image.
 #'    \item \code{margin_legend_t}: The margin between the top line and the
@@ -104,14 +99,14 @@
 #'    \item \code{padding_legend}: A numeric vector of length 4 (top, right,
 #'    bottom, left) that creates padding around the margin. These numbers can be
 #'    negative to reduce space around the legend.
-#'    \item \code{legend_indent}: Indentation of legend (this is an easy
-#'    modifier to the last term in \code{padding_legend}).
 #'    \item \code{leading_title}: Text leading for Title text.
 #'    \item \code{leading_caption}: Text leading for Caption text.
 #'  }
 #'
 #'@importFrom utils modifyList
 #'@importFrom generics intersect
+#'@importFrom gridExtra arrangeGrob
+#'@importFrom ggpubr get_legend
 #'
 #'@examples
 #' \dontrun{
@@ -148,9 +143,9 @@
 #'
 #' finalize_plot(transit_plot,
 #'               "Transit ridership in the RTA region over time, 1980-2019
-#'               (in millions).",
+#'               (in millions)",
 #'               "Source: Chicago Metropolitan Agency for Planning
-#'               analysis of data from the Regional Transportation Authority.",
+#'               analysis of data from the Regional Transportation Authority",
 #'               mode=c("plot", "pdf"),
 #'               filename = "foo")
 #'}
@@ -373,7 +368,7 @@ finalize_plot <- function(plot = NULL,
     name = "caption",
     text = caption,
     default.units = "bigpts",
-    # set location down from top left corner
+    # set location
     x = 0,
     y = 0,
     hjust = 0,
