@@ -23,8 +23,8 @@ This R package provides themes and color scales for [`ggplot2`](https://github.c
 Run the following to install or update `cmapplot`:
 
 ```{r install, eval=FALSE, message=FALSE, warning=FALSE}
-## Install development version from GitHub
-devtools::install_github("CMAP-REPOS/cmapplot")
+## Install current version from GitHub
+devtools::install_github("CMAP-REPOS/cmapplot", build_vignettes=TRUE)
 
 ## Then load the package as you would any other
 library(cmapplot)

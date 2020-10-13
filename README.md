@@ -10,8 +10,8 @@ Metropolitan Agency for Planning (CMAP) design guidelines.
 Run the following to install or update `cmapplot`:
 
 ``` r
-## Install development version from GitHub
-devtools::install_github("CMAP-REPOS/cmapplot")
+## Install current version from GitHub
+devtools::install_github("CMAP-REPOS/cmapplot", build_vignettes=TRUE)
 
 ## Then load the package as you would any other
 library(cmapplot)
