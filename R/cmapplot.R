@@ -1,17 +1,13 @@
 #' cmapplot
 #'
-#' This package contains extra palettes, themes and geoms for \pkg{ggplot2}.
+#' This package contains extra palettes, themes and geoms for \pkg{ggplot2},
+#' based on Chicago Metropolitan Agency for Planning (CMAP) design guidelines.
 #'
-#' Please see the help pages listed below:
+#' Detailed documentation can be viewed at
+#' \url{https://cmap-repos.github.io/cmapplot}.
 #'
-#' \itemize{
-#'   \item \code{\link{geom_text_lastonly}}
-#'   \item \code{\link{theme_cmap}}
-#' }
-#'
-#' Please report issues and suggest improvements at Github:
-#'
-#' \url{https://github.com/CMAP-REPOS/cmapplot}
+#' Please report issues and suggest improvements at
+#' \url{https://github.com/CMAP-REPOS/cmapplot/issues}.
 #'
 #' @name cmapplot
 #' @docType package

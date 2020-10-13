@@ -6,24 +6,21 @@
 \alias{cmapplot-package}
 \title{cmapplot}
 \description{
-This package contains extra palettes, themes and geoms for \pkg{ggplot2}.
+This package contains extra palettes, themes and geoms for \pkg{ggplot2},
+based on Chicago Metropolitan Agency for Planning (CMAP) design guidelines.
 }
 \details{
-Please see the help pages listed below:
+Detailed documentation can be viewed at
+\url{https://cmap-repos.github.io/cmapplot}.
 
-\itemize{
-  \item \code{\link{geom_text_lastonly}}
-  \item \code{\link{theme_cmap}}
-}
-
-Please report issues and suggest improvements at Github:
-
-\url{https://github.com/CMAP-REPOS/cmapplot}
+Please report issues and suggest improvements at
+\url{https://github.com/CMAP-REPOS/cmapplot/issues}.
 }
 \seealso{
 Useful links:
 \itemize{
   \item \url{https://cmap-repos.github.io/cmapplot}
+  \item \url{https://github.com/CMAP-REPOS/cmapplot}
 }
 
 }
@@ -32,9 +29,11 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Sarah Buchhorn \email{sbuchhorn@cmap.illinois.gov}
+  \item Daniel Comeaux \email{dcomeaux@cmap.illinois.gov} (\href{https://orcid.org/0000-0002-8412-9092}{ORCID})
+  \item Martin Menninger \email{mmenninger@cmap.illinois.gov}
   \item Noel Peterson \email{npeterson@cmap.illinois.gov} (\href{https://orcid.org/0000-0003-1290-2362}{ORCID})
   \item Greta Ritzenthaler \email{gritzenthaler@cmap.illinois.gov}
-  \item Daniel Comeaux \email{dcomeaux@cmap.illinois.gov} (\href{https://orcid.org/0000-0002-8412-9092}{ORCID})
 }
 
 Other contributors:
