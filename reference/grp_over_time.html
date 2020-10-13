@@ -140,7 +140,7 @@
     <p>A test dataset containing real GRP data for the CMAP region.</p>
     </div>
 
-    <pre class="usage"><span class='kw'>grp_over_time</span></pre>
+    <pre class="usage"><span class='va'>grp_over_time</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
@@ -161,8 +161,8 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># a time-series line chart</span>
-<span class='fu'>ggplot</span>(<span class='kw'>grp_over_time</span>, <span class='fu'>aes</span>(x = <span class='kw'>year</span>, y = <span class='kw'>realgrp</span>, color = <span class='kw'>cluster</span>)) <span class='op'>+</span>
-  <span class='fu'>geom_line</span>()
+<span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>grp_over_time</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>year</span>, y <span class='op'>=</span> <span class='va'>realgrp</span>, color <span class='op'>=</span> <span class='va'>cluster</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_line</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='img'><img src='grp_over_time-1.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>

@@ -140,11 +140,11 @@
     <p>Pick the function depending on the aesthetic of your ggplot object (fill or color)</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cmap_fill_continuous</span>(palette = <span class='st'>"seq_reds"</span>, reverse = <span class='fl'>FALSE</span>)
+    <pre class="usage"><span class='fu'>cmap_fill_continuous</span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"seq_reds"</span>, reverse <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
-<span class='fu'>cmap_color_continuous</span>(palette = <span class='st'>"seq_reds"</span>, reverse = <span class='fl'>FALSE</span>)
+<span class='fu'>cmap_color_continuous</span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"seq_reds"</span>, reverse <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
-<span class='fu'>cmap_colour_continuous</span>(palette = <span class='st'>"seq_reds"</span>, reverse = <span class='fl'>FALSE</span>)</pre>
+<span class='fu'>cmap_colour_continuous</span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"seq_reds"</span>, reverse <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -169,17 +169,17 @@
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://dplyr.tidyverse.org'>dplyr</a></span>)
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'><span class='kw'>grp_over_time</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='kw'>cluster</span><span class='op'>==</span><span class='st'>"Biopharmaceuticals"</span>) <span class='op'>%&gt;%</span>
-  <span class='fu'>ggplot</span>(<span class='fu'>aes</span>(x = <span class='kw'>year</span>, y = <span class='kw'>realgrp</span>, color = <span class='kw'>realgrp</span>)) <span class='op'>+</span>
-    <span class='fu'>geom_line</span>() <span class='op'>+</span>
-    <span class='fu'>cmap_color_continuous</span>(palette = <span class='st'>"seq_red_purple"</span>)
+#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'><span class='va'>grp_over_time</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>cluster</span><span class='op'>==</span><span class='st'>"Biopharmaceuticals"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>year</span>, y <span class='op'>=</span> <span class='va'>realgrp</span>, color <span class='op'>=</span> <span class='va'>realgrp</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>geom_line</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'>cmap_color_continuous</span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"seq_red_purple"</span><span class='op'>)</span>
 </div><div class='img'><img src='cmap_fill_continuous-1.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>

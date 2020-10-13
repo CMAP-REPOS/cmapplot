@@ -148,10 +148,10 @@ should be labeled. This is accomplished by identifying the maximum value of
 is less than the maximum.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>geom_text_lastonly</span>(mapping = <span class='kw'>NULL</span>, data = <span class='kw'>NULL</span>, stat = <span class='st'>"identity"</span>,
-  position = <span class='kw'>NULL</span>, <span class='kw'>...</span>, parse = <span class='fl'>FALSE</span>, nudge_x = <span class='fl'>0.25</span>, nudge_y = <span class='fl'>0</span>,
-  check_overlap = <span class='fl'>FALSE</span>, na.rm = <span class='fl'>FALSE</span>, show.legend = <span class='fl'>FALSE</span>, inherit.aes =
-  <span class='fl'>TRUE</span>, add_points = <span class='fl'>FALSE</span>, text_aes = <span class='kw'>NULL</span>, point_aes = <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>geom_text_lastonly</span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='cn'>NULL</span>, data <span class='op'>=</span> <span class='cn'>NULL</span>, stat <span class='op'>=</span> <span class='st'>"identity"</span>,
+  position <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span>, parse <span class='op'>=</span> <span class='cn'>FALSE</span>, nudge_x <span class='op'>=</span> <span class='fl'>0.25</span>, nudge_y <span class='op'>=</span> <span class='fl'>0</span>,
+  check_overlap <span class='op'>=</span> <span class='cn'>FALSE</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span>, show.legend <span class='op'>=</span> <span class='cn'>FALSE</span>, inherit.aes <span class='op'>=</span>
+  <span class='cn'>TRUE</span>, add_points <span class='op'>=</span> <span class='cn'>FALSE</span>, text_aes <span class='op'>=</span> <span class='cn'>NULL</span>, point_aes <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -253,23 +253,23 @@ e.g. with <code>scale_x_continuous(expand=expand_scale(mult=0.10))</code>.</p>
 <code><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>ggplot2::geom_point()</a></code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(year=<span class='fl'>2010</span><span class='op'>:</span><span class='fl'>2020</span>, value=<span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>22</span>), var=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"A"</span>, <span class='fl'>11</span>), <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"B"</span>, <span class='fl'>11</span>)))
+    <pre class="examples"><div class='input'><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>year<span class='op'>=</span><span class='fl'>2010</span><span class='op'>:</span><span class='fl'>2020</span>, value<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>22</span><span class='op'>)</span>, var<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='fl'>11</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>"B"</span>, <span class='fl'>11</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># Without points, label formatting or x-axis expansion</span>
-<span class='fu'>ggplot</span>(<span class='kw'>df</span>, <span class='fu'>aes</span>(x=<span class='kw'>year</span>, y=<span class='kw'>value</span>, color=<span class='kw'>var</span>)) <span class='op'>+</span>
-  <span class='fu'>geom_line</span>() <span class='op'>+</span>
-  <span class='fu'>labs</span>(title=<span class='st'>"Random lines"</span>) <span class='op'>+</span>
-  <span class='fu'>scale_y_continuous</span>(<span class='st'>"Percentage of absolutely nothing"</span>) <span class='op'>+</span>
-  <span class='fu'>scale_x_continuous</span>(<span class='st'>"Year"</span>) <span class='op'>+</span>
-  <span class='fu'>geom_text_lastonly</span>()
+<span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>df</span>, <span class='fu'>aes</span><span class='op'>(</span>x<span class='op'>=</span><span class='va'>year</span>, y<span class='op'>=</span><span class='va'>value</span>, color<span class='op'>=</span><span class='va'>var</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_line</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>labs</span><span class='op'>(</span>title<span class='op'>=</span><span class='st'>"Random lines"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>scale_y_continuous</span><span class='op'>(</span><span class='st'>"Percentage of absolutely nothing"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>scale_x_continuous</span><span class='op'>(</span><span class='st'>"Year"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_text_lastonly</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='img'><img src='geom_text_lastonly-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># With points, label formatting and x-axis expansion</span>
-<span class='fu'>ggplot</span>(<span class='kw'>df</span>, <span class='fu'>aes</span>(x=<span class='kw'>year</span>, y=<span class='kw'>value</span>, color=<span class='kw'>var</span>, label=<span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"%.1f%%"</span>, <span class='fl'>100</span><span class='op'>*</span><span class='kw'>value</span>))) <span class='op'>+</span>
-  <span class='fu'>geom_line</span>() <span class='op'>+</span>
-  <span class='fu'>labs</span>(title=<span class='st'>"Random lines"</span>) <span class='op'>+</span>
-  <span class='fu'>scale_y_continuous</span>(<span class='st'>"Percentage of absolutely nothing"</span>, labels=<span class='kw'>scales</span>::<span class='kw'><a href='https://scales.r-lib.org//reference/label_percent.html'>percent</a></span>) <span class='op'>+</span>
-  <span class='fu'>scale_x_continuous</span>(<span class='st'>"Year"</span>, expand=<span class='fu'>expansion</span>(mult=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.05</span>, <span class='fl'>0.10</span>))) <span class='op'>+</span>
-  <span class='fu'>geom_text_lastonly</span>(add_points=<span class='fl'>TRUE</span>, text_aes=<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(fontface=<span class='st'>"bold"</span>), point_aes=<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(size=<span class='fl'>2.5</span>))
+<span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>df</span>, <span class='fu'>aes</span><span class='op'>(</span>x<span class='op'>=</span><span class='va'>year</span>, y<span class='op'>=</span><span class='va'>value</span>, color<span class='op'>=</span><span class='va'>var</span>, label<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span><span class='op'>(</span><span class='st'>"%.1f%%"</span>, <span class='fl'>100</span><span class='op'>*</span><span class='va'>value</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_line</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>labs</span><span class='op'>(</span>title<span class='op'>=</span><span class='st'>"Random lines"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>scale_y_continuous</span><span class='op'>(</span><span class='st'>"Percentage of absolutely nothing"</span>, labels<span class='op'>=</span><span class='fu'>scales</span><span class='fu'>::</span><span class='va'><a href='https://scales.r-lib.org//reference/label_percent.html'>percent</a></span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>scale_x_continuous</span><span class='op'>(</span><span class='st'>"Year"</span>, expand<span class='op'>=</span><span class='fu'>expansion</span><span class='op'>(</span>mult<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.05</span>, <span class='fl'>0.10</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_text_lastonly</span><span class='op'>(</span>add_points<span class='op'>=</span><span class='cn'>TRUE</span>, text_aes<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>fontface<span class='op'>=</span><span class='st'>"bold"</span><span class='op'>)</span>, point_aes<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>size<span class='op'>=</span><span class='fl'>2.5</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='img'><img src='geom_text_lastonly-2.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>

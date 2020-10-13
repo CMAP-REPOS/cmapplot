@@ -142,8 +142,8 @@ plot area in accordance with CMAP design standards." />
 plot area in accordance with CMAP design standards.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>theme_cmap</span>(xlab = <span class='kw'>NULL</span>, ylab = <span class='kw'>NULL</span>, hline = <span class='kw'>NULL</span>, vline = <span class='kw'>NULL</span>,
- gridlines = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"h"</span>, <span class='st'>"v"</span>, <span class='st'>"hv"</span>, <span class='st'>"none"</span>), max_columns = <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>theme_cmap</span><span class='op'>(</span>xlab <span class='op'>=</span> <span class='cn'>NULL</span>, ylab <span class='op'>=</span> <span class='cn'>NULL</span>, hline <span class='op'>=</span> <span class='cn'>NULL</span>, vline <span class='op'>=</span> <span class='cn'>NULL</span>,
+ gridlines <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"h"</span>, <span class='st'>"v"</span>, <span class='st'>"hv"</span>, <span class='st'>"none"</span><span class='op'>)</span>, max_columns <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -182,30 +182,30 @@ and another row of two).</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
 <span class='co'># The only way to place the origin line (`hline`, `vline`) behind any data geoms</span>
 <span class='co'># is to or place `theme_cmap()` before the geoms:</span>
- <span class='fu'>ggplot</span>(<span class='kw'>grp_over_time</span>, <span class='fu'>aes</span>(x = <span class='kw'>year</span>, y = <span class='kw'>realgrp</span>, color = <span class='kw'>cluster</span>)) <span class='op'>+</span>
-   <span class='fu'>theme_cmap</span>(hline = <span class='fl'>0</span>, ylab = <span class='st'>"Percent change"</span>) <span class='op'>+</span>
-   <span class='fu'>geom_line</span>() <span class='op'>+</span>
-   <span class='fu'>scale_x_continuous</span>(breaks = <span class='kw'>scales</span>::<span class='fu'><a href='https://scales.r-lib.org//reference/breaks_pretty.html'>breaks_pretty</a></span>(<span class='fl'>11</span>))
+ <span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>grp_over_time</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>year</span>, y <span class='op'>=</span> <span class='va'>realgrp</span>, color <span class='op'>=</span> <span class='va'>cluster</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+   <span class='fu'>theme_cmap</span><span class='op'>(</span>hline <span class='op'>=</span> <span class='fl'>0</span>, ylab <span class='op'>=</span> <span class='st'>"Percent change"</span><span class='op'>)</span> <span class='op'>+</span>
+   <span class='fu'>geom_line</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+   <span class='fu'>scale_x_continuous</span><span class='op'>(</span>breaks <span class='op'>=</span> <span class='fu'>scales</span><span class='fu'>::</span><span class='fu'><a href='https://scales.r-lib.org//reference/breaks_pretty.html'>breaks_pretty</a></span><span class='op'>(</span><span class='fl'>11</span><span class='op'>)</span><span class='op'>)</span>
 
 
- <span class='kw'>df</span> <span class='op'>&lt;-</span> <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='kw'>traded_emp_by_race</span>, <span class='kw'>variable</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"SpecializedTraded"</span>,
-   <span class='st'>"UnspecializedTraded"</span>))
+ <span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>traded_emp_by_race</span>, <span class='va'>variable</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"SpecializedTraded"</span>,
+   <span class='st'>"UnspecializedTraded"</span><span class='op'>)</span><span class='op'>)</span>
 
- <span class='fu'>ggplot</span>(<span class='kw'>df</span>, <span class='fu'>aes</span>(x = <span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span>(<span class='kw'>Race</span>, <span class='op'>-</span><span class='kw'>value</span>), y = <span class='kw'>value</span>, fill = <span class='kw'>variable</span>)) <span class='op'>+</span>
-   <span class='fu'>geom_col</span>(position = <span class='fu'>position_stack</span>(reverse = <span class='fl'>TRUE</span>)) <span class='op'>+</span>
-   <span class='fu'>scale_y_continuous</span>(labels = <span class='kw'>scales</span>::<span class='kw'><a href='https://scales.r-lib.org//reference/label_percent.html'>percent</a></span>) <span class='op'>+</span>
-   <span class='fu'>theme_cmap</span>(hline = <span class='fl'>0</span>, ylab = <span class='st'>"This is the y axis"</span>)
+ <span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>df</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span><span class='op'>(</span><span class='va'>Race</span>, <span class='op'>-</span><span class='va'>value</span><span class='op'>)</span>, y <span class='op'>=</span> <span class='va'>value</span>, fill <span class='op'>=</span> <span class='va'>variable</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+   <span class='fu'>geom_col</span><span class='op'>(</span>position <span class='op'>=</span> <span class='fu'>position_stack</span><span class='op'>(</span>reverse <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+   <span class='fu'>scale_y_continuous</span><span class='op'>(</span>labels <span class='op'>=</span> <span class='fu'>scales</span><span class='fu'>::</span><span class='va'><a href='https://scales.r-lib.org//reference/label_percent.html'>percent</a></span><span class='op'>)</span> <span class='op'>+</span>
+   <span class='fu'>theme_cmap</span><span class='op'>(</span>hline <span class='op'>=</span> <span class='fl'>0</span>, ylab <span class='op'>=</span> <span class='st'>"This is the y axis"</span><span class='op'>)</span>
 
- <span class='fu'>ggplot</span>(<span class='kw'>df</span>, <span class='fu'>aes</span>(x = <span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span>(<span class='kw'>Race</span>, <span class='op'>-</span><span class='kw'>value</span>), y = <span class='kw'>value</span>, fill = <span class='kw'>variable</span>)) <span class='op'>+</span>
-   <span class='fu'>geom_col</span>(position = <span class='fu'>position_stack</span>(reverse = <span class='fl'>TRUE</span>)) <span class='op'>+</span>
-   <span class='fu'>coord_flip</span>() <span class='op'>+</span>
-   <span class='fu'>scale_y_continuous</span>(labels = <span class='kw'>scales</span>::<span class='kw'><a href='https://scales.r-lib.org//reference/label_percent.html'>percent</a></span>) <span class='op'>+</span>
-   <span class='fu'>theme_cmap</span>(hline = <span class='fl'>0</span>, gridlines = <span class='st'>"v"</span>)
-}
+ <span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>df</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span><span class='op'>(</span><span class='va'>Race</span>, <span class='op'>-</span><span class='va'>value</span><span class='op'>)</span>, y <span class='op'>=</span> <span class='va'>value</span>, fill <span class='op'>=</span> <span class='va'>variable</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+   <span class='fu'>geom_col</span><span class='op'>(</span>position <span class='op'>=</span> <span class='fu'>position_stack</span><span class='op'>(</span>reverse <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+   <span class='fu'>coord_flip</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+   <span class='fu'>scale_y_continuous</span><span class='op'>(</span>labels <span class='op'>=</span> <span class='fu'>scales</span><span class='fu'>::</span><span class='va'><a href='https://scales.r-lib.org//reference/label_percent.html'>percent</a></span><span class='op'>)</span> <span class='op'>+</span>
+   <span class='fu'>theme_cmap</span><span class='op'>(</span>hline <span class='op'>=</span> <span class='fl'>0</span>, gridlines <span class='op'>=</span> <span class='st'>"v"</span><span class='op'>)</span>
+<span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
