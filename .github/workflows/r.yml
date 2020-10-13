@@ -16,25 +16,17 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.config.os }}
-
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
-
+    runs-on: macOS-latest
     strategy:
-      fail-fast: false
       matrix:
-        config:
-          - {os: windows-latest, r: '3.6'}
-          - {os: windows-latest, r: 'release'}
-          - {os: macOS-latest,   r: '3.6'}
-          - {os: macOS-latest,   r: 'release'}
+        r-version: [3.6, 4.0]
 
     steps:
       - uses: actions/checkout@v2
-      - name: Set up R ${{ matrix.config.r }}
+      - name: Set up R ${{ matrix.r-version }}
         uses: r-lib/actions/setup-r@ffe45a39586f073cc2e9af79c4ba563b657dc6e3
         with:
-          r-version: ${{ matrix.config.r }}
+          r-version: ${{ matrix.r-version }}
       - name: Install XQuartz on macOS
         if: runner.os == 'macOS'
         run: |
