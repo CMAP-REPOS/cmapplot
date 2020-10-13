@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   colors: colors.html
   plots: plots.html
-last_built: 2020-10-13T18:21Z
+last_built: 2020-10-13T22:01Z
 urls:
   reference: https://cmap-repos.github.io/cmapplot/reference
   article: https://cmap-repos.github.io/cmapplot/articles
