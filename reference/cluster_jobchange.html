@@ -142,7 +142,7 @@ analyzed in the CMAP Traded Clusters report." />
 analyzed in the CMAP Traded Clusters report.</p>
     </div>
 
-    <pre class="usage"><span class='va'>cluster_jobchange</span></pre>
+    <pre class="usage"><span class='kw'>cluster_jobchange</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
@@ -162,9 +162,9 @@ analyzed in the CMAP Traded Clusters report.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># A bar chart</span>
-<span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>cluster_jobchange</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span><span class='op'>(</span><span class='va'>name</span>, <span class='va'>jobchange</span><span class='op'>)</span>, y <span class='op'>=</span> <span class='va'>jobchange</span>, fill <span class='op'>=</span> <span class='va'>category</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'>geom_col</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'>coord_flip</span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'>ggplot</span>(<span class='kw'>cluster_jobchange</span>, <span class='fu'>aes</span>(x = <span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span>(<span class='kw'>name</span>, <span class='kw'>jobchange</span>), y = <span class='kw'>jobchange</span>, fill = <span class='kw'>category</span>)) <span class='op'>+</span>
+  <span class='fu'>geom_col</span>() <span class='op'>+</span>
+  <span class='fu'>coord_flip</span>()
 </div><div class='img'><img src='cluster_jobchange-1.png' alt='' width='700' height='433' /></div><div class='input'>
 
 </div></pre>

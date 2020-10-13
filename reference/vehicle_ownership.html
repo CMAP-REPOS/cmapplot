@@ -142,7 +142,7 @@ of northeastern Illinois." />
 of northeastern Illinois.</p>
     </div>
 
-    <pre class="usage"><span class='va'>vehicle_ownership</span></pre>
+    <pre class="usage"><span class='kw'>vehicle_ownership</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
@@ -160,9 +160,9 @@ of northeastern Illinois.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># A stacked bar chart</span>
-<span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>vehicle_ownership</span>,
-       <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>county</span>, y <span class='op'>=</span> <span class='va'>pct</span>, fill <span class='op'>=</span> <span class='va'>number_of_veh</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-   <span class='fu'>geom_bar</span><span class='op'>(</span>position <span class='op'>=</span> <span class='fu'>position_stack</span><span class='op'>(</span><span class='op'>)</span>, stat <span class='op'>=</span> <span class='st'>"identity"</span><span class='op'>)</span>
+<span class='fu'>ggplot</span>(<span class='kw'>vehicle_ownership</span>,
+       <span class='fu'>aes</span>(x = <span class='kw'>county</span>, y = <span class='kw'>pct</span>, fill = <span class='kw'>number_of_veh</span>)) <span class='op'>+</span>
+   <span class='fu'>geom_bar</span>(position = <span class='fu'>position_stack</span>(), stat = <span class='st'>"identity"</span>)
 </div><div class='img'><img src='vehicle_ownership-1.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
