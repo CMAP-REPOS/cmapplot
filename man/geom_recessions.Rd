@@ -130,5 +130,5 @@ ggplot(df, mapping = aes(x = year_date, y = value)) +
 \url{https://ggplot2-book.org/extensions.html}
 \url{https://github.com/brodieG/ggbg/blob/development/inst/doc/extensions.html#stat-compute}
 \url{https://rpubs.com/hadley/97970}
-\url{https://cran.r-project.org/web/packages/ggplot2/vignettes/extending-ggplot2.html}
+\url{https://ggplot2.tidyverse.org/articles/extending-ggplot2.html}
 }

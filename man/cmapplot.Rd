@@ -21,6 +21,7 @@ Useful links:
 \itemize{
   \item \url{https://cmap-repos.github.io/cmapplot}
   \item \url{https://github.com/CMAP-REPOS/cmapplot}
+  \item Report bugs at \url{https://github.com/CMAP-REPOS/cmapplot/issues}
 }
 
 }
