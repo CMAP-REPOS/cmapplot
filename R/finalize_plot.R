@@ -6,24 +6,11 @@
 #'export it as a raster or vector file. This function will not apply CMAP design
 #'standards to the plot itself: use with \code{theme_cmap()} for that.
 #'
-#'Exports from this function use Cairo graphics drivers, while drawing within R
-#'is done with default (Windows) drivers. \code{mode = "object"} also returns a
-#'gTree object that can be stored and drawn later with \code{grid::grid.draw()}.
-#'Lines drawn by any \code{geom_line()} geoms without line widths explicitly
-#'specified are assigned a thicker width (specifically,
-#'\code{cmapplot_globals$plot_constants$lwd_plotline}) in all outputs except for
-#'when exporting as an object.
-#'
-#'@usage finalize_plot(input_plot = NULL, title = "", caption = "", width =
-#'  670/72, height = 400/72, title_width = NULL, ppi = 300, mode = c("plot"),
-#'  filename = "", caption_valign = c("top", "bottom"), fill_bg = "white",
-#'  fill_canvas = "gray90", overrides = list())
-#'
-#'@param input_plot ggplot object, the variable name of the plot you have
-#'  created that you want to finalize. If null (the default), the most recent
-#'  plot will be retrieved via \code{ggplot2::last_plot()}.
+#'@param plot ggplot object, the variable name of the plot you have created that
+#'  you want to finalize. If null (the default), the most recent plot will be
+#'  retrieved via \code{ggplot2::last_plot()}.
 #'@param title,caption Char, the text you want to appear in the title and
-#'  caption blocks. If empty, any non-Null values from \code{input_plot} will be
+#'  caption blocks. If empty, any non-Null values from \code{plot} will be
 #'  retrieved. These blocks take html formatting, so manual text breaks can be
 #'  created with \code{<br>} and formatting can be changed with \code{<span>}.
 #'@param width,height Numeric, the dimensions for the output image, including
@@ -38,31 +25,91 @@
 #'@param mode Vector, the action(s) to be taken with the plot. Save using any of
 #'  the following: \code{png}, \code{tiff}, \code{jpeg}, \code{bmp}, \code{svg},
 #'  \code{pdf}, \code{ps}. View in R with: \code{plot}, \code{window} (`window`
-#'  currently works on computers running Windows). Return an object with
+#'  currently works only on computers running Windows). Return an object with
 #'  \code{object}.
 #'@param filename Char, the file path and name you want the plot to be saved to.
 #'  You may specify an extension to use. If you don't, the correct extension
 #'  will be added for you.
 #'@param caption_valign Char, align the caption text at the top or the bottom of
-#'  the available space between the title and gutter created by
-#'  \code{margin_v4}. This argument accepts abbreviations, too: \code{c("top",
-#'  "t", "bottom", "b")}. Note that \code{margin_v3} creates space above the
-#'  caption when it is aligned top, and below the caption when it is aligned
-#'  bottom.
+#'  the available space between the title and bottom of image. This argument
+#'  accepts abbreviations, too: \code{c("top", "t", "bottom", "b")}.
 #'@param fill_bg,fill_canvas Char, strings that represent colors R can
 #'  interpret. They are used to fill behind and around the finished plot,
 #'  respectively.
 #'@param overrides Named list, overrides the default drawing attributes defined
-#'  in \code{cmapplot_globals$plot_constants} which are drawn by
+#'  in \code{cmapplot_globals$consts} which are drawn by
 #'  \code{finalize_plot()} (this is most of them). Units are in bigpts (1/72 of
 #'  an inch).
+#'@param debug Bool, TRUE enables outlines around components of finalized plot.
+#'  Default = FALSE.
+#'@param legend_build Char, how the function attempts to build the legend.
+#'  \code{"adjust"}, the default, attempts to align the legend all the way left
+#'  (on top of the y axis labels) per CMAP design standards. \code{"safe"}
+#'  maintains the alignment used in the original plot.
+#'@param legend_bump Numeric, shift the legend left (positive) or right
+#'  (negative) this amount. Depending on system configuration, it may be
+#'  necessary to use this parameter to achieve exact left alignment (this can
+#'  most easily be tested using \code{debug = TRUE}). Expressed in bigpts.
+#'@param ... pass additional arguments to \code{ggplot2::theme()} to override any
+#'  elements of the default CMAP theme.
 #'
-#'@return If and only if \code{"object"} is one of the modes specified, a gTree
-#'  object is returned. gTree is an assembly of grobs, or graphical objects,
-#'  that can be drawn using the grid package.
+#'@return Exports from this function use Cairo graphics drivers, while drawing
+#'  within R is done with default (Windows) drivers. \code{mode = "object"} also
+#'  returns a gTree object that can be stored and drawn later with
+#'  \code{grid::grid.draw()}. Lines drawn by any \code{geom_line()} geoms
+#'  without line widths explicitly specified are assigned a thicker width
+#'  (specifically, \code{cmapplot_globals$consts$lwd_plotline}) in all outputs
+#'  except for when exporting as an object.
+#'
+#'@section Overrides: In the \code{overrides} argument, the user can modify
+#'  certain default constants that define certain plot aesthetics. Units of all
+#'  plot constants are "bigpts": 1/72 of an inch. Most plot constants (stored in
+#'  \code{cmapplot_globals$consts}) are used in this function, while the few
+#'  are used in \code{theme_cmap()}. For constants used in both functions, any
+#'  overrides specified in \code{theme_cmap()} must be specified again here.
+#'
+#'  \itemize{
+#'    \item \code{lwd_plotline}: The width of line graph lines.
+#'    \item \code{lwd_topline}: The width of the line above the plot and title.
+#'    \item \code{margin_topline_t}: The margin between the top edge of the
+#'    image and the top line.
+#'    \item \code{margin_title_t}: The margin between the top line and the
+#'    title.
+#'    \item \code{margin_title_b}: The margin between the title and the caption.
+#'    \item \code{margin_caption_b}: The margin between the bottom of the
+#'    caption and the bottom edge of the image.
+#'    \item \code{margin_legend_t}: The margin between the top line and the
+#'    plot box (i.e., the top of the legend).
+#'    \item \code{margin_legend_i}: The margin between legends (this only
+#'    applies in plots with two or more legends and does not affect legend
+#'    spacing on plots with single legends that have multiple rows).
+#'    \item \code{margin_legend_b}: The margin between the bottom of the legend
+#'    and the rest of the plot.
+#'    \item \code{margin_plot_b}: The margin between the bottom of the plot and
+#'    the bottom edge of the image.
+#'    \item \code{margin_title_l}: The margin between the left edge of the image
+#'    and the title. This also applies to the caption. Deducted from
+#'    \code{title_width}.
+#'    \item \code{margin_title_r}: The margin between the right edge of the
+#'    image and the title. This also applies to the caption. Deducted from
+#'    \code{title_width}.
+#'    \item \code{margin_plot_r}: The margin between the right edge of the plot
+#'    and the edge of the image.
+#'    \item \code{padding_plot}: A numeric vector of length 4 (top, right,
+#'    bottom, left) that creates padding between the plot and its drawing
+#'    extent.
+#'    \item \code{padding_legend}: A numeric vector of length 4 (top, right,
+#'    bottom, left) that creates padding around the margin. These numbers can be
+#'    negative to reduce space around the legend.
+#'    \item \code{legend_key_size}: The size of legend key elements.
+#'    \item \code{leading_title}: Text leading for Title text.
+#'    \item \code{leading_caption}: Text leading for Caption text.
+#'  }
 #'
 #'@importFrom utils modifyList
 #'@importFrom generics intersect
+#'@importFrom gridExtra arrangeGrob
+#'@importFrom ggpubr get_legend
 #'
 #'@examples
 #' \dontrun{
@@ -83,7 +130,7 @@
 #'                height = 6,
 #'                width = 8,
 #'                title_width = 2.5,
-#'                overrides = list(margin_h3 = 30))
+#'                overrides = list(margin_plot_r = 30))
 #'
 #' transit_plot <- transit_ridership %>%
 #'   mutate(system = case_when(
@@ -95,44 +142,51 @@
 #'   )) %>%
 #'   ggplot(aes(x = year, y = ridership, color = system)) +
 #'   geom_line() +
-#'   theme_cmap(max_columns = 3)
+#'   theme_cmap(legend.max.columns = 3)
 #'
 #' finalize_plot(transit_plot,
-#'                "Transit ridership in the RTA region over time, 1980-2019
-#'                (in millions).",
-#'                "Source: Chicago Metropolitan Agency for Planning
-#'                analysis of data from the Regional Transportation Authority.",
-#'                mode=c("plot", "pdf"),
-#'                filename = "foo",
-#'                overrides = list(margin_h3 = 10))
+#'               "Transit ridership in the RTA region over time, 1980-2019
+#'               (in millions)",
+#'               "Source: Chicago Metropolitan Agency for Planning
+#'               analysis of data from the Regional Transportation Authority",
+#'               mode=c("plot", "pdf"),
+#'               filename = "foo")
 #'}
 #'@export
-finalize_plot <- function(input_plot = NULL,
-                           title = "",
-                           caption = "",
-                           width = 670/72, # comms spec: 670px @ 72ppi
-                           height = 400/72, # comms spec: 400px @ 72ppi
-                           title_width = NULL, # if unspecified, default to width/4
-                           ppi = 300,
-                           mode = c("plot"),
-                           filename = "",
-                           caption_valign = c("top", "bottom"),
-                           fill_bg = "white",
-                           fill_canvas = "gray90",
-                           overrides = list()
-                           ){
+finalize_plot <- function(plot = NULL,
+                          title = "",
+                          caption = "",
+                          width = 670/72, # comms spec: 670px @ 72ppi
+                          height = 400/72, # comms spec: 400px @ 72ppi
+                          title_width = NULL, # if unspecified, default to width/4
+                          ppi = 300,
+                          mode = c("plot"),
+                          filename = "",
+                          caption_valign = c("top", "bottom"),
+                          fill_bg = "white",
+                          fill_canvas = "gray90",
+                          overrides = list(),
+                          debug = FALSE,
+                          legend_build = c("adjust", "safe", "none"),
+                          legend_bump = 0,
+                          ...
+                          ){
 
   # Validation and initialization -----------------------------
 
   # Seek last plot if user did not specify one
-  if (is.null(input_plot)) {
-    input_plot <- ggplot2::last_plot()
+  if (is.null(plot)) {
+    plot <- ggplot2::last_plot()
   }
 
   # Set title_width to 25% of total width if unspecified
   if (is.null(title_width)) {
     title_width <- width / 4
   }
+
+  # check args with default vectors
+  caption_valign <- match.arg(caption_valign)
+  legend_build <- match.arg(legend_build)
 
   # check mode argument and validate filename
   savetypes_raster <- c("png","tiff","jpeg","bmp")
@@ -152,24 +206,32 @@ finalize_plot <- function(input_plot = NULL,
   }
 
   # create list of plot constants, from globals unless overridden by user
-  plot_constants <- utils::modifyList(cmapplot_globals$plot_constants, overrides)
+  consts <- utils::modifyList(cmapplot_globals$consts, overrides)
 
-  # for brevity and unit consistency, add some extra constants to list
-  plot_constants <- append(
-    plot_constants,
+  # add various arguments to constants, with conversions where necessary
+  consts <- append(
+    consts,
     list(
-      margin_v1_v2 = plot_constants$margin_v1 + plot_constants$margin_v2,
       height = convertUnit(unit(height, "in"), "bigpts", valueOnly = TRUE),
       width = convertUnit(unit(width, "in"), "bigpts", valueOnly = TRUE),
-      title_width = convertUnit(unit(title_width, "in"), "bigpts", valueOnly = TRUE)
+      title_width = convertUnit(unit(title_width, "in"), "bigpts", valueOnly = TRUE),
+      legend_bump = legend_bump,
+      margin_title_to_top = consts$margin_topline_t + consts$margin_title_t
     )
   )
 
-  # check caption_valign
-  caption_valign <- match.arg(caption_valign)
+  # calculate the size of the plot box
+  consts <- append(
+    consts,
+    list(
+      plotbox_height = consts$height - consts$margin_topline_t -
+                         consts$margin_legend_t - consts$margin_plot_b,
+      plotbox_width =  consts$width - consts$title_width - consts$margin_plot_r
+    )
+  )
 
   # If title/caption unspecified, try to extract from plot
-  input_title <- input_plot$labels$title
+  input_title <- plot$labels$title
   if (title == "") {
     if(!is.null(input_title)) {
       title <- input_title
@@ -178,17 +240,51 @@ finalize_plot <- function(input_plot = NULL,
     }
   }
 
-  input_caption <- input_plot$labels$caption
+  input_caption <- plot$labels$caption
   if (caption == "" & !is.null(input_caption)) {
     caption <- input_caption
   }
+
+  # set outline color to black if debugging or transparent otherwise.
+  if(debug){ debug_color = "red" } else { debug_color = NA }
 
   # Size conversion for line widths in line graphs
   default_lwd <- ggplot2::GeomLine$default_aes$size
   ggplot2::update_geom_defaults(
     geom = "line",
-    new = list(size = ggplot_size_conversion(plot_constants$lwd_plotline))
+    new = list(size = ggplot_size_conversion(consts$lwd_plotline))
     )
+
+  # preformat plot
+  plot <- plot + ggplot2::theme(
+    # **FONT SIZE ADJUSTMENT IS NECESSARY BUT NOT UNDERSTOOD**
+    text = ggplot2::element_text(size = cmapplot_globals$font$main$size * 1.25),
+    # remove any in-plot titles
+    plot.title = element_blank(),
+    plot.caption = element_blank(),
+    # re-apply plot and legend margins, so they can be adjusted in
+    # `overrides` argument of this function
+    plot.margin = grid::unit(consts$padding_plot,"bigpts"),
+    legend.margin = margin(t = consts$padding_legend[1],
+                           r = consts$padding_legend[2],
+                           b = consts$padding_legend[3],
+                           l = consts$padding_legend[4] + consts$legend_bump,
+                           "bigpts"),
+    # re-apply legend key size for `overrides`
+    legend.key.size = grid::unit(consts$legend_key_size,"bigpts"),
+    # apply any extra `ggplot2::theme()` args
+    ...
+  )
+
+  # draw boxes around plot elements in debug mode
+  if(debug){
+    plot <- plot + ggplot2::theme(
+      legend.background = element_rect(color = debug_color, fill = NA),
+      legend.box.background = element_rect(color = debug_color, fill = NA),
+      plot.background = element_rect(color = debug_color, fill = NA)
+    )
+  }
+
 
   # Build necessary viewports -----------------------------------------------------
 
@@ -196,22 +292,20 @@ finalize_plot <- function(input_plot = NULL,
   vp.centerframe <- grid::viewport(
     name = "vp.centerframe",
     default.units = "bigpts",
-    width = plot_constants$width,
-    height = plot_constants$height,
+    width = consts$width,
+    height = consts$height,
     clip = "on"
   )
 
-  # create viewport for plot
-  vp.plot <- grid::viewport(
-    name = "vp.plot",
-    default.units = "bigpts",
-    # origin shifted over from 0,0 of parent vp per spec
-    x = plot_constants$title_width,
-    y = plot_constants$margin_v4,
+  # create plotbox viewport
+  vp.plotbox <- grid::viewport(
+    name = "vp.plotbox",
+    x = consts$title_width,
+    y = consts$margin_plot_b,
     just = c(0,0),
-    # size is function of remaining size available
-    width = plot_constants$width - plot_constants$title_width - plot_constants$margin_h3,
-    height = plot_constants$height - plot_constants$margin_v1_v2 - plot_constants$margin_v4,
+    default.units = "bigpts",
+    height = consts$plotbox_height,
+    width = consts$plotbox_width,
     clip = "on"
   )
 
@@ -235,11 +329,11 @@ finalize_plot <- function(input_plot = NULL,
   grob_topline <- grid::linesGrob(
     name = "topline",
     default.units = "bigpts",
-    x = c(0, plot_constants$width),
-    y = plot_constants$height - plot_constants$margin_v1,
+    x = c(0, consts$width),
+    y = consts$height - consts$margin_topline_t,
     gp = grid::gpar(col = cmapplot_globals$colors$blackish,
                     lineend = "butt",
-                    lwd = plot_constants$lwd_topline)
+                    lwd = consts$lwd_topline)
   )
 
   # title textbox (ROOT vp)
@@ -249,88 +343,68 @@ finalize_plot <- function(input_plot = NULL,
     default.units = "bigpts",
     # set location down from top left corner
     x = 0,
-    y = plot_constants$height - plot_constants$margin_v1_v2,
+    y = consts$height - consts$margin_title_to_top,
     hjust = 0,
     vjust = 1,
     # set dimensions
-    width = plot_constants$title_width,
-    maxheight = plot_constants$height - plot_constants$margin_v1_v2,
-    # set margins within textbox
-    padding = grid::unit(c(0,                        # top
-                           plot_constants$margin_h2, # right
-                           0,                        # bottom
-                           plot_constants$margin_h1),# left
-                         "bigpts"),
+    width = consts$title_width,
+    maxheight = consts$height - consts$margin_title_to_top - consts$margin_title_b,
+    # retract texbox size on left and right
+    margin = grid::unit(c(0,                     # top
+                          consts$margin_title_r, # right
+                          0,                     # bottom
+                          consts$margin_title_l),# left
+                          "bigpts"),
     # set font aesthetic variables
     gp = grid::gpar(fontsize=cmapplot_globals$font$title$size,
                     fontfamily=cmapplot_globals$font$title$family,
                     fontface=cmapplot_globals$font$title$face,
-                    lineheight=plot_constants$leading_title,
-                    col=cmapplot_globals$colors$blackish)
+                    lineheight=consts$leading_title,
+                    col=cmapplot_globals$colors$blackish),
+    box_gp = grid::gpar(col = debug_color,
+                        fill = NA)
   )
-
-  # set caption textbox alignment options
-  if(caption_valign == "top"){
-    captionvars <- list(
-      y = grid::unit(plot_constants$height - plot_constants$margin_v1_v2, "bigpts") - grid::grobHeight(grob_title),
-      vjust = 1,
-      maxheight = grid::unit(plot_constants$height - plot_constants$margin_v1_v2, "bigpts") - grid::grobHeight(grob_title),
-      padding_top = plot_constants$margin_v3,
-      padding_bottom = 0
-    )
-  } else {
-    captionvars <- list(
-      y = plot_constants$margin_v4,
-      vjust = 0,
-      maxheight = plot_constants$height - plot_constants$margin_v1_v2,
-      padding_top = 0,
-      padding_bottom = plot_constants$margin_v3
-    )
-  }
 
   # caption textbox (ROOT vp)
   grob_caption <- gridtext::textbox_grob(
     name = "caption",
     text = caption,
     default.units = "bigpts",
-    # set location down from top left corner
+    # set location
     x = 0,
-    y = captionvars$y,
+    y = 0,
     hjust = 0,
-    vjust = captionvars$vjust,
+    vjust = 0,
     # set dimensions
-    width = plot_constants$title_width,
-    maxheight = captionvars$maxheight,
-    # set margins within textbox
-    padding = grid::unit(c(captionvars$padding_top,   # top
-                           plot_constants$margin_h2,  # right
-                           captionvars$padding_bottom,# bottom
-                           plot_constants$margin_h1), # left
-                         "bigpts"),
+    width = consts$title_width,
+    height = grid::unit(consts$height - consts$margin_title_to_top, "bigpts") - grid::grobHeight(grob_title),
+    # retract texbox size on each side
+    margin = grid::unit(c(consts$margin_title_b,  # top
+                          consts$margin_title_r,  # right
+                          consts$margin_caption_b,# bottom
+                          consts$margin_title_l), # left
+                        "bigpts"),
     # set aesthetic variables
+    valign = if(caption_valign == "top"){ 1 } else { 0 },
     gp = grid::gpar(fontsize = cmapplot_globals$font$note$size,
                     fontfamily = cmapplot_globals$font$note$family,
                     fontface = cmapplot_globals$font$note$face,
-                    lineheight = plot_constants$leading_caption,
-                    col = cmapplot_globals$colors$blackish)
+                    lineheight = consts$leading_caption,
+                    col = cmapplot_globals$colors$blackish),
+    box_gp = grid::gpar(col = debug_color,
+                        fill = NA)
   )
 
-  # ggplot as grob (vp.plot)
+  # ggplot as grob (vp.plotbox)
   grob_plot <- grid::grobTree(
-    ggplotGrob(
-      input_plot + ggplot2::theme(
-        # make sure the plot has no title or caption
-        plot.title = ggplot2::element_blank(),
-        plot.caption = ggplot2::element_blank(),
-        # add margins
-        plot.margin = unit(plot_constants$padding_plot, "bigpts"),
-        # modify text sizing. **THIS MODIFICATION IS NEEDED BUT NOT UNDERSTOOD**
-        text = ggplot2::element_text(size = cmapplot_globals$font$main$size * 1.25)
-      )
-    ),
-    vp = vp.plot,
+    # Use helper function to develop full stack of legend, buffer, and plot
+    buildChart(plot = plot,
+               consts = consts,
+               legend_build = legend_build),
+    vp = vp.plotbox,
     name = "plot"
   )
+
 
   # Assemble final plot -----------------------------------------------------
 
@@ -433,4 +507,78 @@ finalize_plot <- function(input_plot = NULL,
   if("object" %in% mode){
     return(final_plot)
   }
+}
+
+
+
+#' @noRd
+# Function to create plot object with left aligned legend on top
+buildChart <- function(plot,
+                       consts,
+                       legend_build) {
+
+  # in safe mode, don't extract legend
+  if(legend_build == "safe"){
+    output_plot <- plot + theme(
+      legend.spacing.y = grid::unit(consts$margin_legend_i, "bigpts"))
+    return(ggplotGrob(output_plot))
+  }
+
+  # in no legend mode, remove legend altogether
+  if(legend_build == "none"){
+    output_plot <- plot + theme(legend.position = "none")
+    return(ggplotGrob(output_plot))
+  }
+
+  # In "adjust" mode...
+
+  # Extract the legend
+  legend <- ggpubr::get_legend(plot)
+
+  # count the total number of "heights" in the legend (5 is standard for one
+  # legend, with each additional legend adding two additional height elements to
+  # the total). Use this to determine the number of legends in the plot.
+
+  number_of_legends <- (length(legend$heights) - 3) / 2
+
+  # If multilegend plot (i.e., if legend_total >= 7), replace interior margins
+  # with overrides if called. For a plot with n legends, there are n - 1
+  # interior margins. These are the 4th legend height element and every second
+  # one beyond that, up to the 4th-to-last legend height element.
+
+  # determine if multilegend plot
+  if (number_of_legends > 1) {
+    # if multilegend plot, establish loop to change margins
+    for (i in 1:(number_of_legends-1)) {
+      margin_index <- 2*(i+1) # e.g., for a 2-legend item, this modifies element 4
+      legend$heights[[margin_index]] <- grid::unit(consts$margin_legend_i,"bigpts")
+    }
+  }
+
+  # extract height of legend object within ggplot plot. For plots with only one
+  # legend, this returns the 3rd element, which is the height of the legend
+  # component. For plots with two or more, it returns the sum of the heights of
+  # every element from the third element to the third-to-last element, which
+  # includes both text/key heights and buffers between legends)
+  legend_height <- grid::convertUnit(sum(legend$heights[3:(3 + number_of_legends * 2)]),
+                                     "bigpts",
+                                     valueOnly = TRUE)
+
+  # calculate the height remaining for the plot
+  plot_height <- consts$plotbox_height - legend_height - consts$margin_legend_b
+
+  # Assemble a combined grob
+  built <- gridExtra::arrangeGrob(
+    legend,
+    grid::rectGrob(gp = grid::gpar(col = NA, fill = NA)),
+    ggplotGrob(plot + ggplot2::theme(legend.position = "none")),
+    nrow = 3,
+    heights = grid::unit(c(legend_height,
+                           consts$margin_legend_b,
+                           plot_height),
+                         "bigpts")
+  )
+
+  # return the combined grob
+  return(built)
 }

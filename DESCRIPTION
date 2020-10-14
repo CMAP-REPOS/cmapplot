@@ -36,10 +36,12 @@ Depends:
 Imports:
     dplyr,
     generics,
+    ggpubr,
     glue,
     graphics,
     grDevices,
     grid,
+    gridExtra,
     gridtext,
     lubridate,
     magrittr,
@@ -47,9 +49,9 @@ Imports:
     scales,
     sysfonts
 Suggests:
-    testthat,
     knitr,
     rmarkdown,
+    testthat,
     tidyverse
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr

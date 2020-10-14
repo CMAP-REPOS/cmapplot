@@ -1,6 +1,11 @@
 
 # cmapplot <img src="man/figures/logo.png" align="right" alt="" width="128" />
 
+![R build
+status](https://github.com/CMAP-REPOS/cmapplot/workflows/R-CMD-check/badge.svg)
+![pkgdown build
+status](https://github.com/CMAP-REPOS/cmapplot/workflows/pkgdown/badge.svg)
+
 This R package provides themes and color scales for
 [ggplot2](https://github.com/tidyverse/ggplot2), based on Chicago
 Metropolitan Agency for Planning (CMAP) design guidelines.
