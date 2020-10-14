@@ -146,8 +146,6 @@ theme_cmap <- function(
         "bigpts"),
       legend.box.spacing =             # space between legend box and plot
         grid::unit(consts$margin_legend_b, "bigpts"),
-      legend.box.margin =              # space between top of image and top of legend
-        margin(t = 5, unit = "bigpts"),
       legend.key.size =                # size of the legend key element
         grid::unit(consts$legend_key_size, "bigpts"),
 
@@ -160,10 +158,10 @@ theme_cmap <- function(
       axis.line = ggplot2::element_blank(),
 
       # panel placement
-      plot.margin = ggplot2::margin(consts$padding_plot[1],
-                                    consts$padding_plot[2],
-                                    consts$padding_plot[3] + consts$margin_plot_b,
-                                    consts$padding_plot[4],
+      plot.margin = ggplot2::margin(consts$padding_plot[1] + 5,
+                                    consts$padding_plot[2] + 5,
+                                    consts$padding_plot[3] + 5,
+                                    consts$padding_plot[4] + 5,
                                     "bigpts"),
 
       # Blank background

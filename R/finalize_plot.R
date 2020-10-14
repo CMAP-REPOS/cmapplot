@@ -262,9 +262,6 @@ finalize_plot <- function(plot = NULL,
     # remove any in-plot titles
     plot.title = element_blank(),
     plot.caption = element_blank(),
-    # remove the above-legend spacing applied in theme_cmap()
-    # (this is now applied outside of the viewport)
-    legend.box.margin = margin(t = 0),
     # re-apply plot and legend margins, so they can be adjusted in
     # `overrides` argument of this function
     plot.margin = grid::unit(consts$padding_plot,"bigpts"),
