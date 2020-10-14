@@ -142,8 +142,16 @@ plot area in accordance with CMAP design standards." />
 plot area in accordance with CMAP design standards.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>theme_cmap</span><span class='op'>(</span>xlab <span class='op'>=</span> <span class='cn'>NULL</span>, ylab <span class='op'>=</span> <span class='cn'>NULL</span>, hline <span class='op'>=</span> <span class='cn'>NULL</span>, vline <span class='op'>=</span> <span class='cn'>NULL</span>,
- gridlines <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"h"</span>, <span class='st'>"v"</span>, <span class='st'>"hv"</span>, <span class='st'>"none"</span><span class='op'>)</span>, max_columns <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>theme_cmap</span><span class='op'>(</span>
+  xlab <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ylab <span class='op'>=</span> <span class='cn'>NULL</span>,
+  hline <span class='op'>=</span> <span class='cn'>NULL</span>,
+  vline <span class='op'>=</span> <span class='cn'>NULL</span>,
+  gridlines <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"h"</span>, <span class='st'>"v"</span>, <span class='st'>"hv"</span>, <span class='st'>"none"</span><span class='op'>)</span>,
+  legend.max.columns <span class='op'>=</span> <span class='cn'>NULL</span>,
+  overrides <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -167,17 +175,56 @@ will be masked. Acceptable values are "h" (horizontal only), "v" (vertical
 only), "hv" (both horizontal and vertical), and "none" (neither).</p></td>
     </tr>
     <tr>
-      <th>max_columns</th>
-      <td><p>Integer, the maximum number of columns in the legend. If no
-value is set, the chart will rely on `ggplot`'s default and automatic column
-handling behavior, which should work for most cases. Manual adjustment may
-be required if legend entries are particularly numerous and/or lengthy. Note
-that `ggplot` will still auto-adjust in ways that may mean the total number
-of columns is less than the maximum (e.g., if there are five items in a
-legend with four columns as the maximum, the output will be one row of three
-and another row of two).</p></td>
+      <th>legend.max.columns</th>
+      <td><p>Integer, the maximum number of columns in the
+legend. If no value is set, the chart will rely on `ggplot`'s default and
+automatic column handling behavior, which should work for most cases. Manual
+adjustment may be required if legend entries are particularly numerous
+and/or lengthy. Note that `ggplot` will still auto-adjust in ways that may
+mean the total number of columns is less than the maximum (e.g., if there
+are five items in a legend with four columns as the maximum, the output will
+be one row of three and another row of two).</p></td>
+    </tr>
+    <tr>
+      <th>overrides</th>
+      <td><p>Named list, overrides the default drawing attributes defined
+in <code>cmapplot_globals$consts</code> which are drawn by
+<code>theme_cmap()</code> (only a few of them). Units are in bigpts (1/72 of an
+inch).</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>pass additional arguments to <code><a href='https://ggplot2.tidyverse.org/reference/theme.html'>ggplot2::theme()</a></code> to override
+any elements of the default CMAP theme.</p></td>
     </tr>
     </table>
+
+    <h2 class="hasAnchor" id="overrides"><a class="anchor" href="#overrides"></a>Overrides</h2>
+
+    <p>In the <code>overrides</code> argument, the user can modify
+ the default constants that define certain plot aesthetics. Units of all
+ plot constants are "bigpts": 1/72 of an inch. Most plot constants (stored in
+ <code>cmapplot_globals$consts</code>) are used in <code><a href='finalize_plot.html'>finalize_plot()</a></code>,
+ but a few are used in this function. Overrides with astirisks are not
+ "sticky" -- they will need to be re-specified in <code>finalize_plot</code>.</p>
+<p></p><ul>
+<li><p><code>lwd_originline</code>: the width of any origin lines drawn by
+   <code>hline</code> or <code>vline</code>.</p></li>
+<li><p><code>lwd_gridline</code>: the width of gridlines in the plot, if drawn by
+   <code>gridlines</code>.</p></li>
+<li><p><code>margin_legend_i</code>*: The margin between legends (this only
+   applies in plots with two or more legends and does not affect legend
+   spacing on plots with single legends that have multiple rows).</p></li>
+<li><p><code>margin_legend_b</code>*: The margin between the bottom of the legend
+   and the rest of the plot.</p></li>
+<li><p><code>legend_key_size</code>*: The size of legend key elements.</p></li>
+<li><p><code>padding_plot</code>*: A numeric vector of length 4 (top, right,
+   bottom, left) that creates padding between the plot and its drawing
+   extent.</p></li>
+<li><p><code>padding_legend</code>*: A numeric vector of length 4 (top, right,
+   bottom, left) that creates padding around the margin. These numbers can be
+   negative to reduce space around the legend.</p></li>
+</ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

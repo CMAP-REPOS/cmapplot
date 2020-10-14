@@ -148,24 +148,39 @@ export it as a raster or vector file. This function will not apply CMAP design
 standards to the plot itself: use with <code><a href='theme_cmap.html'>theme_cmap()</a></code> for that.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>finalize_plot</span><span class='op'>(</span>input_plot <span class='op'>=</span> <span class='cn'>NULL</span>, title <span class='op'>=</span> <span class='st'>""</span>, caption <span class='op'>=</span> <span class='st'>""</span>, width <span class='op'>=</span>
- <span class='fl'>670</span><span class='op'>/</span><span class='fl'>72</span>, height <span class='op'>=</span> <span class='fl'>400</span><span class='op'>/</span><span class='fl'>72</span>, title_width <span class='op'>=</span> <span class='cn'>NULL</span>, ppi <span class='op'>=</span> <span class='fl'>300</span>, mode <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"plot"</span><span class='op'>)</span>,
- filename <span class='op'>=</span> <span class='st'>""</span>, caption_valign <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"top"</span>, <span class='st'>"bottom"</span><span class='op'>)</span>, fill_bg <span class='op'>=</span> <span class='st'>"white"</span>,
- fill_canvas <span class='op'>=</span> <span class='st'>"gray90"</span>, overrides <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>finalize_plot</span><span class='op'>(</span>
+  plot <span class='op'>=</span> <span class='cn'>NULL</span>,
+  title <span class='op'>=</span> <span class='st'>""</span>,
+  caption <span class='op'>=</span> <span class='st'>""</span>,
+  width <span class='op'>=</span> <span class='fl'>670</span><span class='op'>/</span><span class='fl'>72</span>,
+  height <span class='op'>=</span> <span class='fl'>400</span><span class='op'>/</span><span class='fl'>72</span>,
+  title_width <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ppi <span class='op'>=</span> <span class='fl'>300</span>,
+  mode <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"plot"</span><span class='op'>)</span>,
+  filename <span class='op'>=</span> <span class='st'>""</span>,
+  caption_valign <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"top"</span>, <span class='st'>"bottom"</span><span class='op'>)</span>,
+  fill_bg <span class='op'>=</span> <span class='st'>"white"</span>,
+  fill_canvas <span class='op'>=</span> <span class='st'>"gray90"</span>,
+  overrides <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  debug <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  legend_build <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"adjust"</span>, <span class='st'>"safe"</span>, <span class='st'>"none"</span><span class='op'>)</span>,
+  legend_bump <span class='op'>=</span> <span class='fl'>0</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>input_plot</th>
-      <td><p>ggplot object, the variable name of the plot you have
-created that you want to finalize. If null (the default), the most recent
-plot will be retrieved via <code><a href='https://ggplot2.tidyverse.org/reference/last_plot.html'>ggplot2::last_plot()</a></code>.</p></td>
+      <th>plot</th>
+      <td><p>ggplot object, the variable name of the plot you have created that
+you want to finalize. If null (the default), the most recent plot will be
+retrieved via <code><a href='https://ggplot2.tidyverse.org/reference/last_plot.html'>ggplot2::last_plot()</a></code>.</p></td>
     </tr>
     <tr>
       <th>title, caption</th>
       <td><p>Char, the text you want to appear in the title and
-caption blocks. If empty, any non-Null values from <code>input_plot</code> will be
+caption blocks. If empty, any non-Null values from <code>plot</code> will be
 retrieved. These blocks take html formatting, so manual text breaks can be
 created with <code>&lt;br&gt;</code> and formatting can be changed with <code>&lt;span&gt;</code>.</p></td>
     </tr>
@@ -192,7 +207,7 @@ Default = 300.</p></td>
       <td><p>Vector, the action(s) to be taken with the plot. Save using any of
 the following: <code>png</code>, <code>tiff</code>, <code>jpeg</code>, <code>bmp</code>, <code>svg</code>,
 <code>pdf</code>, <code>ps</code>. View in R with: <code>plot</code>, <code>window</code> (`window`
-currently works on computers running Windows). Return an object with
+currently works only on computers running Windows). Return an object with
 <code>object</code>.</p></td>
     </tr>
     <tr>
@@ -204,11 +219,8 @@ will be added for you.</p></td>
     <tr>
       <th>caption_valign</th>
       <td><p>Char, align the caption text at the top or the bottom of
-the available space between the title and gutter created by
-<code>margin_v4</code>. This argument accepts abbreviations, too: <code><a href='https://rdrr.io/r/base/c.html'>c("top",
-"t", "bottom", "b")</a></code>. Note that <code>margin_v3</code> creates space above the
-caption when it is aligned top, and below the caption when it is aligned
-bottom.</p></td>
+the available space between the title and bottom of image. This argument
+accepts abbreviations, too: <code><a href='https://rdrr.io/r/base/c.html'>c("top", "t", "bottom", "b")</a></code>.</p></td>
     </tr>
     <tr>
       <th>fill_bg, fill_canvas</th>
@@ -219,26 +231,91 @@ respectively.</p></td>
     <tr>
       <th>overrides</th>
       <td><p>Named list, overrides the default drawing attributes defined
-in <code>cmapplot_globals$plot_constants</code> which are drawn by
+in <code>cmapplot_globals$consts</code> which are drawn by
 <code>finalize_plot()</code> (this is most of them). Units are in bigpts (1/72 of
 an inch).</p></td>
+    </tr>
+    <tr>
+      <th>debug</th>
+      <td><p>Bool, TRUE enables outlines around components of finalized plot.
+Default = FALSE.</p></td>
+    </tr>
+    <tr>
+      <th>legend_build</th>
+      <td><p>Char, how the function attempts to build the legend.
+<code>"adjust"</code>, the default, attempts to align the legend all the way left
+(on top of the y axis labels) per CMAP design standards. <code>"safe"</code>
+maintains the alignment used in the original plot.</p></td>
+    </tr>
+    <tr>
+      <th>legend_bump</th>
+      <td><p>Numeric, shift the legend left (positive) or right
+(negative) this amount. Depending on system configuration, it may be
+necessary to use this parameter to achieve exact left alignment (this can
+most easily be tested using <code>debug = TRUE</code>). Expressed in bigpts.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>pass additional arguments to <code><a href='https://ggplot2.tidyverse.org/reference/theme.html'>ggplot2::theme()</a></code> to override any
+elements of the default CMAP theme.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>If and only if <code>"object"</code> is one of the modes specified, a gTree
- object is returned. gTree is an assembly of grobs, or graphical objects,
- that can be drawn using the grid package.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <p>Exports from this function use Cairo graphics drivers, while drawing
+ within R is done with default (Windows) drivers. <code>mode = "object"</code> also
+ returns a gTree object that can be stored and drawn later with
+ <code><a href='https://rdrr.io/r/grid/grid.draw.html'>grid::grid.draw()</a></code>. Lines drawn by any <code>geom_line()</code> geoms
+ without line widths explicitly specified are assigned a thicker width
+ (specifically, <code>cmapplot_globals$consts$lwd_plotline</code>) in all outputs
+ except for when exporting as an object.</p>
+    <h2 class="hasAnchor" id="overrides"><a class="anchor" href="#overrides"></a>Overrides</h2>
 
-    <p>Exports from this function use Cairo graphics drivers, while drawing within R
-is done with default (Windows) drivers. <code>mode = "object"</code> also returns a
-gTree object that can be stored and drawn later with <code><a href='https://rdrr.io/r/grid/grid.draw.html'>grid::grid.draw()</a></code>.
-Lines drawn by any <code>geom_line()</code> geoms without line widths explicitly
-specified are assigned a thicker width (specifically,
-<code>cmapplot_globals$plot_constants$lwd_plotline</code>) in all outputs except for
-when exporting as an object.</p>
+    <p>In the <code>overrides</code> argument, the user can modify
+ certain default constants that define certain plot aesthetics. Units of all
+ plot constants are "bigpts": 1/72 of an inch. Most plot constants (stored in
+ <code>cmapplot_globals$consts</code>) are used in this function, while the few
+ are used in <code><a href='theme_cmap.html'>theme_cmap()</a></code>. For constants used in both functions, any
+ overrides specified in <code><a href='theme_cmap.html'>theme_cmap()</a></code> must be specified again here.</p>
+<p></p><ul>
+<li><p><code>lwd_plotline</code>: The width of line graph lines.</p></li>
+<li><p><code>lwd_topline</code>: The width of the line above the plot and title.</p></li>
+<li><p><code>margin_topline_t</code>: The margin between the top edge of the
+   image and the top line.</p></li>
+<li><p><code>margin_title_t</code>: The margin between the top line and the
+   title.</p></li>
+<li><p><code>margin_title_b</code>: The margin between the title and the caption.</p></li>
+<li><p><code>margin_caption_b</code>: The margin between the bottom of the
+   caption and the bottom edge of the image.</p></li>
+<li><p><code>margin_legend_t</code>: The margin between the top line and the
+   plot box (i.e., the top of the legend).</p></li>
+<li><p><code>margin_legend_i</code>: The margin between legends (this only
+   applies in plots with two or more legends and does not affect legend
+   spacing on plots with single legends that have multiple rows).</p></li>
+<li><p><code>margin_legend_b</code>: The margin between the bottom of the legend
+   and the rest of the plot.</p></li>
+<li><p><code>margin_plot_b</code>: The margin between the bottom of the plot and
+   the bottom edge of the image.</p></li>
+<li><p><code>margin_title_l</code>: The margin between the left edge of the image
+   and the title. This also applies to the caption. Deducted from
+   <code>title_width</code>.</p></li>
+<li><p><code>margin_title_r</code>: The margin between the right edge of the
+   image and the title. This also applies to the caption. Deducted from
+   <code>title_width</code>.</p></li>
+<li><p><code>margin_plot_r</code>: The margin between the right edge of the plot
+   and the edge of the image.</p></li>
+<li><p><code>padding_plot</code>: A numeric vector of length 4 (top, right,
+   bottom, left) that creates padding between the plot and its drawing
+   extent.</p></li>
+<li><p><code>padding_legend</code>: A numeric vector of length 4 (top, right,
+   bottom, left) that creates padding around the margin. These numbers can be
+   negative to reduce space around the legend.</p></li>
+<li><p><code>legend_key_size</code>: The size of legend key elements.</p></li>
+<li><p><code>leading_title</code>: Text leading for Title text.</p></li>
+<li><p><code>leading_caption</code>: Text leading for Caption text.</p></li>
+</ul>
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
@@ -259,7 +336,7 @@ when exporting as an object.</p>
                height <span class='op'>=</span> <span class='fl'>6</span>,
                width <span class='op'>=</span> <span class='fl'>8</span>,
                title_width <span class='op'>=</span> <span class='fl'>2.5</span>,
-               overrides <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>margin_h3 <span class='op'>=</span> <span class='fl'>30</span><span class='op'>)</span><span class='op'>)</span>
+               overrides <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>margin_plot_r <span class='op'>=</span> <span class='fl'>30</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='va'>transit_plot</span> <span class='op'>&lt;-</span> <span class='va'>transit_ridership</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>system <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span>
@@ -271,16 +348,15 @@ when exporting as an object.</p>
   <span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>year</span>, y <span class='op'>=</span> <span class='va'>ridership</span>, color <span class='op'>=</span> <span class='va'>system</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'>geom_line</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='theme_cmap.html'>theme_cmap</a></span><span class='op'>(</span>max_columns <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
+  <span class='fu'><a href='theme_cmap.html'>theme_cmap</a></span><span class='op'>(</span>legend.max.columns <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
 
 <span class='fu'>finalize_plot</span><span class='op'>(</span><span class='va'>transit_plot</span>,
-               <span class='st'>"Transit ridership in the RTA region over time, 1980-2019
-               (in millions)."</span>,
-               <span class='st'>"Source: Chicago Metropolitan Agency for Planning
-               analysis of data from the Regional Transportation Authority."</span>,
-               mode<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"plot"</span>, <span class='st'>"pdf"</span><span class='op'>)</span>,
-               filename <span class='op'>=</span> <span class='st'>"foo"</span>,
-               overrides <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>margin_h3 <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>
+              <span class='st'>"Transit ridership in the RTA region over time, 1980-2019
+              (in millions)"</span>,
+              <span class='st'>"Source: Chicago Metropolitan Agency for Planning
+              analysis of data from the Regional Transportation Authority"</span>,
+              mode<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"plot"</span>, <span class='st'>"pdf"</span><span class='op'>)</span>,
+              filename <span class='op'>=</span> <span class='st'>"foo"</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div></pre>
   </div>
