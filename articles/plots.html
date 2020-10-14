@@ -99,7 +99,7 @@
 
     
     
-<p>For testing, the <code>cmapplot</code> package contains a variety of sample datasets. Each dataset has a man file that can be queried for additional details. Datasets currently included are:</p>
+<p>For testing, the cmapplot package contains a variety of sample datasets. Each dataset has a man file that can be queried for additional details. Datasets currently included are:</p>
 <p>The following provided code uses the sample datasets to produce publishable or near-publishable graphics:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="co"># A bar chart</span>
@@ -108,7 +108,7 @@
   <span class="fu">coord_flip</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span></pre></div>
-<p><img src="plots_files/figure-html/bars-1.png" width="700"></p>
+<p><img src="plots_files/figure-html/bars-1.png" width="672" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="co"># a stacked bar chart</span>
 <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">traded_emp_by_race</span>, <span class="va">variable</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"SpecializedTraded"</span>, <span class="st">"UnspecializedTraded"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -117,7 +117,7 @@
   <span class="fu">scale_y_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org//reference/label_percent.html">percent</a></span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span></pre></div>
-<p><img src="plots_files/figure-html/stackedbars1-1.png" width="700"></p>
+<p><img src="plots_files/figure-html/stackedbars1-1.png" width="672" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="co"># a grouped and stacked bar chart (via `interaction()`)</span>
 <span class="fu">ggplot</span><span class="op">(</span><span class="va">pop_and_laborforce_by_age</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/interaction.html">interaction</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">variable</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">value</span>, fill <span class="op">=</span> <span class="va">age</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
@@ -125,7 +125,7 @@
   <span class="fu">coord_flip</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span></pre></div>
-<p><img src="plots_files/figure-html/stackedbars2-1.png" width="700"></p>
+<p><img src="plots_files/figure-html/stackedbars2-1.png" width="672" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
 <span class="co"># a grouped and stacked bar chart (via `interaction()`)</span>
 <span class="fu">ggplot</span><span class="op">(</span><span class="va">economy_basic</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/interaction.html">interaction</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">variable</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">value</span>, fill <span class="op">=</span> <span class="va">sector</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
@@ -134,7 +134,7 @@
   <span class="fu">coord_flip</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span></pre></div>
-<p><img src="plots_files/figure-html/stackedbars3-1.png" width="700"></p>
+<p><img src="plots_files/figure-html/stackedbars3-1.png" width="672" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="co"># a non-time-series line chart</span>
 <span class="fu">ggplot</span><span class="op">(</span><span class="va">percentile_wages</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">percentile</span>, y <span class="op">=</span> <span class="va">wage</span>, color <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
@@ -142,7 +142,7 @@
   <span class="fu">scale_y_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org//reference/label_dollar.html">dollar</a></span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span></pre></div>
-<p><img src="plots_files/figure-html/lines1-1.png" width="700"></p>
+<p><img src="plots_files/figure-html/lines1-1.png" width="672" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
 <span class="co"># a time-series line chart</span>
 <span class="fu">ggplot</span><span class="op">(</span><span class="va">grp_over_time</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">realgrp</span>, color <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
@@ -153,7 +153,7 @@
              color <span class="op">=</span> <span class="st">"black"</span>,
              size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
 <span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span></pre></div>
-<p><img src="plots_files/figure-html/lines2-1.png" width="700"></p>
+<p><img src="plots_files/figure-html/lines2-1.png" width="672" style="display: block; margin: auto;"></p>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
