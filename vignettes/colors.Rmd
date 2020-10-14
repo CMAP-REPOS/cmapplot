@@ -10,7 +10,11 @@ vignette: >
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.width = 7,
+  fig.asp = 400/670,
+  fig.retina = 4,
+  fig.align = "center"
 )
 
 library(tidyverse)
@@ -22,7 +26,7 @@ Palettes based on the CMAP color palette can be applied directly to ggplot graph
 
 ## Discrete palettes
 
-Add discrete palettes by adding either a `cmap_fill_discrete` or `cmap_color_discrete` object to a ggplot. Note that discrete palettes will automatically interpolate additional colors if the dataset has more colors than the palette. This can be helpful but is not ideal for finished graphics.
+Add discrete palettes by adding either the `cmap_fill_discrete()` or `cmap_color_discrete()` function to your plot construction. Note that discrete palettes will automatically interpolate additional colors if the dataset has more colors than the palette. This can be helpful but is not ideal for finished graphics.
 
 ```{r disc, eval=TRUE}
 ggplot(percentile_wages, aes(x = percentile, y = wage, color = cluster)) +
@@ -34,14 +38,14 @@ ggplot(percentile_wages, aes(x = percentile, y = wage, color = cluster)) +
 
 The following gradients are available:
 
-```{r pal, echo=FALSE, out.height="40%", out.width="50%"}
+```{r pal, echo=FALSE, out.width="60%"}
 walk2(cmap_palettes, names(cmap_palettes), viz_palette)
 ```
 
 
 ## Continuous palettes
 
-Add continuous palettes by adding either a `cmap_fill_continuous` or `cmap_color_continuous` object to a ggplot. For example:
+Add continuous palettes by adding either the `cmap_fill_continuous()` or `cmap_color_continuous()` function to your plot construction. For example:
 
 ```{r cont, eval=TRUE}
 percentile_wages %>%
@@ -56,7 +60,7 @@ percentile_wages %>%
 
 ### Sequential gradients (single- and multi-hue)
 
-```{r seq, echo=FALSE, out.height="40%", out.width="50%"}
+```{r seq, echo=FALSE, out.width="60%"}
 cmap_gradients %>%
   keep(str_detect(names(.), "^seq")) %>%
   walk2(., names(.), viz_gradient)
@@ -64,7 +68,7 @@ cmap_gradients %>%
 
 ### Diverging gradients
 
-```{r div, echo=FALSE, out.height="40%", out.width="50%"}
+```{r div, echo=FALSE, out.width="60%"}
 cmap_gradients %>%
   keep(str_detect(names(.), "^div")) %>%
   walk2(., names(.), viz_gradient)
