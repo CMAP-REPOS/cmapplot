@@ -93,17 +93,18 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#cmapplot-" class="anchor"></a>cmapplot <img src="reference/figures/logo.png" align="right" alt="" width="128">
 </h1></div>
-<p>This R package provides themes and color scales for <a href="https://github.com/tidyverse/ggplot2"><code>ggplot2</code></a>, based on Chicago Metropolitan Agency for Planning (CMAP) design guidelines.</p>
+<p>This R package provides themes and color scales for <a href="https://github.com/tidyverse/ggplot2">ggplot2</a>, based on Chicago Metropolitan Agency for Planning (CMAP) design guidelines.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>Run the following to install or update <code>cmapplot</code>:</p>
+<p>Run the following to install or update cmapplot:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="co">## Install current version from GitHub</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"CMAP-REPOS/cmapplot"</span>, build_vignettes<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="co">## Then load the package as you would any other</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://cmap-repos.github.io/cmapplot">cmapplot</a></span><span class="op">)</span></pre></div>
+<p><strong>Important note:</strong> cmapplot works best when installed on a Windows computer with the Whitney family of fonts installed (specifically the Book, Medium, and Semibold variants). If installed on a Windows computer without Whitney, the package will still work, but the fonts will default to Calibri. If installed on macOS or Linux, the fonts will default to Arial, even if Whitney is installed. Additionally, macOS users must install <a href="https://www.xquartz.org">XQuartz</a> before cmapplot can be loaded. (This can be easily accomplished via the <a href="https://brew.sh">Homebrew</a> package manager with the command <code>brew cask install xquartz</code>.)</p>
 </div>
 </div>
   </div>
