@@ -105,12 +105,13 @@
 <a href="#discrete-palettes" class="anchor"></a>Discrete palettes</h2>
 <p>Add discrete palettes by adding either the <code><a href="../reference/cmap_fill_discrete.html">cmap_fill_discrete()</a></code> or <code><a href="../reference/cmap_fill_discrete.html">cmap_color_discrete()</a></code> function to your plot construction. Note that discrete palettes will automatically interpolate additional colors if the dataset has more colors than the palette. This can be helpful but is not ideal for finished graphics.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu">ggplot</span><span class="op">(</span><span class="va">percentile_wages</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">percentile</span>, y <span class="op">=</span> <span class="va">wage</span>, color <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">scale_y_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org//reference/label_dollar.html">dollar</a></span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/cmap_fill_discrete.html">cmap_color_discrete</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"prosperity"</span><span class="op">)</span>
-<span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span></pre></div>
+<span class="fu">ggplot</span>(<span class="kw">percentile_wages</span>, <span class="fu">aes</span>(x = <span class="kw">percentile</span>, y = <span class="kw">wage</span>, color = <span class="kw">cluster</span>)) <span class="op">+</span>
+  <span class="fu">geom_line</span>() <span class="op">+</span>
+  <span class="fu">scale_y_continuous</span>(labels = <span class="kw">scales</span>::<span class="kw"><a href="https://scales.r-lib.org//reference/label_dollar.html">dollar</a></span>) <span class="op">+</span>
+  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span>() <span class="op">+</span>
+  <span class="fu"><a href="../reference/cmap_fill_discrete.html">cmap_color_discrete</a></span>(palette = <span class="st">"prosperity"</span>)
+<span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span>
+</pre></div>
 <p><img src="colors_files/figure-html/disc-1.png" width="672" style="display: block; margin: auto;"></p>
 <p>The following gradients are available:</p>
 <p><img src="colors_files/figure-html/pal-1.png" width="60%" style="display: block; margin: auto;"><img src="colors_files/figure-html/pal-2.png" width="60%" style="display: block; margin: auto;"><img src="colors_files/figure-html/pal-3.png" width="60%" style="display: block; margin: auto;"><img src="colors_files/figure-html/pal-4.png" width="60%" style="display: block; margin: auto;"><img src="colors_files/figure-html/pal-5.png" width="60%" style="display: block; margin: auto;"><img src="colors_files/figure-html/pal-6.png" width="60%" style="display: block; margin: auto;"><img src="colors_files/figure-html/pal-7.png" width="60%" style="display: block; margin: auto;"><img src="colors_files/figure-html/pal-8.png" width="60%" style="display: block; margin: auto;"></p>
@@ -120,15 +121,16 @@
 <a href="#continuous-palettes" class="anchor"></a>Continuous palettes</h2>
 <p>Add continuous palettes by adding either the <code><a href="../reference/cmap_fill_continuous.html">cmap_fill_continuous()</a></code> or <code><a href="../reference/cmap_fill_continuous.html">cmap_color_continuous()</a></code> function to your plot construction. For example:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="va">percentile_wages</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">cluster</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Biopharmaceuticals"</span>, <span class="st">"Hospitality and Tourism"</span>, <span class="st">"Paper and Packaging"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">cluster</span>, y <span class="op">=</span> <span class="va">wage</span>, color <span class="op">=</span> <span class="va">percentile</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">geom_point</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">scale_y_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org//reference/label_dollar.html">dollar</a></span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">coord_flip</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/cmap_fill_continuous.html">cmap_color_continuous</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"seq_red_purple"</span><span class="op">)</span>
-<span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span></pre></div>
+<span class="kw">percentile_wages</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">cluster</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Biopharmaceuticals"</span>, <span class="st">"Hospitality and Tourism"</span>, <span class="st">"Paper and Packaging"</span>)) <span class="op">%&gt;%</span>
+  <span class="fu">ggplot</span>(<span class="fu">aes</span>(x = <span class="kw">cluster</span>, y = <span class="kw">wage</span>, color = <span class="kw">percentile</span>)) <span class="op">+</span>
+  <span class="fu">geom_point</span>(size = <span class="fl">5</span>) <span class="op">+</span>
+  <span class="fu">scale_y_continuous</span>(labels = <span class="kw">scales</span>::<span class="kw"><a href="https://scales.r-lib.org//reference/label_dollar.html">dollar</a></span>) <span class="op">+</span>
+  <span class="fu">coord_flip</span>() <span class="op">+</span>
+  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span>() <span class="op">+</span>
+  <span class="fu"><a href="../reference/cmap_fill_continuous.html">cmap_color_continuous</a></span>(palette = <span class="st">"seq_red_purple"</span>)
+<span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span>
+</pre></div>
 <p><img src="colors_files/figure-html/cont-1.png" width="672" style="display: block; margin: auto;"></p>
 <div id="sequential-gradients-single--and-multi-hue" class="section level3">
 <h3 class="hasAnchor">
