@@ -28,6 +28,7 @@ Authors@R: c(
 Description: Provides themes and color scales for 'ggplot2', based on Chicago
     Metropolitan Agency for Planning (CMAP) design guidelines.
 URL: https://cmap-repos.github.io/cmapplot, https://github.com/CMAP-REPOS/cmapplot
+BugReports: https://github.com/CMAP-REPOS/cmapplot/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
