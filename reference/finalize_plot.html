@@ -148,25 +148,25 @@ export it as a raster or vector file. This function will not apply CMAP design
 standards to the plot itself: use with <code><a href='theme_cmap.html'>theme_cmap()</a></code> for that.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>finalize_plot</span>(
-  plot = <span class='kw'>NULL</span>,
-  title = <span class='st'>""</span>,
-  caption = <span class='st'>""</span>,
-  width = <span class='fl'>670</span><span class='op'>/</span><span class='fl'>72</span>,
-  height = <span class='fl'>400</span><span class='op'>/</span><span class='fl'>72</span>,
-  title_width = <span class='kw'>NULL</span>,
-  ppi = <span class='fl'>300</span>,
-  mode = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"plot"</span>),
-  filename = <span class='st'>""</span>,
-  caption_valign = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"top"</span>, <span class='st'>"bottom"</span>),
-  fill_bg = <span class='st'>"white"</span>,
-  fill_canvas = <span class='st'>"gray90"</span>,
-  overrides = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  debug = <span class='fl'>FALSE</span>,
-  legend_build = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"adjust"</span>, <span class='st'>"safe"</span>, <span class='st'>"none"</span>),
-  legend_bump = <span class='fl'>0</span>,
-  <span class='kw'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>finalize_plot</span><span class='op'>(</span>
+  plot <span class='op'>=</span> <span class='cn'>NULL</span>,
+  title <span class='op'>=</span> <span class='st'>""</span>,
+  caption <span class='op'>=</span> <span class='st'>""</span>,
+  width <span class='op'>=</span> <span class='fl'>670</span><span class='op'>/</span><span class='fl'>72</span>,
+  height <span class='op'>=</span> <span class='fl'>400</span><span class='op'>/</span><span class='fl'>72</span>,
+  title_width <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ppi <span class='op'>=</span> <span class='fl'>300</span>,
+  mode <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"plot"</span><span class='op'>)</span>,
+  filename <span class='op'>=</span> <span class='st'>""</span>,
+  caption_valign <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"top"</span>, <span class='st'>"bottom"</span><span class='op'>)</span>,
+  fill_bg <span class='op'>=</span> <span class='st'>"white"</span>,
+  fill_canvas <span class='op'>=</span> <span class='st'>"gray90"</span>,
+  overrides <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  debug <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  legend_build <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"adjust"</span>, <span class='st'>"safe"</span>, <span class='st'>"none"</span><span class='op'>)</span>,
+  legend_bump <span class='op'>=</span> <span class='fl'>0</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -318,46 +318,46 @@ elements of the default CMAP theme.</p></td>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='kw'>econ_plot</span> <span class='op'>&lt;-</span> <span class='fu'>ggplot</span>(data = <span class='kw'>cluster_jobchange</span>,
-                    mapping = <span class='fu'>aes</span>(
-                      x = <span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span>(<span class='kw'>name</span>, <span class='kw'>jobchange</span>),
-                      y = <span class='kw'>jobchange</span>,
-                      fill = <span class='kw'>category</span>)) <span class='op'>+</span>
-  <span class='fu'>geom_col</span>() <span class='op'>+</span>
-  <span class='fu'>coord_flip</span>() <span class='op'>+</span>
-  <span class='fu'><a href='theme_cmap.html'>theme_cmap</a></span>(gridlines = <span class='st'>"v"</span>, hline = <span class='fl'>0</span>) <span class='op'>+</span>
-  <span class='fu'>scale_y_continuous</span>(labels = <span class='kw'>scales</span>::<span class='kw'><a href='https://scales.r-lib.org//reference/label_number.html'>comma</a></span>)
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='va'>econ_plot</span> <span class='op'>&lt;-</span> <span class='fu'>ggplot</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>cluster_jobchange</span>,
+                    mapping <span class='op'>=</span> <span class='fu'>aes</span><span class='op'>(</span>
+                      x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span><span class='op'>(</span><span class='va'>name</span>, <span class='va'>jobchange</span><span class='op'>)</span>,
+                      y <span class='op'>=</span> <span class='va'>jobchange</span>,
+                      fill <span class='op'>=</span> <span class='va'>category</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_col</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>coord_flip</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='theme_cmap.html'>theme_cmap</a></span><span class='op'>(</span>gridlines <span class='op'>=</span> <span class='st'>"v"</span>, hline <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>scale_y_continuous</span><span class='op'>(</span>labels <span class='op'>=</span> <span class='fu'>scales</span><span class='fu'>::</span><span class='va'><a href='https://scales.r-lib.org//reference/label_number.html'>comma</a></span><span class='op'>)</span>
 
-<span class='fu'>finalize_plot</span>(<span class='kw'>econ_plot</span>,
+<span class='fu'>finalize_plot</span><span class='op'>(</span><span class='va'>econ_plot</span>,
                <span class='st'>"Cluster-level employment changes in the Chicago MSA, 2001-17"</span>,
                <span class='st'>"Source: Chicago Metropolitan Agency for Planning analysis"</span>,
-               mode = <span class='st'>"window"</span>,
-               height = <span class='fl'>6</span>,
-               width = <span class='fl'>8</span>,
-               title_width = <span class='fl'>2.5</span>,
-               overrides = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(margin_plot_r = <span class='fl'>30</span>))
+               mode <span class='op'>=</span> <span class='st'>"window"</span>,
+               height <span class='op'>=</span> <span class='fl'>6</span>,
+               width <span class='op'>=</span> <span class='fl'>8</span>,
+               title_width <span class='op'>=</span> <span class='fl'>2.5</span>,
+               overrides <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>margin_plot_r <span class='op'>=</span> <span class='fl'>30</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='kw'>transit_plot</span> <span class='op'>&lt;-</span> <span class='kw'>transit_ridership</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(system = <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span>(
-    <span class='kw'>system</span> <span class='op'>==</span> <span class='st'>"cta_bus"</span> <span class='op'>~</span> <span class='st'>"CTA (Bus)"</span>,
-    <span class='kw'>system</span> <span class='op'>==</span> <span class='st'>"cta_rail"</span> <span class='op'>~</span> <span class='st'>"CTA (Rail)"</span>,
-    <span class='kw'>system</span> <span class='op'>==</span> <span class='st'>"metra"</span> <span class='op'>~</span> <span class='st'>"Metra"</span>,
-    <span class='kw'>system</span> <span class='op'>==</span> <span class='st'>"pace"</span> <span class='op'>~</span> <span class='st'>"Pace"</span>,
-    <span class='kw'>system</span> <span class='op'>==</span> <span class='st'>"pace_ada"</span> <span class='op'>~</span> <span class='st'>"Paratransit"</span>
-  )) <span class='op'>%&gt;%</span>
-  <span class='fu'>ggplot</span>(<span class='fu'>aes</span>(x = <span class='kw'>year</span>, y = <span class='kw'>ridership</span>, color = <span class='kw'>system</span>)) <span class='op'>+</span>
-  <span class='fu'>geom_line</span>() <span class='op'>+</span>
-  <span class='fu'><a href='theme_cmap.html'>theme_cmap</a></span>(legend.max.columns = <span class='fl'>3</span>)
+<span class='va'>transit_plot</span> <span class='op'>&lt;-</span> <span class='va'>transit_ridership</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>system <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span>
+    <span class='va'>system</span> <span class='op'>==</span> <span class='st'>"cta_bus"</span> <span class='op'>~</span> <span class='st'>"CTA (Bus)"</span>,
+    <span class='va'>system</span> <span class='op'>==</span> <span class='st'>"cta_rail"</span> <span class='op'>~</span> <span class='st'>"CTA (Rail)"</span>,
+    <span class='va'>system</span> <span class='op'>==</span> <span class='st'>"metra"</span> <span class='op'>~</span> <span class='st'>"Metra"</span>,
+    <span class='va'>system</span> <span class='op'>==</span> <span class='st'>"pace"</span> <span class='op'>~</span> <span class='st'>"Pace"</span>,
+    <span class='va'>system</span> <span class='op'>==</span> <span class='st'>"pace_ada"</span> <span class='op'>~</span> <span class='st'>"Paratransit"</span>
+  <span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>year</span>, y <span class='op'>=</span> <span class='va'>ridership</span>, color <span class='op'>=</span> <span class='va'>system</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_line</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='theme_cmap.html'>theme_cmap</a></span><span class='op'>(</span>legend.max.columns <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
 
-<span class='fu'>finalize_plot</span>(<span class='kw'>transit_plot</span>,
+<span class='fu'>finalize_plot</span><span class='op'>(</span><span class='va'>transit_plot</span>,
               <span class='st'>"Transit ridership in the RTA region over time, 1980-2019
               (in millions)"</span>,
               <span class='st'>"Source: Chicago Metropolitan Agency for Planning
               analysis of data from the Regional Transportation Authority"</span>,
-              mode=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"plot"</span>, <span class='st'>"pdf"</span>),
-              filename = <span class='st'>"foo"</span>)
-}
+              mode<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"plot"</span>, <span class='st'>"pdf"</span><span class='op'>)</span>,
+              filename <span class='op'>=</span> <span class='st'>"foo"</span><span class='op'>)</span>
+<span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
