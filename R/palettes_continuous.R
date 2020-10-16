@@ -102,7 +102,14 @@ cmap_pal_continuous <- function(palette = "seq_reds", reverse = FALSE) {
     }
     return(grDevices::colorRampPalette(pal))
 }
-
+#' internal helper function to rescale. Credit for idea is due to ijlyttle:
+#  \url{https://github.com/tidyverse/ggplot2/issues/3738#issuecomment-583750802}
+#' @noRd
+mid_rescaler2 <- function(mid) {
+    function(x, to = c(0, 1), from = range(x, na.rm = TRUE)) {
+        scales::rescale_mid(x, to, from, mid)
+    }
+}
 
 #' Apply continuous CMAP palettes to ggplot2 aesthetics
 #'
@@ -110,6 +117,8 @@ cmap_pal_continuous <- function(palette = "seq_reds", reverse = FALSE) {
 #'
 #' @param palette Choose from 'cmap_gradients' list
 #' @param reverse Logical; reverse color order?
+#' @param middle Numeric, sets midpoint for diverging color palettes. Default =
+#'   0.
 #'
 #' @examples
 #' library(dplyr)
@@ -121,17 +130,26 @@ cmap_pal_continuous <- function(palette = "seq_reds", reverse = FALSE) {
 #'
 #' @describeIn cmap_fill_continuous For fill aesthetic
 #' @export
-cmap_fill_continuous <- function(palette = "seq_reds", reverse = FALSE) {
+cmap_fill_continuous <- function(palette = "seq_reds",
+                                 reverse = FALSE,
+                                 middle = 0) {
     ggplot2::scale_fill_gradientn(
-        colours = cmap_pal_continuous(palette, reverse = reverse)(256)
+        colours = cmap_pal_continuous(palette, reverse = reverse)(256),
+        rescaler = mid_rescaler2(middle)
     )
 }
 
+
+
+
 #' @describeIn cmap_fill_continuous For color aesthetic
 #' @export
-cmap_color_continuous <- function(palette = "seq_reds", reverse = FALSE) {
+cmap_color_continuous <- function(palette = "seq_reds",
+                                  reverse = FALSE,
+                                  middle = 0) {
     ggplot2::scale_colour_gradientn(
-        colours = cmap_pal_continuous(palette, reverse = reverse)(256)
+        colours = cmap_pal_continuous(palette, reverse = reverse)(256),
+        rescaler = mid_rescaler2(middle)
     )
 }
 
