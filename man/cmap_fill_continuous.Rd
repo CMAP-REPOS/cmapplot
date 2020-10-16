@@ -4,7 +4,8 @@
 \alias{cmap_fill_continuous}
 \alias{cmap_color_continuous}
 \alias{cmap_colour_continuous}
-\title{Apply continuous CMAP palettes to ggplot2 aesthetics}
+\title{Apply continuous CMAP palettes to ggplot2 aesthetics. On diverging palettes,
+a midpoint can be manually adjusted (defaults to 0)}
 \usage{
 cmap_fill_continuous(palette = "seq_reds", reverse = FALSE, middle = 0)
 
@@ -13,15 +14,16 @@ cmap_color_continuous(palette = "seq_reds", reverse = FALSE, middle = 0)
 cmap_colour_continuous(palette = "seq_reds", reverse = FALSE, middle = 0)
 }
 \arguments{
-\item{palette}{Choose from 'cmap_gradients' list}
+\item{palette}{String; Choose from 'cmap_gradients' list}
 
-\item{reverse}{Logical; reverse color order?}
+\item{reverse}{Logical; Reverse color order?}
 
-\item{middle}{Numeric, sets midpoint for diverging color palettes. Default =
+\item{middle}{Numeric; Sets midpoint for diverging color palettes. Default =
 0.}
 }
 \description{
-Pick the function depending on the aesthetic of your ggplot object (fill or color)
+Pick the function depending on the aesthetic of your ggplot object (fill or
+color)
 }
 \section{Functions}{
 \itemize{
