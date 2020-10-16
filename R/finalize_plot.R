@@ -205,6 +205,12 @@ finalize_plot <- function(plot = NULL,
     if (filename == "") { stop("You must specify a filename if saving", call. = FALSE) }
   }
 
+  # if function will be drawing to the default plotting device (the plot window),
+  # trigger a new page in that window now. This is needed to prevent the creation
+  # of an unnecessary blank plot by other `grid` functions in cases where the
+  # default device is not already active.
+  if("plot" %in% mode){ grid::grid.newpage() }
+
   # create list of plot constants, from globals unless overridden by user
   consts <- utils::modifyList(cmapplot_globals$consts, overrides)
 
@@ -465,7 +471,6 @@ finalize_plot <- function(plot = NULL,
     } else if (this_mode == "plot") {
 
       # set up blank canvas
-      grid::grid.newpage()
       grid::grid.draw(grob_canvas)
 
       # enter centerframe, draw plot, exit centerframe
