@@ -205,6 +205,12 @@ finalize_plot <- function(plot = NULL,
     if (filename == "") { stop("You must specify a filename if saving", call. = FALSE) }
   }
 
+  # if function will be drawing to the default plotting device (the plot window),
+  # trigger a new page in that window now. This is needed to prevent the creation
+  # of an unnecessary blank plot by other `grid` functions in cases where the
+  # default device is not already active.
+  if("plot" %in% mode){ grid::grid.newpage() }
+
   # create list of plot constants, from globals unless overridden by user
   consts <- utils::modifyList(cmapplot_globals$consts, overrides)
 
@@ -212,9 +218,9 @@ finalize_plot <- function(plot = NULL,
   consts <- append(
     consts,
     list(
-      height = convertUnit(unit(height, "in"), "bigpts", valueOnly = TRUE),
-      width = convertUnit(unit(width, "in"), "bigpts", valueOnly = TRUE),
-      title_width = convertUnit(unit(title_width, "in"), "bigpts", valueOnly = TRUE),
+      height = grid::convertUnit(unit(height, "in"), "bigpts", valueOnly = TRUE),
+      width = grid::convertUnit(unit(width, "in"), "bigpts", valueOnly = TRUE),
+      title_width = grid::convertUnit(unit(title_width, "in"), "bigpts", valueOnly = TRUE),
       legend_bump = legend_bump,
       margin_title_to_top = consts$margin_topline_t + consts$margin_title_t
     )
@@ -312,14 +318,14 @@ finalize_plot <- function(plot = NULL,
   # Build necessary grobs -----------------------------------------------------
 
   # grob to fill canvas (ROOT vp)
-  grob_canvas <- grid::grid.rect(
+  grob_canvas <- grid::rectGrob(
     name = "canvas",
     gp = grid::gpar(fill = fill_canvas,
                     col = fill_canvas)
   )
 
   # grob to fill behind output (ROOT vp)
-  grob_background <- grid::grid.rect(
+  grob_background <- grid::rectGrob(
     name = "background",
     gp = grid::gpar(fill = fill_bg,
                     col = fill_bg)
@@ -465,7 +471,6 @@ finalize_plot <- function(plot = NULL,
     } else if (this_mode == "plot") {
 
       # set up blank canvas
-      grid::grid.newpage()
       grid::grid.draw(grob_canvas)
 
       # enter centerframe, draw plot, exit centerframe
@@ -482,7 +487,6 @@ finalize_plot <- function(plot = NULL,
                            noRStudioGD = TRUE)
 
         # set up blank canvas
-        grid::grid.newpage()
         grid::grid.draw(grob_canvas)
 
         # enter centerframe, draw plot, exit centerframe
