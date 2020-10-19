@@ -1,0 +1,87 @@
+---
+title: "Finalizing and exporting CMAP-themed plots"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Finalizing and exporting CMAP-themed plots}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.asp = 400/670,
+  fig.retina = 4,
+  fig.align = "center"
+)
+
+library(tidyverse)
+library(cmapplot)
+```
+
+For testing, the cmapplot package contains a variety of sample datasets. Each dataset has a man file that can be queried for additional details. Datasets currently included are:
+
+```{r datasets, echo = FALSE}
+cat("",
+    dir(path = "data/", pattern = "\\.RData$") %>%
+      str_replace(".RData$", "") %>%
+      .[.!="recessions"] %>%
+      paste(collapse = "\n "))
+```
+
+The following provided code uses the sample datasets to produce publishable or near-publishable graphics:
+
+```{r bars, eval=TRUE}
+# A bar chart
+ggplot(cluster_jobchange, aes(x = reorder(name, jobchange), y = jobchange, fill = category)) +
+  geom_col() +
+  coord_flip() +
+  theme_cmap()
+```
+
+```{r stackedbars1, eval=TRUE}
+# a stacked bar chart
+filter(traded_emp_by_race, variable %in% c("SpecializedTraded", "UnspecializedTraded")) %>%
+  ggplot(aes(x = reorder(Race, -value), y = value, fill = variable)) +
+  geom_col(position = position_stack(reverse = TRUE)) +
+  scale_y_continuous(labels = scales::percent) +
+  theme_cmap()
+```
+
+```{r stackedbars2, eval=TRUE}
+# a grouped and stacked bar chart (via `interaction()`)
+ggplot(pop_and_laborforce_by_age, aes(x = interaction(year, variable), y = value, fill = age)) +
+  geom_col(position = position_stack(reverse = TRUE)) +
+  coord_flip() +
+  theme_cmap()
+```
+
+```{r stackedbars3, eval=TRUE}
+# a grouped and stacked bar chart (via `interaction()`)
+ggplot(economy_basic, aes(x = interaction(year, variable), y = value, fill = sector)) +
+  geom_col(position = "fill") +
+  scale_y_continuous(labels = scales::percent) +
+  coord_flip() +
+  theme_cmap()
+```
+
+```{r lines1, eval=TRUE}
+# a non-time-series line chart
+ggplot(percentile_wages, aes(x = percentile, y = wage, color = cluster)) +
+  geom_line() +
+  scale_y_continuous(labels = scales::dollar) +
+  theme_cmap()
+```
+
+```{r lines2, eval=TRUE}
+# a time-series line chart
+ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
+  geom_line() +
+  geom_text_lastonly(add_points = TRUE) +
+  theme_cmap()  +
+  geom_hline(yintercept = 0,
+             color = "black",
+             size = 1)
+```
