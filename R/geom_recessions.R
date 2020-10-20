@@ -365,6 +365,10 @@ GeomRecessionsText <- ggproto(
 #'   usethis::use_data(recessions, internal = TRUE)
 #' }
 #'
+#'@importFrom readxl read_excel
+#'@import stringr
+#'@import tibble
+#'
 #'@export
 update_recessions <- function(){
 
