@@ -4,9 +4,20 @@
 \alias{geom_recessions}
 \title{Add recessions to time series graphs}
 \usage{
-geom_recessions(xformat = "numeric", text = TRUE, label = " Recession",
- ymin = -Inf, ymax = Inf, fill = "#002d49", text_nudge_x = 0.2, text_nudge_y
- = 0, show.legend = FALSE, rect_aes = NULL, text_aes = NULL, ...)
+geom_recessions(
+  xformat = "numeric",
+  text = TRUE,
+  label = " Recession",
+  ymin = -Inf,
+  ymax = Inf,
+  fill = "#002d49",
+  text_nudge_x = 0.2,
+  text_nudge_y = 0,
+  show.legend = FALSE,
+  rect_aes = NULL,
+  text_aes = NULL,
+  ...
+)
 }
 \arguments{
 \item{xformat}{Char, a string indicating whether the x axis of the primary

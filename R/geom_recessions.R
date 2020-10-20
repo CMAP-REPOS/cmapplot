@@ -4,10 +4,6 @@
 #'representing recessions to a plot. It will either return only rectangles or,
 #'by default, both rectangles and text identifying each recession.
 #'
-#'@usage geom_recessions(xformat = "numeric", text = TRUE, label = " Recession",
-#'  ymin = -Inf, ymax = Inf, fill = "#002d49", text_nudge_x = 0.2, text_nudge_y
-#'  = 0, show.legend = FALSE, rect_aes = NULL, text_aes = NULL, ...)
-#'
 #'@param xformat Char, a string indicating whether the x axis of the primary
 #'  data being graphed is in integer or date format. This argument will
 #'  currently accept one of \code{c("numeric", "date")}.
@@ -52,14 +48,12 @@
 #'  the hints found here:
 #'  \url{https://stackoverflow.com/questions/6672374/convert-rgb-to-rgba-over-white}.
 #'
-#'
 #'@section Under the hood: This function calls two custom geoms, constructed
 #'  with ggproto. The custom GeomRecessions and GeomRecessionsText are modified
 #'  versions of GeomRect and GeomText, respectively. The only variations to each
 #'  occur in \code{default_aes}, \code{required_aes}, and \code{setup_data}
 #'  arguments. These variations allow the the primary dataframe (specified in
 #'  \code{ggplot(data = XXX)}) to filter the recessions displayed.
-#'
 #'
 #' @examples
 #' grp_goods <- dplyr::filter(grp_over_time, category == "Goods-Producing")
@@ -185,12 +179,12 @@ filter_recessions <- function(min, max, xformat){
 
   # filter recessions correctly, based on xformat
   if (xformat == "numeric") {
-    recessions2 <- dplyr::rename(cmapplot::recessions, end = end_num, start = start_num)
+    recessions2 <- dplyr::rename(recessions, end = end_num, start = start_num)
   } else if (xformat == "date") {
-    recessions2 <- dplyr::rename(cmapplot::recessions, end = end_date, start = start_date)
+    recessions2 <- dplyr::rename(recessions, end = end_date, start = start_date)
   } else {
     warning("geom_recessions currently only supports x axes in the numeric and date formats. Using numeric")
-    recessions2 <- dplyr::rename(cmapplot::recessions, end = end_num, start = start_num)
+    recessions2 <- dplyr::rename(recessions, end = end_num, start = start_num)
   }
 
   # Remove recessions outside of range
@@ -345,48 +339,65 @@ GeomRecessionsText <- ggproto(
 
 #' Update recessions table
 #'
-#' An internal dataset containing a list of all recessions in American history, as recorded by
-#' the National Bureau of Economic Research (NBER). As future recessions occur, this file will
-#' need to be updated using the script below.
+#' The \code{cmapplot} package contains an internal dataset of all recessions in American history
+#' as recorded by the National Bureau of Economic Research (NBER). However, users may need to replace
+#' the built-in data, such as in the event of new recessions and/or changes to the NBER consensus on
+#' recession dates. This function fetches and reformats this data from the NBER website.
 #'
-#' @format A tibble. 33 rows and 4 variables:
+#' @return A tibble with the following variables:
 #' \describe{
 #'    \item{start_char, end_char}{Chr. Easily readable labels for the beginning and end of the recession}
 #'    \item{start_num, end_num}{Double. Dates expressed as years, with decimels referring to months. (e.g. April = 4/12 = .333)}
 #'    \item{start_date, end_date}{Date. Dates expressed in R datetime format, using the first day of the specified month.}
 #' }
+#' To automatically overwite the data used in \code{geom_recessions()}, store the output of this function
+#' in a tibble called, simply, \code{recessions}.
 #'
 #' @source from https://www.nber.org/cycles/NBER%20chronology.xlsx
 #'
 #' @examples
-#' # Use this code to generate an updated recessions dataframe:
+#' recessions <- update_recessions()
 #'
+#' # package maintainers can update the internal dataset from within
+#' # package by running the following code:
 #' \dontrun{
-#' library(RCurl)
-#' library(readxl)
-#' library(tidyverse)
-#' temp.file <- paste(tempfile(),".xlsx",sep = "")
-#' download.file("https://www.nber.org/cycles/NBER%20chronology.xlsx", temp.file, mode = "wb")
+#'   recessions <- update_recessions()
+#'   usethis::use_data(recessions, internal = TRUE)
+#' }
 #'
-#' recessions <- read_excel(temp.file, skip = 2) %>%
-#'   # drop end matter
-#'   slice(1:(n()-7)) %>%
-#'   # drop first row trough
-#'   slice(-1) %>%
-#'   as_tibble() %>%
-#'   # rename character values
-#'   rename(start_char = 1, end_char = 2) %>%
-#'   mutate(
-#'     # convert character dates to R date
-#'     start_date =  as.Date(str_replace(start_char, " ", " 1, "), format = "%B %d, %Y"),
-#'     end_date =  as.Date(str_replace(end_char, " ", " 1, "), format = "%B %d, %Y"),
-#'     # convert R dates to numeric dates
-#'     start_num = decimal_date(start_date),
-#'     end_num = decimal_date(end_date)
-#'     ) %>%
-#'   select(-3:-8)
-#'
-#' save(recessions, file = "~/GitHub/cmapplot/data/recessions.RData")
-#'}
-#'
-"recessions"
+#'@export
+update_recessions <- function(){
+
+  # Load necessary packages
+  pkgs <- c("RCurl", "readxl", "magrittr", "dplyr", "tibble", "lubridate", "stringr")
+  if(FALSE %in% lapply(pkgs, require, character.only = TRUE)){
+    stop(paste("This function requires the following packages:", paste(pkgs, collapse = ", ")), call. = FALSE)
+  }
+
+  # locally bind variable names
+  start_char <- end_char <- start_date <- end_date <- NULL
+
+  temp.file <- paste(tempfile(),".xlsx",sep = "")
+  utils::download.file("https://www.nber.org/cycles/NBER%20chronology.xlsx", temp.file, mode = "wb")
+
+  recessions <- readxl::read_excel(temp.file, skip = 2) %>%
+    # drop end matter
+    dplyr::slice(1:(n()-7)) %>%
+    # drop first row trough
+    dplyr::slice(-1) %>%
+    tibble::as_tibble() %>%
+    # rename character values
+    dplyr::rename(start_char = 1, end_char = 2) %>%
+    dplyr::mutate(
+      # convert character dates to R date
+      start_date = as.Date(stringr::str_replace(start_char, " ", " 1, "), format = "%B %d, %Y"),
+      end_date = as.Date(stringr::str_replace(end_char, " ", " 1, "), format = "%B %d, %Y"),
+      # convert R dates to numeric dates
+      start_num = lubridate::decimal_date(start_date),
+      end_num = lubridate::decimal_date(end_date)
+    ) %>%
+    dplyr::select(-3:-8)
+
+  return(recessions)
+}
+
