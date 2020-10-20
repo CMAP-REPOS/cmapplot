@@ -341,3 +341,52 @@ GeomRecessionsText <- ggproto(
 
   draw_key = draw_key_text
 )
+
+
+#' Update recessions table
+#'
+#' An internal dataset containing a list of all recessions in American history, as recorded by
+#' the National Bureau of Economic Research (NBER). As future recessions occur, this file will
+#' need to be updated using the script below.
+#'
+#' @format A tibble. 33 rows and 4 variables:
+#' \describe{
+#'    \item{start_char, end_char}{Chr. Easily readable labels for the beginning and end of the recession}
+#'    \item{start_num, end_num}{Double. Dates expressed as years, with decimels referring to months. (e.g. April = 4/12 = .333)}
+#'    \item{start_date, end_date}{Date. Dates expressed in R datetime format, using the first day of the specified month.}
+#' }
+#'
+#' @source from https://www.nber.org/cycles/NBER%20chronology.xlsx
+#'
+#' @examples
+#' # Use this code to generate an updated recessions dataframe:
+#'
+#' \dontrun{
+#' library(RCurl)
+#' library(readxl)
+#' library(tidyverse)
+#' temp.file <- paste(tempfile(),".xlsx",sep = "")
+#' download.file("https://www.nber.org/cycles/NBER%20chronology.xlsx", temp.file, mode = "wb")
+#'
+#' recessions <- read_excel(temp.file, skip = 2) %>%
+#'   # drop end matter
+#'   slice(1:(n()-7)) %>%
+#'   # drop first row trough
+#'   slice(-1) %>%
+#'   as_tibble() %>%
+#'   # rename character values
+#'   rename(start_char = 1, end_char = 2) %>%
+#'   mutate(
+#'     # convert character dates to R date
+#'     start_date =  as.Date(str_replace(start_char, " ", " 1, "), format = "%B %d, %Y"),
+#'     end_date =  as.Date(str_replace(end_char, " ", " 1, "), format = "%B %d, %Y"),
+#'     # convert R dates to numeric dates
+#'     start_num = decimal_date(start_date),
+#'     end_num = decimal_date(end_date)
+#'     ) %>%
+#'   select(-3:-8)
+#'
+#' save(recessions, file = "~/GitHub/cmapplot/data/recessions.RData")
+#'}
+#'
+"recessions"
