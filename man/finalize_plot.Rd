@@ -14,7 +14,7 @@ finalize_plot(
   ppi = 300,
   mode = c("plot"),
   filename = "",
-  caption_valign = c("top", "bottom"),
+  caption_valign = c("bottom", "top"),
   fill_bg = "white",
   fill_canvas = "gray90",
   overrides = list(),
@@ -58,7 +58,7 @@ will be added for you.}
 
 \item{caption_valign}{Char, align the caption text at the top or the bottom of
 the available space between the title and bottom of image. This argument
-accepts abbreviations, too: \code{c("top", "t", "bottom", "b")}.}
+accepts abbreviations, too: \code{c("bottom", "b", "top", "t")}.}
 
 \item{fill_bg, fill_canvas}{Char, strings that represent colors R can
 interpret. They are used to fill behind and around the finished plot,
