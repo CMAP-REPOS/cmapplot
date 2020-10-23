@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Apply continuous CMAP palettes to ggplot2 aesthetics — cmap_fill_continuous • cmapplot</title>
+<title>Apply continuous CMAP palettes to ggplot2 aesthetics. On diverging palettes,
+a midpoint can be manually adjusted (defaults to 0) — cmap_fill_continuous • cmapplot</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +47,10 @@
 
 
 
-<meta property="og:title" content="Apply continuous CMAP palettes to ggplot2 aesthetics — cmap_fill_continuous" />
-<meta property="og:description" content="Pick the function depending on the aesthetic of your ggplot object (fill or color)" />
+<meta property="og:title" content="Apply continuous CMAP palettes to ggplot2 aesthetics. On diverging palettes,
+a midpoint can be manually adjusted (defaults to 0) — cmap_fill_continuous" />
+<meta property="og:description" content="Pick the function depending on the aesthetic of your ggplot object (fill or
+color)" />
 <meta property="og:image" content="https://cmap-repos.github.io/cmapplot/logo.png" />
 
 
@@ -131,31 +134,38 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Apply continuous CMAP palettes to ggplot2 aesthetics</h1>
+    <h1>Apply continuous CMAP palettes to ggplot2 aesthetics. On diverging palettes,
+a midpoint can be manually adjusted (defaults to 0)</h1>
     <small class="dont-index">Source: <a href='https://github.com/CMAP-REPOS/cmapplot/blob/master/R/palettes_continuous.R'><code>R/palettes_continuous.R</code></a></small>
     <div class="hidden name"><code>cmap_fill_continuous.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Pick the function depending on the aesthetic of your ggplot object (fill or color)</p>
+    <p>Pick the function depending on the aesthetic of your ggplot object (fill or
+color)</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cmap_fill_continuous</span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"seq_reds"</span>, reverse <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>cmap_fill_continuous</span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"seq_reds"</span>, reverse <span class='op'>=</span> <span class='cn'>FALSE</span>, middle <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
 
-<span class='fu'>cmap_color_continuous</span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"seq_reds"</span>, reverse <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='fu'>cmap_color_continuous</span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"seq_reds"</span>, reverse <span class='op'>=</span> <span class='cn'>FALSE</span>, middle <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
 
-<span class='fu'>cmap_colour_continuous</span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"seq_reds"</span>, reverse <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+<span class='fu'>cmap_colour_continuous</span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"seq_reds"</span>, reverse <span class='op'>=</span> <span class='cn'>FALSE</span>, middle <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>palette</th>
-      <td><p>Choose from 'cmap_gradients' list</p></td>
+      <td><p>String; Choose from 'cmap_gradients' list</p></td>
     </tr>
     <tr>
       <th>reverse</th>
-      <td><p>Logical; reverse color order?</p></td>
+      <td><p>Logical; Reverse color order?</p></td>
+    </tr>
+    <tr>
+      <th>middle</th>
+      <td><p>Numeric; Sets midpoint for diverging color palettes. Default =
+0.</p></td>
     </tr>
     </table>
 
