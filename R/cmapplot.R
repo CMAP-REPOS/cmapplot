@@ -44,7 +44,8 @@ if (.Platform$OS.type == "windows") {
       main = list(family="Whitney Medium", face="plain", size=14),
       note = list(family="Whitney Book", face="plain", size=11),
       title = list(family="Whitney Semibold", face="plain", size=17),
-      label = list(family="Whitney Semibold", face="plain", size=14)
+      label = list(family="Whitney Semibold", face="plain", size=5)
+              # For unknown reasons, size 5 for labels corresponds to size 14 when exported
     )
   } else {
     message("WARNING: Whitney is not installed on this PC, so CMAP theme will default to Calibri")
@@ -56,7 +57,8 @@ if (.Platform$OS.type == "windows") {
       main = list(family="Calibri", face="plain", size=14),
       note = list(family="Calibri Light", face="plain", size=11),
       title = list(family="Calibri", face="bold", size=17),
-      label = list(family="Calibri", face="bold", size=14)
+      label = list(family="Calibri", face="bold", size=5)
+              # For unknown reasons, size 5 for labels corresponds to size 14 when exported
     )
   }
 
@@ -69,7 +71,8 @@ if (.Platform$OS.type == "windows") {
     main = list(family="Arial", face="plain", size=14),
     note = list(family="Arial", face="plain", size=11),
     title = list(family="Arial", face="bold", size=17),
-    label = list(family="Arial", face="bold", size=14)
+    label = list(family="Arial", face="bold", size=5)
+            # For unknown reasons, size 5 for labels corresponds to size 14 when exported
   )
 
 }
@@ -156,5 +159,6 @@ cmapplot_globals$consts <- list(
 
 # Define common colors
 cmapplot_globals$colors <- list(
-  blackish = "#222222"
+  blackish = "#222222",
+  light_gray = "#b5c1c8"
 )

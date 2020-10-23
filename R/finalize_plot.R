@@ -271,7 +271,7 @@ finalize_plot <- function(plot = NULL,
     geom = "text",
     new = list(family = cmapplot_globals$font$label$family,
                face = cmapplot_globals$font$label$face,
-               size = 5, # For unknown reasons, this corresponds to size 14 when exported (but only for labels)
+               size = cmapplot_globals$font$label$size,
                colour = cmapplot_globals$colors$blackish)
   )
 
