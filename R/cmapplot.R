@@ -150,7 +150,7 @@ cmapplot_globals$consts <- list(
                         #        may be required based on system configuration,
                         #        which can be done easily using `legend_bump`
   legend_key_size = 14, # [t,f] Size of the legend key item.
-  leading_title = 0.93, # [ ,f] Text leading for Title text
+  leading_title = 1, # [ ,f] Text leading for Title text
   leading_caption = 1   # [ ,f] Text leading for Caption text
 )
 
