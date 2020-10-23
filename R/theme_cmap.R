@@ -152,7 +152,10 @@ theme_cmap <- function(
       # Axis format
       axis.title.y = ggplot2::element_blank(),
       axis.title.x = ggplot2::element_blank(),
-      axis.text = ggplot2::element_text(color = cmapplot_globals$colors$blackish),
+      axis.text = ggplot2::element_text(family = cmapplot_globals$font$axis$family,
+                                        face = cmapplot_globals$font$axis$face,
+                                        size = cmapplot_globals$font$axis$size,
+                                        color = cmapplot_globals$colors$blackish),
       axis.text.x = ggplot2::element_text(margin = ggplot2::margin(t = 5)),
       axis.ticks = ggplot2::element_blank(),
       axis.line = ggplot2::element_blank(),
