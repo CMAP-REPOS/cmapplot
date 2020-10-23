@@ -261,6 +261,20 @@ finalize_plot <- function(plot = NULL,
     new = list(size = ggplot_size_conversion(consts$lwd_plotline))
     )
 
+  # Font defaults for annotations and labels on the graph
+  default_fontfamily <- ggplot2::theme_get()$text$family
+  default_fontface <- ggplot2::theme_get()$text$face
+  default_fontcolor <- ggplot2::theme_get()$text$colour
+  default_fontsize <- ggplot2::theme_get()$text$size
+
+  ggplot2::update_geom_defaults(
+    geom = "text",
+    new = list(family = cmapplot_globals$font$main$family,
+               face = cmapplot_globals$font$main$face,
+               size = 5, # For unknown reasons, this corresponds to size 14 when exported
+               colour = cmapplot_globals$colors$blackish)
+  )
+
   # preformat plot
   plot <- plot + ggplot2::theme(
     # **FONT SIZE ADJUSTMENT IS NECESSARY BUT NOT UNDERSTOOD**
@@ -506,6 +520,13 @@ finalize_plot <- function(plot = NULL,
 
   # return geom defaults as before
   ggplot2::update_geom_defaults("line",list(size = default_lwd))
+  ggplot2::update_geom_defaults(
+    geom = "text",
+    new = list(family = default_fontfamily,
+               face = default_fontface,
+               size = default_fontsize,
+               colour = default_fontcolor)
+  )
 
   # if user wants an object, return it
   if("object" %in% mode){
