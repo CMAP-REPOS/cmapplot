@@ -269,9 +269,9 @@ finalize_plot <- function(plot = NULL,
 
   ggplot2::update_geom_defaults(
     geom = "text",
-    new = list(family = cmapplot_globals$font$main$family,
-               face = cmapplot_globals$font$main$face,
-               size = 5, # For unknown reasons, this corresponds to size 14 when exported
+    new = list(family = cmapplot_globals$font$label$family,
+               face = cmapplot_globals$font$label$face,
+               size = 5, # For unknown reasons, this corresponds to size 14 when exported (but only for labels)
                colour = cmapplot_globals$colors$blackish)
   )
 
