@@ -133,7 +133,7 @@ cmapplot_globals$consts <- list(
                         #        `caption_valign = "top"`
   margin_caption_b = 5, # [ ,f] Margin between caption and bottom edge of image
   margin_legend_t = 5,  # [ ,f] Margin between top line and plotbox
-  margin_legend_i = 5,  # [t,f] Vertical margin between legends (only applies
+  margin_legend_i = 8,  # [t,f] Vertical margin between legends (only applies
                         #        to multilegend plots)
   margin_legend_b = 10, # [t,f] Margin between legend and plot (within plotbox)
   margin_plot_b = 5,    # [ ,f] Margin between plotbox and bottom edge of image
