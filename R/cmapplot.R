@@ -57,7 +57,7 @@ if (.Platform$OS.type == "windows") {
       main = list(family="Calibri", face="plain", size=14),
       note = list(family="Calibri Light", face="plain", size=11),
       title = list(family="Calibri", face="bold", size=17),
-      axis = list(family="Calibri", face="bold",size=14),
+      axis = list(family="Calibri Light", face="plain", size=14),
       label = list(family="Calibri", face="bold", size=14)
     )
   }
@@ -71,7 +71,7 @@ if (.Platform$OS.type == "windows") {
     main = list(family="Arial", face="plain", size=14),
     note = list(family="Arial", face="plain", size=11),
     title = list(family="Arial", face="bold", size=17),
-    axis = list(family="Arial", face="bold", size=14),
+    axis = list(family="Arial", face="plain", size=14),
     label = list(family="Arial", face="bold", size=14)
   )
 
