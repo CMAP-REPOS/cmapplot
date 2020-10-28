@@ -191,12 +191,10 @@ geom_recessions <- function(xformat = "numeric",
 build_recessions <- function(update_recessions){
   if(is.logical(update_recessions)){
     if(update_recessions){
+      message("Trying to update recessions...")
       return(
         tryCatch(
-          {
-            message("Trying to update recessions...")
-            suppressWarnings(update_recessions(quietly = TRUE))
-          },
+          suppressWarnings(update_recessions(quietly = TRUE)),
           error = function(cond){
             message("Could not update recessions. Using built-in recessions table...")
             return(recessions)
