@@ -144,9 +144,21 @@ representing recessions to a plot. It will either return only rectangles or,
 by default, both rectangles and text identifying each recession.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>geom_recessions</span><span class='op'>(</span>xformat <span class='op'>=</span> <span class='st'>"numeric"</span>, text <span class='op'>=</span> <span class='cn'>TRUE</span>, label <span class='op'>=</span> <span class='st'>" Recession"</span>,
- ymin <span class='op'>=</span> <span class='op'>-</span><span class='cn'>Inf</span>, ymax <span class='op'>=</span> <span class='cn'>Inf</span>, fill <span class='op'>=</span> <span class='st'>"#002d49"</span>, text_nudge_x <span class='op'>=</span> <span class='fl'>0.2</span>, text_nudge_y
- <span class='op'>=</span> <span class='fl'>0</span>, show.legend <span class='op'>=</span> <span class='cn'>FALSE</span>, rect_aes <span class='op'>=</span> <span class='cn'>NULL</span>, text_aes <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>geom_recessions</span><span class='op'>(</span>
+  xformat <span class='op'>=</span> <span class='st'>"numeric"</span>,
+  text <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  label <span class='op'>=</span> <span class='st'>" Recession"</span>,
+  ymin <span class='op'>=</span> <span class='op'>-</span><span class='cn'>Inf</span>,
+  ymax <span class='op'>=</span> <span class='cn'>Inf</span>,
+  fill <span class='op'>=</span> <span class='st'>"#002d49"</span>,
+  text_nudge_x <span class='op'>=</span> <span class='fl'>0.2</span>,
+  text_nudge_y <span class='op'>=</span> <span class='fl'>0</span>,
+  show.legend <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  rect_aes <span class='op'>=</span> <span class='cn'>NULL</span>,
+  text_aes <span class='op'>=</span> <span class='cn'>NULL</span>,
+  update_recessions <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -196,6 +208,16 @@ Defaults to <code>FALSE</code>.</p></td>
 rectangle and text geoms, respectively.</p></td>
     </tr>
     <tr>
+      <th>update_recessions</th>
+      <td><p>Logical or data frame. <code>FALSE</code>, the default,
+relies on the package's built in recessions table. <code>TRUE</code> calls the
+function <code>update_recessions</code>, which attempts to fetch the
+current recessions table from the NBER website. A custom data table of
+recessions can also be passed to this argument, but it must be structured
+identically to the six-column data table described in the the documentation
+file for the function <code>update_recessions</code>.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>additional aesthetics to send to BOTH the rectangle and text geoms.</p></td>
     </tr>
@@ -234,10 +256,14 @@ rectangle and text geoms, respectively.</p></td>
  <code>ggplot(data = XXX)</code>) to filter the recessions displayed.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='https://ggplot2-book.org/extensions.html'>https://ggplot2-book.org/extensions.html</a>
-<a href='https://github.com/brodieG/ggbg/blob/development/inst/doc/extensions.html#stat-compute'>https://github.com/brodieG/ggbg/blob/development/inst/doc/extensions.html#stat-compute</a>
-<a href='https://rpubs.com/hadley/97970'>https://rpubs.com/hadley/97970</a>
-<a href='https://ggplot2.tidyverse.org/articles/extending-ggplot2.html'>https://ggplot2.tidyverse.org/articles/extending-ggplot2.html</a></p></div>
+    <div class='dont-index'>
+<ul>
+<li><p><a href='https://ggplot2-book.org/extensions.html'>https://ggplot2-book.org/extensions.html</a></p></li>
+<li><p><a href='https://github.com/brodieG/ggbg/blob/development/inst/doc/extensions.html#stat-compute'>https://github.com/brodieG/ggbg/blob/development/inst/doc/extensions.html#stat-compute</a></p></li>
+<li><p><a href='https://rpubs.com/hadley/97970'>https://rpubs.com/hadley/97970</a></p></li>
+<li><p><a href='https://ggplot2.tidyverse.org/articles/extending-ggplot2.html'>https://ggplot2.tidyverse.org/articles/extending-ggplot2.html</a></p></li>
+</ul>
+</div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>grp_goods</span> <span class='op'>&lt;-</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>grp_over_time</span>, <span class='va'>category</span> <span class='op'>==</span> <span class='st'>"Goods-Producing"</span><span class='op'>)</span>
