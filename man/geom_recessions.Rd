@@ -147,8 +147,10 @@ ggplot(df, mapping = aes(x = year_date, y = value)) +
 
 }
 \seealso{
-\url{https://ggplot2-book.org/extensions.html}
-\url{https://github.com/brodieG/ggbg/blob/development/inst/doc/extensions.html#stat-compute}
-\url{https://rpubs.com/hadley/97970}
-\url{https://ggplot2.tidyverse.org/articles/extending-ggplot2.html}
+\itemize{
+  \item \url{https://ggplot2-book.org/extensions.html}
+  \item \url{https://github.com/brodieG/ggbg/blob/development/inst/doc/extensions.html#stat-compute}
+  \item \url{https://rpubs.com/hadley/97970}
+  \item \url{https://ggplot2.tidyverse.org/articles/extending-ggplot2.html}
+}
 }
