@@ -48,7 +48,6 @@ Imports:
     magrittr,
     rlang,
     scales,
-    stringr,
     sysfonts,
 Suggests:
     knitr,
@@ -56,6 +55,7 @@ Suggests:
     readxl,
     RCurl,
     rmarkdown,
+    stringr,
     testthat,
     tibble,
     tidyverse
