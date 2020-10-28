@@ -387,21 +387,23 @@ GeomRecessionsText <- ggproto(
 
 #' Update recessions table
 #'
-#' The \code{cmapplot} package contains an internal dataset of all recessions in American history
-#' as recorded by the National Bureau of Economic Research (NBER). However, users may need to replace
-#' the built-in data, such as in the event of new recessions and/or changes to the NBER consensus on
-#' recession dates. This function fetches and reformats this data from the NBER website.
+#' The \code{cmapplot} package contains an internal dataset of all recessions in
+#' American history as recorded by the National Bureau of Economic Research
+#' (NBER). However, users may need to replace the built-in data, such as in the
+#' event of new recessions and/or changes to the NBER consensus on recession
+#' dates. This function fetches and reformats this data from the NBER website.
 #'
-#' @param quietly Logical, suppresses messages produced by \code{utils::download.file}.
+#' @param quietly Logical, suppresses messages produced by
+#'   \code{utils::download.file}.
 #'
-#' @return A tibble with the following variables:
-#' \itemize{
-#'    \item \code{start_char, end_char}: Chr. Easily readable labels for the beginning and end of the recession
-#'    \item \code{start_num, end_num}: Double. Dates expressed as years, with decimels referring to months. (e.g. April = 4/12 = .333)
-#'    \item \code{start_date, end_date}: Date. Dates expressed in R datetime format, using the first day of the specified month.
-#' }
+#' @return A tibble with the following variables: \itemize{ \item
+#'   \code{start_char, end_char}: Chr. Easily readable labels for the beginning
+#'   and end of the recession \item \code{start_num, end_num}: Double. Dates
+#'   expressed as years, with decimels referring to months. (e.g. April = 4/12 =
+#'   .333) \item \code{start_date, end_date}: Date. Dates expressed in R
+#'   datetime format, using the first day of the specified month. }
 #'
-#' @source from https://www.nber.org/cycles/NBER%20chronology.xlsx
+#' @source \url{https://www.nber.org/cycles/NBER chronology.xlsx}
 #'
 #' @examples
 #' recessions <- update_recessions()
