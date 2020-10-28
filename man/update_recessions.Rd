@@ -7,7 +7,10 @@
 from https://www.nber.org/cycles/NBER%20chronology.xlsx
 }
 \usage{
-update_recessions()
+update_recessions(quietly = FALSE)
+}
+\arguments{
+\item{quietly}{Logical, suppresses messages produced by \code{utils::download.file}.}
 }
 \value{
 A tibble with the following variables:

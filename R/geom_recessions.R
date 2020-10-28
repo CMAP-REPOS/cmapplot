@@ -191,8 +191,17 @@ geom_recessions <- function(xformat = "numeric",
 build_recessions <- function(update_recessions){
   if(is.logical(update_recessions)){
     if(update_recessions){
-      message("Trying to update recessions from NBER...")
-      return(update_recessions())
+      return(
+        tryCatch(
+          {
+            message("Trying to update recessions...")
+            suppressWarnings(update_recessions(quietly = TRUE))
+          },
+          error = function(cond){
+            message("Could not update recessions. Using built-in recessions table...")
+            return(recessions)
+          })
+        )
     } else {
       return(recessions)
     }
@@ -384,6 +393,8 @@ GeomRecessionsText <- ggproto(
 #' the built-in data, such as in the event of new recessions and/or changes to the NBER consensus on
 #' recession dates. This function fetches and reformats this data from the NBER website.
 #'
+#' @param quietly Logical, suppresses messages produced by \code{utils::download.file}.
+#'
 #' @return A tibble with the following variables:
 #' \itemize{
 #'    \item \code{start_char, end_char}: Chr. Easily readable labels for the beginning and end of the recession
@@ -404,7 +415,7 @@ GeomRecessionsText <- ggproto(
 #' }
 #'
 #'@export
-update_recessions <- function(){
+update_recessions <- function(quietly = FALSE){
 
   pkgs <- c("RCurl", "readxl", "tibble", "lubridate", "stringr")
   if(FALSE %in% lapply(pkgs, requireNamespace, quietly = TRUE)){
@@ -415,7 +426,7 @@ update_recessions <- function(){
   start_char <- end_char <- start_date <- end_date <- NULL
 
   temp.file <- paste(tempfile(),".xlsx",sep = "")
-  utils::download.file("https://www.nber.org/cycles/NBER%20chronology.xlsx", temp.file, mode = "wb")
+  utils::download.file("https://www.nber.org/cycles/NBER%20chronology.xlsx", temp.file, mode = "wb", quiet = quietly)
 
   recessions <- readxl::read_excel(temp.file, skip = 2) %>%
     # drop end matter
@@ -434,6 +445,8 @@ update_recessions <- function(){
       end_num = lubridate::decimal_date(end_date)
     ) %>%
     dplyr::select(-3:-8)
+
+  message("Successfully fetched from NBER")
 
   return(recessions)
 }
