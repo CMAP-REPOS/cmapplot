@@ -21,6 +21,7 @@ reference:
   - finalize_plot
   - starts_with("geom_")
   - integer_breaks
+  - update_recessions
 - title: Color Palettes and Gradients
 - contents:
   - cmap_gradients
@@ -36,7 +37,6 @@ reference:
   - grp_over_time
   - percentile_wages
   - pop_and_laborforce_by_age
-  - recessions
   - traded_emp_by_race
   - transit_ridership
   - vehicle_ownership
