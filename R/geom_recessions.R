@@ -209,7 +209,6 @@ build_recessions <- function(update_recessions){
 }
 
 
-
 # Internal function designed to filter the built-in recessions table
 filter_recessions <- function(min, max, xformat, recess_table){
   # Bind local variables to function
@@ -404,15 +403,12 @@ GeomRecessionsText <- ggproto(
 #'   usethis::use_data(recessions, internal = TRUE)
 #' }
 #'
-#'@importFrom readxl read_excel
-#'@import stringr
-#'@import tibble
-#'
 #'@export
 update_recessions <- function(){
 
-  if(!requireNamespace("RCurl", quietly = TRUE)){
-    stop("The package `RCurl` must be installed on this system to fetch updated recessions data.", call. = FALSE)
+  pkgs <- c("RCurl", "readxl", "tibble", "lubridate", "stringr")
+  if(FALSE %in% lapply(pkgs, requireNamespace, quietly = TRUE)){
+    stop(paste("This function requires the following packages:", paste(pkgs, collapse = ", ")), call. = FALSE)
   }
 
   # locally bind variable names
