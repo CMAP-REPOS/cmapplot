@@ -130,26 +130,11 @@ geom_recessions <- function(xformat = "numeric",
                             update_recessions = FALSE,
                             ...) {
 
-  # select correct version of recessions table
-  if(is.logical(update_recessions)){
-    if(update_recessions){
-      message("Trying to update recessions from NBER...")
-      recess_table <- update_recessions()
-      message("Success!")
-    } else {
-      recess_table <- recessions
-    }
-  }else if(is.data.frame(update_recessions)){
-    recess_table <- update_recessions
-  }else{
-    message("`update_recessions` must be TRUE, FALSE, or a data table. Using built-in recessions table...")
-    recess_table <- recessions
-  }
+  # build recessions table for use in function, but hide it in a list
+  # because of ggplot's requirement that parameters be of length 1
+  recess_table <- list(build_recessions(update_recessions))
 
-  # Hide recess_table in a list because of ggplot's requirement that parameters be of length 1
-  recess_table <- list(recess_table)
-
-
+  # return a series of gg objects to ggplot
   list(
     layer(
       data = NULL,
@@ -202,6 +187,29 @@ geom_recessions <- function(xformat = "numeric",
 }
 
 
+# internal function used to define recessions table for use
+build_recessions <- function(update_recessions){
+  if(is.logical(update_recessions)){
+    if(update_recessions){
+      message("Trying to update recessions from NBER...")
+      return(update_recessions())
+    } else {
+      return(recessions)
+    }
+  }else if(is.data.frame(update_recessions)){
+    # confirm that table has correct structure
+    if(!identical(update_recessions[NA,][1,], recessions[NA,][1,])){
+      message("Recession table may not have correct format (See `?update_recessions`). Attempting anyway...")
+    }
+    return(update_recessions)
+  }else{
+    message("`update_recessions` must be TRUE, FALSE, or a data table. Using built-in recessions table...")
+    return(recessions)
+  }
+}
+
+
+
 # Internal function designed to filter the built-in recessions table
 filter_recessions <- function(min, max, xformat, recess_table){
   # Bind local variables to function
@@ -209,11 +217,6 @@ filter_recessions <- function(min, max, xformat, recess_table){
 
   # unwrap recess_table from list
   recess_table <- recess_table[[1]]
-
-  # confirm that table has correct structure
-  if(!identical(recess_table[NA,][1,], recessions[NA,][1,])){
-    message("Recession table may not have correct format (See `?update_recessions`). Attempting anyway...")
-  }
 
   # filter recessions correctly, based on xformat
   if (xformat == "numeric") {
@@ -408,7 +411,7 @@ GeomRecessionsText <- ggproto(
 #'@export
 update_recessions <- function(){
 
-  if(!require("RCurl")){
+  if(!requireNamespace("RCurl", quietly = TRUE)){
     stop("The package `RCurl` must be installed on this system to fetch updated recessions data.", call. = FALSE)
   }
 
