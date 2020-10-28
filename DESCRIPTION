@@ -47,16 +47,17 @@ Imports:
     gridtext,
     lubridate,
     magrittr,
+    readxl,
     rlang,
     scales,
-    sysfonts
+    stringr,
+    sysfonts,
+    tibble
 Suggests:
     knitr,
+    RCurl,
     rmarkdown,
     testthat,
-    readxl,
-    stringr,
-    tibble,
     tidyverse
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr

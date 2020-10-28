@@ -16,6 +16,7 @@ geom_recessions(
   show.legend = FALSE,
   rect_aes = NULL,
   text_aes = NULL,
+  update_recessions = FALSE,
   ...
 )
 }
@@ -47,6 +48,14 @@ Defaults to \code{FALSE}.}
 
 \item{rect_aes, text_aes}{Named list, additional aesthetics to send to the
 rectangle and text geoms, respectively.}
+
+\item{update_recessions}{Logical or data frame. \code{FALSE}, the default,
+relies on the package's built in recessions table. \code{TRUE} calls the
+function \code{update_recessions}, which attempts to fetch the
+current recessions table from the NBER website. A custom data table of
+recessions can also be passed to this argument, but it must be structured
+identically to the six-column data table described in the the documentation
+file for the function \code{update_recessions}.}
 
 \item{...}{additional aesthetics to send to BOTH the rectangle and text geoms.}
 }

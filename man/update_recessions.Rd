@@ -11,13 +11,11 @@ update_recessions()
 }
 \value{
 A tibble with the following variables:
-\describe{
-   \item{start_char, end_char}{Chr. Easily readable labels for the beginning and end of the recession}
-   \item{start_num, end_num}{Double. Dates expressed as years, with decimels referring to months. (e.g. April = 4/12 = .333)}
-   \item{start_date, end_date}{Date. Dates expressed in R datetime format, using the first day of the specified month.}
+\itemize{
+   \item \code{start_char, end_char}: Chr. Easily readable labels for the beginning and end of the recession
+   \item \code{start_num, end_num}: Double. Dates expressed as years, with decimels referring to months. (e.g. April = 4/12 = .333)
+   \item \code{start_date, end_date}: Date. Dates expressed in R datetime format, using the first day of the specified month.
 }
-To automatically overwite the data used in \code{geom_recessions()}, store the output of this function
-in a tibble called, simply, \code{recessions}.
 }
 \description{
 The \code{cmapplot} package contains an internal dataset of all recessions in American history
