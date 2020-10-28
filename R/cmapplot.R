@@ -44,6 +44,7 @@ if (.Platform$OS.type == "windows") {
       main = list(family="Whitney Medium", face="plain", size=14),
       note = list(family="Whitney Book", face="plain", size=11),
       title = list(family="Whitney Semibold", face="plain", size=17),
+      axis = list(family="Whitney Book", face="plain", size=14),
       label = list(family="Whitney Semibold", face="plain", size=14)
     )
   } else {
@@ -56,6 +57,7 @@ if (.Platform$OS.type == "windows") {
       main = list(family="Calibri", face="plain", size=14),
       note = list(family="Calibri Light", face="plain", size=11),
       title = list(family="Calibri", face="bold", size=17),
+      axis = list(family="Calibri Light", face="plain", size=14),
       label = list(family="Calibri", face="bold", size=14)
     )
   }
@@ -69,25 +71,39 @@ if (.Platform$OS.type == "windows") {
     main = list(family="Arial", face="plain", size=14),
     note = list(family="Arial", face="plain", size=11),
     title = list(family="Arial", face="bold", size=17),
+    axis = list(family="Arial", face="plain", size=14),
     label = list(family="Arial", face="bold", size=14)
   )
 
 }
 
 check_cmap_fonts <- function() {
-  graphics::plot(c(0,2), c(0,5), type="n", xlab="", ylab="")
-  graphics::par(family=cmapplot_globals$font$note$family,
-                font=ifelse(cmapplot_globals$font$note$face == "bold", 2, 1))
-  graphics::text(1, 4, paste("Note:", cmapplot_globals$font$note$family), cex=4)
-  graphics::par(family=cmapplot_globals$font$main$family,
-                font=ifelse(cmapplot_globals$font$main$face == "bold", 2, 1))
-  graphics::text(1, 3, paste("Main:", cmapplot_globals$font$main$family), cex=4)
+  graphics::plot(c(0,2), c(0,6), type="n", xlab="", ylab="")
+
   graphics::par(family=cmapplot_globals$font$title$family,
                 font=ifelse(cmapplot_globals$font$title$face == "bold", 2, 1))
-  graphics::text(1, 2, paste("Title:", cmapplot_globals$font$title$family), cex=4)
+  graphics::text(1, 5, paste("Title:", cmapplot_globals$font$title$family),
+                 cex=cmapplot_globals$font$title$size/12, ps=12)
+
+  graphics::par(family=cmapplot_globals$font$main$family,
+                font=ifelse(cmapplot_globals$font$main$face == "bold", 2, 1))
+  graphics::text(1, 4, paste("Main:", cmapplot_globals$font$main$family),
+                 cex=cmapplot_globals$font$main$size/12, ps=12)
+
+  graphics::par(family=cmapplot_globals$font$axis$family,
+                font=ifelse(cmapplot_globals$font$axis$face == "bold", 2, 1))
+  graphics::text(1, 3, paste("Axis:", cmapplot_globals$font$axis$family),
+                 cex=cmapplot_globals$font$axis$size/12, ps=12)
+
   graphics::par(family=cmapplot_globals$font$label$family,
                 font=ifelse(cmapplot_globals$font$label$face == "bold", 2, 1))
-  graphics::text(1, 1, paste("Label:", cmapplot_globals$font$label$family), cex=4)
+  graphics::text(1, 2, paste("Label:", cmapplot_globals$font$label$family),
+                 cex=cmapplot_globals$font$label$size/12, ps=12)
+
+  graphics::par(family=cmapplot_globals$font$note$family,
+                font=ifelse(cmapplot_globals$font$note$face == "bold", 2, 1))
+  graphics::text(1, 1, paste("Note:", cmapplot_globals$font$note$family),
+                 cex=cmapplot_globals$font$note$size/12, ps=12)
 }
 #check_cmap_fonts()
 
@@ -133,7 +149,7 @@ cmapplot_globals$consts <- list(
                         #        `caption_valign = "top"`
   margin_caption_b = 5, # [ ,f] Margin between caption and bottom edge of image
   margin_legend_t = 5,  # [ ,f] Margin between top line and plotbox
-  margin_legend_i = 5,  # [t,f] Vertical margin between legends (only applies
+  margin_legend_i = 8,  # [t,f] Vertical margin between legends (only applies
                         #        to multilegend plots)
   margin_legend_b = 10, # [t,f] Margin between legend and plot (within plotbox)
   margin_plot_b = 5,    # [ ,f] Margin between plotbox and bottom edge of image
@@ -150,7 +166,7 @@ cmapplot_globals$consts <- list(
                         #        may be required based on system configuration,
                         #        which can be done easily using `legend_bump`
   legend_key_size = 14, # [t,f] Size of the legend key item.
-  leading_title = 0.93, # [ ,f] Text leading for Title text
+  leading_title = 1, # [ ,f] Text leading for Title text
   leading_caption = 1   # [ ,f] Text leading for Caption text
 )
 
