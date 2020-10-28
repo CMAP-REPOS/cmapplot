@@ -134,16 +134,13 @@ geom_recessions <- function(xformat = "numeric",
   if(is.logical(update_recessions)){
     if(update_recessions){
       message("Trying to update recessions from NBER...")
-      recess_table <- update_recessions() %>%
-        slice(1:5)
+      recess_table <- update_recessions()
       message("Success!")
     } else {
-      recess_table <- recessions %>%
-        slice(11:15)
+      recess_table <- recessions
     }
   }else if(is.data.frame(update_recessions)){
-    recess_table <- update_recessions %>%
-      slice(16:20)
+    recess_table <- update_recessions
   }else{
     message("`update_recessions` must be TRUE, FALSE, or a data table. Using built-in recessions table...")
     recess_table <- recessions
