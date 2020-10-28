@@ -4,9 +4,21 @@
 \alias{geom_recessions}
 \title{Add recessions to time series graphs}
 \usage{
-geom_recessions(xformat = "numeric", text = TRUE, label = " Recession",
- ymin = -Inf, ymax = Inf, fill = "#002d49", text_nudge_x = 0.2, text_nudge_y
- = 0, show.legend = FALSE, rect_aes = NULL, text_aes = NULL, ...)
+geom_recessions(
+  xformat = "numeric",
+  text = TRUE,
+  label = " Recession",
+  ymin = -Inf,
+  ymax = Inf,
+  fill = "#002d49",
+  text_nudge_x = 0.2,
+  text_nudge_y = 0,
+  show.legend = FALSE,
+  rect_aes = NULL,
+  text_aes = NULL,
+  update_recessions = FALSE,
+  ...
+)
 }
 \arguments{
 \item{xformat}{Char, a string indicating whether the x axis of the primary
@@ -36,6 +48,14 @@ Defaults to \code{FALSE}.}
 
 \item{rect_aes, text_aes}{Named list, additional aesthetics to send to the
 rectangle and text geoms, respectively.}
+
+\item{update_recessions}{Logical or data frame. \code{FALSE}, the default,
+relies on the package's built in recessions table. \code{TRUE} calls the
+function \code{update_recessions}, which attempts to fetch the
+current recessions table from the NBER website. A custom data table of
+recessions can also be passed to this argument, but it must be structured
+identically to the six-column data table described in the the documentation
+file for the function \code{update_recessions}.}
 
 \item{...}{additional aesthetics to send to BOTH the rectangle and text geoms.}
 }
@@ -127,8 +147,10 @@ ggplot(df, mapping = aes(x = year_date, y = value)) +
 
 }
 \seealso{
-\url{https://ggplot2-book.org/extensions.html}
-\url{https://github.com/brodieG/ggbg/blob/development/inst/doc/extensions.html#stat-compute}
-\url{https://rpubs.com/hadley/97970}
-\url{https://ggplot2.tidyverse.org/articles/extending-ggplot2.html}
+\itemize{
+  \item \url{https://ggplot2-book.org/extensions.html}
+  \item \url{https://github.com/brodieG/ggbg/blob/development/inst/doc/extensions.html#stat-compute}
+  \item \url{https://rpubs.com/hadley/97970}
+  \item \url{https://ggplot2.tidyverse.org/articles/extending-ggplot2.html}
+}
 }
