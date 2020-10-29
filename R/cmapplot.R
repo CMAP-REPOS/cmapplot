@@ -180,7 +180,7 @@ cmapplot_globals$consts <- list(
   margin_plot_r = 10,   # [ ,f] Margin between plotbox and right edge of image
   padding_plot = c(0,10,0,0),
                         # [t,f] Padding around the entire plot
-  padding_legend = c(0,1,0,-9.5),
+  padding_legend = c(0,0,0,0),
                         # [t,f] Padding for the legend element. The -9.5
                         #        adjustment is necessary to left align legend
                         #        key with plot elements. Additional adjustments
