@@ -36,10 +36,10 @@ if (.Platform$OS.type == "windows") {
   whitney_fonts <- dplyr::filter(all_fonts,
     family %in% c("Whitney Medium", "Whitney Book", "Whitney Semibold") & face == "Regular"
   )
-  use_whitney = length(whitney_fonts$family) == 3
+  cmapplot_globals$use_whitney = length(whitney_fonts$family) == 3
 
   # Use Whitney if available
-  if (use_whitney) {
+  if (cmapplot_globals$use_whitney) {
     # Add fonts to R
     grDevices::windowsFonts(
       `Whitney Medium` = grDevices::windowsFont("Whitney Medium"),

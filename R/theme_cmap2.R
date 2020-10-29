@@ -131,17 +131,17 @@ theme_cmap_base <- function(debug = FALSE) {
   theme_gray() %+replace% t
 }
 
-
-econ_plot <- ggplot(data = cluster_jobchange,
-                    mapping = aes(
-                      x = reorder(name, jobchange),
-                      y = jobchange,
-                      fill = category)) +
-  geom_col() +
-  coord_flip() +
-  scale_y_continuous(labels = scales::comma)
-
-econ_plot + labs(title = "I am a graph", caption = "source info here") + theme_cmap_base(debug = FALSE)
+# 
+# econ_plot <- ggplot(data = cluster_jobchange,
+#                     mapping = aes(
+#                       x = reorder(name, jobchange),
+#                       y = jobchange,
+#                       fill = category)) +
+#   geom_col() +
+#   coord_flip() +
+#   scale_y_continuous(labels = scales::comma)
+# 
+# econ_plot + labs(title = "I am a graph", caption = "source info here") + theme_cmap_base(debug = FALSE)
 
 # exprt using GUI, Cairo drivers 
 
