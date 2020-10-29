@@ -51,7 +51,7 @@ if (.Platform$OS.type == "windows") {
     cmapplot_globals$font = list(
       strong = list(family = "Whitney Semibold", face = "plain"),
       regular = list(family="Whitney Medium", face="plain"),
-      light = list(family="Whitney Book", face="plain", size=11)
+      light = list(family="Whitney Book", face="plain")
     )
 
   # Otherwise, use Calibri
