@@ -87,36 +87,43 @@ display_cmap_fonts <- function() {
   graphics::plot(c(0,2), c(0,6), type="n", xlab="", ylab="")
 
   draw.me <- function(name, font, size, placement){
-    graphics::par(family=font$family,
-                  font=ifelse(font$face == "bold", 2, 1))
-    graphics::text(1, placement, paste0(name, ": ", paste(font$family, font$face, size, sep = ", ")),
-                   cex=size/12, ps=12)
+    thisfont <- cmapplot_globals$font[[font]]
+    thissize <- cmapplot_globals$fsize[[size]]
+
+    graphics::par(family=thisfont$family,
+                  font=ifelse(thisfont$face == "bold", 2, 1))
+    graphics::text(1, placement,
+                   paste(name,
+                         paste("font:", font, "size:", size),
+                         paste(thisfont$family, thisfont$face, thissize, sep = ", "),
+                         sep = " | "),
+                   cex=thissize/12, ps=12)
   }
 
   draw.me(name = "Title",
-          font = cmapplot_globals$font$strong,
-          size = cmapplot_globals$fsize$big,
+          font = "strong",
+          size = "big",
           5)
 
   draw.me(name = "Main",
-          font = cmapplot_globals$font$regular,
-          size = cmapplot_globals$fsize$reg,
+          font = "regular",
+          size = "reg",
           4)
 
   draw.me(name = "Axis",
-          font = cmapplot_globals$font$light,
-          size = cmapplot_globals$fsize$reg,
+          font = "light",
+          size = "reg",
           3)
 
   draw.me(name = "Label",
-          font = cmapplot_globals$font$strong,
-          size = cmapplot_globals$fsize$reg,
+          font = "strong",
+          size = "reg",
           2)
 
 
   draw.me(name = "Note",
-          font = cmapplot_globals$font$light,
-          size = cmapplot_globals$fsize$sml,
+          font = "light",
+          size = "sml",
           1)
 }
 #check_cmap_fonts()
