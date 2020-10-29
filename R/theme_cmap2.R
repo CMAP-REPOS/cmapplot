@@ -2,7 +2,7 @@
 # this is a complete theme built from scratch.
 # it is modeled off of `ggplot2::theme_grey()`
 theme_cmap_base <- function(debug = FALSE) {
-  
+
   # The half-line (base-fontsize / 2) sets up the basic vertical
   # rhythm of the theme. Most margins will be set to this value.
   # However, when we work with relative sizes, we may want to multiply
@@ -11,30 +11,29 @@ theme_cmap_base <- function(debug = FALSE) {
   # axis titles, `half_size` is too large a distance, and we use `half_size/2`
   # instead.
   half_line <- cmapplot_globals$fsize$reg / 2
-  
+
   consts <- cmapplot_globals$consts
-  
+
   t <- theme(
-    
+
     # building blocks
     line = element_line(
       colour = cmapplot_globals$colors$blackish,
       size = consts$lwd_gridline,
       linetype = 1, lineend = "butt"),
-    
+
     rect = element_rect(
       fill = NA, colour = if(debug){"red"}else{NA},
       size = 0.5, linetype = 1),
-    
+
     text = element_text(
       family = cmapplot_globals$font$regular$family,
       face = cmapplot_globals$font$regular$face,
       size = cmapplot_globals$fsize$reg,
       color = cmapplot_globals$colors$blackish,
       lineheight = 0.9, hjust = 0.5, vjust = 0.5, angle = 0,
-      margin = margin(), debug = debug),
-    
-    
+      margin = margin(), debug = FALSE),
+
     # axis
     axis.line =          element_blank(),
     axis.line.x =        NULL,
@@ -54,18 +53,12 @@ theme_cmap_base <- function(debug = FALSE) {
     axis.ticks.length.y = NULL,
     axis.ticks.length.y.left = NULL,
     axis.ticks.length.y.right = NULL,
-    axis.title = element_blank(),
-    
-    
+    axis.title =         element_blank(),
+
     legend.background =  NULL,
     legend.spacing.x =   unit(2 * half_line, "pt"),
     legend.spacing.y =   grid::unit(consts$margin_legend_i, "bigpts"),
-    legend.margin = margin(
-      consts$padding_legend[1],
-      consts$padding_legend[2],
-      consts$padding_legend[3],
-      consts$padding_legend[4] - cmapplot_globals$fsize$reg,
-      "bigpts"),
+    legend.margin = margin(0, 0, 0, 0 - cmapplot_globals$fsize$reg, "pt"),
     legend.key =         element_blank(),
     legend.key.size =    grid::unit(consts$legend_key_size, "bigpts"),
     legend.key.height =  NULL,
@@ -81,7 +74,7 @@ theme_cmap_base <- function(debug = FALSE) {
     legend.box.background = element_rect(colour = if(debug){"red"}else{NA}), # this should inherit from rect when NULL but it doesnt
     legend.box.just =    "left",
     legend.box.spacing = grid::unit(consts$margin_legend_b, "bigpts"),
-    
+
     panel.background =   NULL,
     panel.border =       element_blank(),
     panel.grid =         element_blank(),
@@ -89,9 +82,9 @@ theme_cmap_base <- function(debug = FALSE) {
     panel.spacing.x =    NULL,
     panel.spacing.y =    NULL,
     panel.ontop    =     FALSE,
-    
+
     strip.background =   NULL,
-    strip.text =         element_text(margin = margin(0.8 * half_line, 0.8 * half_line, 0.8 * half_line, 0.8 * half_line)),
+    strip.text =         element_text(hjust = 0),
     strip.text.x =       NULL,
     strip.text.y =       element_text(angle = -90),
     strip.text.y.left =  element_text(angle = 90),
@@ -100,8 +93,8 @@ theme_cmap_base <- function(debug = FALSE) {
     strip.placement.y =  NULL,
     strip.switch.pad.grid = unit(half_line / 2, "pt"),
     strip.switch.pad.wrap = unit(half_line / 2, "pt"),
-    
-    
+
+
     plot.background =    element_blank(),
     plot.title =         element_text(family = cmapplot_globals$font$strong$family,
                                       face = cmapplot_globals$font$strong$face,
@@ -122,28 +115,36 @@ theme_cmap_base <- function(debug = FALSE) {
                          consts$padding_plot[3] + 5,
                          consts$padding_plot[4] + 5,
                          "bigpts"),
-    
+
     complete = TRUE
   )
-  
-  # make sure all elements are set to NULL if not explicitly defined
+
+  # make sure all elements are set to NULL if not explicitly defined.
   #ggplot2:::theme_all_null() %+replace% t
   theme_gray() %+replace% t
 }
 
-# 
+
+# axis.title.x =       element_text(margin = margin(t = half_line / 2), vjust = 1, inherit.blank = FALSE),
+# axis.title.x.top =   element_text(margin = margin(b = half_line / 2), vjust = 0),
+# axis.title.y =       element_text(angle = 90, margin = margin(r = half_line / 2), vjust = 1),
+# axis.title.y.right = element_text(angle = -90,margin = margin(l = half_line / 2), vjust = 0),
+
+#View(theme_cmap_base())
+
 # econ_plot <- ggplot(data = cluster_jobchange,
 #                     mapping = aes(
 #                       x = reorder(name, jobchange),
 #                       y = jobchange,
-#                       fill = category)) +
+#                       fill = category,
+#                       alpha = assessment)) +
 #   geom_col() +
 #   coord_flip() +
 #   scale_y_continuous(labels = scales::comma)
-# 
-# econ_plot + labs(title = "I am a graph", caption = "source info here") + theme_cmap_base(debug = FALSE)
+#
+#econ_plot + facet_wrap("category") + labs(title = "I am a graph", caption = "source info here") + theme_cmap_base(debug = TRUE) + theme(axis.title.x = element_text())
 
-# exprt using GUI, Cairo drivers 
+# exprt using GUI, Cairo drivers
 
 # legend text copies in as Calibri 14
 # title text copies in as Calibri-Bold, Bold, 17
