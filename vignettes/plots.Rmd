@@ -25,9 +25,8 @@ For testing, the cmapplot package contains a variety of sample datasets. Each da
 
 ```{r datasets, echo = FALSE}
 cat("",
-    dir(path = "data/", pattern = "\\.RData$") %>%
+    dir(path = "./../data/", pattern = "\\.RData$") %>%
       str_replace(".RData$", "") %>%
-      .[.!="recessions"] %>%
       paste(collapse = "\n "))
 ```
 

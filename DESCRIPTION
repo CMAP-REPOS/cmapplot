@@ -33,6 +33,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Depends:
+    R (>= 3.5.0),
     ggplot2
 Imports:
     dplyr,
@@ -44,15 +45,19 @@ Imports:
     grid,
     gridExtra,
     gridtext,
-    lubridate,
     magrittr,
     rlang,
     scales,
     sysfonts
 Suggests:
     knitr,
+    lubridate,
+    readxl,
+    RCurl,
     rmarkdown,
+    stringr,
     testthat,
+    tibble,
     tidyverse
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr
