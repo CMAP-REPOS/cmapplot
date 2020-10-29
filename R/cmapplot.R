@@ -83,38 +83,41 @@ if (.Platform$OS.type == "windows") {
   )
 }
 
-check_cmap_fonts <- function() {
+display_cmap_fonts <- function() {
   graphics::plot(c(0,2), c(0,6), type="n", xlab="", ylab="")
 
-  # Title
-  graphics::par(family=cmapplot_globals$font$strong$family,
-                font=ifelse(cmapplot_globals$font$strong$face == "bold", 2, 1))
-  graphics::text(1, 5, paste("Title:", cmapplot_globals$font$strong$family),
-                 cex=cmapplot_globals$fsize$big/12, ps=12)
+  draw.me <- function(name, font, size, placement){
+    graphics::par(family=font$family,
+                  font=ifelse(font$face == "bold", 2, 1))
+    graphics::text(1, placement, paste0(name, ": ", paste(font$family, font$face, size, sep = ", ")),
+                   cex=size/12, ps=12)
+  }
 
-  # Main
-  graphics::par(family=cmapplot_globals$font$regular$family,
-                font=ifelse(cmapplot_globals$font$regular$face == "bold", 2, 1))
-  graphics::text(1, 4, paste("Main:", cmapplot_globals$font$regular$family),
-                 cex=cmapplot_globals$fsize$reg/12, ps=12)
+  draw.me(name = "Title",
+          font = cmapplot_globals$font$strong,
+          size = cmapplot_globals$fsize$big,
+          5)
 
-  # Axis
-  graphics::par(family=cmapplot_globals$font$light$family,
-                font=ifelse(cmapplot_globals$font$light$face == "bold", 2, 1))
-  graphics::text(1, 3, paste("Axis:", cmapplot_globals$font$light$family),
-                 cex=cmapplot_globals$fsize$reg/12, ps=12)
+  draw.me(name = "Main",
+          font = cmapplot_globals$font$regular,
+          size = cmapplot_globals$fsize$reg,
+          4)
 
-  # Label
-  graphics::par(family=cmapplot_globals$font$strong$family,
-                font=ifelse(cmapplot_globals$font$strong$face == "bold", 2, 1))
-  graphics::text(1, 2, paste("Label:", cmapplot_globals$font$strong$family),
-                 cex=cmapplot_globals$fsize$reg/12, ps=12)
+  draw.me(name = "Axis",
+          font = cmapplot_globals$font$light,
+          size = cmapplot_globals$fsize$reg,
+          3)
 
-  # Note
-  graphics::par(family=cmapplot_globals$font$light$family,
-                font=ifelse(cmapplot_globals$font$light$face == "bold", 2, 1))
-  graphics::text(1, 1, paste("Note:", cmapplot_globals$font$light$family),
-                 cex=cmapplot_globals$fsize$sml/12, ps=12)
+  draw.me(name = "Label",
+          font = cmapplot_globals$font$strong,
+          size = cmapplot_globals$fsize$reg,
+          2)
+
+
+  draw.me(name = "Note",
+          font = cmapplot_globals$font$light,
+          size = cmapplot_globals$fsize$sml,
+          1)
 }
 #check_cmap_fonts()
 
