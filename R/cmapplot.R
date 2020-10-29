@@ -74,6 +74,7 @@ if (.Platform$OS.type == "windows") {
 # If non-Windows machine, use Arial
 } else {
   message("WARNING: CMAP theme will default to Arial on non-Windows platforms")
+  cmapplot_globals$use_whitney = FALSE
 
   # establish font variables
   cmapplot_globals$font = list(
