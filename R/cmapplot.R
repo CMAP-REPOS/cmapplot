@@ -95,39 +95,19 @@ display_cmap_fonts <- function() {
                   font=ifelse(thisfont$face == "bold", 2, 1))
     graphics::text(1, placement,
                    paste(name,
-                         paste("font:", font, "size:", size),
+                         paste(paste("font:", font), paste("size:", size), sep = ", "),
                          paste(thisfont$family, thisfont$face, thissize, sep = ", "),
                          sep = " | "),
                    cex=thissize/12, ps=12)
   }
 
-  draw.me(name = "Title",
-          font = "strong",
-          size = "big",
-          5)
-
-  draw.me(name = "Main",
-          font = "regular",
-          size = "reg",
-          4)
-
-  draw.me(name = "Axis",
-          font = "light",
-          size = "reg",
-          3)
-
-  draw.me(name = "Label",
-          font = "strong",
-          size = "reg",
-          2)
-
-
-  draw.me(name = "Note",
-          font = "light",
-          size = "sml",
-          1)
+  draw.me(name = "Title", font = "strong",  size = "big", 5)
+  draw.me(name = "Main",  font = "regular", size = "reg", 4)
+  draw.me(name = "Axis",  font = "light",   size = "reg", 3)
+  draw.me(name = "Label", font = "strong",  size = "reg", 2)
+  draw.me(name = "Note",  font = "light",   size = "sml", 1)
 }
-#check_cmap_fonts()
+#display_cmap_fonts()
 
 
 # Plot sizes and colors ---------------------------------------------------

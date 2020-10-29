@@ -1,4 +1,3 @@
-
 # this is a complete theme built from scratch.
 # it is modeled off of `ggplot2::theme_grey()`
 theme_cmap_base <- function(debug = FALSE) {
@@ -23,7 +22,7 @@ theme_cmap_base <- function(debug = FALSE) {
       linetype = 1, lineend = "butt"),
 
     rect = element_rect(
-      fill = NA, colour = if(debug){"red"}else{NA},
+      fill = NA, colour = ifelse(debug, "red", NA),
       size = 0.5, linetype = 1),
 
     text = element_text(
