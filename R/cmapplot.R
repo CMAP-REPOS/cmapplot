@@ -22,87 +22,99 @@ cmapplot_globals <- new.env(parent = emptyenv())  # An environment for storing a
 
 # Default font handling ---------------------------------------------------
 
+# sizes
+cmapplot_globals$fsize <- list(
+  big = 17,
+  reg = 14,
+  sml = 11
+)
+
 if (.Platform$OS.type == "windows") {
 
-  # Set CMAP fonts: use Whitney if installed, Calibri otherwise
+  # Check for Whitney
   all_fonts <- sysfonts::font_files()
   whitney_fonts <- dplyr::filter(all_fonts,
     family %in% c("Whitney Medium", "Whitney Book", "Whitney Semibold") & face == "Regular"
   )
-  cmapplot_globals$use_whitney = length(whitney_fonts$family) == 3
-  rm(all_fonts)
-  rm(whitney_fonts)
+  use_whitney = length(whitney_fonts$family) == 3
 
-  if (cmapplot_globals$use_whitney) {
+  # Use Whitney if available
+  if (use_whitney) {
+    # Add fonts to R
     grDevices::windowsFonts(
       `Whitney Medium` = grDevices::windowsFont("Whitney Medium"),
       `Whitney Book` = grDevices::windowsFont("Whitney Book"),
       `Whitney Semibold` = grDevices::windowsFont("Whitney Semibold")
     )
+
+    # establish font variables
     cmapplot_globals$font = list(
-      main = list(family="Whitney Medium", face="plain", size=14),
-      note = list(family="Whitney Book", face="plain", size=11),
-      title = list(family="Whitney Semibold", face="plain", size=17),
-      axis = list(family="Whitney Book", face="plain", size=14),
-      label = list(family="Whitney Semibold", face="plain", size=14)
+      strong = list(family = "Whitney Semibold", face = "plain"),
+      regular = list(family="Whitney Medium", face="plain"),
+      light = list(family="Whitney Book", face="plain", size=11)
     )
+
+  # Otherwise, use Calibri
   } else {
     message("WARNING: Whitney is not installed on this PC, so CMAP theme will default to Calibri")
+    # Add fonts to R
     grDevices::windowsFonts(
       `Calibri` = grDevices::windowsFont("Calibri"),
       `Calibri Light` = grDevices::windowsFont("Calibri Light")
     )
+
+    # establish font variables
     cmapplot_globals$font = list(
-      main = list(family="Calibri", face="plain", size=14),
-      note = list(family="Calibri Light", face="plain", size=11),
-      title = list(family="Calibri", face="bold", size=17),
-      axis = list(family="Calibri Light", face="plain", size=14),
-      label = list(family="Calibri", face="bold", size=14)
+      strong = list(family="Calibri", face="bold"),
+      regular = list(family="Calibri", face="plain"),
+      light = list(family="Calibri Light", face="plain")
     )
   }
 
+# If non-Windows machine, use Arial
 } else {
-
-  # Assume no Whitney or Calibri on non-Windows (i.e. non-work) computers
   message("WARNING: CMAP theme will default to Arial on non-Windows platforms")
-  cmapplot_globals$use_whitney = FALSE
-  cmapplot_globals$font = list(
-    main = list(family="Arial", face="plain", size=14),
-    note = list(family="Arial", face="plain", size=11),
-    title = list(family="Arial", face="bold", size=17),
-    axis = list(family="Arial", face="plain", size=14),
-    label = list(family="Arial", face="bold", size=14)
-  )
 
+  # establish font variables
+  cmapplot_globals$font = list(
+    strong = list(family="Arial", face="bold"),
+    regular = list(family="Arial", face="plain"),
+    light = list(family="Arial", face="plain")
+  )
 }
 
 check_cmap_fonts <- function() {
   graphics::plot(c(0,2), c(0,6), type="n", xlab="", ylab="")
 
-  graphics::par(family=cmapplot_globals$font$title$family,
-                font=ifelse(cmapplot_globals$font$title$face == "bold", 2, 1))
-  graphics::text(1, 5, paste("Title:", cmapplot_globals$font$title$family),
-                 cex=cmapplot_globals$font$title$size/12, ps=12)
+  # Title
+  graphics::par(family=cmapplot_globals$font$strong$family,
+                font=ifelse(cmapplot_globals$font$strong$face == "bold", 2, 1))
+  graphics::text(1, 5, paste("Title:", cmapplot_globals$font$strong$family),
+                 cex=cmapplot_globals$fsize$big/12, ps=12)
 
-  graphics::par(family=cmapplot_globals$font$main$family,
-                font=ifelse(cmapplot_globals$font$main$face == "bold", 2, 1))
-  graphics::text(1, 4, paste("Main:", cmapplot_globals$font$main$family),
-                 cex=cmapplot_globals$font$main$size/12, ps=12)
+  # Main
+  graphics::par(family=cmapplot_globals$font$regular$family,
+                font=ifelse(cmapplot_globals$font$regular$face == "bold", 2, 1))
+  graphics::text(1, 4, paste("Main:", cmapplot_globals$font$regular$family),
+                 cex=cmapplot_globals$fsize$reg/12, ps=12)
 
-  graphics::par(family=cmapplot_globals$font$axis$family,
-                font=ifelse(cmapplot_globals$font$axis$face == "bold", 2, 1))
-  graphics::text(1, 3, paste("Axis:", cmapplot_globals$font$axis$family),
-                 cex=cmapplot_globals$font$axis$size/12, ps=12)
+  # Axis
+  graphics::par(family=cmapplot_globals$font$light$family,
+                font=ifelse(cmapplot_globals$font$light$face == "bold", 2, 1))
+  graphics::text(1, 3, paste("Axis:", cmapplot_globals$font$light$family),
+                 cex=cmapplot_globals$fsize$reg/12, ps=12)
 
-  graphics::par(family=cmapplot_globals$font$label$family,
-                font=ifelse(cmapplot_globals$font$label$face == "bold", 2, 1))
-  graphics::text(1, 2, paste("Label:", cmapplot_globals$font$label$family),
-                 cex=cmapplot_globals$font$label$size/12, ps=12)
+  # Label
+  graphics::par(family=cmapplot_globals$font$strong$family,
+                font=ifelse(cmapplot_globals$font$strong$face == "bold", 2, 1))
+  graphics::text(1, 2, paste("Label:", cmapplot_globals$font$strong$family),
+                 cex=cmapplot_globals$fsize$reg/12, ps=12)
 
-  graphics::par(family=cmapplot_globals$font$note$family,
-                font=ifelse(cmapplot_globals$font$note$face == "bold", 2, 1))
-  graphics::text(1, 1, paste("Note:", cmapplot_globals$font$note$family),
-                 cex=cmapplot_globals$font$note$size/12, ps=12)
+  # Note
+  graphics::par(family=cmapplot_globals$font$light$family,
+                font=ifelse(cmapplot_globals$font$light$face == "bold", 2, 1))
+  graphics::text(1, 1, paste("Note:", cmapplot_globals$font$light$family),
+                 cex=cmapplot_globals$fsize$sml/12, ps=12)
 }
 #check_cmap_fonts()
 
