@@ -38,12 +38,12 @@ theme_cmap_base <- function(consts = cmapplot_globals$consts,
     axis.text =          element_text(family = cmapplot_globals$font$light$family,
                                       face = cmapplot_globals$font$light$face,
                                       size = cmapplot_globals$fsize$reg),
-    axis.text.x =        element_text(margin = margin(t = 0.8 * half_line / 2), vjust = 1),
-    axis.text.x.top =    element_text(margin = margin(b = 0.8 * half_line / 2), vjust = 0),
-    axis.text.y =        element_text(margin = margin(r = 0.8 * half_line / 2), hjust = 1),
-    axis.text.y.right =  element_text(margin = margin(l = 0.8 * half_line / 2), hjust = 0),
+    axis.text.x =        element_text(margin = margin(t = half_line / 2), vjust = 1),
+    axis.text.x.top =    element_text(margin = margin(b = half_line / 2), vjust = 0),
+    axis.text.y =        element_text(margin = margin(r = half_line / 2), hjust = 1),
+    axis.text.y.right =  element_text(margin = margin(l = half_line / 2), hjust = 0),
     axis.ticks =         element_blank(),
-    axis.ticks.length =  unit(half_line / 2, "pt"),
+    axis.ticks.length =  unit(0, "pt"), # determines space btwn axis text & panel even when ticks are off
     axis.ticks.length.x = NULL,
     axis.ticks.length.x.top = NULL,
     axis.ticks.length.x.bottom = NULL,
@@ -57,7 +57,7 @@ theme_cmap_base <- function(consts = cmapplot_globals$consts,
     legend.spacing.y =   grid::unit(consts$margin_legend_i, "bigpts"),
     legend.margin =      margin(l = 0 - half_line),
     legend.key =         element_blank(),
-    legend.key.size =    cmapplot_globals$fsize$reg,
+    legend.key.size =    grid::unit(cmapplot_globals$fsize$reg, "pt"),
     legend.key.height =  NULL,
     legend.key.width =   NULL,
     legend.text =        NULL,
@@ -97,7 +97,7 @@ theme_cmap_base <- function(consts = cmapplot_globals$consts,
                                       face = cmapplot_globals$font$strong$face,
                                       size = cmapplot_globals$fsize$big,
                                       hjust = 0, vjust = 1,
-                                      margin = margin(b = half_line*2)),
+                                      margin = margin(b = half_line)),
     plot.title.position = "panel",
     plot.subtitle =      element_blank(),
     plot.caption =       element_text(family = cmapplot_globals$font$light$family,
@@ -107,7 +107,7 @@ theme_cmap_base <- function(consts = cmapplot_globals$consts,
                                       margin = margin(t = half_line)),
     plot.caption.position = "panel",
     plot.tag = element_blank(),
-    plot.margin = margin(5, 5 + right_margin, 5, 5),
+    plot.margin = margin(3, 3 + right_margin, 3, 3),
 
     complete = TRUE
   )
@@ -140,15 +140,3 @@ econ_plot <- ggplot(data = cmapplot::cluster_jobchange,
   geom_col() +
   coord_flip() +
   scale_y_continuous(labels = scales::comma)
-
-# econ_plot +
-#   #facet_wrap("category") +
-#   labs(title = "I am a graph", caption = "source info here") +
-#   theme_cmap_base(debug = FALSE)
-
-# exprt using GUI, Cairo drivers
-
-# legend text copies in as Calibri 14
-# title text copies in as Calibri-Bold, Bold, 17
-# caption copies in as CairoFont 11
-# axis copies in as CairoFont 14

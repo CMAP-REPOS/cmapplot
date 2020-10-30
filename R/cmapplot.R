@@ -52,7 +52,7 @@ cmapplot_globals <- list(
     lwd_originline = 1.6, # [t, ] Width of origin lines. This appears to be the
                           #        minimum for variation between origin lines and
                           #        other background lines
-    lwd_gridline = 0.3,   # [t, ] Width of grid lines (non-origin)
+    lwd_gridline = 0.3,   # [t, ] Width of most lines in plot theme, including any gridlines
     lwd_plotline = 3,     # [ ,f] Width of line graph lines
     lwd_topline = 2,      # [ ,f] Width of top line
     margin_topline_t = 5, # [ ,f] Margin between top edge of image and top line
@@ -72,9 +72,7 @@ cmapplot_globals <- list(
     padding_plot = c(0,10,0,0),
                           # [t,f] Padding around the entire plot
     padding_legend = c(0,0,0,0),
-                          # [t,f]  Padding around the legend. Additional adjustments
-                          #        to left margin may be required based on desired layout,
-                          #        which can be done easily using `legend_bump`
+                          # [t,f]  Padding around the legend.
     leading_title = 1,    # [ ,f] Text leading for Title text
     leading_caption = 1   # [ ,f] Text leading for Caption text
   )
