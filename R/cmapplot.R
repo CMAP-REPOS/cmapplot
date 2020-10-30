@@ -106,11 +106,11 @@ cmapplot_globals <- list(
       )
 
       # Update font variables
-      cmapplot_globals$font = list(
+      cmapplot_globals$font <- utils::modifyList(cmapplot_globals$font, list(
         strong = list(family = "Whitney Semibold", face="plain"),
         regular = list(family="Whitney Medium", face="plain"),
         light = list(family="Whitney Book", face="plain")
-      )
+      ))
 
       # Otherwise, use Calibri
     } else {
@@ -125,11 +125,11 @@ cmapplot_globals <- list(
       )
 
       # Update font variables
-      cmapplot_globals$font = list(
+      cmapplot_globals$font <- utils::modifyList(cmapplot_globals$font, list(
         strong = list(family="Calibri", face="bold"),
         regular = list(family="Calibri", face="plain"),
         light = list(family="Calibri Light", face="plain")
-      )
+      ))
     }
 
     # If non-Windows machine, stick to Arial
