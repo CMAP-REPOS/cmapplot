@@ -75,7 +75,6 @@ cmapplot_globals <- list(
                           # [t,f]  Padding around the legend. Additional adjustments
                           #        to left margin may be required based on desired layout,
                           #        which can be done easily using `legend_bump`
-    legend_key_size = 14, # [t,f] Size of the legend key item.
     leading_title = 1,    # [ ,f] Text leading for Title text
     leading_caption = 1   # [ ,f] Text leading for Caption text
   )
