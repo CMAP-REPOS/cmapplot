@@ -89,10 +89,6 @@ cmapplot_globals <- list(
 
     # Check for Whitney
     all_fonts <- sysfonts::font_files()
-    # whitney_fonts <- dplyr::filter(
-    #   all_fonts,
-    #   `family` %in% c("Whitney Medium", "Whitney Book", "Whitney Semibold") & `face` == "Regular"
-    # )
     whitney_fonts <- all_fonts[all_fonts$family %in% c("Whitney Medium", "Whitney Book", "Whitney Semibold") & all_fonts$face=="Regular", ]
     cmapplot_globals$use_whitney = length(whitney_fonts$family) == 3
 
@@ -106,18 +102,17 @@ cmapplot_globals <- list(
       )
 
       # Update font variables
-      cmapplot_globals$font <- utils::modifyList(cmapplot_globals$font, list(
+      cmapplot_globals$font <<- list(
         strong = list(family = "Whitney Semibold", face="plain"),
         regular = list(family="Whitney Medium", face="plain"),
         light = list(family="Whitney Book", face="plain")
-      ))
+      )
 
-      # Otherwise, use Calibri
+    # Otherwise, use Calibri
     } else {
       packageStartupMessage(
         "WARNING: Whitney is not installed on this PC, so CMAP theme will default to Calibri"
       )
-
       # Add fonts to R
       grDevices::windowsFonts(
         `Calibri` = grDevices::windowsFont("Calibri"),
@@ -125,11 +120,11 @@ cmapplot_globals <- list(
       )
 
       # Update font variables
-      cmapplot_globals$font <- utils::modifyList(cmapplot_globals$font, list(
+      cmapplot_globals$font <<- list(
         strong = list(family="Calibri", face="bold"),
         regular = list(family="Calibri", face="plain"),
         light = list(family="Calibri Light", face="plain")
-      ))
+      )
     }
 
     # If non-Windows machine, stick to Arial
