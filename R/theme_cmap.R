@@ -84,7 +84,10 @@ theme_cmap <- function(
   xlab = NULL, ylab = NULL,
   hline = NULL, vline = NULL,
   gridlines = c("h", "v", "hv", "none"),
+  axislines = c("h", "v", "hv", "none"),
   legend.max.columns = NULL,
+  debug = FALSE,
+  right_margin = 20,
   overrides = list(),
   ...
 ) {
@@ -97,156 +100,114 @@ theme_cmap <- function(
   # create list of plot constants, from globals unless overridden by user
   consts <- utils::modifyList(cmapplot_globals$consts, overrides)
 
-  # Validate gridlines parameter, throw error if invalid
+  # Validate parameters, throw error if invalid
   gridlines <- match.arg(gridlines)
+  axislines <- match.arg(axislines)
 
-  # Generate list of elements to return.
-  elements <- list(
+  # create base theme
+  base <- theme_cmap_base(consts = consts, debug = debug, right_margin = right_margin)
 
-    # The first element is the default theme.
-    ggplot2::theme(
+  # create a list of gg objects to return
+  obj <- list(base)
 
-      # Default text
-      text = ggplot2::element_text(family = cmapplot_globals$font$main$family,
-                                   face = cmapplot_globals$font$main$face,
-                                   size = cmapplot_globals$font$main$size,
-                                   color = cmapplot_globals$colors$blackish),
+  # create a list of theme attributes to modify
+  attr <- list()
 
-      # Title text
-      plot.title = ggplot2::element_text(family = cmapplot_globals$font$title$family,
-                                         face = cmapplot_globals$font$title$face,
-                                         size = cmapplot_globals$font$title$size),
 
-      # Caption/source text
-      plot.caption = ggplot2::element_text(family = cmapplot_globals$font$note$family,
-                                           face = cmapplot_globals$font$note$face,
-                                           size = cmapplot_globals$font$note$size),
+  # introduce x label, if specified
+  if(!is.null(xlab)){
+    attr[["axis.title.x"]] <- element_text()
+    #attr <- append(attr, axis.title.x = element_text())
+    obj <- append(obj, list(ggplot2::xlab(xlab)))
+  }
 
-      # Text elements not displayed
-      plot.subtitle = ggplot2::element_blank(),
+  # introduce y label, if specified
+  if(!is.null(ylab)){
+    attr <- append(attr, axis.title.y = element_text())
+    obj <- append(obj, ggplot2::ylab(ylab))
+  }
 
-      # Legend location and format
-      legend.position = "top",
-      legend.justification = "left",
-      legend.box.background = ggplot2::element_blank(),
-      legend.text = ggplot2::element_text(),
-      legend.title = ggplot2::element_blank(),
-      legend.key = ggplot2::element_blank(),
-      legend.direction = "horizontal", # arrangement of items within legend
-      legend.box = "vertical",         # arrangement of multiple legends
-      legend.box.just = "left",        # justification of multiple legends within box
-      legend.spacing.y =               # vertical spacing between multiple legends
-        grid::unit(consts$margin_legend_i, "bigpts"),
-      legend.text.align = 0,           # alignment of legend text
-      legend.margin = margin(          # four-sided margins of each legend (T,R,B,L)
-        consts$padding_legend[1],
-        consts$padding_legend[2],
-        consts$padding_legend[3],
-        consts$padding_legend[4],
-        "bigpts"),
-      legend.box.spacing =             # space between legend box and plot
-        grid::unit(consts$margin_legend_b, "bigpts"),
-      legend.key.size =                # size of the legend key element
-        grid::unit(consts$legend_key_size, "bigpts"),
 
-      # Axis format
-      axis.title.y = ggplot2::element_blank(),
-      axis.title.x = ggplot2::element_blank(),
-      axis.text = ggplot2::element_text(family = cmapplot_globals$font$axis$family,
-                                        face = cmapplot_globals$font$axis$face,
-                                        size = cmapplot_globals$font$axis$size,
-                                        color = cmapplot_globals$colors$blackish),
-      axis.text.x = ggplot2::element_text(margin = ggplot2::margin(t = 5)),
-      axis.ticks = ggplot2::element_blank(),
-      axis.line = ggplot2::element_blank(),
+  # construct final list to return
+  append(obj, list(do.call(ggplot2::theme, attr)))
 
-      # panel placement
-      plot.margin = ggplot2::margin(consts$padding_plot[1] + 5,
-                                    consts$padding_plot[2] + 5,
-                                    consts$padding_plot[3] + 5,
-                                    consts$padding_plot[4] + 5,
-                                    "bigpts"),
-
-      # Blank background
-      panel.background = ggplot2::element_blank(),
-      plot.background = ggplot2::element_blank(),
-
-      # No gridlines
-      panel.grid.major.x = ggplot2::element_blank(),
-      panel.grid.minor.x = ggplot2::element_blank(),
-      panel.grid.major.y = ggplot2::element_blank(),
-      panel.grid.minor.y = ggplot2::element_blank(),
-
-      # Strip background
-      strip.background = ggplot2::element_rect(fill = "white"),
-
-      # Facet wrap text
-      strip.text = ggplot2::element_text(hjust = 0)
-    ),
-
-    # The following elements get added based on the presence of specific
-    # function arguments. These elements add to or overwrite portions of
-    # the default theme.
-
-    # Re-introduce x label, if specified
-    if(!is.null(xlab)){
-      ggplot2::theme(axis.title.x = element_text())
-    },
-    if(!is.null(xlab)){
-      ggplot2::xlab(xlab)
-    },
-
-    # Re-introduce y label, if specified
-    if(!is.null(ylab)){
-      ggplot2::theme(axis.title.y = element_text())
-    },
-    if(!is.null(ylab)){
-      ggplot2::ylab(ylab)
-    },
-
-    # Add x origin line, if specified
-    if(!is.null(hline)){
-      ggplot2::geom_hline(yintercept = hline,
-                          size = ggplot_size_conversion(consts$lwd_originline),
-                          color = cmapplot_globals$colors$blackish)
-    },
-
-    # Add y origin line, if specified
-    if(!is.null(vline)){
-      ggplot2::geom_vline(xintercept = vline,
-                          size = ggplot_size_conversion(consts$lwd_originline),
-                          color = cmapplot_globals$colors$blackish)
-    },
-
-    # Re-introduce horizontal gridlines if specified
-    if (grepl("h", gridlines)) {
-      ggplot2::theme(
-        panel.grid.major.y = ggplot2::element_line(
-          size = ggplot_size_conversion(consts$lwd_gridline),
-          color = cmapplot_globals$colors$blackish)
-      )
-    },
-
-    # Re-introduce vertical gridlines if specified
-    if (grepl("v", gridlines)) {
-      ggplot2::theme(
-        panel.grid.major.x = ggplot2::element_line(
-          size = ggplot_size_conversion(consts$lwd_gridline),
-          color = cmapplot_globals$colors$blackish)
-      )
-    },
-
-    # only edit legend columns if value is added
-    if (!is.null(legend.max.columns)){
-        # set maximum number of columns for legend based on either "fill" or "col" to reflect different geom structures
-        ggplot2::guides(fill = guide_legend(ncol = legend.max.columns),
-                        col  = guide_legend(ncol = legend.max.columns))
-    },
-
-    # add in any custom theme overrides
-    ggplot2::theme(...)
-  )
-
-  # Filter out NA elements before returning
-  return(magrittr::extract(elements, !is.na(elements)))
 }
+
+
+
+
+# econ_plot + list(theme_cmap_base(),
+#                  xlab("Hi"),  ylab
+#                  do.call(theme, list(axis.title.x = element_text())))
+#
+#
+# econ_plot
+# econ_plot + theme_cmap_base()
+#econ_plot + list(theme_cmap_base(), theme(axis.title.x = element_text()), xlab("Hi"))
+#
+#
+# View(list(theme_cmap_base(), theme(axis.title.x = element_text()), ylab("Hi")))
+#
+#View(theme_cmap(xlab = "Hi"))
+# ?xlab
+
+
+# works
+# View(list(theme_cmap_base(), xlab("Hi"), ylab("Ho"), list(theme_cmap_base(), xlab("Hi"), do.call(theme, list(axis.title.x = element_text()))))))
+#
+# a<- list(theme_cmap_base(), do.call(theme, list(axis.title.x = element_text())))
+# View(a)
+# b<- list(xlab("Hi"), ylab("Ho"))
+# View(b)
+# c <- append(a, b)
+#
+# View(c)
+# econ_plot + c
+
+
+#     # Add x origin line, if specified
+#     if(!is.null(hline)){
+#       ggplot2::geom_hline(yintercept = hline,
+#                           size = ggplot_size_conversion(consts$lwd_originline),
+#                           color = cmapplot_globals$colors$blackish)
+#     },
+#
+#     # Add y origin line, if specified
+#     if(!is.null(vline)){
+#       ggplot2::geom_vline(xintercept = vline,
+#                           size = ggplot_size_conversion(consts$lwd_originline),
+#                           color = cmapplot_globals$colors$blackish)
+#     },
+#
+#     # Re-introduce horizontal gridlines if specified
+#     if (grepl("h", gridlines)) {
+#       ggplot2::theme(
+#         panel.grid.major.y = ggplot2::element_line(
+#           size = ggplot_size_conversion(consts$lwd_gridline),
+#           color = cmapplot_globals$colors$blackish)
+#       )
+#     },
+#
+#     # Re-introduce vertical gridlines if specified
+#     if (grepl("v", gridlines)) {
+#       ggplot2::theme(
+#         panel.grid.major.x = ggplot2::element_line(
+#           size = ggplot_size_conversion(consts$lwd_gridline),
+#           color = cmapplot_globals$colors$blackish)
+#       )
+#     },
+#
+#     # only edit legend columns if value is added
+#     if (!is.null(legend.max.columns)){
+#         # set maximum number of columns for legend based on either "fill" or "col" to reflect different geom structures
+#         ggplot2::guides(fill = guide_legend(ncol = legend.max.columns),
+#                         col  = guide_legend(ncol = legend.max.columns))
+#     },
+#
+#     # add in any custom theme overrides
+#     ggplot2::theme(...)
+#   )
+#
+#   # Filter out NA elements before returning
+#   return(magrittr::extract(elements, !is.na(elements)))
+# }
