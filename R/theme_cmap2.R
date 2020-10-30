@@ -1,17 +1,12 @@
 # this is a complete theme built from scratch.
 # it is modeled off of `ggplot2::theme_grey()`
-theme_cmap_base <- function(debug = FALSE) {
+theme_cmap_base <- function(consts = cmapplot_globals$consts,
+                            debug = FALSE,
+                            right_margin = 20
+                            ) {
 
-  # The half-line (base-fontsize / 2) sets up the basic vertical
-  # rhythm of the theme. Most margins will be set to this value.
-  # However, when we work with relative sizes, we may want to multiply
-  # `half_line` with the appropriate relative size. This applies in
-  # particular for axis tick sizes. And also, for axis ticks and
-  # axis titles, `half_size` is too large a distance, and we use `half_size/2`
-  # instead.
+  # The half-line sets up the basic vertical rhythm of the theme.
   half_line <- cmapplot_globals$fsize$reg / 2
-
-  consts <- cmapplot_globals$consts
 
   t <- theme(
 
@@ -19,19 +14,22 @@ theme_cmap_base <- function(debug = FALSE) {
     line = element_line(
       colour = cmapplot_globals$colors$blackish,
       size = consts$lwd_gridline,
-      linetype = 1, lineend = "butt"),
+      linetype = 1, lineend = "butt",
+      inherit.blank = TRUE),
 
     rect = element_rect(
       fill = NA, colour = ifelse(debug, "red", NA),
-      size = 0.5, linetype = 1),
+      size = 0.5, linetype = 1,
+      inherit.blank = TRUE),
 
     text = element_text(
       family = cmapplot_globals$font$regular$family,
-      face = cmapplot_globals$font$regular$face,
+      face = cmapplot_globals$fgiont$regular$face,
       size = cmapplot_globals$fsize$reg,
       color = cmapplot_globals$colors$blackish,
       lineheight = 0.9, hjust = 0.5, vjust = 0.5, angle = 0,
-      margin = margin(), debug = FALSE),
+      margin = margin(), debug = debug,
+      inherit.blank = TRUE),
 
     # axis
     axis.line =          element_blank(),
@@ -55,9 +53,9 @@ theme_cmap_base <- function(debug = FALSE) {
     axis.title =         element_blank(),
 
     legend.background =  NULL,
-    legend.spacing.x =   unit(2 * half_line, "pt"),
+    legend.spacing.x =   grid::unit(half_line, "pt"),
     legend.spacing.y =   grid::unit(consts$margin_legend_i, "bigpts"),
-    legend.margin = margin(0, 0, 0, 0 - cmapplot_globals$fsize$reg, "pt"),
+    legend.margin =      margin(l = 0 - half_line),
     legend.key =         element_blank(),
     legend.key.size =    grid::unit(consts$legend_key_size, "bigpts"),
     legend.key.height =  NULL,
@@ -70,7 +68,7 @@ theme_cmap_base <- function(debug = FALSE) {
     legend.justification = "left",
     legend.box =         "vertical",
     legend.box.margin =  margin(0, 0, 0, 0, "cm"),
-    legend.box.background = element_rect(colour = if(debug){"red"}else{NA}), # this should inherit from rect when NULL but it doesnt
+    legend.box.background = element_rect(colour = ifelse(debug, "red", NA), # this should inherit from rect when NULL but it doesnt
     legend.box.just =    "left",
     legend.box.spacing = grid::unit(consts$margin_legend_b, "bigpts"),
 
@@ -99,7 +97,7 @@ theme_cmap_base <- function(debug = FALSE) {
                                       face = cmapplot_globals$font$strong$face,
                                       size = cmapplot_globals$fsize$big,
                                       hjust = 0, vjust = 1,
-                                      margin = margin(b = half_line)),
+                                      margin = margin(b = half_line*2)),
     plot.title.position = "panel",
     plot.subtitle =      element_blank(),
     plot.caption =       element_text(family = cmapplot_globals$font$light$family,
@@ -109,19 +107,21 @@ theme_cmap_base <- function(debug = FALSE) {
                                       margin = margin(t = half_line)),
     plot.caption.position = "panel",
     plot.tag = element_blank(),
-    plot.margin = margin(consts$padding_plot[1] + 5,
-                         consts$padding_plot[2] + 20,
-                         consts$padding_plot[3] + 5,
-                         consts$padding_plot[4] + 5,
-                         "bigpts"),
+    plot.margin = margin(5, 5 + right_margin, 5, 5),
 
     complete = TRUE
   )
 
   # make sure all elements are set to NULL if not explicitly defined.
-  #ggplot2:::theme_all_null() %+replace% t
   theme_gray() %+replace% t
 }
+
+
+# econ_plot + theme(axis.title.x = element_text(color = "red", inherit.blank = TRUE)) + theme(axis.title = element_blank())
+
+# this line of code is important. inherit_blanks allow parents to null out children. Lets put
+# all possible additions in this base, and then zero them out selectively in the modified theme.
+
 
 
 # axis.title.x =       element_text(margin = margin(t = half_line / 2), vjust = 1, inherit.blank = FALSE),
@@ -131,17 +131,20 @@ theme_cmap_base <- function(debug = FALSE) {
 
 #View(theme_cmap_base())
 
-# econ_plot <- ggplot(data = cluster_jobchange,
-#                     mapping = aes(
-#                       x = reorder(name, jobchange),
-#                       y = jobchange,
-#                       fill = category,
-#                       alpha = assessment)) +
-#   geom_col() +
-#   coord_flip() +
-#   scale_y_continuous(labels = scales::comma)
-#
-#econ_plot + facet_wrap("category") + labs(title = "I am a graph", caption = "source info here") + theme_cmap_base(debug = TRUE) + theme(axis.title.x = element_text())
+econ_plot <- ggplot(data = cmapplot::cluster_jobchange,
+                    mapping = aes(
+                      x = reorder(name, jobchange),
+                      y = jobchange,
+                      fill = category,
+                      alpha = assessment)) +
+  geom_col() +
+  coord_flip() +
+  scale_y_continuous(labels = scales::comma)
+
+# econ_plot +
+#   #facet_wrap("category") +
+#   labs(title = "I am a graph", caption = "source info here") +
+#   theme_cmap_base(debug = FALSE)
 
 # exprt using GUI, Cairo drivers
 
