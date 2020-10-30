@@ -72,10 +72,8 @@ cmapplot_globals <- list(
     padding_plot = c(0,10,0,0),
                           # [t,f] Padding around the entire plot
     padding_legend = c(0,0,0,0),
-                          # [t,f] Padding for the legend element. The -9.5
-                          #        adjustment is necessary to left align legend
-                          #        key with plot elements. Additional adjustments
-                          #        may be required based on system configuration,
+                          # [t,f]  Padding around the legend. Additional adjustments
+                          #        to left margin may be required based on desired layout,
                           #        which can be done easily using `legend_bump`
     legend_key_size = 14, # [t,f] Size of the legend key item.
     leading_title = 1,    # [ ,f] Text leading for Title text
