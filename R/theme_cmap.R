@@ -104,67 +104,69 @@ theme_cmap <- function(
   gridlines <- match.arg(gridlines)
   axislines <- match.arg(axislines)
 
-  # create base theme
-  base <- theme_cmap_base(consts = consts, debug = debug, right_margin = right_margin)
-
-  # create a list of gg objects to return
-  obj <- list(base)
-
-  # create a list of theme attributes to modify
+  # create blank list of gg objects and theme attributes to return
+  obj <- list()
   attr <- list()
 
+
+  # create a helper function to more easily add items to the obj list
+  add_to_obj <- function(oldobj, newitem){
+    obj <<- append(oldobj, list(newitem))
+    NULL
+  }
+
+  # add base theme to object list
+  add_to_obj(obj, theme_cmap_base(consts = consts, debug = debug, right_margin = right_margin))
 
   # introduce x label, if specified
   if(!is.null(xlab)){
     attr[["axis.title.x"]] <- element_text()
-    #attr <- append(attr, axis.title.x = element_text())
-    obj <- append(obj, list(ggplot2::xlab(xlab)))
+    add_to_obj(obj, ggplot2::xlab(xlab))
   }
 
   # introduce y label, if specified
   if(!is.null(ylab)){
-    attr <- append(attr, axis.title.y = element_text())
-    obj <- append(obj, ggplot2::ylab(ylab))
+    attr[["axis.title.y"]] <- element_text()
+    add_to_obj(obj, ggplot2::ylab(ylab))
   }
 
 
   # construct final list to return
-  append(obj, list(do.call(ggplot2::theme, attr)))
+  append(obj, list(do.call(theme, attr)))
 
 }
 
+#
+#econ_plot + theme_cmap(xlab = "hi", ylab = "ho")
+# View(theme_cmap(xlab = "hi", ylab = "ho"))
 
 
 
-# econ_plot + list(theme_cmap_base(),
-#                  xlab("Hi"),  ylab
-#                  do.call(theme, list(axis.title.x = element_text())))
+# # WORKING MODEL
+# a <- function(){
+#   obj <- list(theme_cmap_base())
+#
+#   add_to_obj <- function(oldobj, newitem){
+#     obj <<- append(oldobj, list(newitem))
+#     NULL
+#   }
 #
 #
-# econ_plot
-# econ_plot + theme_cmap_base()
-#econ_plot + list(theme_cmap_base(), theme(axis.title.x = element_text()), xlab("Hi"))
+#   add_to_obj(obj, ylab("ho"))
+#   add_to_obj(obj, xlab("hi"))
+#   add_to_obj(obj, list(a = "b"))
+#
+#   attr <- list()
+#   attr[["axis.title"]] <- element_text()
+#
+#   append(obj, list(do.call(theme, attr)))
+# }
 #
 #
-# View(list(theme_cmap_base(), theme(axis.title.x = element_text()), ylab("Hi")))
-#
-#View(theme_cmap(xlab = "Hi"))
-# ?xlab
+# econ_plot + a()
+# View(a())
 
-
-# works
-# View(list(theme_cmap_base(), xlab("Hi"), ylab("Ho"), list(theme_cmap_base(), xlab("Hi"), do.call(theme, list(axis.title.x = element_text()))))))
-#
-# a<- list(theme_cmap_base(), do.call(theme, list(axis.title.x = element_text())))
-# View(a)
-# b<- list(xlab("Hi"), ylab("Ho"))
-# View(b)
-# c <- append(a, b)
-#
-# View(c)
-# econ_plot + c
-
-
+# OLD CODE TO INTEGRATE INTO NEW MODEL
 #     # Add x origin line, if specified
 #     if(!is.null(hline)){
 #       ggplot2::geom_hline(yintercept = hline,
