@@ -181,3 +181,31 @@ ggplot_size_conversion <- function(value, type = "bigpts") {
       / ggplot2::.pt     # Account for the ggplot2::.pt factor (=72.27/25.4)
   )
 }
+
+
+
+
+
+# temp plots ---------------------------------------------------
+# some plots without themes for internal testing
+
+econ_plot <- ggplot(data = cmapplot::cluster_jobchange,
+                    mapping = aes(
+                      x = reorder(name, jobchange),
+                      y = jobchange,
+                      fill = category,
+                      alpha = assessment)) +
+  geom_col() +
+  coord_flip() +
+  scale_y_continuous(labels = scales::comma)
+
+transit_plot <- transit_ridership %>%
+  mutate(system = case_when(
+    system == "cta_bus" ~ "CTA (Bus)",
+    system == "cta_rail" ~ "CTA (Rail)",
+    system == "metra" ~ "Metra",
+    system == "pace" ~ "Pace",
+    system == "pace_ada" ~ "Paratransit"
+  )) %>%
+  ggplot(aes(x = year, y = ridership, color = system)) +
+  geom_line()
