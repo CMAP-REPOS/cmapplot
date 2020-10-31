@@ -12,6 +12,9 @@
 #'  default, horizontal grid lines will be displayed while vertical grid lines
 #'  will be masked. Acceptable values are "h" (horizontal only), "v" (vertical
 #'  only), "hv" (both horizontal and vertical), and "none" (neither).
+#'@param axislines Char, the axis lines to be displayed on the chart. Acceptable
+#'  values are "x" (x axis only), "y" (y axis only), "xy" (both axes), and
+#'  "none" (neither, the default).
 #'@param legend.max.columns Integer, the maximum number of columns in the
 #'  legend. If no value is set, the chart will rely on `ggplot`'s default and
 #'  automatic column handling behavior, which should work for most cases. Manual
@@ -20,38 +23,34 @@
 #'  mean the total number of columns is less than the maximum (e.g., if there
 #'  are five items in a legend with four columns as the maximum, the output will
 #'  be one row of three and another row of two).
+#'@param debug Bool, Defaults to \code{FALSE}. Set to \code{TRUE} to show
+#'  rectangles around all \code{geom_rect()} elements for debugging.
 #'@param overrides Named list, overrides the default drawing attributes defined
-#'  in \code{cmapplot_globals$consts} which are drawn by
-#'  \code{theme_cmap()} (only a few of them). Units are in bigpts (1/72 of an
-#'  inch).
+#'  in \code{cmapplot_globals$consts} which are drawn by \code{theme_cmap()}
+#'  (only a few of them). Units are in bigpts (1/72 of an inch).
 #'@param ... pass additional arguments to \code{ggplot2::theme()} to override
 #'  any elements of the default CMAP theme.
 #'
-#'@section Overrides: In the \code{overrides} argument, the user can modify
-#'  the default constants that define certain plot aesthetics. Units of all
-#'  plot constants are "bigpts": 1/72 of an inch. Most plot constants (stored in
-#'  \code{cmapplot_globals$consts}) are used in \code{finalize_plot()},
-#'  but a few are used in this function. Overrides with astirisks are not
-#'  "sticky" -- they will need to be re-specified in \code{finalize_plot}.
+#'@section Overrides: In the \code{overrides} argument, the user can modify the
+#'  default constants that define certain plot aesthetics. Units of all plot
+#'  constants are "bigpts": 1/72 of an inch. Most plot constants (stored in
+#'  \code{cmapplot_globals$consts}) are used in \code{finalize_plot()}, but a
+#'  few are used in this function. Overrides with astirisks are not "sticky" --
+#'  they will need to be re-specified in \code{finalize_plot}.
 #'
-#'  \itemize{
-#'    \item \code{lwd_originline}: the width of any origin lines drawn by
-#'    \code{hline} or \code{vline}.
-#'    \item \code{lwd_gridline}: the width of gridlines in the plot, if drawn by
-#'    \code{gridlines}.
-#'    \item \code{margin_legend_i}*: The margin between legends (this only
-#'    applies in plots with two or more legends and does not affect legend
-#'    spacing on plots with single legends that have multiple rows).
-#'    \item \code{margin_legend_b}*: The margin between the bottom of the legend
-#'    and the rest of the plot.
-#'    \item \code{legend_key_size}*: The size of legend key elements.
-#'    \item \code{padding_plot}*: A numeric vector of length 4 (top, right,
-#'    bottom, left) that creates padding between the plot and its drawing
-#'    extent.
-#'    \item \code{padding_legend}*: A numeric vector of length 4 (top, right,
-#'    bottom, left) that creates padding around the margin. These numbers can be
-#'    negative to reduce space around the legend.
-#'  }
+#'  \itemize{ \item \code{lwd_originline}: the width of any origin lines drawn
+#'  by \code{hline} or \code{vline}. \item \code{lwd_gridline}: the width of
+#'  gridlines in the plot, if drawn by \code{gridlines}. \item
+#'  \code{margin_legend_i}*: The margin between legends (this only applies in
+#'  plots with two or more legends and does not affect legend spacing on plots
+#'  with single legends that have multiple rows). \item \code{margin_legend_b}*:
+#'  The margin between the bottom of the legend and the rest of the plot. \item
+#'  \code{legend_key_size}*: The size of legend key elements. \item
+#'  \code{padding_plot}*: A numeric vector of length 4 (top, right, bottom,
+#'  left) that creates padding between the plot and its drawing extent. \item
+#'  \code{padding_legend}*: A numeric vector of length 4 (top, right, bottom,
+#'  left) that creates padding around the margin. These numbers can be negative
+#'  to reduce space around the legend. }
 #'
 #'@examples
 #'
@@ -87,7 +86,6 @@ theme_cmap <- function(
   axislines = c("none", "x", "y", "xy"),
   legend.max.columns = NULL,
   debug = FALSE,
-  right_margin = 20,
   overrides = list(),
   ...
 ) {
@@ -119,7 +117,7 @@ theme_cmap <- function(
   }
 
   # add base theme to object list
-  add_to_obj(theme_cmap_base(consts = consts, debug = debug, right_margin = right_margin))
+  add_to_obj(theme_cmap_base(consts = consts, debug = debug))
 
   # introduce x label, if specified
   if(!is.null(xlab)){
@@ -206,8 +204,7 @@ theme_cmap <- function(
 # this is a complete theme built from scratch.
 # it is modeled off of `ggplot2::theme_grey()`
 theme_cmap_base <- function(consts = cmapplot_globals$consts,
-                            debug = FALSE,
-                            right_margin = 20
+                            debug = FALSE
 ) {
 
   t <- theme(
@@ -311,7 +308,7 @@ theme_cmap_base <- function(consts = cmapplot_globals$consts,
                                       margin = margin(t = consts$half_line)),
     plot.caption.position = "panel",
     plot.tag = element_blank(),
-    plot.margin = margin(3, 3 + right_margin, 3, 3),
+    plot.margin = margin(3, 3 + consts$margin_panel_r, 3, 3),
 
     complete = TRUE
   )
