@@ -100,6 +100,9 @@ theme_cmap <- function(
   # create list of plot constants, from globals unless overridden by user
   consts <- utils::modifyList(cmapplot_globals$consts, overrides)
 
+  # The half-line sets up the basic vertical rhythm of the theme.
+  consts[["half_line"]] <- cmapplot_globals$fsize$reg / 2
+
   # Validate parameters, throw error if invalid
   gridlines <- match.arg(gridlines)
   axislines <- match.arg(axislines)
@@ -120,13 +123,13 @@ theme_cmap <- function(
 
   # introduce x label, if specified
   if(!is.null(xlab)){
-    attr[["axis.title.x"]] <- element_text()
+    attr[["axis.title.x"]] <- element_text(margin = margin(t = consts$half_line / 2), vjust = 1, inherit.blank = FALSE)
     add_to_obj(ggplot2::xlab(xlab))
   }
 
   # introduce y label, if specified
   if(!is.null(ylab)){
-    attr[["axis.title.y"]] <- element_text()
+    attr[["axis.title.y"]] <- element_text(angle = 90, margin = margin(r = consts$half_line / 2), vjust = 1, inherit.blank = FALSE)
     add_to_obj(ggplot2::ylab(ylab))
   }
 

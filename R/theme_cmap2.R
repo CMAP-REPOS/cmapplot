@@ -5,9 +5,6 @@ theme_cmap_base <- function(consts = cmapplot_globals$consts,
                             right_margin = 20
                             ) {
 
-  # The half-line sets up the basic vertical rhythm of the theme.
-  half_line <- cmapplot_globals$fsize$reg / 2
-
   t <- theme(
 
     # building blocks
@@ -38,10 +35,10 @@ theme_cmap_base <- function(consts = cmapplot_globals$consts,
     axis.text =          element_text(family = cmapplot_globals$font$light$family,
                                       face = cmapplot_globals$font$light$face,
                                       size = cmapplot_globals$fsize$reg),
-    axis.text.x =        element_text(margin = margin(t = half_line / 2), vjust = 1),
-    axis.text.x.top =    element_text(margin = margin(b = half_line / 2), vjust = 0),
-    axis.text.y =        element_text(margin = margin(r = half_line / 2), hjust = 1),
-    axis.text.y.right =  element_text(margin = margin(l = half_line / 2), hjust = 0),
+    axis.text.x =        element_text(margin = margin(t = consts$half_line / 2), vjust = 1),
+    axis.text.x.top =    element_text(margin = margin(b = consts$half_line / 2), vjust = 0),
+    axis.text.y =        element_text(margin = margin(r = consts$half_line / 2), hjust = 1),
+    axis.text.y.right =  element_text(margin = margin(l = consts$half_line / 2), hjust = 0),
     axis.ticks =         element_blank(),
     axis.ticks.length =  unit(0, "pt"), # determines space btwn axis text & panel even when ticks are off
     axis.ticks.length.x = NULL,
@@ -53,9 +50,9 @@ theme_cmap_base <- function(consts = cmapplot_globals$consts,
     axis.title =         element_blank(),
 
     legend.background =  NULL,
-    legend.spacing.x =   grid::unit(half_line, "pt"),
+    legend.spacing.x =   grid::unit(consts$half_line, "pt"),
     legend.spacing.y =   grid::unit(consts$margin_legend_i, "bigpts"),
-    legend.margin =      margin(l = 0 - half_line),
+    legend.margin =      margin(l = 0 - consts$half_line),
     legend.key =         element_blank(),
     legend.key.size =    grid::unit(cmapplot_globals$fsize$reg, "pt"),
     legend.key.height =  NULL,
@@ -77,7 +74,7 @@ theme_cmap_base <- function(consts = cmapplot_globals$consts,
     panel.background =   NULL,
     panel.border =       element_blank(),
     panel.grid =         element_blank(),
-    panel.spacing =      unit(half_line, "pt"),
+    panel.spacing =      unit(consts$half_line, "pt"),
     panel.spacing.x =    NULL,
     panel.spacing.y =    NULL,
     panel.ontop    =     FALSE,
@@ -90,8 +87,8 @@ theme_cmap_base <- function(consts = cmapplot_globals$consts,
     strip.placement =    "inside",
     strip.placement.x =  NULL,
     strip.placement.y =  NULL,
-    strip.switch.pad.grid = unit(half_line / 2, "pt"),
-    strip.switch.pad.wrap = unit(half_line / 2, "pt"),
+    strip.switch.pad.grid = unit(consts$half_line / 2, "pt"),
+    strip.switch.pad.wrap = unit(consts$half_line / 2, "pt"),
 
 
     plot.background =    element_blank(),
@@ -99,14 +96,14 @@ theme_cmap_base <- function(consts = cmapplot_globals$consts,
                                       face = cmapplot_globals$font$strong$face,
                                       size = cmapplot_globals$fsize$big,
                                       hjust = 0, vjust = 1,
-                                      margin = margin(b = half_line)),
+                                      margin = margin(b = consts$half_line)),
     plot.title.position = "panel",
     plot.subtitle =      element_blank(),
     plot.caption =       element_text(family = cmapplot_globals$font$light$family,
                                       face = cmapplot_globals$font$light$face,
                                       size = cmapplot_globals$fsize$sml,
                                       hjust = 1, vjust = 1,
-                                      margin = margin(t = half_line)),
+                                      margin = margin(t = consts$half_line)),
     plot.caption.position = "panel",
     plot.tag = element_blank(),
     plot.margin = margin(3, 3 + right_margin, 3, 3),
@@ -118,20 +115,6 @@ theme_cmap_base <- function(consts = cmapplot_globals$consts,
   theme_gray() %+replace% t
 }
 
-
-# econ_plot + theme(axis.title.x = element_text(color = "red", inherit.blank = TRUE)) + theme(axis.title = element_blank())
-
-# this line of code is important. inherit_blanks allow parents to null out children. Lets put
-# all possible additions in this base, and then zero them out selectively in the modified theme.
-
-
-
-# axis.title.x =       element_text(margin = margin(t = half_line / 2), vjust = 1, inherit.blank = FALSE),
-# axis.title.x.top =   element_text(margin = margin(b = half_line / 2), vjust = 0),
-# axis.title.y =       element_text(angle = 90, margin = margin(r = half_line / 2), vjust = 1),
-# axis.title.y.right = element_text(angle = -90,margin = margin(l = half_line / 2), vjust = 0),
-
-#View(theme_cmap_base())
 
 econ_plot <- ggplot(data = cmapplot::cluster_jobchange,
                     mapping = aes(
