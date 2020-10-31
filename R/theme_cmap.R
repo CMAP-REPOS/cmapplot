@@ -84,7 +84,7 @@ theme_cmap <- function(
   xlab = NULL, ylab = NULL,
   hline = NULL, vline = NULL,
   gridlines = c("h", "v", "hv", "none"),
-  axislines = c("h", "v", "hv", "none"),
+  axislines = c("none", "x", "y", "xy"),
   legend.max.columns = NULL,
   debug = FALSE,
   right_margin = 20,
@@ -110,106 +110,89 @@ theme_cmap <- function(
 
 
   # create a helper function to more easily add items to the obj list
-  add_to_obj <- function(oldobj, newitem){
-    obj <<- append(oldobj, list(newitem))
+  add_to_obj <- function(newitem){
+    obj <<- append(get("obj", parent.frame()), list(newitem))
     NULL
   }
 
   # add base theme to object list
-  add_to_obj(obj, theme_cmap_base(consts = consts, debug = debug, right_margin = right_margin))
+  add_to_obj(theme_cmap_base(consts = consts, debug = debug, right_margin = right_margin))
 
   # introduce x label, if specified
   if(!is.null(xlab)){
     attr[["axis.title.x"]] <- element_text()
-    add_to_obj(obj, ggplot2::xlab(xlab))
+    add_to_obj(ggplot2::xlab(xlab))
   }
 
   # introduce y label, if specified
   if(!is.null(ylab)){
     attr[["axis.title.y"]] <- element_text()
-    add_to_obj(obj, ggplot2::ylab(ylab))
+    add_to_obj(ggplot2::ylab(ylab))
   }
 
+  # Add x origin line, if specified
+  if(!is.null(hline)){
+    add_to_obj(ggplot2::geom_hline(yintercept = hline,
+                                   size = ggplot_size_conversion(consts$lwd_originline),
+                                   color = cmapplot_globals$colors$blackish))
+  }
+
+  # Add y origin line, if specified
+  if(!is.null(vline)){
+    add_to_obj(ggplot2::geom_vline(xintercept = vline,
+                                   size = ggplot_size_conversion(consts$lwd_originline),
+                                   color = cmapplot_globals$colors$blackish))
+  }
+
+  # Introduce horizontal gridlines if specified
+  if (grepl("h", gridlines)) {
+    add_to_obj(ggplot2::theme(
+      panel.grid.major.y = ggplot2::element_line(
+        size = ggplot_size_conversion(consts$lwd_gridline),
+        color = cmapplot_globals$colors$blackish)
+    ))
+  }
+
+  # Introduce vertical gridlines if specified
+  if (grepl("v", gridlines)) {
+    add_to_obj(ggplot2::theme(
+      panel.grid.major.x = ggplot2::element_line(
+        size = ggplot_size_conversion(consts$lwd_gridline),
+        color = cmapplot_globals$colors$blackish)
+    ))
+  }
+
+  # Introduce x axis line if specified
+  if (grepl("x", axislines)) {
+    add_to_obj(ggplot2::theme(
+      axis.line.x = ggplot2::element_line(
+        size = ggplot_size_conversion(consts$lwd_gridline),
+        color = cmapplot_globals$colors$blackish)
+    ))
+  }
+
+  # Introduce y axis line if specified
+  if (grepl("y", axislines)) {
+    add_to_obj(ggplot2::theme(
+      axis.line.y = ggplot2::element_line(
+        size = ggplot_size_conversion(consts$lwd_gridline),
+        color = cmapplot_globals$colors$blackish)
+    ))
+  }
+
+  # only edit legend columns if value is added
+  if (!is.null(legend.max.columns)){
+      # set maximum number of columns for legend based on either "fill" or "col" to reflect different geom structures
+      add_to_obj(ggplot2::guides(fill = guide_legend(ncol = legend.max.columns),
+                      col  = guide_legend(ncol = legend.max.columns)
+                      )
+                 )
+  }
+
+  # add any extra args to theme attributes
+  attr <- append(attr, list(...))
 
   # construct final list to return
   append(obj, list(do.call(theme, attr)))
 
 }
-
-#
-#econ_plot + theme_cmap(xlab = "hi", ylab = "ho")
-# View(theme_cmap(xlab = "hi", ylab = "ho"))
-
-
-
-# # WORKING MODEL
-# a <- function(){
-#   obj <- list(theme_cmap_base())
-#
-#   add_to_obj <- function(oldobj, newitem){
-#     obj <<- append(oldobj, list(newitem))
-#     NULL
-#   }
-#
-#
-#   add_to_obj(obj, ylab("ho"))
-#   add_to_obj(obj, xlab("hi"))
-#   add_to_obj(obj, list(a = "b"))
-#
-#   attr <- list()
-#   attr[["axis.title"]] <- element_text()
-#
-#   append(obj, list(do.call(theme, attr)))
-# }
-#
-#
-# econ_plot + a()
-# View(a())
-
-# OLD CODE TO INTEGRATE INTO NEW MODEL
-#     # Add x origin line, if specified
-#     if(!is.null(hline)){
-#       ggplot2::geom_hline(yintercept = hline,
-#                           size = ggplot_size_conversion(consts$lwd_originline),
-#                           color = cmapplot_globals$colors$blackish)
-#     },
-#
-#     # Add y origin line, if specified
-#     if(!is.null(vline)){
-#       ggplot2::geom_vline(xintercept = vline,
-#                           size = ggplot_size_conversion(consts$lwd_originline),
-#                           color = cmapplot_globals$colors$blackish)
-#     },
-#
-#     # Re-introduce horizontal gridlines if specified
-#     if (grepl("h", gridlines)) {
-#       ggplot2::theme(
-#         panel.grid.major.y = ggplot2::element_line(
-#           size = ggplot_size_conversion(consts$lwd_gridline),
-#           color = cmapplot_globals$colors$blackish)
-#       )
-#     },
-#
-#     # Re-introduce vertical gridlines if specified
-#     if (grepl("v", gridlines)) {
-#       ggplot2::theme(
-#         panel.grid.major.x = ggplot2::element_line(
-#           size = ggplot_size_conversion(consts$lwd_gridline),
-#           color = cmapplot_globals$colors$blackish)
-#       )
-#     },
-#
-#     # only edit legend columns if value is added
-#     if (!is.null(legend.max.columns)){
-#         # set maximum number of columns for legend based on either "fill" or "col" to reflect different geom structures
-#         ggplot2::guides(fill = guide_legend(ncol = legend.max.columns),
-#                         col  = guide_legend(ncol = legend.max.columns))
-#     },
-#
-#     # add in any custom theme overrides
-#     ggplot2::theme(...)
-#   )
-#
-#   # Filter out NA elements before returning
-#   return(magrittr::extract(elements, !is.na(elements)))
-# }

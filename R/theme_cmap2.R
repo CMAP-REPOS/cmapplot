@@ -68,7 +68,9 @@ theme_cmap_base <- function(consts = cmapplot_globals$consts,
     legend.justification = "left",
     legend.box =         "vertical",
     legend.box.margin =  margin(0, 0, 0, 0),
-    legend.box.background = element_rect(colour = ifelse(debug, "red", NA)), # this should inherit from rect when NULL but it doesnt
+    legend.box.background = element_rect(
+      fill = NA,
+      colour = ifelse(debug, "red", NA)), # this should inherit from rect when NULL but it doesnt
     legend.box.just =    "left",
     legend.box.spacing = grid::unit(consts$margin_legend_b, "bigpts"),
 
