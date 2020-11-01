@@ -61,14 +61,14 @@ plot area in accordance with CMAP design standards.
 }
 \details{
 Using either the \code{xlab} or \code{ylab} argument, but not both, will have
-undesireable outcomes in a ggplot that also invokes \code{coord_flip()}. This
-is because under the hood \code{theme_cmap(xlab = "foo")} both sets
-\code{ggplot2::xlab = "foo"} and 'turns on' the ggplot theme element
-\code{axis.title.x}. With {coord_flip()}, the xlab travels with the data
-(becoming the ylab) but the theme modifier stays on the x axis. To solve
-this, rewrite your ggplot construction to avoid \code{coord_flip()} or manually
-turn off and on the correct elements from \code{\link{ggplot2::theme()}} in the
-\code{...} of this function.
+undesireable outcomes in a ggplot that also invokes \code{coord_flip()}. Under
+the hood, \code{theme_cmap(xlab = "foo")} both sets \code{ggplot2::xlab =
+"foo"} and 'turns on' the ggplot theme element \code{axis.title.x}. With
+\code{coord_flip()}, the xlab travels with the data (becoming the ylab) but the
+theme modifier stays on the x axis. To solve this, rewrite your ggplot
+construction to avoid \code{coord_flip()} or manually turn off and on the
+correct elements from ggplot2's \code{\link[ggplot2]{theme}} in the \code{...}
+of this function.
 }
 \section{Overrides}{
  In the \code{overrides} argument, the user can modify the

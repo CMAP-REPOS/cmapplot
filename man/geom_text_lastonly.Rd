@@ -4,10 +4,23 @@
 \alias{geom_text_lastonly}
 \title{Text (Last Only)}
 \usage{
-geom_text_lastonly(mapping = NULL, data = NULL, stat = "identity",
-  position = NULL, ..., parse = FALSE, nudge_x = 0.25, nudge_y = 0,
-  check_overlap = FALSE, na.rm = FALSE, show.legend = FALSE, inherit.aes =
-  TRUE, add_points = FALSE, text_aes = NULL, point_aes = NULL)
+geom_text_lastonly(
+  mapping = NULL,
+  data = NULL,
+  stat = "identity",
+  position = NULL,
+  ...,
+  parse = FALSE,
+  nudge_x = 0.25,
+  nudge_y = 0,
+  check_overlap = FALSE,
+  na.rm = FALSE,
+  show.legend = FALSE,
+  inherit.aes = TRUE,
+  add_points = FALSE,
+  text_aes = NULL,
+  point_aes = NULL
+)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2:aes]{aes()}} or
@@ -81,9 +94,15 @@ should be labeled. This is accomplished by identifying the maximum value of
 is less than the maximum.
 }
 \details{
-Labels are automatically placed to the right of the final point, and may be
-partially cut off by the plot limits, unless the \code{x} scale is expanded,
-e.g. with \code{scale_x_continuous(expand=expand_scale(mult=0.10))}.
+Labels are placed by default to the right of the final point, and may be
+partially cut off by the plot limits. There are two known ways to address
+this: \enumerate{\item Turn off panel clipping, e.g. with
+\code{coord_cartesian(clip = "off")}. Substitute the correct coordinate
+system for your plot--all have a \code{clip} argument available. Note that
+this will allow all geoms in the plot to draw outside the panel area, which
+may have unintended consequences. \item Manually expand the \code{x} scale,
+e.g. with \code{scale_x_continuous(expand=expand_scale(mult=0.10))} or
+\code{coord_cartesian(xlim = c(min, max))}.}
 
 Code was mostly copied from the source of \code{ggplot2::geom_text()} and
 \code{ggplot2::geom_point()}.

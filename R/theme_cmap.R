@@ -10,8 +10,8 @@
 #'\code{coord_flip()}, the xlab travels with the data (becoming the ylab) but the
 #'theme modifier stays on the x axis. To solve this, rewrite your ggplot
 #'construction to avoid \code{coord_flip()} or manually turn off and on the
-#'correct elements from \code{\link{ggplot2::theme()}} in the \code{...} of this
-#'function.
+#'correct elements from ggplot2's \code{\link[ggplot2]{theme}} in the \code{...}
+#'of this function.
 #'
 #'
 #'@param xlab,ylab Char, the string used to label the x and y axes,
@@ -327,5 +327,8 @@ theme_cmap_base <- function(consts = cmapplot_globals$consts,
   )
 
   # make sure all elements are set to NULL if not explicitly defined.
+  # This could be set to ggplot2:::theme_all_null(), but it appears to be best
+  # practice to use theme_gray() in case ggplot2 devs add new theme args in
+  # future releases of that package.
   theme_gray() %+replace% t
 }
