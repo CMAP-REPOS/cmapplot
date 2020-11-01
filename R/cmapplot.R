@@ -32,9 +32,9 @@ cmapplot_globals <- list(
 
   ## Font sizes
   fsize = list(
-    big = 17,
-    reg = 14,
-    sml = 11
+    S = 11,
+    M = 14,
+    L = 17
   ),
 
   ## Base typefaces -- modified later by .onLoad()
@@ -147,11 +147,11 @@ display_cmap_fonts <- function() {
                    cex=thissize/12, ps=12)
   }
 
-  draw.me(name = "Title", font = "strong",  size = "big", 5)
-  draw.me(name = "Main",  font = "regular", size = "reg", 4)
-  draw.me(name = "Axis",  font = "light",   size = "reg", 3)
-  draw.me(name = "Label", font = "strong",  size = "reg", 2)
-  draw.me(name = "Note",  font = "light",   size = "sml", 1)
+  draw.me(name = "Title", font = "strong",  size = "L", 5)
+  draw.me(name = "Main",  font = "regular", size = "M", 4)
+  draw.me(name = "Axis",  font = "light",   size = "M", 3)
+  draw.me(name = "Label", font = "strong",  size = "M", 2)
+  draw.me(name = "Note",  font = "light",   size = "S", 1)
 }
 #display_cmap_fonts()
 
@@ -197,14 +197,14 @@ econ_plot <- ggplot(data = cmapplot::cluster_jobchange,
   geom_col() +
   coord_flip() +
   scale_y_continuous(labels = scales::comma)
-
-transit_plot <- cmapplot::transit_ridership %>%
-  mutate(system = case_when(
-    system == "cta_bus" ~ "CTA (Bus)",
-    system == "cta_rail" ~ "CTA (Rail)",
-    system == "metra" ~ "Metra",
-    system == "pace" ~ "Pace",
-    system == "pace_ada" ~ "Paratransit"
-  )) %>%
-  ggplot(aes(x = year, y = ridership, color = system)) +
-  geom_line()
+#
+# transit_plot <- cmapplot::transit_ridership %>%
+#   mutate(system = case_when(
+#     system == "cta_bus" ~ "CTA (Bus)",
+#     system == "cta_rail" ~ "CTA (Rail)",
+#     system == "metra" ~ "Metra",
+#     system == "pace" ~ "Pace",
+#     system == "pace_ada" ~ "Paratransit"
+#   )) %>%
+#   ggplot(aes(x = year, y = ridership, color = system)) +
+#   geom_line()

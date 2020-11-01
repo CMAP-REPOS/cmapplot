@@ -263,21 +263,18 @@ finalize_plot <- function(plot = NULL,
 
   # preformat plot
   plot <- plot + ggplot2::theme(
-    # **FONT SIZE ADJUSTMENT IS NECESSARY BUT NOT UNDERSTOOD**
-    text = ggplot2::element_text(size = cmapplot_globals$font$main$size * 1.25),
     # remove any in-plot titles
     plot.title = element_blank(),
     plot.caption = element_blank(),
     # re-apply plot and legend margins, so they can be adjusted in
-    # `overrides` argument of this function
-    plot.margin = grid::unit(consts$padding_plot,"bigpts"),
+    plot.margin = margin(r = consts$margin_panel_r, unit = "bigpts"),
     legend.margin = margin(t = consts$padding_legend[1],
                            r = consts$padding_legend[2],
                            b = consts$padding_legend[3],
                            l = consts$padding_legend[4] + consts$legend_bump,
                            "bigpts"),
-    # re-apply legend key size for `overrides`
-    legend.key.size = grid::unit(consts$legend_key_size,"bigpts"),
+    # # re-apply legend key size for `overrides`
+    # legend.key.size = grid::unit(consts$legend_key_size,"bigpts"),
     # apply any extra `ggplot2::theme()` args
     ...
   )
@@ -362,9 +359,9 @@ finalize_plot <- function(plot = NULL,
                           consts$margin_title_l),# left
                           "bigpts"),
     # set font aesthetic variables
-    gp = grid::gpar(fontsize=cmapplot_globals$font$title$size,
-                    fontfamily=cmapplot_globals$font$title$family,
-                    fontface=cmapplot_globals$font$title$face,
+    gp = grid::gpar(fontsize=cmapplot_globals$fsize$L,
+                    fontfamily=cmapplot_globals$font$strong$family,
+                    fontface=cmapplot_globals$font$strong$face,
                     lineheight=consts$leading_title,
                     col=cmapplot_globals$colors$blackish),
     box_gp = grid::gpar(col = debug_color,
@@ -392,9 +389,9 @@ finalize_plot <- function(plot = NULL,
                         "bigpts"),
     # set aesthetic variables
     valign = if(caption_valign == "top"){ 1 } else { 0 },
-    gp = grid::gpar(fontsize = cmapplot_globals$font$note$size,
-                    fontfamily = cmapplot_globals$font$note$family,
-                    fontface = cmapplot_globals$font$note$face,
+    gp = grid::gpar(fontsize = cmapplot_globals$fsize$S,
+                    fontfamily = cmapplot_globals$font$light$family,
+                    fontface = cmapplot_globals$font$light$face,
                     lineheight = consts$leading_caption,
                     col = cmapplot_globals$colors$blackish),
     box_gp = grid::gpar(col = debug_color,

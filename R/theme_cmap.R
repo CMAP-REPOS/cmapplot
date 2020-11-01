@@ -99,7 +99,7 @@ theme_cmap <- function(
   consts <- utils::modifyList(cmapplot_globals$consts, overrides)
 
   # The half-line sets up the basic vertical rhythm of the theme.
-  consts[["half_line"]] <- cmapplot_globals$fsize$reg / 2
+  consts[["half_line"]] <- cmapplot_globals$fsize$M / 2
 
   # Validate parameters, throw error if invalid
   gridlines <- match.arg(gridlines)
@@ -217,14 +217,14 @@ theme_cmap_base <- function(consts = cmapplot_globals$consts,
       inherit.blank = TRUE),
 
     rect = element_rect(
-      fill = NA, colour = ifelse(debug, "red", NA),
+      fill = NA, colour = ifelse(debug, "blue", NA),
       size = 0.5, linetype = 1,
       inherit.blank = TRUE),
 
     text = element_text(
       family = cmapplot_globals$font$regular$family,
       face = cmapplot_globals$fgiont$regular$face,
-      size = cmapplot_globals$fsize$reg,
+      size = cmapplot_globals$fsize$M,
       color = cmapplot_globals$colors$blackish,
       lineheight = 0.9, hjust = 0.5, vjust = 0.5, angle = 0,
       margin = margin(), debug = debug,
@@ -236,7 +236,7 @@ theme_cmap_base <- function(consts = cmapplot_globals$consts,
     axis.line.y =        NULL,
     axis.text =          element_text(family = cmapplot_globals$font$light$family,
                                       face = cmapplot_globals$font$light$face,
-                                      size = cmapplot_globals$fsize$reg),
+                                      size = cmapplot_globals$fsize$M),
     axis.text.x =        element_text(margin = margin(t = consts$half_line / 2), vjust = 1),
     axis.text.x.top =    element_text(margin = margin(b = consts$half_line / 2), vjust = 0),
     axis.text.y =        element_text(margin = margin(r = consts$half_line / 2), hjust = 1),
@@ -256,7 +256,7 @@ theme_cmap_base <- function(consts = cmapplot_globals$consts,
     legend.spacing.y =   grid::unit(consts$margin_legend_i, "bigpts"),
     legend.margin =      margin(l = 0 - consts$half_line),
     legend.key =         element_blank(),
-    legend.key.size =    grid::unit(cmapplot_globals$fsize$reg, "pt"),
+    legend.key.size =    grid::unit(cmapplot_globals$fsize$M, "pt"),
     legend.key.height =  NULL,
     legend.key.width =   NULL,
     legend.text =        NULL,
@@ -269,7 +269,7 @@ theme_cmap_base <- function(consts = cmapplot_globals$consts,
     legend.box.margin =  margin(0, 0, 0, 0),
     legend.box.background = element_rect(
       fill = NA,
-      colour = ifelse(debug, "red", NA)), # this should inherit from rect when NULL but it doesnt
+      colour = ifelse(debug, "blue", NA)), # this should inherit from rect when NULL but it doesnt
     legend.box.just =    "left",
     legend.box.spacing = grid::unit(consts$margin_legend_b, "bigpts"),
 
@@ -296,19 +296,19 @@ theme_cmap_base <- function(consts = cmapplot_globals$consts,
     plot.background =    element_blank(),
     plot.title =         element_text(family = cmapplot_globals$font$strong$family,
                                       face = cmapplot_globals$font$strong$face,
-                                      size = cmapplot_globals$fsize$big,
+                                      size = cmapplot_globals$fsize$L,
                                       hjust = 0, vjust = 1,
                                       margin = margin(b = consts$half_line)),
     plot.title.position = "panel",
     plot.subtitle =      element_blank(),
     plot.caption =       element_text(family = cmapplot_globals$font$light$family,
                                       face = cmapplot_globals$font$light$face,
-                                      size = cmapplot_globals$fsize$sml,
+                                      size = cmapplot_globals$fsize$S,
                                       hjust = 1, vjust = 1,
                                       margin = margin(t = consts$half_line)),
     plot.caption.position = "panel",
     plot.tag = element_blank(),
-    plot.margin = margin(3, 3 + consts$margin_panel_r, 3, 3),
+    plot.margin = margin(3, 3 + consts$margin_panel_r, 3, 3, "bigpts"),
 
     complete = TRUE
   )
