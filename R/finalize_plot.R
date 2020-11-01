@@ -274,6 +274,7 @@ finalize_plot <- function(plot = NULL,
   # Use helper function to develop full stack of legend, buffer, and plot, and debug rects
   plot <- buildChart(plot = plot,
              consts = consts,
+             overrides = overrides,
              legend_build = legend_build,
              debug = debug)
 
@@ -502,6 +503,7 @@ finalize_plot <- function(plot = NULL,
 # Function to create plot object with left aligned legend on top
 buildChart <- function(plot,
                        consts,
+                       overrides,
                        legend_build,
                        debug) {
 
@@ -533,6 +535,25 @@ buildChart <- function(plot,
     )
   }
 
+  # Determine correct legend margins to use. Use from plot (set
+  # via theme_cmap(), with possible overrides, unless user has
+  # set override in finalize
+  margin_legend_i <- ifelse(
+    # if not overridden in finalize, use value from ggplot
+    is_null(overrides$margin_legend_i),
+    plot$theme$legend.spacing.y,
+    # otherwise, use override value
+    overrides$margin_legend_i
+  )
+
+  margin_legend_b <- ifelse(
+    # if not overridden in finalize, use value from ggplot
+    is_null(overrides$margin_legend_b),
+    convertUnit(plot$theme$legend.box.spacing, unitTo = "bigpts", valueOnly = TRUE),
+    # otherwise, use override value
+    overrides$margin_legend_b
+  )
+
   # Extract the legend
   legend <- ggpubr::get_legend(plot)
 
@@ -551,8 +572,10 @@ buildChart <- function(plot,
   if (number_of_legends > 1) {
     # if multilegend plot, establish loop to change margins
     for (i in 1:(number_of_legends-1)) {
-      margin_index <- 2*(i+1) # e.g., for a 2-legend item, this modifies element 4
-      legend$heights[[margin_index]] <- grid::unit(consts$margin_legend_i,"bigpts")
+      # e.g., for a 2-legend item, this modifies element 4
+      margin_index <- 2*(i+1)
+      # apply correct legend spacing
+      legend$heights[[margin_index]] <- grid::unit(margin_legend_i,"bigpts")
     }
   }
 
@@ -566,7 +589,7 @@ buildChart <- function(plot,
                                      valueOnly = TRUE)
 
   # calculate the height remaining for the plot
-  plot_height <- consts$plotbox_height - legend_height - consts$margin_legend_b
+  plot_height <- consts$plotbox_height - legend_height - margin_legend_b
 
   # Assemble a combined grob
   built <- gridExtra::arrangeGrob(
@@ -575,7 +598,7 @@ buildChart <- function(plot,
     ggplotGrob(plot + ggplot2::theme(legend.position = "none")),
     nrow = 3,
     heights = grid::unit(c(legend_height,
-                           consts$margin_legend_b,
+                           margin_legend_b,
                            plot_height),
                          "bigpts")
   )
