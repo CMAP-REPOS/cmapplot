@@ -115,13 +115,12 @@
 #' \dontrun{
 #' econ_plot <- ggplot(data = cluster_jobchange,
 #'                     mapping = aes(
-#'                       x = reorder(name, jobchange),
-#'                       y = jobchange,
+#'                       y = reorder(name, jobchange),
+#'                       x = jobchange,
 #'                       fill = category)) +
 #'   geom_col() +
-#'   coord_flip() +
-#'   theme_cmap(gridlines = "v", hline = 0) +
-#'   scale_y_continuous(labels = scales::comma)
+#'   theme_cmap(gridlines = "v", vline = 0) +
+#'   scale_x_continuous(labels = scales::comma)
 #'
 #' finalize_plot(econ_plot,
 #'                "Cluster-level employment changes in the Chicago MSA, 2001-17",
@@ -251,9 +250,6 @@ finalize_plot <- function(plot = NULL,
     caption <- input_caption
   }
 
-  # set outline color to black if debugging or transparent otherwise.
-  if(debug){ debug_color = "red" } else { debug_color = NA }
-
   # Size conversion for line widths in line graphs
   default_lwd <- ggplot2::GeomLine$default_aes$size
   ggplot2::update_geom_defaults(
@@ -266,27 +262,20 @@ finalize_plot <- function(plot = NULL,
     # remove any in-plot titles
     plot.title = element_blank(),
     plot.caption = element_blank(),
-    # re-apply plot and legend margins, so they can be adjusted in
-    plot.margin = margin(r = consts$margin_panel_r, unit = "bigpts"),
-    legend.margin = margin(t = consts$padding_legend[1],
-                           r = consts$padding_legend[2],
-                           b = consts$padding_legend[3],
-                           l = consts$padding_legend[4] + consts$legend_bump,
-                           "bigpts"),
-    # # re-apply legend key size for `overrides`
-    # legend.key.size = grid::unit(consts$legend_key_size,"bigpts"),
+    # add in legend_bump
+    legend.margin = margin(
+       l = grid::convertUnit(plot$theme$legend.margin[[4]], "bigpts", valueOnly = TRUE) +
+         consts$legend_bump,
+       unit = "bigpts"),
     # apply any extra `ggplot2::theme()` args
     ...
   )
 
-  # draw boxes around plot elements in debug mode
-  if(debug){
-    plot <- plot + ggplot2::theme(
-      legend.background = element_rect(color = debug_color, fill = NA),
-      legend.box.background = element_rect(color = debug_color, fill = NA),
-      plot.background = element_rect(color = debug_color, fill = NA)
-    )
-  }
+  # Use helper function to develop full stack of legend, buffer, and plot, and debug rects
+  plot <- buildChart(plot = plot,
+             consts = consts,
+             legend_build = legend_build,
+             debug = debug)
 
 
   # Build necessary viewports -----------------------------------------------------
@@ -364,7 +353,7 @@ finalize_plot <- function(plot = NULL,
                     fontface=cmapplot_globals$font$strong$face,
                     lineheight=consts$leading_title,
                     col=cmapplot_globals$colors$blackish),
-    box_gp = grid::gpar(col = debug_color,
+    box_gp = grid::gpar(col = ifelse(debug, "red", NA),
                         fill = NA)
   )
 
@@ -394,16 +383,13 @@ finalize_plot <- function(plot = NULL,
                     fontface = cmapplot_globals$font$light$face,
                     lineheight = consts$leading_caption,
                     col = cmapplot_globals$colors$blackish),
-    box_gp = grid::gpar(col = debug_color,
+    box_gp = grid::gpar(col = ifelse(debug, "red", NA),
                         fill = NA)
   )
 
   # ggplot as grob (vp.plotbox)
   grob_plot <- grid::grobTree(
-    # Use helper function to develop full stack of legend, buffer, and plot
-    buildChart(plot = plot,
-               consts = consts,
-               legend_build = legend_build),
+    plot,
     vp = vp.plotbox,
     name = "plot"
   )
@@ -516,22 +502,36 @@ finalize_plot <- function(plot = NULL,
 # Function to create plot object with left aligned legend on top
 buildChart <- function(plot,
                        consts,
-                       legend_build) {
+                       legend_build,
+                       debug) {
+
+  # add debug rect around plot if in debug mode
+  if(debug){
+    plot <- plot + ggplot2::theme(
+      plot.background = element_rect(color = "red")
+    )
+  }
 
   # in safe mode, don't extract legend
   if(legend_build == "safe"){
-    output_plot <- plot + theme(
-      legend.spacing.y = grid::unit(consts$margin_legend_i, "bigpts"))
-    return(ggplotGrob(output_plot))
+    return(ggplotGrob(plot))
   }
 
   # in no legend mode, remove legend altogether
   if(legend_build == "none"){
-    output_plot <- plot + theme(legend.position = "none")
-    return(ggplotGrob(output_plot))
+    plot <- plot + theme(legend.position = "none")
+    return(ggplotGrob(plot))
   }
 
   # In "adjust" mode...
+
+  # add debug rects around legend if in debug mode
+  if(debug){
+    plot <- plot + ggplot2::theme(
+      legend.background = element_rect(color = "red"),
+      legend.box.background = element_rect(color = "red")
+    )
+  }
 
   # Extract the legend
   legend <- ggpubr::get_legend(plot)

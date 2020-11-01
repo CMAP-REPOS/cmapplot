@@ -70,8 +70,6 @@ cmapplot_globals <- list(
                           #        (Both title_l and title_r are deducted from `titlewidth`)
     margin_plot_r = 10,# [ ,f] Margin between plotbox and right edge of image
     margin_panel_r = 20,   # [t,f] Margin between the right side of the plot and plotbox edge
-    padding_legend = c(0,0,0,0),
-                          # [t,f]  Padding around the legend.
     leading_title = 1,    # [ ,f] Text leading for Title text
     leading_caption = 1   # [ ,f] Text leading for Caption text
   )

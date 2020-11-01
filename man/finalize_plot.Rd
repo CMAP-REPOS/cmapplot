@@ -152,13 +152,12 @@ standards to the plot itself: use with \code{theme_cmap()} for that.
 \dontrun{
 econ_plot <- ggplot(data = cluster_jobchange,
                     mapping = aes(
-                      x = reorder(name, jobchange),
-                      y = jobchange,
+                      y = reorder(name, jobchange),
+                      x = jobchange,
                       fill = category)) +
   geom_col() +
-  coord_flip() +
-  theme_cmap(gridlines = "v", hline = 0) +
-  scale_y_continuous(labels = scales::comma)
+  theme_cmap(gridlines = "v", vline = 0) +
+  scale_x_continuous(labels = scales::comma)
 
 finalize_plot(econ_plot,
                "Cluster-level employment changes in the Chicago MSA, 2001-17",
