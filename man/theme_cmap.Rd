@@ -19,7 +19,9 @@ theme_cmap(
 }
 \arguments{
 \item{xlab, ylab}{Char, the string used to label the x and y axes,
-respectively. If unspecified, the axis label will be left off the graph.}
+respectively. If unspecified, the axis label will be left off the graph. See
+details for unexpected outcomes when using these arguments along with
+\code{coord_flip()}.}
 
 \item{hline, vline}{Numeric, the location of a strong horizontal or vertical
 line to be added to the plot. Use \code{hline = 0}, for example, to place a
@@ -56,6 +58,17 @@ any elements of the default CMAP theme.}
 \description{
 \code{theme_cmap} returns one or more ggplot objects that together construct a
 plot area in accordance with CMAP design standards.
+}
+\details{
+Using either the \code{xlab} or \code{ylab} argument, but not both, will have
+undesireable outcomes in a ggplot that also invokes \code{coord_flip()}. This
+is because under the hood \code{theme_cmap(xlab = "foo")} both sets
+\code{ggplot2::xlab = "foo"} and 'turns on' the ggplot theme element
+\code{axis.title.x}. With {coord_flip()}, the xlab travels with the data
+(becoming the ylab) but the theme modifier stays on the x axis. To solve
+this, rewrite your ggplot construction to avoid \code{coord_flip()} or manually
+turn off and on the correct elements from \code{\link{ggplot2::theme()}} in the
+\code{...} of this function.
 }
 \section{Overrides}{
  In the \code{overrides} argument, the user can modify the

@@ -188,15 +188,14 @@ ggplot_size_conversion <- function(value, type = "bigpts") {
 # temp plots ---------------------------------------------------
 # some plots without themes for internal testing
 
-econ_plot <- ggplot(data = cmapplot::cluster_jobchange,
+econ_plot2 <- ggplot(data = cmapplot::cluster_jobchange,
                     mapping = aes(
-                      x = reorder(name, jobchange),
-                      y = jobchange,
+                      y = reorder(name, jobchange),
+                      x = jobchange,
                       fill = category,
                       alpha = assessment)) +
   geom_col() +
-  coord_flip() +
-  scale_y_continuous(labels = scales::comma)
+  scale_x_continuous(labels = scales::comma)
 #
 # transit_plot <- cmapplot::transit_ridership %>%
 #   mutate(system = case_when(
