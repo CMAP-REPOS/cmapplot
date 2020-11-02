@@ -214,8 +214,8 @@ finalize_plot <- function(plot = NULL,
 
   ggplot2::update_geom_defaults(
     geom = "text",
-    new = list(family = cmapplot_globals$font$regular$family,
-               face = cmapplot_globals$font$regular$face,
+    new = list(family = cmapplot_globals$font$strong$family,
+               face = cmapplot_globals$font$strong$face,
                size = cmapplot_globals$fsize$M * 5/14, # Adjustment needed but not understood
                colour = cmapplot_globals$colors$blackish)
   )
