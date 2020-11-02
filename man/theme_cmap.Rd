@@ -11,6 +11,7 @@ theme_cmap(
   vline = NULL,
   gridlines = c("h", "v", "hv", "none"),
   axislines = c("none", "x", "y", "xy"),
+  show.legend = TRUE,
   legend.max.columns = NULL,
   debug = FALSE,
   overrides = list(),
@@ -36,6 +37,9 @@ only), "hv" (both horizontal and vertical), and "none" (neither).}
 values are "x" (x axis only), "y" (y axis only), "xy" (both axes), and
 "none" (neither, the default).}
 
+\item{show.legend}{Bool, \code{TRUE} is the default. \code{FALSE} to hide the
+legend.}
+
 \item{legend.max.columns}{Integer, the maximum number of columns in the
 legend. If no value is set, the chart will rely on `ggplot`'s default and
 automatic column handling behavior, which should work for most cases. Manual
@@ -49,15 +53,15 @@ be one row of three and another row of two).}
 rectangles around all \code{geom_rect()} elements for debugging.}
 
 \item{overrides}{Named list, overrides the default drawing attributes defined
-in \code{cmapplot_globals$consts} which are drawn by \code{theme_cmap()}
-(only a few of them). Units are in bigpts (1/72 of an inch).}
+in \code{cmapplot_globals$consts} which are drawn by \code{\link{theme_cmap}}.
+Units are in bigpts (1/72 of an inch).}
 
-\item{...}{pass additional arguments to \code{ggplot2::theme()} to override
-any elements of the default CMAP theme.}
+\item{...}{pass additional arguments to ggplot2's \code{\link[ggplot2]{theme}}
+function to override any elements of the default CMAP theme.}
 }
 \description{
-\code{theme_cmap} returns one or more ggplot objects that together construct a
-plot area in accordance with CMAP design standards.
+Return one or more ggplot objects that together construct a plot area in
+accordance with CMAP design standards.
 }
 \details{
 Using either the \code{xlab} or \code{ylab} argument, but not both, will have
@@ -67,32 +71,9 @@ the hood, \code{theme_cmap(xlab = "foo")} both sets \code{ggplot2::xlab =
 \code{coord_flip()}, the xlab travels with the data (becoming the ylab) but the
 theme modifier stays on the x axis. To solve this, rewrite your ggplot
 construction to avoid \code{coord_flip()} or manually turn off and on the
-correct elements from ggplot2's \code{\link[ggplot2]{theme}} in the \code{...}
-of this function.
+correct elements from ggplot2's \code{\link[ggplot2]{theme}} function in the
+\code{...} of this function.
 }
-\section{Overrides}{
- In the \code{overrides} argument, the user can modify the
- default constants that define certain plot aesthetics. Units of all plot
- constants are "bigpts": 1/72 of an inch. Most plot constants (stored in
- \code{cmapplot_globals$consts}) are used in \code{finalize_plot()}, but a
- few are used in this function. Overrides with astirisks are not "sticky" --
- they will need to be re-specified in \code{finalize_plot}.
-
- \itemize{ \item \code{lwd_originline}: the width of any origin lines drawn
- by \code{hline} or \code{vline}. \item \code{lwd_gridline}: the width of
- gridlines in the plot, if drawn by \code{gridlines}. \item
- \code{margin_legend_i}*: The margin between legends (this only applies in
- plots with two or more legends and does not affect legend spacing on plots
- with single legends that have multiple rows). \item \code{margin_legend_b}*:
- The margin between the bottom of the legend and the rest of the plot. \item
- \code{legend_key_size}*: The size of legend key elements. \item
- \code{padding_plot}*: A numeric vector of length 4 (top, right, bottom,
- left) that creates padding between the plot and its drawing extent. \item
- \code{padding_legend}*: A numeric vector of length 4 (top, right, bottom,
- left) that creates padding around the margin. These numbers can be negative
- to reduce space around the legend. }
-}
-
 \examples{
 
 \dontrun{
@@ -113,10 +94,9 @@ of this function.
    scale_y_continuous(labels = scales::percent) +
    theme_cmap(hline = 0, ylab = "This is the y axis")
 
- ggplot(df, aes(x = reorder(Race, -value), y = value, fill = variable)) +
+ ggplot(df, aes(y = reorder(Race, -value), x = value, fill = variable)) +
    geom_col(position = position_stack(reverse = TRUE)) +
-   coord_flip() +
-   scale_y_continuous(labels = scales::percent) +
-   theme_cmap(hline = 0, gridlines = "v")
+   scale_x_continuous(labels = scales::percent) +
+   theme_cmap(vline = 0, gridlines = "v")
 }
 }

@@ -11,16 +11,16 @@ finalize_plot(
   width = 670/72,
   height = 400/72,
   title_width = NULL,
-  ppi = 300,
+  caption_valign = c("bottom", "top"),
   mode = c("plot"),
   filename = "",
-  caption_valign = c("bottom", "top"),
+  ppi = 300,
   fill_bg = "white",
   fill_canvas = "gray90",
   overrides = list(),
-  debug = FALSE,
-  legend_build = c("adjust", "safe", "none"),
+  legend_shift = TRUE,
   legend_bump = 0,
+  debug = FALSE,
   ...
 )
 }
@@ -37,14 +37,14 @@ created with \code{<br>} and formatting can be changed with \code{<span>}.}
 \item{width, height}{Numeric, the dimensions for the output image, including
 the title. Units in inches, which interacts with \code{ppi} to define the
 pixel dimensions of raster outputs. Default is 9.31 inches wide (670/72) and
-5.56 inches tall (400/72), to match Comms specification of 670px by 400px at
-72ppi.}
+5.56 inches tall (400/72), to match Comms specification for web graphics.}
 
 \item{title_width}{Numeric, the width in inches for the title. If unspecified,
 use 25 percent of the total output width (per Comms guidance).}
 
-\item{ppi}{Numeric, the resolution of exported images (pixels per inch).
-Default = 300.}
+\item{caption_valign}{Char, align the caption text at the top or the bottom of
+the available space between the title and bottom of image. This argument
+accepts abbreviations, too: \code{c("bottom", "b", "top", "t")}.}
 
 \item{mode}{Vector, the action(s) to be taken with the plot. Save using any of
 the following: \code{png}, \code{tiff}, \code{jpeg}, \code{bmp}, \code{svg},
@@ -56,9 +56,8 @@ currently works only on computers running Windows). Return an object with
 You may specify an extension to use. If you don't, the correct extension
 will be added for you.}
 
-\item{caption_valign}{Char, align the caption text at the top or the bottom of
-the available space between the title and bottom of image. This argument
-accepts abbreviations, too: \code{c("bottom", "b", "top", "t")}.}
+\item{ppi}{Numeric, the resolution of exported images (pixels per inch).
+Default = 300.}
 
 \item{fill_bg, fill_canvas}{Char, strings that represent colors R can
 interpret. They are used to fill behind and around the finished plot,
@@ -66,24 +65,20 @@ respectively.}
 
 \item{overrides}{Named list, overrides the default drawing attributes defined
 in \code{cmapplot_globals$consts} which are drawn by
-\code{finalize_plot()} (this is most of them). Units are in bigpts (1/72 of
-an inch).}
+\code{\link{finalize_plot}}. Units are in bigpts (1/72 of an inch).}
+
+\item{legend_shift}{Bool, \code{TRUE}, the default, attempts to align the legend
+all the way left (on top of the y axis labels) per CMAP design standards.
+\code{FALSE} maintains the alignment used in the original plot.}
+
+\item{legend_bump}{Numeric, shift the legend right (positive) or left
+(negative) this many bigpts.}
 
 \item{debug}{Bool, TRUE enables outlines around components of finalized plot.
 Default = FALSE.}
 
-\item{legend_build}{Char, how the function attempts to build the legend.
-\code{"adjust"}, the default, attempts to align the legend all the way left
-(on top of the y axis labels) per CMAP design standards. \code{"safe"}
-maintains the alignment used in the original plot.}
-
-\item{legend_bump}{Numeric, shift the legend left (positive) or right
-(negative) this amount. Depending on system configuration, it may be
-necessary to use this parameter to achieve exact left alignment (this can
-most easily be tested using \code{debug = TRUE}). Expressed in bigpts.}
-
-\item{...}{pass additional arguments to \code{ggplot2::theme()} to override any
-elements of the default CMAP theme.}
+\item{...}{pass additional arguments to ggplot2's \code{\link[ggplot2]{theme}}
+function to override any elements of the default CMAP theme.}
 }
 \value{
 Exports from this function use Cairo graphics drivers, while drawing
@@ -95,59 +90,12 @@ Exports from this function use Cairo graphics drivers, while drawing
  except for when exporting as an object.
 }
 \description{
-\code{finalize_plot} will place a ggplot into a frame defined by CMAP design
-standards. It will align your title and caption to the left, add a horizontal
-line on top, and make other adjustments. It can show you the final plot and/or
-export it as a raster or vector file. This function will not apply CMAP design
-standards to the plot itself: use with \code{theme_cmap()} for that.
+Place a ggplot into a frame defined by CMAP design standards. It will align
+your title and caption to the left, add a horizontal line on top, and make
+other adjustments. It can show you the final plot and/or export it as a raster
+or vector file. This function will not apply CMAP design standards to the plot
+itself: use with \code{theme_cmap()} for that.
 }
-\section{Overrides}{
- In the \code{overrides} argument, the user can modify
- certain default constants that define certain plot aesthetics. Units of all
- plot constants are "bigpts": 1/72 of an inch. Most plot constants (stored in
- \code{cmapplot_globals$consts}) are used in this function, while the few
- are used in \code{theme_cmap()}. For constants used in both functions, any
- overrides specified in \code{theme_cmap()} must be specified again here.
-
- \itemize{
-   \item \code{lwd_plotline}: The width of line graph lines.
-   \item \code{lwd_topline}: The width of the line above the plot and title.
-   \item \code{margin_topline_t}: The margin between the top edge of the
-   image and the top line.
-   \item \code{margin_title_t}: The margin between the top line and the
-   title.
-   \item \code{margin_title_b}: The margin between the title and the caption.
-   \item \code{margin_caption_b}: The margin between the bottom of the
-   caption and the bottom edge of the image.
-   \item \code{margin_legend_t}: The margin between the top line and the
-   plot box (i.e., the top of the legend).
-   \item \code{margin_legend_i}: The margin between legends (this only
-   applies in plots with two or more legends and does not affect legend
-   spacing on plots with single legends that have multiple rows).
-   \item \code{margin_legend_b}: The margin between the bottom of the legend
-   and the rest of the plot.
-   \item \code{margin_plot_b}: The margin between the bottom of the plot and
-   the bottom edge of the image.
-   \item \code{margin_title_l}: The margin between the left edge of the image
-   and the title. This also applies to the caption. Deducted from
-   \code{title_width}.
-   \item \code{margin_title_r}: The margin between the right edge of the
-   image and the title. This also applies to the caption. Deducted from
-   \code{title_width}.
-   \item \code{margin_plot_r}: The margin between the right edge of the plot
-   and the edge of the image.
-   \item \code{padding_plot}: A numeric vector of length 4 (top, right,
-   bottom, left) that creates padding between the plot and its drawing
-   extent.
-   \item \code{padding_legend}: A numeric vector of length 4 (top, right,
-   bottom, left) that creates padding around the margin. These numbers can be
-   negative to reduce space around the legend.
-   \item \code{legend_key_size}: The size of legend key elements.
-   \item \code{leading_title}: Text leading for Title text.
-   \item \code{leading_caption}: Text leading for Caption text.
- }
-}
-
 \examples{
 \dontrun{
 econ_plot <- ggplot(data = cluster_jobchange,

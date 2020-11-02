@@ -1,10 +1,10 @@
 #'Arrange and save CMAP ggplot chart
 #'
-#'\code{finalize_plot} will place a ggplot into a frame defined by CMAP design
-#'standards. It will align your title and caption to the left, add a horizontal
-#'line on top, and make other adjustments. It can show you the final plot and/or
-#'export it as a raster or vector file. This function will not apply CMAP design
-#'standards to the plot itself: use with \code{theme_cmap()} for that.
+#'Place a ggplot into a frame defined by CMAP design standards. It will align
+#'your title and caption to the left, add a horizontal line on top, and make
+#'other adjustments. It can show you the final plot and/or export it as a raster
+#'or vector file. This function will not apply CMAP design standards to the plot
+#'itself: use with \code{theme_cmap()} for that.
 #'
 #'@param plot ggplot object, the variable name of the plot you have created that
 #'  you want to finalize. If null (the default), the most recent plot will be
@@ -16,12 +16,12 @@
 #'@param width,height Numeric, the dimensions for the output image, including
 #'  the title. Units in inches, which interacts with \code{ppi} to define the
 #'  pixel dimensions of raster outputs. Default is 9.31 inches wide (670/72) and
-#'  5.56 inches tall (400/72), to match Comms specification of 670px by 400px at
-#'  72ppi.
+#'  5.56 inches tall (400/72), to match Comms specification for web graphics.
 #'@param title_width Numeric, the width in inches for the title. If unspecified,
 #'  use 25 percent of the total output width (per Comms guidance).
-#'@param ppi Numeric, the resolution of exported images (pixels per inch).
-#'  Default = 300.
+#'@param caption_valign Char, align the caption text at the top or the bottom of
+#'  the available space between the title and bottom of image. This argument
+#'  accepts abbreviations, too: \code{c("bottom", "b", "top", "t")}.
 #'@param mode Vector, the action(s) to be taken with the plot. Save using any of
 #'  the following: \code{png}, \code{tiff}, \code{jpeg}, \code{bmp}, \code{svg},
 #'  \code{pdf}, \code{ps}. View in R with: \code{plot}, \code{window} (`window`
@@ -30,27 +30,23 @@
 #'@param filename Char, the file path and name you want the plot to be saved to.
 #'  You may specify an extension to use. If you don't, the correct extension
 #'  will be added for you.
-#'@param caption_valign Char, align the caption text at the top or the bottom of
-#'  the available space between the title and bottom of image. This argument
-#'  accepts abbreviations, too: \code{c("bottom", "b", "top", "t")}.
+#'@param ppi Numeric, the resolution of exported images (pixels per inch).
+#'  Default = 300.
 #'@param fill_bg,fill_canvas Char, strings that represent colors R can
 #'  interpret. They are used to fill behind and around the finished plot,
 #'  respectively.
 #'@param overrides Named list, overrides the default drawing attributes defined
 #'  in \code{cmapplot_globals$consts} which are drawn by
-#'  \code{finalize_plot()} (this is most of them). Units are in bigpts (1/72 of
-#'  an inch).
-#'@param debug Bool, TRUE enables outlines around components of finalized plot.
-#'  Default = FALSE.
+#'  \code{\link{finalize_plot}}. Units are in bigpts (1/72 of an inch).
 #'@param legend_shift Bool, \code{TRUE}, the default, attempts to align the legend
 #'  all the way left (on top of the y axis labels) per CMAP design standards.
 #'  \code{FALSE} maintains the alignment used in the original plot.
 #'@param legend_bump Numeric, shift the legend right (positive) or left
-#'  (negative) this many bigpts. Depending on system configuration, it may be
-#'  necessary to use this parameter to achieve exact left alignment (this can
-#'  most easily be tested using \code{debug = TRUE}).
-#'@param ... pass additional arguments to \code{ggplot2::theme()} to override any
-#'  elements of the default CMAP theme.
+#'  (negative) this many bigpts.
+#'@param debug Bool, TRUE enables outlines around components of finalized plot.
+#'  Default = FALSE.
+#'@param ... pass additional arguments to ggplot2's \code{\link[ggplot2]{theme}}
+#'  function to override any elements of the default CMAP theme.
 #'
 #'@return Exports from this function use Cairo graphics drivers, while drawing
 #'  within R is done with default (Windows) drivers. \code{mode = "object"} also
@@ -59,51 +55,6 @@
 #'  without line widths explicitly specified are assigned a thicker width
 #'  (specifically, \code{cmapplot_globals$consts$lwd_plotline}) in all outputs
 #'  except for when exporting as an object.
-#'
-#'@section Overrides: In the \code{overrides} argument, the user can modify
-#'  certain default constants that define certain plot aesthetics. Units of all
-#'  plot constants are "bigpts": 1/72 of an inch. Most plot constants (stored in
-#'  \code{cmapplot_globals$consts}) are used in this function, while the few
-#'  are used in \code{theme_cmap()}. For constants used in both functions, any
-#'  overrides specified in \code{theme_cmap()} must be specified again here.
-#'
-#'  \itemize{
-#'    \item \code{lwd_plotline}: The width of line graph lines.
-#'    \item \code{lwd_topline}: The width of the line above the plot and title.
-#'    \item \code{margin_topline_t}: The margin between the top edge of the
-#'    image and the top line.
-#'    \item \code{margin_title_t}: The margin between the top line and the
-#'    title.
-#'    \item \code{margin_title_b}: The margin between the title and the caption.
-#'    \item \code{margin_caption_b}: The margin between the bottom of the
-#'    caption and the bottom edge of the image.
-#'    \item \code{margin_legend_t}: The margin between the top line and the
-#'    plot box (i.e., the top of the legend).
-#'    \item \code{margin_legend_i}: The margin between legends (this only
-#'    applies in plots with two or more legends and does not affect legend
-#'    spacing on plots with single legends that have multiple rows).
-#'    \item \code{margin_legend_b}: The margin between the bottom of the legend
-#'    and the rest of the plot.
-#'    \item \code{margin_plot_b}: The margin between the bottom of the plot and
-#'    the bottom edge of the image.
-#'    \item \code{margin_title_l}: The margin between the left edge of the image
-#'    and the title. This also applies to the caption. Deducted from
-#'    \code{title_width}.
-#'    \item \code{margin_title_r}: The margin between the right edge of the
-#'    image and the title. This also applies to the caption. Deducted from
-#'    \code{title_width}.
-#'    \item \code{margin_plot_r}: The margin between the right edge of the plot
-#'    and the edge of the image.
-#'    \item \code{padding_plot}: A numeric vector of length 4 (top, right,
-#'    bottom, left) that creates padding between the plot and its drawing
-#'    extent.
-#'    \item \code{padding_legend}: A numeric vector of length 4 (top, right,
-#'    bottom, left) that creates padding around the margin. These numbers can be
-#'    negative to reduce space around the legend.
-#'    \item \code{legend_key_size}: The size of legend key elements.
-#'    \item \code{leading_title}: Text leading for Title text.
-#'    \item \code{leading_caption}: Text leading for Caption text.
-#'  }
 #'
 #'@importFrom utils modifyList
 #'@importFrom generics intersect
@@ -157,16 +108,16 @@ finalize_plot <- function(plot = NULL,
                           width = 670/72, # comms spec: 670px @ 72ppi
                           height = 400/72, # comms spec: 400px @ 72ppi
                           title_width = NULL, # if unspecified, default to width/4
-                          ppi = 300,
+                          caption_valign = c("bottom", "top"),
                           mode = c("plot"),
                           filename = "",
-                          caption_valign = c("bottom", "top"),
+                          ppi = 300,
                           fill_bg = "white",
                           fill_canvas = "gray90",
                           overrides = list(),
-                          debug = FALSE,
                           legend_shift = TRUE,
                           legend_bump = 0,
+                          debug = FALSE,
                           ...
                           ){
 

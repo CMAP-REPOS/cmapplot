@@ -1,7 +1,7 @@
 #'Add CMAP theme to ggplot chart
 #'
-#'\code{theme_cmap} returns one or more ggplot objects that together construct a
-#'plot area in accordance with CMAP design standards.
+#'Return one or more ggplot objects that together construct a plot area in
+#'accordance with CMAP design standards.
 #'
 #'Using either the \code{xlab} or \code{ylab} argument, but not both, will have
 #'undesireable outcomes in a ggplot that also invokes \code{coord_flip()}. Under
@@ -10,8 +10,8 @@
 #'\code{coord_flip()}, the xlab travels with the data (becoming the ylab) but the
 #'theme modifier stays on the x axis. To solve this, rewrite your ggplot
 #'construction to avoid \code{coord_flip()} or manually turn off and on the
-#'correct elements from ggplot2's \code{\link[ggplot2]{theme}} in the \code{...}
-#'of this function.
+#'correct elements from ggplot2's \code{\link[ggplot2]{theme}} function in the
+#'\code{...} of this function.
 #'
 #'
 #'@param xlab,ylab Char, the string used to label the x and y axes,
@@ -28,6 +28,8 @@
 #'@param axislines Char, the axis lines to be displayed on the chart. Acceptable
 #'  values are "x" (x axis only), "y" (y axis only), "xy" (both axes), and
 #'  "none" (neither, the default).
+#'@param show.legend Bool, \code{TRUE} is the default. \code{FALSE} to hide the
+#'  legend.
 #'@param legend.max.columns Integer, the maximum number of columns in the
 #'  legend. If no value is set, the chart will rely on `ggplot`'s default and
 #'  automatic column handling behavior, which should work for most cases. Manual
@@ -39,31 +41,10 @@
 #'@param debug Bool, Defaults to \code{FALSE}. Set to \code{TRUE} to show
 #'  rectangles around all \code{geom_rect()} elements for debugging.
 #'@param overrides Named list, overrides the default drawing attributes defined
-#'  in \code{cmapplot_globals$consts} which are drawn by \code{theme_cmap()}
-#'  (only a few of them). Units are in bigpts (1/72 of an inch).
-#'@param ... pass additional arguments to \code{ggplot2::theme()} to override
-#'  any elements of the default CMAP theme.
-#'
-#'@section Overrides: In the \code{overrides} argument, the user can modify the
-#'  default constants that define certain plot aesthetics. Units of all plot
-#'  constants are "bigpts": 1/72 of an inch. Most plot constants (stored in
-#'  \code{cmapplot_globals$consts}) are used in \code{finalize_plot()}, but a
-#'  few are used in this function. Overrides with astirisks are not "sticky" --
-#'  they will need to be re-specified in \code{finalize_plot}.
-#'
-#'  \itemize{ \item \code{lwd_originline}: the width of any origin lines drawn
-#'  by \code{hline} or \code{vline}. \item \code{lwd_gridline}: the width of
-#'  gridlines in the plot, if drawn by \code{gridlines}. \item
-#'  \code{margin_legend_i}*: The margin between legends (this only applies in
-#'  plots with two or more legends and does not affect legend spacing on plots
-#'  with single legends that have multiple rows). \item \code{margin_legend_b}*:
-#'  The margin between the bottom of the legend and the rest of the plot. \item
-#'  \code{legend_key_size}*: The size of legend key elements. \item
-#'  \code{padding_plot}*: A numeric vector of length 4 (top, right, bottom,
-#'  left) that creates padding between the plot and its drawing extent. \item
-#'  \code{padding_legend}*: A numeric vector of length 4 (top, right, bottom,
-#'  left) that creates padding around the margin. These numbers can be negative
-#'  to reduce space around the legend. }
+#'  in \code{cmapplot_globals$consts} which are drawn by \code{\link{theme_cmap}}.
+#'  Units are in bigpts (1/72 of an inch).
+#'@param ... pass additional arguments to ggplot2's \code{\link[ggplot2]{theme}}
+#'  function to override any elements of the default CMAP theme.
 #'
 #'@examples
 #'
@@ -85,11 +66,10 @@
 #'    scale_y_continuous(labels = scales::percent) +
 #'    theme_cmap(hline = 0, ylab = "This is the y axis")
 #'
-#'  ggplot(df, aes(x = reorder(Race, -value), y = value, fill = variable)) +
+#'  ggplot(df, aes(y = reorder(Race, -value), x = value, fill = variable)) +
 #'    geom_col(position = position_stack(reverse = TRUE)) +
-#'    coord_flip() +
-#'    scale_y_continuous(labels = scales::percent) +
-#'    theme_cmap(hline = 0, gridlines = "v")
+#'    scale_x_continuous(labels = scales::percent) +
+#'    theme_cmap(vline = 0, gridlines = "v")
 #' }
 #'@export
 theme_cmap <- function(
