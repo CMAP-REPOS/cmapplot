@@ -116,8 +116,8 @@ cmapplot_globals <- list(
     margin_title_l = 2,   # [ ,f] Margin between left edge of image and title/caption
     margin_title_r = 10,  # [ ,f] Margin between title/caption and legend/plot
                           #        (Both title_l and title_r are deducted from `titlewidth`)
-    margin_plot_r = 10,# [ ,f] Margin between plotbox and right edge of image
-    margin_panel_r = 20,   # [t,f] Margin between the right side of the plot and plotbox edge
+    margin_plot_r = 10,   # [ ,f] Margin between plotbox and right edge of image
+    margin_panel_r = 20,  # [t,f] Margin between the right side of the plot and plotbox edge
     leading_title = 1,    # [ ,f] Text leading for Title text
     leading_caption = 1   # [ ,f] Text leading for Caption text
   )
@@ -148,8 +148,8 @@ cmapplot_globals <- list(
         light = list(family="Whitney Book", face="plain")
       )
 
-    # Otherwise, use Calibri
     } else {
+      # Otherwise, use Calibri
       packageStartupMessage(
         "WARNING: Whitney is not installed on this PC, so CMAP theme will default to Calibri"
       )
@@ -167,8 +167,8 @@ cmapplot_globals <- list(
       )
     }
 
-    # If non-Windows machine, stick to Arial
   } else {
+    # If non-Windows machine, stick to Arial
     packageStartupMessage(
       "WARNING: CMAP theme will default to Arial on non-Windows platforms"
     )
