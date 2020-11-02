@@ -219,3 +219,4 @@ ggplot_size_conversion <- function(value, type = "bigpts") {
       / ggplot2::.pt     # Account for the ggplot2::.pt factor (=72.27/25.4)
   )
 }
+
