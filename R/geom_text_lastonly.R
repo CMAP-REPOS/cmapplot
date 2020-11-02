@@ -37,7 +37,7 @@
 #'   labeled data only). Default size=2, color will match line color.
 #' @param text_aes,point_aes Named list, additional aesthetics to send to the
 #'   text and point geoms, respectively.
-#' @param ... additional aesthetics to send to BOTH the point and text geoms.
+#' @param ... Additional aesthetics to send to BOTH the point and text geoms.
 #'   Note that if \code{add_points = FALSE}, additional parameters can be passed
 #'   to the text geom here, rather than in \code{text_aes}, without breaking.
 #'
@@ -63,7 +63,6 @@
 #' @export
 geom_text_lastonly <- function(mapping = NULL, data = NULL,
                       stat = "identity", position = NULL,
-                      ...,
                       parse = FALSE,
                       nudge_x = 0.25,
                       nudge_y = 0,
@@ -73,7 +72,8 @@ geom_text_lastonly <- function(mapping = NULL, data = NULL,
                       inherit.aes = TRUE,
                       add_points = FALSE,
                       text_aes = NULL,
-                      point_aes = NULL
+                      point_aes = NULL,
+                      ...
                       )
 {
   if (is.null(position)) {
