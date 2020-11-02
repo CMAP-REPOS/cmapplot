@@ -513,7 +513,7 @@ buildChart <- function(plot,
   }
 
   # in safe mode, stop here. Return plot as Grob
-  if(!legend_shift){
+  if(!legend_shift | is.null(ggpubr::get_legend(plot))){
     return(ggplotGrob(plot))
   }
 

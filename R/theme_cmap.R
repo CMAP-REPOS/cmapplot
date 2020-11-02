@@ -97,6 +97,7 @@ theme_cmap <- function(
   hline = NULL, vline = NULL,
   gridlines = c("h", "v", "hv", "none"),
   axislines = c("none", "x", "y", "xy"),
+  show.legend = TRUE,
   legend.max.columns = NULL,
   debug = FALSE,
   overrides = list(),
@@ -201,6 +202,11 @@ theme_cmap <- function(
                       col  = guide_legend(ncol = legend.max.columns)
                       )
                  )
+  }
+
+  # hide legend if specified
+  if (!show.legend){
+    attr[["legend.position"]] <- "none"
   }
 
   # add any extra args to theme attributes
