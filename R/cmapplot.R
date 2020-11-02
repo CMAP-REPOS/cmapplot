@@ -159,6 +159,13 @@ cmapplot_globals <- list(
         light = list(family="Calibri Light", face="plain")
       )
     }
+
+  } else {
+    # If non-Windows machine, stick to Arial
+    packageStartupMessage((
+      "WARNING: CMAP theme will default to Arial on non-Windows platforms"
+    )
+  }
 }
 
 # Define an helper function to visualize the font specifications
