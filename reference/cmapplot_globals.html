@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>CMAP discrete color palettes — cmap_palettes • cmapplot</title>
+<title>cmapplot global variables — cmapplot_globals • cmapplot</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,10 @@
 
 
 
-<meta property="og:title" content="CMAP discrete color palettes — cmap_palettes" />
-<meta property="og:description" content="A sample of comms-approved colors arranged into palettes" />
+<meta property="og:title" content="cmapplot global variables — cmapplot_globals" />
+<meta property="og:description" content="Expose a list of predefined variables for use by the cmapplot package and its
+users. List includes commonly used colors, font and font size specifications,
+and a list of constants which aid in drawing cmap-themed plots." />
 <meta property="og:image" content="https://cmap-repos.github.io/cmapplot/logo.png" />
 
 
@@ -131,31 +133,72 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>CMAP discrete color palettes</h1>
-    <small class="dont-index">Source: <a href='https://github.com/CMAP-REPOS/cmapplot/blob/master/R/palettes_discrete.R'><code>R/palettes_discrete.R</code></a></small>
-    <div class="hidden name"><code>cmap_palettes.Rd</code></div>
+    <h1>cmapplot global variables</h1>
+    <small class="dont-index">Source: <a href='https://github.com/CMAP-REPOS/cmapplot/blob/master/R/cmapplot.R'><code>R/cmapplot.R</code></a></small>
+    <div class="hidden name"><code>cmapplot_globals.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>A sample of comms-approved colors arranged into palettes</p>
+    <p>Expose a list of predefined variables for use by the cmapplot package and its
+users. List includes commonly used colors, font and font size specifications,
+and a list of constants which aid in drawing cmap-themed plots.</p>
     </div>
 
-    <pre class="usage"><span class='va'>cmap_palettes</span></pre>
+    <pre class="usage"><span class='va'>cmapplot_globals</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>An object of class <code>list</code> of length 8.</p>
+    <p>An object of class <code>list</code> of length 5.</p>
+    <h2 class="hasAnchor" id="plot-constants"><a class="anchor" href="#plot-constants"></a>Plot Constants</h2>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='viz_palette.html'>viz_palette</a></span><span class='op'>(</span><span class='va'>cmap_palettes</span><span class='op'>$</span><span class='va'>mobility</span><span class='op'>)</span>
-</div><div class='img'><img src='cmap_palettes-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>pop_and_laborforce_by_age</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>variable</span>, y <span class='op'>=</span> <span class='va'>value</span>, fill <span class='op'>=</span> <span class='va'>age</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-   <span class='fu'>geom_col</span><span class='op'>(</span>position <span class='op'>=</span> <span class='fu'>position_stack</span><span class='op'>(</span>reverse <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-   <span class='fu'>facet_wrap</span><span class='op'>(</span><span class='op'>~</span><span class='va'>year</span><span class='op'>)</span> <span class='op'>+</span>
-   <span class='fu'><a href='cmap_fill_discrete.html'>cmap_fill_discrete</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"community"</span><span class='op'>)</span>
-</div><div class='img'><img src='cmap_palettes-2.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></pre>
+    <p><code>cmapplot_globals$consts</code> contains a list of
+ default constants that set certain plot aesthetics. Units of all plot
+ constants are "bigpts": 1/72 of an inch. Most plot constants are invoked
+ (and can be overridden) in <code><a href='finalize_plot.html'>finalize_plot</a></code>: these are marked
+ <strong>F</strong>. Some are used/can be overridden in <code><a href='theme_cmap.html'>theme_cmap</a></code>:
+ these are marked with <strong>T</strong>.</p>
+<p></p><ul>
+<li><p><code>lwd_originline</code>: This stronger-width line is drawn vertically or
+   horizontally with the <code>hline, vline</code> args of <code><a href='theme_cmap.html'>theme_cmap()</a></code>. <strong>(T)</strong></p></li>
+<li><p><code>lwd_gridline</code>: This thinner-width line is drawn vertically or
+   horizontally with the <code>gridlines, axislines</code> args of <code><a href='theme_cmap.html'>theme_cmap()</a></code>. <strong>(T)</strong></p></li>
+<li><p><code>lwd_plotline</code>: The width of any lines drawn by geoms in the plot
+   (e.g. <code>geom_line</code>) but not explicitly sized by the geom's aesthetic. Due to
+   limitations in ggplot2's construction, this does not apply to
+   <code><a href='finalize_plot.html'>finalize_plot(mode = "object")</a></code> outputs. <strong>(F)</strong></p></li>
+<li><p><code>lwd_topline</code>: The width of the line above the plot and title. <strong>(F)</strong></p></li>
+<li><p><code>margin_topline_t</code>: The margin between the top edge of the
+   image and the top line. <strong>(F)</strong></p></li>
+<li><p><code>margin_title_t</code>: The margin between the top line and the
+   title. <strong>(F)</strong></p></li>
+<li><p><code>margin_title_b</code>: The margin between the title and the caption. <strong>(F)</strong></p></li>
+<li><p><code>margin_caption_b</code>: The margin between the bottom of the <strong>(F)</strong>
+   caption and the bottom edge of the image.</p></li>
+<li><p><code>margin_legend_t</code>: The margin between the top line and the
+   plot box (i.e., the top of the legend). <strong>(F)</strong></p></li>
+<li><p><code>margin_legend_i</code>: The margin between legends (this only
+   applies in plots with two or more legends and does not affect legend
+   spacing on plots with single legends that have multiple rows). <strong>(T, F)</strong></p></li>
+<li><p><code>margin_legend_b</code>: The margin between the bottom of the legend
+   and the rest of the plot. <strong>(T, F)</strong></p></li>
+<li><p><code>margin_plot_b</code>: The margin between the bottom of the plot and
+   the bottom edge of the image. <strong>(F)</strong></p></li>
+<li><p><code>margin_title_l</code>: The margin between the left edge of the image
+   and the title. This also applies to the caption. Deducted from
+   <code>title_width</code>. <strong>(F)</strong></p></li>
+<li><p><code>margin_title_r</code>: The margin between the right edge of the
+   image and the title. This also applies to the caption. Deducted from
+   <code>title_width</code>. <strong>(F)</strong></p></li>
+<li><p><code>margin_plot_r</code>: The margin between the right edge of the plot
+   and the edge of the image. <strong>(F)</strong></p></li>
+<li><p><code>margin_panel_r</code>: Padding between the plot and its right-hand drawing
+   extent. Override this based on space needed for x axis labels. <strong>(T)</strong></p></li>
+<li><p><code>leading_title</code>: Text leading for Title text.</p></li>
+<li><p><code>leading_caption</code>: Text leading for Caption text.</p></li>
+</ul>
+
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

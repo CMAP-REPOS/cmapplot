@@ -47,11 +47,11 @@
 
 
 <meta property="og:title" content="Arrange and save CMAP ggplot chart — finalize_plot" />
-<meta property="og:description" content="finalize_plot will place a ggplot into a frame defined by CMAP design
-standards. It will align your title and caption to the left, add a horizontal
-line on top, and make other adjustments. It can show you the final plot and/or
-export it as a raster or vector file. This function will not apply CMAP design
-standards to the plot itself: use with theme_cmap() for that." />
+<meta property="og:description" content="Place a ggplot into a frame defined by CMAP design standards. It will align
+your title and caption to the left, add a horizontal line on top, and make
+other adjustments. It can show you the final plot and/or export it as a raster
+or vector file. This function will not apply CMAP design standards to the plot
+itself: use with theme_cmap() for that." />
 <meta property="og:image" content="https://cmap-repos.github.io/cmapplot/logo.png" />
 
 
@@ -84,7 +84,7 @@ standards to the plot itself: use with theme_cmap() for that." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.1</span>
       </span>
     </div>
 
@@ -141,11 +141,11 @@ standards to the plot itself: use with theme_cmap() for that." />
     </div>
 
     <div class="ref-description">
-    <p><code>finalize_plot</code> will place a ggplot into a frame defined by CMAP design
-standards. It will align your title and caption to the left, add a horizontal
-line on top, and make other adjustments. It can show you the final plot and/or
-export it as a raster or vector file. This function will not apply CMAP design
-standards to the plot itself: use with <code><a href='theme_cmap.html'>theme_cmap()</a></code> for that.</p>
+    <p>Place a ggplot into a frame defined by CMAP design standards. It will align
+your title and caption to the left, add a horizontal line on top, and make
+other adjustments. It can show you the final plot and/or export it as a raster
+or vector file. This function will not apply CMAP design standards to the plot
+itself: use with <code><a href='theme_cmap.html'>theme_cmap()</a></code> for that.</p>
     </div>
 
     <pre class="usage"><span class='fu'>finalize_plot</span><span class='op'>(</span>
@@ -155,16 +155,16 @@ standards to the plot itself: use with <code><a href='theme_cmap.html'>theme_cma
   width <span class='op'>=</span> <span class='fl'>670</span><span class='op'>/</span><span class='fl'>72</span>,
   height <span class='op'>=</span> <span class='fl'>400</span><span class='op'>/</span><span class='fl'>72</span>,
   title_width <span class='op'>=</span> <span class='cn'>NULL</span>,
-  ppi <span class='op'>=</span> <span class='fl'>300</span>,
+  caption_valign <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"bottom"</span>, <span class='st'>"top"</span><span class='op'>)</span>,
   mode <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"plot"</span><span class='op'>)</span>,
   filename <span class='op'>=</span> <span class='st'>""</span>,
-  caption_valign <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"bottom"</span>, <span class='st'>"top"</span><span class='op'>)</span>,
+  ppi <span class='op'>=</span> <span class='fl'>300</span>,
   fill_bg <span class='op'>=</span> <span class='st'>"white"</span>,
   fill_canvas <span class='op'>=</span> <span class='st'>"gray90"</span>,
   overrides <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
-  debug <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  legend_build <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"adjust"</span>, <span class='st'>"safe"</span>, <span class='st'>"none"</span><span class='op'>)</span>,
+  legend_shift <span class='op'>=</span> <span class='cn'>TRUE</span>,
   legend_bump <span class='op'>=</span> <span class='fl'>0</span>,
+  debug <span class='op'>=</span> <span class='cn'>FALSE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -189,8 +189,7 @@ created with <code>&lt;br&gt;</code> and formatting can be changed with <code>&l
       <td><p>Numeric, the dimensions for the output image, including
 the title. Units in inches, which interacts with <code>ppi</code> to define the
 pixel dimensions of raster outputs. Default is 9.31 inches wide (670/72) and
-5.56 inches tall (400/72), to match Comms specification of 670px by 400px at
-72ppi.</p></td>
+5.56 inches tall (400/72), to match Comms specification for web graphics.</p></td>
     </tr>
     <tr>
       <th>title_width</th>
@@ -198,9 +197,10 @@ pixel dimensions of raster outputs. Default is 9.31 inches wide (670/72) and
 use 25 percent of the total output width (per Comms guidance).</p></td>
     </tr>
     <tr>
-      <th>ppi</th>
-      <td><p>Numeric, the resolution of exported images (pixels per inch).
-Default = 300.</p></td>
+      <th>caption_valign</th>
+      <td><p>Char, align the caption text at the top or the bottom of
+the available space between the title and bottom of image. This argument
+accepts abbreviations, too: <code><a href='https://rdrr.io/r/base/c.html'>c("bottom", "b", "top", "t")</a></code>.</p></td>
     </tr>
     <tr>
       <th>mode</th>
@@ -217,10 +217,9 @@ You may specify an extension to use. If you don't, the correct extension
 will be added for you.</p></td>
     </tr>
     <tr>
-      <th>caption_valign</th>
-      <td><p>Char, align the caption text at the top or the bottom of
-the available space between the title and bottom of image. This argument
-accepts abbreviations, too: <code><a href='https://rdrr.io/r/base/c.html'>c("bottom", "b", "top", "t")</a></code>.</p></td>
+      <th>ppi</th>
+      <td><p>Numeric, the resolution of exported images (pixels per inch).
+Default = 300.</p></td>
     </tr>
     <tr>
       <th>fill_bg, fill_canvas</th>
@@ -232,8 +231,18 @@ respectively.</p></td>
       <th>overrides</th>
       <td><p>Named list, overrides the default drawing attributes defined
 in <code>cmapplot_globals$consts</code> which are drawn by
-<code>finalize_plot()</code> (this is most of them). Units are in bigpts (1/72 of
-an inch).</p></td>
+<code>finalize_plot</code>. Units are in bigpts (1/72 of an inch).</p></td>
+    </tr>
+    <tr>
+      <th>legend_shift</th>
+      <td><p>Bool, <code>TRUE</code>, the default, attempts to align the legend
+all the way left (on top of the y axis labels) per CMAP design standards.
+<code>FALSE</code> maintains the alignment used in the original plot.</p></td>
+    </tr>
+    <tr>
+      <th>legend_bump</th>
+      <td><p>Numeric, shift the legend right (positive) or left
+(negative) this many bigpts.</p></td>
     </tr>
     <tr>
       <th>debug</th>
@@ -241,23 +250,9 @@ an inch).</p></td>
 Default = FALSE.</p></td>
     </tr>
     <tr>
-      <th>legend_build</th>
-      <td><p>Char, how the function attempts to build the legend.
-<code>"adjust"</code>, the default, attempts to align the legend all the way left
-(on top of the y axis labels) per CMAP design standards. <code>"safe"</code>
-maintains the alignment used in the original plot.</p></td>
-    </tr>
-    <tr>
-      <th>legend_bump</th>
-      <td><p>Numeric, shift the legend left (positive) or right
-(negative) this amount. Depending on system configuration, it may be
-necessary to use this parameter to achieve exact left alignment (this can
-most easily be tested using <code>debug = TRUE</code>). Expressed in bigpts.</p></td>
-    </tr>
-    <tr>
       <th>...</th>
-      <td><p>pass additional arguments to <code><a href='https://ggplot2.tidyverse.org/reference/theme.html'>ggplot2::theme()</a></code> to override any
-elements of the default CMAP theme.</p></td>
+      <td><p>pass additional arguments to ggplot2's <code><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></code>
+function to override any elements of the default CMAP theme.</p></td>
     </tr>
     </table>
 
@@ -270,64 +265,17 @@ elements of the default CMAP theme.</p></td>
  without line widths explicitly specified are assigned a thicker width
  (specifically, <code>cmapplot_globals$consts$lwd_plotline</code>) in all outputs
  except for when exporting as an object.</p>
-    <h2 class="hasAnchor" id="overrides"><a class="anchor" href="#overrides"></a>Overrides</h2>
-
-    <p>In the <code>overrides</code> argument, the user can modify
- certain default constants that define certain plot aesthetics. Units of all
- plot constants are "bigpts": 1/72 of an inch. Most plot constants (stored in
- <code>cmapplot_globals$consts</code>) are used in this function, while the few
- are used in <code><a href='theme_cmap.html'>theme_cmap()</a></code>. For constants used in both functions, any
- overrides specified in <code><a href='theme_cmap.html'>theme_cmap()</a></code> must be specified again here.</p>
-<p></p><ul>
-<li><p><code>lwd_plotline</code>: The width of line graph lines.</p></li>
-<li><p><code>lwd_topline</code>: The width of the line above the plot and title.</p></li>
-<li><p><code>margin_topline_t</code>: The margin between the top edge of the
-   image and the top line.</p></li>
-<li><p><code>margin_title_t</code>: The margin between the top line and the
-   title.</p></li>
-<li><p><code>margin_title_b</code>: The margin between the title and the caption.</p></li>
-<li><p><code>margin_caption_b</code>: The margin between the bottom of the
-   caption and the bottom edge of the image.</p></li>
-<li><p><code>margin_legend_t</code>: The margin between the top line and the
-   plot box (i.e., the top of the legend).</p></li>
-<li><p><code>margin_legend_i</code>: The margin between legends (this only
-   applies in plots with two or more legends and does not affect legend
-   spacing on plots with single legends that have multiple rows).</p></li>
-<li><p><code>margin_legend_b</code>: The margin between the bottom of the legend
-   and the rest of the plot.</p></li>
-<li><p><code>margin_plot_b</code>: The margin between the bottom of the plot and
-   the bottom edge of the image.</p></li>
-<li><p><code>margin_title_l</code>: The margin between the left edge of the image
-   and the title. This also applies to the caption. Deducted from
-   <code>title_width</code>.</p></li>
-<li><p><code>margin_title_r</code>: The margin between the right edge of the
-   image and the title. This also applies to the caption. Deducted from
-   <code>title_width</code>.</p></li>
-<li><p><code>margin_plot_r</code>: The margin between the right edge of the plot
-   and the edge of the image.</p></li>
-<li><p><code>padding_plot</code>: A numeric vector of length 4 (top, right,
-   bottom, left) that creates padding between the plot and its drawing
-   extent.</p></li>
-<li><p><code>padding_legend</code>: A numeric vector of length 4 (top, right,
-   bottom, left) that creates padding around the margin. These numbers can be
-   negative to reduce space around the legend.</p></li>
-<li><p><code>legend_key_size</code>: The size of legend key elements.</p></li>
-<li><p><code>leading_title</code>: Text leading for Title text.</p></li>
-<li><p><code>leading_caption</code>: Text leading for Caption text.</p></li>
-</ul>
-
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='va'>econ_plot</span> <span class='op'>&lt;-</span> <span class='fu'>ggplot</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>cluster_jobchange</span>,
                     mapping <span class='op'>=</span> <span class='fu'>aes</span><span class='op'>(</span>
-                      x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span><span class='op'>(</span><span class='va'>name</span>, <span class='va'>jobchange</span><span class='op'>)</span>,
-                      y <span class='op'>=</span> <span class='va'>jobchange</span>,
+                      y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span><span class='op'>(</span><span class='va'>name</span>, <span class='va'>jobchange</span><span class='op'>)</span>,
+                      x <span class='op'>=</span> <span class='va'>jobchange</span>,
                       fill <span class='op'>=</span> <span class='va'>category</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'>geom_col</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'>coord_flip</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='theme_cmap.html'>theme_cmap</a></span><span class='op'>(</span>gridlines <span class='op'>=</span> <span class='st'>"v"</span>, hline <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'>scale_y_continuous</span><span class='op'>(</span>labels <span class='op'>=</span> <span class='fu'>scales</span><span class='fu'>::</span><span class='va'><a href='https://scales.r-lib.org//reference/label_number.html'>comma</a></span><span class='op'>)</span>
+  <span class='fu'><a href='theme_cmap.html'>theme_cmap</a></span><span class='op'>(</span>gridlines <span class='op'>=</span> <span class='st'>"v"</span>, vline <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>scale_x_continuous</span><span class='op'>(</span>labels <span class='op'>=</span> <span class='fu'>scales</span><span class='fu'>::</span><span class='va'><a href='https://scales.r-lib.org//reference/label_number.html'>comma</a></span><span class='op'>)</span>
 
 <span class='fu'>finalize_plot</span><span class='op'>(</span><span class='va'>econ_plot</span>,
                <span class='st'>"Cluster-level employment changes in the Chicago MSA, 2001-17"</span>,

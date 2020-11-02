@@ -47,8 +47,8 @@
 
 
 <meta property="og:title" content="Add CMAP theme to ggplot chart — theme_cmap" />
-<meta property="og:description" content="theme_cmap returns one or more ggplot objects that together construct a
-plot area in accordance with CMAP design standards." />
+<meta property="og:description" content="Return one or more ggplot objects that together construct a plot area in
+accordance with CMAP design standards." />
 <meta property="og:image" content="https://cmap-repos.github.io/cmapplot/logo.png" />
 
 
@@ -81,7 +81,7 @@ plot area in accordance with CMAP design standards." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.1</span>
       </span>
     </div>
 
@@ -138,8 +138,8 @@ plot area in accordance with CMAP design standards." />
     </div>
 
     <div class="ref-description">
-    <p><code>theme_cmap</code> returns one or more ggplot objects that together construct a
-plot area in accordance with CMAP design standards.</p>
+    <p>Return one or more ggplot objects that together construct a plot area in
+accordance with CMAP design standards.</p>
     </div>
 
     <pre class="usage"><span class='fu'>theme_cmap</span><span class='op'>(</span>
@@ -148,7 +148,10 @@ plot area in accordance with CMAP design standards.</p>
   hline <span class='op'>=</span> <span class='cn'>NULL</span>,
   vline <span class='op'>=</span> <span class='cn'>NULL</span>,
   gridlines <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"h"</span>, <span class='st'>"v"</span>, <span class='st'>"hv"</span>, <span class='st'>"none"</span><span class='op'>)</span>,
+  axislines <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"none"</span>, <span class='st'>"x"</span>, <span class='st'>"y"</span>, <span class='st'>"xy"</span><span class='op'>)</span>,
+  show.legend <span class='op'>=</span> <span class='cn'>TRUE</span>,
   legend.max.columns <span class='op'>=</span> <span class='cn'>NULL</span>,
+  debug <span class='op'>=</span> <span class='cn'>FALSE</span>,
   overrides <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
@@ -159,7 +162,9 @@ plot area in accordance with CMAP design standards.</p>
     <tr>
       <th>xlab, ylab</th>
       <td><p>Char, the string used to label the x and y axes,
-respectively. If unspecified, the axis label will be left off the graph.</p></td>
+respectively. If unspecified, the axis label will be left off the graph. See
+details for unexpected outcomes when using these arguments along with
+<code>coord_flip()</code>.</p></td>
     </tr>
     <tr>
       <th>hline, vline</th>
@@ -175,6 +180,17 @@ will be masked. Acceptable values are "h" (horizontal only), "v" (vertical
 only), "hv" (both horizontal and vertical), and "none" (neither).</p></td>
     </tr>
     <tr>
+      <th>axislines</th>
+      <td><p>Char, the axis lines to be displayed on the chart. Acceptable
+values are "x" (x axis only), "y" (y axis only), "xy" (both axes), and
+"none" (neither, the default).</p></td>
+    </tr>
+    <tr>
+      <th>show.legend</th>
+      <td><p>Bool, <code>TRUE</code> is the default. <code>FALSE</code> to hide the
+legend.</p></td>
+    </tr>
+    <tr>
       <th>legend.max.columns</th>
       <td><p>Integer, the maximum number of columns in the
 legend. If no value is set, the chart will rely on `ggplot`'s default and
@@ -186,46 +202,34 @@ are five items in a legend with four columns as the maximum, the output will
 be one row of three and another row of two).</p></td>
     </tr>
     <tr>
+      <th>debug</th>
+      <td><p>Bool, Defaults to <code>FALSE</code>. Set to <code>TRUE</code> to show
+rectangles around all <code>geom_rect()</code> elements for debugging.</p></td>
+    </tr>
+    <tr>
       <th>overrides</th>
       <td><p>Named list, overrides the default drawing attributes defined
-in <code>cmapplot_globals$consts</code> which are drawn by
-<code>theme_cmap()</code> (only a few of them). Units are in bigpts (1/72 of an
-inch).</p></td>
+in <code>cmapplot_globals$consts</code> which are drawn by <code>theme_cmap</code>.
+Units are in bigpts (1/72 of an inch).</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>pass additional arguments to <code><a href='https://ggplot2.tidyverse.org/reference/theme.html'>ggplot2::theme()</a></code> to override
-any elements of the default CMAP theme.</p></td>
+      <td><p>pass additional arguments to ggplot2's <code><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></code>
+function to override any elements of the default CMAP theme.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="overrides"><a class="anchor" href="#overrides"></a>Overrides</h2>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>In the <code>overrides</code> argument, the user can modify
- the default constants that define certain plot aesthetics. Units of all
- plot constants are "bigpts": 1/72 of an inch. Most plot constants (stored in
- <code>cmapplot_globals$consts</code>) are used in <code><a href='finalize_plot.html'>finalize_plot()</a></code>,
- but a few are used in this function. Overrides with astirisks are not
- "sticky" -- they will need to be re-specified in <code>finalize_plot</code>.</p>
-<p></p><ul>
-<li><p><code>lwd_originline</code>: the width of any origin lines drawn by
-   <code>hline</code> or <code>vline</code>.</p></li>
-<li><p><code>lwd_gridline</code>: the width of gridlines in the plot, if drawn by
-   <code>gridlines</code>.</p></li>
-<li><p><code>margin_legend_i</code>*: The margin between legends (this only
-   applies in plots with two or more legends and does not affect legend
-   spacing on plots with single legends that have multiple rows).</p></li>
-<li><p><code>margin_legend_b</code>*: The margin between the bottom of the legend
-   and the rest of the plot.</p></li>
-<li><p><code>legend_key_size</code>*: The size of legend key elements.</p></li>
-<li><p><code>padding_plot</code>*: A numeric vector of length 4 (top, right,
-   bottom, left) that creates padding between the plot and its drawing
-   extent.</p></li>
-<li><p><code>padding_legend</code>*: A numeric vector of length 4 (top, right,
-   bottom, left) that creates padding around the margin. These numbers can be
-   negative to reduce space around the legend.</p></li>
-</ul>
-
+    <p>Using either the <code>xlab</code> or <code>ylab</code> argument, but not both, will have
+undesireable outcomes in a ggplot that also invokes <code>coord_flip()</code>. Under
+the hood, <code>theme_cmap(xlab = "foo")</code> both sets <code>ggplot2::xlab =
+"foo"</code> and 'turns on' the ggplot theme element <code>axis.title.x</code>. With
+<code>coord_flip()</code>, the xlab travels with the data (becoming the ylab) but the
+theme modifier stays on the x axis. To solve this, rewrite your ggplot
+construction to avoid <code>coord_flip()</code> or manually turn off and on the
+correct elements from ggplot2's <code><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></code> function in the
+<code>...</code> of this function.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
@@ -247,11 +251,10 @@ any elements of the default CMAP theme.</p></td>
    <span class='fu'>scale_y_continuous</span><span class='op'>(</span>labels <span class='op'>=</span> <span class='fu'>scales</span><span class='fu'>::</span><span class='va'><a href='https://scales.r-lib.org//reference/label_percent.html'>percent</a></span><span class='op'>)</span> <span class='op'>+</span>
    <span class='fu'>theme_cmap</span><span class='op'>(</span>hline <span class='op'>=</span> <span class='fl'>0</span>, ylab <span class='op'>=</span> <span class='st'>"This is the y axis"</span><span class='op'>)</span>
 
- <span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>df</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span><span class='op'>(</span><span class='va'>Race</span>, <span class='op'>-</span><span class='va'>value</span><span class='op'>)</span>, y <span class='op'>=</span> <span class='va'>value</span>, fill <span class='op'>=</span> <span class='va'>variable</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+ <span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>df</span>, <span class='fu'>aes</span><span class='op'>(</span>y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/reorder.factor.html'>reorder</a></span><span class='op'>(</span><span class='va'>Race</span>, <span class='op'>-</span><span class='va'>value</span><span class='op'>)</span>, x <span class='op'>=</span> <span class='va'>value</span>, fill <span class='op'>=</span> <span class='va'>variable</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
    <span class='fu'>geom_col</span><span class='op'>(</span>position <span class='op'>=</span> <span class='fu'>position_stack</span><span class='op'>(</span>reverse <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-   <span class='fu'>coord_flip</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
-   <span class='fu'>scale_y_continuous</span><span class='op'>(</span>labels <span class='op'>=</span> <span class='fu'>scales</span><span class='fu'>::</span><span class='va'><a href='https://scales.r-lib.org//reference/label_percent.html'>percent</a></span><span class='op'>)</span> <span class='op'>+</span>
-   <span class='fu'>theme_cmap</span><span class='op'>(</span>hline <span class='op'>=</span> <span class='fl'>0</span>, gridlines <span class='op'>=</span> <span class='st'>"v"</span><span class='op'>)</span>
+   <span class='fu'>scale_x_continuous</span><span class='op'>(</span>labels <span class='op'>=</span> <span class='fu'>scales</span><span class='fu'>::</span><span class='va'><a href='https://scales.r-lib.org//reference/label_percent.html'>percent</a></span><span class='op'>)</span> <span class='op'>+</span>
+   <span class='fu'>theme_cmap</span><span class='op'>(</span>vline <span class='op'>=</span> <span class='fl'>0</span>, gridlines <span class='op'>=</span> <span class='st'>"v"</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div></pre>
   </div>
