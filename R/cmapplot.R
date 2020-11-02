@@ -179,29 +179,3 @@ ggplot_size_conversion <- function(value, type = "bigpts") {
   )
 }
 
-
-
-
-
-# temp plots ---------------------------------------------------
-# some plots without themes for internal testing
-
-# econ_plot2 <- ggplot(data = cmapplot::cluster_jobchange,
-#                     mapping = aes(
-#                       y = reorder(name, jobchange),
-#                       x = jobchange,
-#                       fill = category,
-#                       alpha = assessment)) +
-#   geom_col() +
-#   scale_x_continuous(labels = scales::comma)
-#
-# transit_plot <- cmapplot::transit_ridership %>%
-#   mutate(system = case_when(
-#     system == "cta_bus" ~ "CTA (Bus)",
-#     system == "cta_rail" ~ "CTA (Rail)",
-#     system == "metra" ~ "Metra",
-#     system == "pace" ~ "Pace",
-#     system == "pace_ada" ~ "Paratransit"
-#   )) %>%
-#   ggplot(aes(x = year, y = ridership, color = system)) +
-#   geom_line()

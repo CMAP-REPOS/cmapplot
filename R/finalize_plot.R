@@ -42,14 +42,13 @@
 #'  an inch).
 #'@param debug Bool, TRUE enables outlines around components of finalized plot.
 #'  Default = FALSE.
-#'@param legend_build Char, how the function attempts to build the legend.
-#'  \code{"adjust"}, the default, attempts to align the legend all the way left
-#'  (on top of the y axis labels) per CMAP design standards. \code{"safe"}
-#'  maintains the alignment used in the original plot.
-#'@param legend_bump Numeric, shift the legend left (positive) or right
-#'  (negative) this amount. Depending on system configuration, it may be
+#'@param legend_shift Bool, \code{TRUE}, the default, attempts to align the legend
+#'  all the way left (on top of the y axis labels) per CMAP design standards.
+#'  \code{FALSE} maintains the alignment used in the original plot.
+#'@param legend_bump Numeric, shift the legend right (positive) or left
+#'  (negative) this many bigpts. Depending on system configuration, it may be
 #'  necessary to use this parameter to achieve exact left alignment (this can
-#'  most easily be tested using \code{debug = TRUE}). Expressed in bigpts.
+#'  most easily be tested using \code{debug = TRUE}).
 #'@param ... pass additional arguments to \code{ggplot2::theme()} to override any
 #'  elements of the default CMAP theme.
 #'
@@ -166,7 +165,7 @@ finalize_plot <- function(plot = NULL,
                           fill_canvas = "gray90",
                           overrides = list(),
                           debug = FALSE,
-                          legend_build = c("adjust", "safe", "none"),
+                          legend_shift = TRUE,
                           legend_bump = 0,
                           ...
                           ){
@@ -185,7 +184,6 @@ finalize_plot <- function(plot = NULL,
 
   # check args with default vectors
   caption_valign <- match.arg(caption_valign)
-  legend_build <- match.arg(legend_build)
 
   # check mode argument and validate filename
   savetypes_raster <- c("png","tiff","jpeg","bmp")
@@ -275,7 +273,7 @@ finalize_plot <- function(plot = NULL,
   plot <- buildChart(plot = plot,
              consts = consts,
              overrides = overrides,
-             legend_build = legend_build,
+             legend_shift = legend_shift,
              debug = debug)
 
 
@@ -504,7 +502,7 @@ finalize_plot <- function(plot = NULL,
 buildChart <- function(plot,
                        consts,
                        overrides,
-                       legend_build,
+                       legend_shift,
                        debug) {
 
   # add debug rect around plot if in debug mode
@@ -514,18 +512,12 @@ buildChart <- function(plot,
     )
   }
 
-  # in safe mode, don't extract legend
-  if(legend_build == "safe"){
+  # in safe mode, stop here. Return plot as Grob
+  if(!legend_shift){
     return(ggplotGrob(plot))
   }
 
-  # in no legend mode, remove legend altogether
-  if(legend_build == "none"){
-    plot <- plot + theme(legend.position = "none")
-    return(ggplotGrob(plot))
-  }
-
-  # In "adjust" mode...
+  # Otherwise, in legend-shift mode...
 
   # add debug rects around legend if in debug mode
   if(debug){
@@ -536,7 +528,7 @@ buildChart <- function(plot,
   }
 
   # Determine correct legend margins to use. Use from plot (set
-  # via theme_cmap(), with possible overrides, unless user has
+  # via theme_cmap(), with possible overrides) unless user has
   # set override in finalize
   margin_legend_i <- ifelse(
     # if not overridden in finalize, use value from ggplot
