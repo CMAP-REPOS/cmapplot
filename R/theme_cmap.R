@@ -1,10 +1,23 @@
 #'Add CMAP theme to ggplot chart
 #'
-#'\code{theme_cmap} returns one or more ggplot objects that together construct a
-#'plot area in accordance with CMAP design standards.
+#'Return one or more ggplot objects that together construct a plot area in
+#'accordance with CMAP design standards.
+#'
+#'Using either the \code{xlab} or \code{ylab} argument, but not both, will have
+#'undesireable outcomes in a ggplot that also invokes \code{coord_flip()}. Under
+#'the hood, \code{theme_cmap(xlab = "foo")} both sets \code{ggplot2::xlab =
+#'"foo"} and 'turns on' the ggplot theme element \code{axis.title.x}. With
+#'\code{coord_flip()}, the xlab travels with the data (becoming the ylab) but the
+#'theme modifier stays on the x axis. To solve this, rewrite your ggplot
+#'construction to avoid \code{coord_flip()} or manually turn off and on the
+#'correct elements from ggplot2's \code{\link[ggplot2]{theme}} function in the
+#'\code{...} of this function.
+#'
 #'
 #'@param xlab,ylab Char, the string used to label the x and y axes,
-#'  respectively. If unspecified, the axis label will be left off the graph.
+#'  respectively. If unspecified, the axis label will be left off the graph. See
+#'  details for unexpected outcomes when using these arguments along with
+#'  \code{coord_flip()}.
 #'@param hline,vline Numeric, the location of a strong horizontal or vertical
 #'  line to be added to the plot. Use \code{hline = 0}, for example, to place a
 #'  line at y = 0 to differentiate between positive and negative values.
@@ -12,6 +25,11 @@
 #'  default, horizontal grid lines will be displayed while vertical grid lines
 #'  will be masked. Acceptable values are "h" (horizontal only), "v" (vertical
 #'  only), "hv" (both horizontal and vertical), and "none" (neither).
+#'@param axislines Char, the axis lines to be displayed on the chart. Acceptable
+#'  values are "x" (x axis only), "y" (y axis only), "xy" (both axes), and
+#'  "none" (neither, the default).
+#'@param show.legend Bool, \code{TRUE} is the default. \code{FALSE} to hide the
+#'  legend.
 #'@param legend.max.columns Integer, the maximum number of columns in the
 #'  legend. If no value is set, the chart will rely on `ggplot`'s default and
 #'  automatic column handling behavior, which should work for most cases. Manual
@@ -20,38 +38,13 @@
 #'  mean the total number of columns is less than the maximum (e.g., if there
 #'  are five items in a legend with four columns as the maximum, the output will
 #'  be one row of three and another row of two).
+#'@param debug Bool, Defaults to \code{FALSE}. Set to \code{TRUE} to show
+#'  rectangles around all \code{geom_rect()} elements for debugging.
 #'@param overrides Named list, overrides the default drawing attributes defined
-#'  in \code{cmapplot_globals$consts} which are drawn by
-#'  \code{theme_cmap()} (only a few of them). Units are in bigpts (1/72 of an
-#'  inch).
-#'@param ... pass additional arguments to \code{ggplot2::theme()} to override
-#'  any elements of the default CMAP theme.
-#'
-#'@section Overrides: In the \code{overrides} argument, the user can modify
-#'  the default constants that define certain plot aesthetics. Units of all
-#'  plot constants are "bigpts": 1/72 of an inch. Most plot constants (stored in
-#'  \code{cmapplot_globals$consts}) are used in \code{finalize_plot()},
-#'  but a few are used in this function. Overrides with astirisks are not
-#'  "sticky" -- they will need to be re-specified in \code{finalize_plot}.
-#'
-#'  \itemize{
-#'    \item \code{lwd_originline}: the width of any origin lines drawn by
-#'    \code{hline} or \code{vline}.
-#'    \item \code{lwd_gridline}: the width of gridlines in the plot, if drawn by
-#'    \code{gridlines}.
-#'    \item \code{margin_legend_i}*: The margin between legends (this only
-#'    applies in plots with two or more legends and does not affect legend
-#'    spacing on plots with single legends that have multiple rows).
-#'    \item \code{margin_legend_b}*: The margin between the bottom of the legend
-#'    and the rest of the plot.
-#'    \item \code{legend_key_size}*: The size of legend key elements.
-#'    \item \code{padding_plot}*: A numeric vector of length 4 (top, right,
-#'    bottom, left) that creates padding between the plot and its drawing
-#'    extent.
-#'    \item \code{padding_legend}*: A numeric vector of length 4 (top, right,
-#'    bottom, left) that creates padding around the margin. These numbers can be
-#'    negative to reduce space around the legend.
-#'  }
+#'  in \code{cmapplot_globals$consts} which are drawn by \code{\link{theme_cmap}}.
+#'  Units are in bigpts (1/72 of an inch).
+#'@param ... pass additional arguments to ggplot2's \code{\link[ggplot2]{theme}}
+#'  function to override any elements of the default CMAP theme.
 #'
 #'@examples
 #'
@@ -73,18 +66,20 @@
 #'    scale_y_continuous(labels = scales::percent) +
 #'    theme_cmap(hline = 0, ylab = "This is the y axis")
 #'
-#'  ggplot(df, aes(x = reorder(Race, -value), y = value, fill = variable)) +
+#'  ggplot(df, aes(y = reorder(Race, -value), x = value, fill = variable)) +
 #'    geom_col(position = position_stack(reverse = TRUE)) +
-#'    coord_flip() +
-#'    scale_y_continuous(labels = scales::percent) +
-#'    theme_cmap(hline = 0, gridlines = "v")
+#'    scale_x_continuous(labels = scales::percent) +
+#'    theme_cmap(vline = 0, gridlines = "v")
 #' }
 #'@export
 theme_cmap <- function(
   xlab = NULL, ylab = NULL,
   hline = NULL, vline = NULL,
   gridlines = c("h", "v", "hv", "none"),
+  axislines = c("none", "x", "y", "xy"),
+  show.legend = TRUE,
   legend.max.columns = NULL,
+  debug = FALSE,
   overrides = list(),
   ...
 ) {
@@ -97,156 +92,229 @@ theme_cmap <- function(
   # create list of plot constants, from globals unless overridden by user
   consts <- utils::modifyList(cmapplot_globals$consts, overrides)
 
-  # Validate gridlines parameter, throw error if invalid
+  # The half-line sets up the basic vertical rhythm of the theme.
+  consts[["half_line"]] <- cmapplot_globals$fsize$M / 2
+
+  # Validate parameters, throw error if invalid
   gridlines <- match.arg(gridlines)
+  axislines <- match.arg(axislines)
 
-  # Generate list of elements to return.
-  elements <- list(
+  # create blank list of gg objects and theme attributes to return
+  obj <- list()
+  attr <- list()
 
-    # The first element is the default theme.
-    ggplot2::theme(
 
-      # Default text
-      text = ggplot2::element_text(family = cmapplot_globals$font$main$family,
-                                   face = cmapplot_globals$font$main$face,
-                                   size = cmapplot_globals$font$main$size,
-                                   color = cmapplot_globals$colors$blackish),
+  # create a helper function to more easily add items to the obj list
+  add_to_obj <- function(newitem){
+    obj <<- append(get("obj", parent.frame()), list(newitem))
+    NULL
+  }
 
-      # Title text
-      plot.title = ggplot2::element_text(family = cmapplot_globals$font$title$family,
-                                         face = cmapplot_globals$font$title$face,
-                                         size = cmapplot_globals$font$title$size),
+  # add base theme to object list
+  add_to_obj(theme_cmap_base(consts = consts, debug = debug))
 
-      # Caption/source text
-      plot.caption = ggplot2::element_text(family = cmapplot_globals$font$note$family,
-                                           face = cmapplot_globals$font$note$face,
-                                           size = cmapplot_globals$font$note$size),
+  # introduce x label, if specified
+  if(!is.null(xlab)){
+    attr[["axis.title.x"]] <- element_text(margin = margin(t = consts$half_line / 2), vjust = 1, inherit.blank = FALSE)
+    add_to_obj(ggplot2::xlab(xlab))
+  }
 
-      # Text elements not displayed
-      plot.subtitle = ggplot2::element_blank(),
+  # introduce y label, if specified
+  if(!is.null(ylab)){
+    attr[["axis.title.y"]] <- element_text(angle = 90, margin = margin(r = consts$half_line / 2), vjust = 1, inherit.blank = FALSE)
+    add_to_obj(ggplot2::ylab(ylab))
+  }
 
-      # Legend location and format
-      legend.position = "top",
-      legend.justification = "left",
-      legend.box.background = ggplot2::element_blank(),
-      legend.text = ggplot2::element_text(),
-      legend.title = ggplot2::element_blank(),
-      legend.key = ggplot2::element_blank(),
-      legend.direction = "horizontal", # arrangement of items within legend
-      legend.box = "vertical",         # arrangement of multiple legends
-      legend.box.just = "left",        # justification of multiple legends within box
-      legend.spacing.y =               # vertical spacing between multiple legends
-        grid::unit(consts$margin_legend_i, "bigpts"),
-      legend.text.align = 0,           # alignment of legend text
-      legend.margin = margin(          # four-sided margins of each legend (T,R,B,L)
-        consts$padding_legend[1],
-        consts$padding_legend[2],
-        consts$padding_legend[3],
-        consts$padding_legend[4],
-        "bigpts"),
-      legend.box.spacing =             # space between legend box and plot
-        grid::unit(consts$margin_legend_b, "bigpts"),
-      legend.key.size =                # size of the legend key element
-        grid::unit(consts$legend_key_size, "bigpts"),
+  # Add x origin line, if specified
+  if(!is.null(hline)){
+    add_to_obj(ggplot2::geom_hline(yintercept = hline,
+                                   size = ggplot_size_conversion(consts$lwd_originline),
+                                   color = cmapplot_globals$colors$blackish))
+  }
 
-      # Axis format
-      axis.title.y = ggplot2::element_blank(),
-      axis.title.x = ggplot2::element_blank(),
-      axis.text = ggplot2::element_text(family = cmapplot_globals$font$axis$family,
-                                        face = cmapplot_globals$font$axis$face,
-                                        size = cmapplot_globals$font$axis$size,
-                                        color = cmapplot_globals$colors$blackish),
-      axis.text.x = ggplot2::element_text(margin = ggplot2::margin(t = 5)),
-      axis.ticks = ggplot2::element_blank(),
-      axis.line = ggplot2::element_blank(),
+  # Add y origin line, if specified
+  if(!is.null(vline)){
+    add_to_obj(ggplot2::geom_vline(xintercept = vline,
+                                   size = ggplot_size_conversion(consts$lwd_originline),
+                                   color = cmapplot_globals$colors$blackish))
+  }
 
-      # panel placement
-      plot.margin = ggplot2::margin(consts$padding_plot[1] + 5,
-                                    consts$padding_plot[2] + 5,
-                                    consts$padding_plot[3] + 5,
-                                    consts$padding_plot[4] + 5,
-                                    "bigpts"),
+  # Introduce horizontal gridlines if specified
+  if (grepl("h", gridlines)) {
+    add_to_obj(ggplot2::theme(
+      panel.grid.major.y = ggplot2::element_line(
+        size = ggplot_size_conversion(consts$lwd_gridline),
+        color = cmapplot_globals$colors$blackish)
+    ))
+  }
 
-      # Blank background
-      panel.background = ggplot2::element_blank(),
-      plot.background = ggplot2::element_blank(),
+  # Introduce vertical gridlines if specified
+  if (grepl("v", gridlines)) {
+    add_to_obj(ggplot2::theme(
+      panel.grid.major.x = ggplot2::element_line(
+        size = ggplot_size_conversion(consts$lwd_gridline),
+        color = cmapplot_globals$colors$blackish)
+    ))
+  }
 
-      # No gridlines
-      panel.grid.major.x = ggplot2::element_blank(),
-      panel.grid.minor.x = ggplot2::element_blank(),
-      panel.grid.major.y = ggplot2::element_blank(),
-      panel.grid.minor.y = ggplot2::element_blank(),
+  # Introduce x axis line if specified
+  if (grepl("x", axislines)) {
+    add_to_obj(ggplot2::theme(
+      axis.line.x = ggplot2::element_line(
+        size = ggplot_size_conversion(consts$lwd_gridline),
+        color = cmapplot_globals$colors$blackish)
+    ))
+  }
 
-      # Strip background
-      strip.background = ggplot2::element_rect(fill = "white"),
+  # Introduce y axis line if specified
+  if (grepl("y", axislines)) {
+    add_to_obj(ggplot2::theme(
+      axis.line.y = ggplot2::element_line(
+        size = ggplot_size_conversion(consts$lwd_gridline),
+        color = cmapplot_globals$colors$blackish)
+    ))
+  }
 
-      # Facet wrap text
-      strip.text = ggplot2::element_text(hjust = 0)
-    ),
+  # only edit legend columns if value is added
+  if (!is.null(legend.max.columns)){
+      # set maximum number of columns for legend based on either "fill" or "col" to reflect different geom structures
+      add_to_obj(ggplot2::guides(fill = guide_legend(ncol = legend.max.columns),
+                      col  = guide_legend(ncol = legend.max.columns)
+                      )
+                 )
+  }
 
-    # The following elements get added based on the presence of specific
-    # function arguments. These elements add to or overwrite portions of
-    # the default theme.
+  # hide legend if specified
+  if (!show.legend){
+    attr[["legend.position"]] <- "none"
+  }
 
-    # Re-introduce x label, if specified
-    if(!is.null(xlab)){
-      ggplot2::theme(axis.title.x = element_text())
-    },
-    if(!is.null(xlab)){
-      ggplot2::xlab(xlab)
-    },
+  # add any extra args to theme attributes
+  attr <- append(attr, list(...))
 
-    # Re-introduce y label, if specified
-    if(!is.null(ylab)){
-      ggplot2::theme(axis.title.y = element_text())
-    },
-    if(!is.null(ylab)){
-      ggplot2::ylab(ylab)
-    },
+  # construct final list to return
+  append(obj, list(do.call(theme, attr)))
 
-    # Add x origin line, if specified
-    if(!is.null(hline)){
-      ggplot2::geom_hline(yintercept = hline,
-                          size = ggplot_size_conversion(consts$lwd_originline),
-                          color = cmapplot_globals$colors$blackish)
-    },
+}
 
-    # Add y origin line, if specified
-    if(!is.null(vline)){
-      ggplot2::geom_vline(xintercept = vline,
-                          size = ggplot_size_conversion(consts$lwd_originline),
-                          color = cmapplot_globals$colors$blackish)
-    },
 
-    # Re-introduce horizontal gridlines if specified
-    if (grepl("h", gridlines)) {
-      ggplot2::theme(
-        panel.grid.major.y = ggplot2::element_line(
-          size = ggplot_size_conversion(consts$lwd_gridline),
-          color = cmapplot_globals$colors$blackish)
-      )
-    },
 
-    # Re-introduce vertical gridlines if specified
-    if (grepl("v", gridlines)) {
-      ggplot2::theme(
-        panel.grid.major.x = ggplot2::element_line(
-          size = ggplot_size_conversion(consts$lwd_gridline),
-          color = cmapplot_globals$colors$blackish)
-      )
-    },
 
-    # only edit legend columns if value is added
-    if (!is.null(legend.max.columns)){
-        # set maximum number of columns for legend based on either "fill" or "col" to reflect different geom structures
-        ggplot2::guides(fill = guide_legend(ncol = legend.max.columns),
-                        col  = guide_legend(ncol = legend.max.columns))
-    },
+# this is a complete theme built from scratch.
+# it is modeled off of `ggplot2::theme_grey()`
+theme_cmap_base <- function(consts = cmapplot_globals$consts,
+                            debug = FALSE
+) {
 
-    # add in any custom theme overrides
-    ggplot2::theme(...)
+  t <- theme(
+
+    # building blocks
+    line = element_line(
+      colour = cmapplot_globals$colors$blackish,
+      size = consts$lwd_gridline,
+      linetype = 1, lineend = "butt",
+      inherit.blank = TRUE),
+
+    rect = element_rect(
+      fill = NA, colour = ifelse(debug, "blue", NA),
+      size = 0.5, linetype = 1,
+      inherit.blank = TRUE),
+
+    text = element_text(
+      family = cmapplot_globals$font$regular$family,
+      face = cmapplot_globals$fgiont$regular$face,
+      size = cmapplot_globals$fsize$M,
+      color = cmapplot_globals$colors$blackish,
+      lineheight = 0.9, hjust = 0.5, vjust = 0.5, angle = 0,
+      margin = margin(), debug = debug,
+      inherit.blank = TRUE),
+
+    # axis
+    axis.line =          element_blank(),
+    axis.line.x =        NULL,
+    axis.line.y =        NULL,
+    axis.text =          element_text(family = cmapplot_globals$font$light$family,
+                                      face = cmapplot_globals$font$light$face,
+                                      size = cmapplot_globals$fsize$M),
+    axis.text.x =        element_text(margin = margin(t = consts$half_line / 2), vjust = 1),
+    axis.text.x.top =    element_text(margin = margin(b = consts$half_line / 2), vjust = 0),
+    axis.text.y =        element_text(margin = margin(r = consts$half_line / 2), hjust = 1),
+    axis.text.y.right =  element_text(margin = margin(l = consts$half_line / 2), hjust = 0),
+    axis.ticks =         element_blank(),
+    axis.ticks.length =  unit(0, "pt"), # determines space btwn axis text & panel even when ticks are off
+    axis.ticks.length.x = NULL,
+    axis.ticks.length.x.top = NULL,
+    axis.ticks.length.x.bottom = NULL,
+    axis.ticks.length.y = NULL,
+    axis.ticks.length.y.left = NULL,
+    axis.ticks.length.y.right = NULL,
+    axis.title =         element_blank(),
+
+    legend.background =  NULL,
+    legend.spacing.x =   grid::unit(consts$half_line, "pt"),
+    legend.spacing.y =   grid::unit(consts$margin_legend_i, "bigpts"),
+    legend.margin =      margin(l = 0 - consts$half_line),
+    legend.key =         element_blank(),
+    legend.key.size =    grid::unit(cmapplot_globals$fsize$M, "pt"),
+    legend.key.height =  NULL,
+    legend.key.width =   NULL,
+    legend.text =        NULL,
+    legend.text.align =  0,
+    legend.title =       element_blank(),
+    legend.position =    "top",
+    legend.direction =   "horizontal",
+    legend.justification = "left",
+    legend.box =         "vertical",
+    legend.box.margin =  margin(0, 0, 0, 0),
+    legend.box.background = element_rect(
+      fill = NA,
+      colour = ifelse(debug, "blue", NA)), # this should inherit from rect when NULL but it doesnt
+    legend.box.just =    "left",
+    legend.box.spacing = grid::unit(consts$margin_legend_b, "bigpts"),
+
+    panel.background =   NULL,
+    panel.border =       element_blank(),
+    panel.grid =         element_blank(),
+    panel.spacing =      unit(consts$half_line, "pt"),
+    panel.spacing.x =    NULL,
+    panel.spacing.y =    NULL,
+    panel.ontop    =     FALSE,
+
+    strip.background =   NULL,
+    strip.text =         element_text(hjust = 0),
+    strip.text.x =       NULL,
+    strip.text.y =       element_text(angle = -90),
+    strip.text.y.left =  element_text(angle = 90),
+    strip.placement =    "inside",
+    strip.placement.x =  NULL,
+    strip.placement.y =  NULL,
+    strip.switch.pad.grid = unit(consts$half_line / 2, "pt"),
+    strip.switch.pad.wrap = unit(consts$half_line / 2, "pt"),
+
+
+    plot.background =    element_blank(),
+    plot.title =         element_text(family = cmapplot_globals$font$strong$family,
+                                      face = cmapplot_globals$font$strong$face,
+                                      size = cmapplot_globals$fsize$L,
+                                      hjust = 0, vjust = 1,
+                                      margin = margin(b = consts$half_line)),
+    plot.title.position = "panel",
+    plot.subtitle =      element_blank(),
+    plot.caption =       element_text(family = cmapplot_globals$font$light$family,
+                                      face = cmapplot_globals$font$light$face,
+                                      size = cmapplot_globals$fsize$S,
+                                      hjust = 1, vjust = 1,
+                                      margin = margin(t = consts$half_line)),
+    plot.caption.position = "panel",
+    plot.tag = element_blank(),
+    plot.margin = margin(3, 3 + consts$margin_panel_r, 3, 3, "bigpts"),
+
+    complete = TRUE
   )
 
-  # Filter out NA elements before returning
-  return(magrittr::extract(elements, !is.na(elements)))
+  # make sure all elements are set to NULL if not explicitly defined.
+  # This could be set to ggplot2:::theme_all_null(), but it appears to be best
+  # practice to use theme_gray() in case ggplot2 devs add new theme args in
+  # future releases of that package.
+  theme_gray() %+replace% t
 }
