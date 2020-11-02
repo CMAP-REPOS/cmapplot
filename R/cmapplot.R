@@ -162,7 +162,7 @@ cmapplot_globals <- list(
 
   } else {
     # If non-Windows machine, stick to Arial
-    packageStartupMessage((
+    packageStartupMessage(
       "WARNING: CMAP theme will default to Arial on non-Windows platforms"
     )
   }
