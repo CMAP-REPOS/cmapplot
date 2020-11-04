@@ -95,7 +95,7 @@ cmapplot_globals <- list(
 
   ## Establish plotting constants in bigpts (1/72 of inch)
   consts = list(
-    lwd_originline = 1.6,
+    lwd_originline = 1,
     lwd_gridline = 0.3,
     lwd_plotline = 3,
     lwd_topline = 2,
@@ -210,13 +210,15 @@ display_cmap_fonts <- function() {
 #' and [grid::unit()]
 #'
 #' @noRd
-ggplot_size_conversion <- function(value, type = "bigpts") {
-  # convert input type to bigpts (if not already)
-  value_in_bigpts <- grid::convertUnit(grid::unit(value, type), "bigpts", valueOnly = TRUE)
+ggplot_size_conversion <- function(value, type = "bigpts",isFont) {
+  # convert input type to mm (if not already)
+  value_in_mm <- grid::convertUnit(grid::unit(value, type), "mm", valueOnly = TRUE)
+
   return(
-    value_in_bigpts / 72 # Normalize from big points
-      * 96               # Multiply by units for R pixels (per inch)
+    value_in_mm
+      * ggplot2::.stroke # Multiply by units for R pixels per mm (=96/25.4)
       / ggplot2::.pt     # Account for the ggplot2::.pt factor (=72.27/25.4)
   )
 }
+
 

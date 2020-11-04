@@ -216,7 +216,7 @@ finalize_plot <- function(plot = NULL,
     geom = "text",
     new = list(family = cmapplot_globals$font$strong$family,
                face = cmapplot_globals$font$strong$face,
-               size = cmapplot_globals$fsize$M * 5/14, # Adjustment needed but not understood
+               size = cmapplot_globals$fsize$M/ggplot2::.pt, # Accounts for the fact that text is sized in mm
                colour = cmapplot_globals$colors$blackish)
   )
 
