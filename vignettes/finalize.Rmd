@@ -17,29 +17,36 @@ knitr::opts_chunk$set(
   fig.align = "center"
 )
 
+devtools::load_all()
 library(tidyverse)
 library(cmapplot)
 ```
 
-This function will place a ggplot into a frame defined by CMAP design standards. It will align your title and caption to the left, add a horizontal line on top, and make other adjustments. It can show you the final plot and/or export it as a raster or vector file. This function will not apply CMAP design standards to the plot itself: use `theme_cmap()` for that.
+This function will place a ggplot into a frame defined by CMAP design standards. It will align your title and caption to the left, add a horizontal line on top, and make other adjustments. It can show you the final plot and/or export it as a raster or vector file. This function will not apply CMAP design standards to the plot itself; use `theme_cmap()` for that.
 
-The function has a number of customization options built in, accepting 16 (or more) arguments. These include
-- `plot`: A ggplot object, the variable name of the plot you have created that you want to finalize. If null (the default), the most recent plot will be retrieved via `ggplot2::last_plot()`.
-- `title` and `caption`: Character, the text you want to appear in the title and caption blocks. If empty, any non-Null values from `plot` will be retrieved. These blocks take html formatting, so manual text breaks can be created with `<br>` and formatting can be changed with `<span>`.
-- `width` and `height`: Numeric, the dimensions for the output image, including the title. Units in inches, which interacts with `ppi` to define the pixel dimensions of raster outputs. Default is 9.31 inches wide (670/72) and 5.56 inches tall (400/72), to match Comms specification of 670px by 400px at 72ppi.
-- `title_width`: Numeric, the width in inches for the title. If unspecified, use 25 percent of the total output width (per Comms guidance).
-- `ppi`: Numeric, the resolution of exported images (pixels per inch). Default = 300.
-- `mode`: Vector, the action(s) to be taken with the plot. Save using any of the following: `png`, `tiff`, `jpeg`, `bmp`, `svg`, `pdf`, `ps`. View in R with: `plot`, `window`: (`window` currently works only on computers running Windows). Return an object with `object`.
-- `filename`: Character, the file path and name you want the plot to be saved to. You may specify an extension to use. If you don't, the correct extension will be added for you. If only a file name is provided (e.g., `"foo.png"`), the file will be exported to your current working directory.
-- `caption_valign`: Character, align the caption text at the top or the bottom of the available space between the title and bottom of image. This argument accepts abbreviations, too: `c("top", "t", "bottom", "b")`. Without an argument, this defaults to `top`.
-- `fill_bg` and `fill_canvas`: Character, strings that represent colors R can interpret. They are used to fill behind and around the finished plot, respectively, and default to `white` for the background and `gray90` for the canvas.
-- `overrides`: Named list, overrides the default drawing attributes defined `cmapplot_globals$consts` which are drawn by `finalize_plot()` (this is most of them). Units are in bigpts (1/72 of an inch).
-- `debug`: Logical, setting this to `TRUE` enables outlines around components of finalized plot. Default = `FALSE`.
-- `legend_build`: Character, how the function attempts to build the legend. `"adjust"`, the default, attempts to align the legend all the way left (on top of the y axis labels) per CMAP design standards. `"safe"` maintains the alignment used in the original plot.
-- `legend_bump`: Numeric, shift the legend left (positive) or right (negative) this amount. Depending on system configuration, it may be necessary to use this parameter to achieve exact left alignment (this can most easily be tested using `debug = TRUE`). Expressed in bigpts.
-- `...`: This argument passes additional arguments to `ggplot2::theme()` to override any elements of the default CMAP theme.
+## Arguments
 
-Using the same chart demonstrated in the page on `theme_cmap()`, `finalize_plot()` produces the following output by default (adding only a title, caption, and export mode and filename):
+The function has a number of customization options built in, accepting 16 (or more) arguments. These include:
+
+* `plot`: A ggplot object, the variable name of the plot you want to finalize. If null (the default), the most recent plot will be retrieved via `ggplot2::last_plot()`.
+* `title` and `caption`: Character, the text you want to appear in the title and caption blocks. If empty, any non-Null values from `plot` will be retrieved. These blocks take html formatting, so manual text breaks can be created with `<br>` and formatting can be changed with `<span>`.
+* `width` and `height`: Numeric, the dimensions for the output image including the title. Units in inches, which interacts with `ppi` to define the pixel dimensions of raster outputs. Default is 9.31 inches wide (670/72) and 5.56 inches tall (400/72), to match Comms specification of 670px by 400px at 72ppi.
+* `title_width`: Numeric, the width in inches for the title. Default is 25 percent of the total output width.
+* `ppi`: Numeric, the resolution of exported images in pixels per inch. Default = 300.
+* `mode`: Vector, the action(s) to be taken with the plot. Save using any of the following: `png`, `tiff`, `jpeg`, `bmp`, `svg`, `pdf`, `ps`. View in R with: `plot`, `window` (`window` currently works only on computers running Windows). Return an object with `object`.
+* `filename`: Character, the file path and name you want the plot to be saved to. You may specify an extension to use. If you don't, the correct extension will be added for you. If only a file name is provided (e.g., `"foo.png"`), the file will be exported to your current working directory.
+* `caption_valign`: Character, align the caption text at the top or bottom of the available space between the title and bottom of image. This argument accepts abbreviations: `c("top", "t", "bottom", "b")`. Default is `top`.
+* `fill_bg` and `fill_canvas`: Character, strings that represent colors R can interpret. They are used to fill behind and around the finished plot, respectively.  Default to `white` for the background and `gray90` for the canvas.
+* `overrides`: Named list, overrides the default drawing attributes defined in  `cmapplot_globals$consts` which are drawn by `finalize_plot()`. Units are in bigpts (1/72 of an inch).
+* `debug`: Logical, setting this to `TRUE` enables outlines around components of finalized plot. Default = `FALSE`.
+* `legend_build`: Character, how the function attempts to build the legend. `"adjust"`, the default, attempts to align the legend all the way left (on top of the y axis labels) per CMAP design standards. `"safe"` maintains the alignment used in the original plot.
+* `legend_bump`: Numeric, shift the legend left (positive) or right (negative) this amount. Depending on system configuration, it may be necessary to use this parameter to achieve exact left alignment (this can most easily be tested using `debug = TRUE`). Expressed in bigpts.
+* `...`: This argument passes additional arguments to `ggplot2::theme()` to override any elements of the default CMAP theme.
+
+## Examples
+### Basic usage
+
+Using the same chart demonstrated in `theme_cmap()`, `finalize_plot()` produces the following output by default (adding only a title, caption, and export mode and filename):
 ```{r bars, eval=TRUE}
 # A bar chart
 bar_chart <- ggplot(cluster_jobchange, aes(x = reorder(name, jobchange), y = jobchange, fill = category)) +
@@ -55,6 +62,7 @@ finalize_plot(bar_chart,
               
 ```
 
+### Adjusting positions with debug mode
 Some users may be interested in manually adjusting the margins or positions of various elements of the finalized plot. The easiest way to identify current positions and how they relate to other objects within the finalized plot object is to set `debug = TRUE`:
 ```{r bars2, eval=TRUE}
 # A bar chart
@@ -72,7 +80,7 @@ finalize_plot(bar_chart,
               
 ```
 
-With debug on, we can then more easily see the effects of various adjustments, such as changing the width of the title and caption (using `title_width`), the vertical alignment of the caption (using `caption_valign`), and the horizontal position of the legend (using `legend_bump`):
+With debug on, we can easily see the effects of various adjustments, such as changing the width of the title and caption (`title_width`), the vertical alignment of the caption ( `caption_valign`), and the horizontal position of the legend (`legend_bump`):
 ```{r bars3, eval=TRUE}
 # A bar chart
 bar_chart <- ggplot(cluster_jobchange, aes(x = reorder(name, jobchange), y = jobchange, fill = category)) +
@@ -92,4 +100,4 @@ finalize_plot(bar_chart,
               
 ```
 
-#### SOMETHING ABOUT OVERRIDES
+### Overrides
