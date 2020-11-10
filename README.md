@@ -29,47 +29,44 @@ The cmapplot package contains a few key components:
 
 Run the following to install or update cmapplot:
 
-``` r
-## Install current version from GitHub
-devtools::install_github("CMAP-REPOS/cmapplot", build_vignettes=TRUE)
+    ## Install current version from GitHub
+    devtools::install_github("CMAP-REPOS/cmapplot", build_vignettes=TRUE)
 
-## Then load the package as you would any other
-library(cmapplot)
-```
+    ## Then load the package as you would any other
+    library(cmapplot)
 
 **Important note:** cmapplot works best when installed on a Windows
 computer with the Whitney family of fonts installed (specifically the
 Book, Medium, and Semibold variants). To install on macOS, users must
 install [XQuartz](https://www.xquartz.org) before cmapplot can be
 loaded. (This can be easily accomplished via the
-[Homebrew](https://brew.sh) package manager with the command `brew cask
-install xquartz`.)
+[Homebrew](https://brew.sh) package manager with the command
+`brew cask install xquartz`.)
 
-If installed on a Windows computer without Whitney, the package will
+If installed on a Windows computer *without* Whitney, the package will
 still work, but the fonts will default to Calibri. If installed on macOS
-or Linux, the fonts will default to Arial, even if Whitney is installed.
+or Linux, the fonts will default to Arial, *even if Whitney is
+installed.*
 
-## CMAP Theme and colors
+## CMAP theme and colors
 
 The function `theme_cmap()` returns a complete ggplot2 theme that can be
 added to a ggplot code block (similar to `ggplot2::theme_minimal()` or
-`ggplot2::theme_theme_bw`). Additionally, `theme_cmap()` accepts a
-variety of arguments to additionally customize the theme output. CMAP
-color functions apply colors from the CMAP color palette to the plot.
+`ggplot2::theme_bw`). Additionally, `theme_cmap()` accepts a variety of
+arguments to additionally customize the theme output. CMAP color
+functions apply colors from the CMAP color palette to the plot.
 
-``` r
-ggplot(data = pop_and_laborforce_by_age, 
-       aes(x = value,
-           y = interaction(year, variable, sep = " "),
-           fill = age)) +
-  geom_col(position = position_stack(reverse = TRUE)) +
-  scale_x_continuous(labels = scales::percent) +
-  theme_cmap(xlab = "Percent",
-             gridlines = "v",
-             vline = 0) +
-  cmap_fill_discrete(palette = "mobility")
-#> 'Whitney' font family not found. Using a substitute...
-```
+    ggplot(data = pop_and_laborforce_by_age, 
+           aes(x = value,
+               y = interaction(year, variable, sep = " "),
+               fill = age)) +
+      geom_col(position = position_stack(reverse = TRUE)) +
+      scale_x_continuous(labels = scales::percent) +
+      theme_cmap(xlab = "Percent",
+                 gridlines = "v",
+                 vline = 0) +
+      cmap_fill_discrete(palette = "mobility")
+    #> 'Whitney' font family not found. Using a substitute...
 
 <img src="man/figures/README-theme-1.png" width="672" style="display: block; margin: auto;" />
 
@@ -80,11 +77,8 @@ CMAP design standards. It provides a variety of customization options
 via arguments, and allows for in-R viewing and/or exporting in various
 formats.
 
-``` r
-finalize_plot(title = "Regional population and labor force participation",
-              caption = "Data from the American Community Survey",
-              width = 7,
-              height = 4.25)
-```
+    finalize_plot(title = "Regional population and labor force participation",
+                  caption = "Data from the American Community Survey",
+                  width = 7, height = 4.25)
 
 <img src="man/figures/README-finalize-1.png" width="672" style="display: block; margin: auto;" />
