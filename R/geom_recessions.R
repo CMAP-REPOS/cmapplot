@@ -322,7 +322,10 @@ GeomRecessions <- ggproto(
 )
 
 
-# Modification of GeomText
+#' @rdname customproto
+#' @format NULL
+#' @usage NULL
+#' @export
 GeomRecessionsText <- ggproto(
   "GeomRecessionsText", Geom,
 

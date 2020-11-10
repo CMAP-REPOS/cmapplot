@@ -3,6 +3,7 @@
 \docType{data}
 \name{GeomRecessions}
 \alias{GeomRecessions}
+\alias{GeomRecessionsText}
 \alias{customproto}
 \alias{GeomTextLast}
 \alias{GeomPointLast}

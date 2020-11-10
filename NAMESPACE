@@ -2,6 +2,7 @@
 
 export(GeomPointLast)
 export(GeomRecessions)
+export(GeomRecessionsText)
 export(GeomTextLast)
 export(cmap_color_continuous)
 export(cmap_color_discrete)
