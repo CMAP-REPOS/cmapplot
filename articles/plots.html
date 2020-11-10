@@ -64,6 +64,9 @@
       <a href="../articles/colors.html">Applying CMAP color schemes</a>
     </li>
     <li>
+      <a href="../articles/cookbook.html">A cookbook for cmapplot</a>
+    </li>
+    <li>
       <a href="../articles/plots.html">Creating CMAP-themed plots</a>
     </li>
   </ul>
@@ -100,74 +103,117 @@
 
     
     
-<p>For testing, the cmapplot package contains a variety of sample datasets. Each dataset has a man file that can be queried for additional details. Datasets currently included are:</p>
-<pre><code>#&gt;  cluster_jobchange
-#&gt;  economy_basic
-#&gt;  grp_over_time
-#&gt;  percentile_wages
-#&gt;  pop_and_laborforce_by_age
-#&gt;  traded_emp_by_race
-#&gt;  transit_ridership
-#&gt;  vehicle_ownership</code></pre>
-<p>The following provided code uses the sample datasets to produce publishable or near-publishable graphics:</p>
+<p>This vignette summarizes the basic formatting that the cmapplot package can add to a ggplot, and provides a series of examples for different types of graphs. The vignette relies on sample CMAP datasets which are included with the package.</p>
+<div id="stepping-through-the-construction-of-a-plot" class="section level2">
+<h2 class="hasAnchor">
+<a href="#stepping-through-the-construction-of-a-plot" class="anchor"></a>Stepping through the construction of a plot</h2>
+<div id="the-initial-plot" class="section level3">
+<h3 class="hasAnchor">
+<a href="#the-initial-plot" class="anchor"></a>The initial plot</h3>
+<p>Let’s start with a basic time series line graph, drawn using R’s default theme (<code>theme_grey()</code>):</p>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="co"># clean up dataset</span>
+<span class="va">df</span> <span class="op">&lt;-</span> <span class="va">transit_ridership</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">system</span> <span class="op">!=</span> <span class="st">"pace_ada"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>system <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span><span class="op">(</span>
+    <span class="va">system</span> <span class="op">==</span> <span class="st">"cta_bus"</span> <span class="op">~</span> <span class="st">"CTA bus"</span>,
+    <span class="va">system</span> <span class="op">==</span> <span class="st">"cta_rail"</span> <span class="op">~</span> <span class="st">"CTA rail"</span>,
+    <span class="va">system</span> <span class="op">==</span> <span class="st">"metra"</span> <span class="op">~</span> <span class="st">"Metra"</span>,
+    <span class="va">system</span> <span class="op">==</span> <span class="st">"pace"</span> <span class="op">~</span> <span class="st">"Pace"</span>
+  <span class="op">)</span><span class="op">)</span>
+
+
+<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">ggplot</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>, 
+       mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">ridership</span>, color <span class="op">=</span> <span class="va">system</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">geom_line</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">scale_y_continuous</span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">200</span>, <span class="fl">400</span><span class="op">)</span>, 
+                     limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">575</span><span class="op">)</span><span class="op">)</span>
+
+<span class="va">p</span></pre></div>
+<p><img src="plots_files/figure-html/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;"></p>
+</div>
+<div id="theme_cmap" class="section level3">
+<h3 class="hasAnchor">
+<a href="#theme_cmap" class="anchor"></a><code>theme_cmap()</code>
+</h3>
+<p>To add basic CMAP design elements to the plot, add <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code> like you would any other <code>ggplot</code> theme. The CMAP theme has x and y axis labels turned off by default, but that can be overridden. The help file <code><a href="../reference/theme_cmap.html">?theme_cmap</a></code> describes how to do this, as well as a variety of other built-in customization functions. <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code> can be used to easily adjust axis, origin, and gridlines.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="co"># A bar chart</span>
-<span class="fu">ggplot</span><span class="op">(</span><span class="va">cluster_jobchange</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span><span class="op">(</span><span class="va">name</span>, <span class="va">jobchange</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">jobchange</span>, fill <span class="op">=</span> <span class="va">category</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">geom_col</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">coord_flip</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>ylab <span class="op">=</span> <span class="st">"Annual Ridership (Millions)"</span>,
+               legend.max.columns <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
 <span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span></pre></div>
-<p><img src="plots_files/figure-html/bars-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="plots_files/figure-html/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;"></p>
+<p>The package contains a list of default <code>cmapplot_globals$consts</code> that control various plotting constants. Most of these impact the function <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code>, but a few impact <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code>. For a complete description of these constants, see <code><a href="../reference/cmapplot_globals.html">?cmapplot_globals</a></code>. These can be modified in the <code>overrides</code> argument:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="co"># a stacked bar chart</span>
-<span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">traded_emp_by_race</span>, <span class="va">variable</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"SpecializedTraded"</span>, <span class="st">"UnspecializedTraded"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span><span class="op">(</span><span class="va">Race</span>, <span class="op">-</span><span class="va">value</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">value</span>, fill <span class="op">=</span> <span class="va">variable</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">geom_col</span><span class="op">(</span>position <span class="op">=</span> <span class="fu">position_stack</span><span class="op">(</span>reverse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">scale_y_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org//reference/label_percent.html">percent</a></span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>ylab <span class="op">=</span> <span class="st">"Annual Ridership (Millions)"</span>,
+               overrides <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>lwd_gridline <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span></pre></div>
-<p><img src="plots_files/figure-html/stackedbars1-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="plots_files/figure-html/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;"></p>
+<p>In addition, any ggplot theme element can also be modified directly in <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code> by passing valid arguments from the <code><a href="https://ggplot2.tidyverse.org/reference/theme.html">ggplot2::theme()</a></code> function. In the following example, the addition of <code>axis.ticks.x</code> and the establishment of an <code>axis.ticks.length.x</code> “turns on” the tick marks automatically turned off by <code>theme_cmap</code>’s underlying theme. Note that here, some additional manipulation of the y axis scale is necessary for the axis ticks to touch the lowest horizontal gridline.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="co"># a grouped and stacked bar chart (via `interaction()`)</span>
-<span class="fu">ggplot</span><span class="op">(</span><span class="va">pop_and_laborforce_by_age</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/interaction.html">interaction</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">variable</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">value</span>, fill <span class="op">=</span> <span class="va">age</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">geom_col</span><span class="op">(</span>position <span class="op">=</span> <span class="fu">position_stack</span><span class="op">(</span>reverse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">coord_flip</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">p</span> <span class="op">+</span> <span class="fu">scale_y_continuous</span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">200</span>, <span class="fl">400</span><span class="op">)</span>, 
+                       limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">575</span><span class="op">)</span>,
+                       expand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>ylab <span class="op">=</span> <span class="st">"Annual Ridership (Millions)"</span>,
+             axis.ticks.x <span class="op">=</span> <span class="fu">element_line</span><span class="op">(</span>color <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span>,
+             axis.ticks.length.x <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">10</span>, <span class="st">"bigpts"</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Scale for 'y' is already present. Adding another scale for 'y', which will</span>
+<span class="co">#&gt; replace the existing scale.</span>
 <span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span></pre></div>
-<p><img src="plots_files/figure-html/stackedbars2-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="plots_files/figure-html/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;"></p>
+</div>
+<div id="geom_recessions" class="section level3">
+<h3 class="hasAnchor">
+<a href="#geom_recessions" class="anchor"></a><code>geom_recessions()</code>
+</h3>
+<p>The <code>cmapplot</code> package also includes two custom geoms that allow the user to easily add common elements used in CMAP plots that would be otherwise difficult to program.</p>
+<p>The function <code><a href="../reference/geom_recessions.html">geom_recessions()</a></code>, allows for the addition of rectangles (and text, if desired) representing US economic recessions. The <code>ggplot2</code> package builds plots from the ground up: geoms are drawn in the order they are added, so the recessions geom should be added before the plot’s primary geom (e.g. <code>geom_line()</code>. In addition, ggplot always draws geoms on top of base plot elements like gridlines. The default fill and alpha for <code><a href="../reference/geom_recessions.html">geom_recessions()</a></code> has been chosen because it is the most transparent way to achieve CMAP palette color #002d49 when drawn on a white background – thus impacting the color of the gridlines as little as possible.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="co"># a grouped and stacked bar chart (via `interaction()`)</span>
-<span class="fu">ggplot</span><span class="op">(</span><span class="va">economy_basic</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/interaction.html">interaction</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">variable</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">value</span>, fill <span class="op">=</span> <span class="va">sector</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">geom_col</span><span class="op">(</span>position <span class="op">=</span> <span class="st">"fill"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">scale_y_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org//reference/label_percent.html">percent</a></span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">coord_flip</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span></pre></div>
-<p><img src="plots_files/figure-html/stackedbars3-1.png" width="672" style="display: block; margin: auto;"></p>
+<span class="va">q</span> <span class="op">&lt;-</span> <span class="fu">ggplot</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>, 
+            mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">ridership</span>, color <span class="op">=</span> <span class="va">system</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/geom_recessions.html">geom_recessions</a></span><span class="op">(</span>ymin <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">geom_line</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>ylab <span class="op">=</span> <span class="st">"Annual Ridership (Millions)"</span><span class="op">)</span>
+<span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span>
+
+<span class="va">q</span></pre></div>
+<p><img src="plots_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;"></p>
+</div>
+<div id="geom_text_lastonly" class="section level3">
+<h3 class="hasAnchor">
+<a href="#geom_text_lastonly" class="anchor"></a><code>geom_text_lastonly()</code>
+</h3>
+<p>The function <code><a href="../reference/geom_text_lastonly.html">geom_text_lastonly()</a></code> allows the user to label only the final point in a time series. In addition to applying the label, this function can also highlight the final point via an implicit <code>geom_point</code>. Like <code>geom_text</code>, the value of the label can be passed via ggplot’s <code>mapping</code> argument, either in the top-line <code>ggplot()</code> or in <code><a href="../reference/geom_text_lastonly.html">geom_text_lastonly()</a></code>.</p>
+<p>Due to ggplot’s underlying structure, <code>geom_text</code> labels are clipped by the plot’s default extent. Often, the right side of the plot will need to be expanded–or plot clipping turned off–for correct display of these labels. `?geom_text_lastonly’ describes a number of options to account for this.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="co"># a non-time-series line chart</span>
-<span class="fu">ggplot</span><span class="op">(</span><span class="va">percentile_wages</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">percentile</span>, y <span class="op">=</span> <span class="va">wage</span>, color <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">scale_y_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org//reference/label_dollar.html">dollar</a></span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span></pre></div>
-<p><img src="plots_files/figure-html/lines1-1.png" width="672" style="display: block; margin: auto;"></p>
+<span class="va">q</span> <span class="op">+</span> <span class="fu"><a href="../reference/geom_text_lastonly.html">geom_text_lastonly</a></span><span class="op">(</span>
+  mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">ridership</span>, digits <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span>, 
+  add_points <span class="op">=</span> <span class="cn">TRUE</span>,
+  nudge_x <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">coord_cartesian</span><span class="op">(</span>clip <span class="op">=</span> <span class="st">"off"</span><span class="op">)</span></pre></div>
+<p><img src="plots_files/figure-html/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;"></p>
+</div>
+</div>
+<div id="debug-mode" class="section level2">
+<h2 class="hasAnchor">
+<a href="#debug-mode" class="anchor"></a>Debug mode</h2>
+<p>In addition, <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code> provides a debug mode in which it draws outlines around the rectangular elements in the plot. This can help the user understand what is being drawn and identify additional modifications that they might want to make via <code>overrides</code> or <code><a href="https://ggplot2.tidyverse.org/reference/theme.html">ggplot2::theme()</a></code> arguments:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="co"># a time-series line chart</span>
-<span class="fu">ggplot</span><span class="op">(</span><span class="va">grp_over_time</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">realgrp</span>, color <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/geom_text_lastonly.html">geom_text_lastonly</a></span><span class="op">(</span>add_points <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span>  <span class="op">+</span>
-  <span class="fu">geom_hline</span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">0</span>,
-             color <span class="op">=</span> <span class="st">"black"</span>,
-             size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+<span class="fu">ggplot</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>, 
+            mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">ridership</span>, color <span class="op">=</span> <span class="va">system</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/geom_recessions.html">geom_recessions</a></span><span class="op">(</span>ymin <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">geom_line</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>ylab <span class="op">=</span> <span class="st">"Annual Ridership (Millions)"</span>,
+             debug <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span></pre></div>
-<p><img src="plots_files/figure-html/lines2-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="plots_files/figure-html/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;"></p>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-      </div>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
+</div>
 
 </div>
 
