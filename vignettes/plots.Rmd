@@ -23,6 +23,7 @@ library(cmapplot)
 
 This vignette summarizes the basic formatting that the cmapplot package can add to a ggplot, and provides a series of examples for different types of graphs. The vignette relies on sample CMAP datasets which are included with the package. 
 
+
 ## Stepping through the construction of a plot
 
 ### The initial plot 
@@ -50,8 +51,7 @@ p <- ggplot(data = df,
 p
 ```
 
-
-### Theme CMAP 
+### `theme_cmap()`
 
 To add basic CMAP design elements to the plot, add `theme_cmap()` like you would any other `ggplot` theme. The CMAP theme has x and y axis labels turned off by default, but that can be overridden. The help file `?theme_cmap` describes how to do this, as well as a variety of other built-in customization functions. `theme_cmap()` can be used to easily adjust axis, origin, and gridlines. 
 
@@ -79,7 +79,7 @@ p + scale_y_continuous(breaks = c(0, 200, 400),
 ```
 
 
-### geom_recessions
+### `geom_recessions()`
 
 The `cmapplot` package also includes two custom geoms that allow the user to easily add common elements used in CMAP plots that would be otherwise difficult to program. 
 
@@ -95,7 +95,8 @@ q <- ggplot(data = df,
 q
 ```
 
-### geom_text_lastonly
+### `geom_text_lastonly()`
+
 The function `geom_text_lastonly()` allows the user to label only the final point in a time series. In addition to applying the label, this function can also highlight the final point via an implicit `geom_point`. Like `geom_text`, the value of the label can be passed via ggplot's `mapping` argument, either in the top-line `ggplot()` or in `geom_text_lastonly()`. 
 
 Due to ggplot's underlying structure, `geom_text` labels are clipped by the plot's default extent. Often, the right side of the plot will need to be expanded--or plot clipping turned off--for correct display of these labels. `?geom_text_lastonly' describes a number of options to account for this.    

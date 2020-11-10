@@ -1,8 +1,8 @@
 ---
-title: "A cookbook for CMAPplot"
+title: "A cookbook for cmapplot"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{A Cookbook for CMAPplot}
+  %\VignetteIndexEntry{A cookbook for cmapplot}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -22,6 +22,7 @@ library(cmapplot)
 ```
 
 This vignette uses the package's sample datasets to create a wide variety of example plots. The plots have been selected to showcase the code necessary to produce high quality graphics under a variety of circumstances.
+
 
 ## Sample datasets
 
