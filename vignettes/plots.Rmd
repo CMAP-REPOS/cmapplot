@@ -27,7 +27,7 @@ This vignette summarizes the basic formatting that the cmapplot package can add 
 
 ### The initial plot 
 
-Let's start with a basic time series line graph, drawn using R's default theme (`theme_grey`):
+Let's start with a basic time series line graph, drawn using R's default theme (`theme_grey()`):
 
 ```{r}
 # clean up dataset
@@ -67,7 +67,7 @@ p + theme_cmap(ylab = "Annual Ridership (Millions)",
                overrides = list(lwd_gridline = 3))
 ```
 
-In addition, any ggplot theme element can also be modified directly in `theme_cmap()` by passing valid arguments from ggplot's `theme()` function (see `?theme`). In the following example, the addition of `axis.ticks.x` and the establishment of an `axis.ticks.length.x` "turns on" the tick marks automatically turned off by `theme_cmap`'s underlying theme. Note that here, some additional manipulation of the y axis scale is necessary for the axis ticks to touch the lowest horizontal gridline.
+In addition, any ggplot theme element can also be modified directly in `theme_cmap()` by passing valid arguments from the `ggplot2::theme()` function. In the following example, the addition of `axis.ticks.x` and the establishment of an `axis.ticks.length.x` "turns on" the tick marks automatically turned off by `theme_cmap`'s underlying theme. Note that here, some additional manipulation of the y axis scale is necessary for the axis ticks to touch the lowest horizontal gridline.
 
 ```{r}
 p + scale_y_continuous(breaks = c(0, 200, 400), 
@@ -110,75 +110,14 @@ q + geom_text_lastonly(
 
 
 ## Debug mode
-Do a small example here.
+In addition, `theme_cmap()` provides a debug mode in which it draws outlines around the rectangular elements in the plot. This can help the user understand what is being drawn and identify additional modifications that they might want to make via `overrides` or `ggplot2::theme()` arguments:
 
-
-## Old text - dump this?
-
-
-
-For testing, the cmapplot package contains a variety of sample datasets. Each dataset has a man file that can be queried for additional details. Datasets currently included are:
-
-```{r datasets, echo = FALSE}
-cat("",
-    dir(path = "./../data/", pattern = "\\.RData$") %>%
-      str_replace(".RData$", "") %>%
-      paste(collapse = "\n "))
+```{r}
+ggplot(data = df, 
+            mapping = aes(x = year, y = ridership, color = system)) +
+  geom_recessions(ymin = 0) +
+  geom_line(size = 1) +
+  theme_cmap(ylab = "Annual Ridership (Millions)",
+             debug = TRUE)
 ```
 
-
-## Old text - replace this with TBD cookbook vignette?
-The following provided code uses the sample datasets to produce publishable or near-publishable graphics:
-
-```{r bars, eval=TRUE}
-# A bar chart
-ggplot(cluster_jobchange, aes(x = reorder(name, jobchange), y = jobchange, fill = category)) +
-  geom_col() +
-  coord_flip() +
-  theme_cmap()
-```
-
-```{r stackedbars1, eval=TRUE}
-# a stacked bar chart
-filter(traded_emp_by_race, variable %in% c("SpecializedTraded", "UnspecializedTraded")) %>%
-  ggplot(aes(x = reorder(Race, -value), y = value, fill = variable)) +
-  geom_col(position = position_stack(reverse = TRUE)) +
-  scale_y_continuous(labels = scales::percent) +
-  theme_cmap()
-```
-
-```{r stackedbars2, eval=TRUE}
-# a grouped and stacked bar chart (via `interaction()`)
-ggplot(pop_and_laborforce_by_age, aes(x = interaction(year, variable), y = value, fill = age)) +
-  geom_col(position = position_stack(reverse = TRUE)) +
-  coord_flip() +
-  theme_cmap()
-```
-
-```{r stackedbars3, eval=TRUE}
-# a grouped and stacked bar chart (via `interaction()`)
-ggplot(economy_basic, aes(x = interaction(year, variable), y = value, fill = sector)) +
-  geom_col(position = "fill") +
-  scale_y_continuous(labels = scales::percent) +
-  coord_flip() +
-  theme_cmap()
-```
-
-```{r lines1, eval=TRUE}
-# a non-time-series line chart
-ggplot(percentile_wages, aes(x = percentile, y = wage, color = cluster)) +
-  geom_line() +
-  scale_y_continuous(labels = scales::dollar) +
-  theme_cmap()
-```
-
-```{r lines2, eval=TRUE}
-# a time-series line chart
-ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
-  geom_line() +
-  geom_text_lastonly(add_points = TRUE) +
-  theme_cmap()  +
-  geom_hline(yintercept = 0,
-             color = "black",
-             size = 1)
-```
