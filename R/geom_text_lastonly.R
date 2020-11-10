@@ -145,7 +145,9 @@ GeomTextLast <- ggproto(
   default_aes = aes(
     colour = "black", size = 3.88, angle = 0, hjust = 0, vjust = 0.5,
     alpha = NA, family = "", fontface = 1, lineheight = 1.2,
-    label = NA
+    label = NA,
+    # Dummy parameters to match named params in GeomPointLast:
+    shape = NA, fill = NA, stroke = NA
   ),
 
   draw_panel = function(data, panel_params, coord, parse = FALSE,
@@ -220,7 +222,10 @@ GeomPointLast <- ggproto(
   non_missing_aes = c("size", "shape", "colour"),
   default_aes = aes(
     shape = 19, colour = "black", size = 2.0, fill = NA,
-    alpha = NA, stroke = 0.5
+    alpha = NA, stroke = 0.5,
+    # Dummy parameters to match named params in GeomTextLast:
+    angle = NA, hjust = NA, vjust = NA, family = NA,
+    fontface = NA, lineheight = NA, label = NA
   ),
 
   draw_panel = function(data, panel_params, coord, na.rm = FALSE) {
