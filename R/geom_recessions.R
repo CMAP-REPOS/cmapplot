@@ -249,7 +249,10 @@ filter_recessions <- function(min, max, xformat, recess_table){
 }
 
 
-# Modification of GeomRect
+#' @rdname customproto
+#' @format NULL
+#' @usage NULL
+#' @export
 GeomRecessions <- ggproto(
   "GeomRecessions", Geom,
   default_aes = aes(colour = NA, alpha = 0.11, size = 0.5, linetype = 1, na.rm = TRUE),
