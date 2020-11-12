@@ -45,16 +45,17 @@
 #'  (negative) this many bigpts.
 #'@param debug Bool, TRUE enables outlines around components of finalized plot.
 #'  Default = FALSE.
+#'@param use_cmap_aes Bool, TRUE calls \code{\link{set_cmap_geom_defaults}} and
+#'  \code{\link{fetch_cmap_geom_defaults}} to use CMAP default aesthetic settings
+#'  for geoms. This should usually be \code{TRUE} (the default), but can be turned
+#'  off in special circumstances.
 #'@param ... pass additional arguments to ggplot2's \code{\link[ggplot2]{theme}}
 #'  function to override any elements of the default CMAP theme.
 #'
 #'@return Exports from this function use Cairo graphics drivers, while drawing
 #'  within R is done with default (Windows) drivers. \code{mode = "object"} also
 #'  returns a gTree object that can be stored and drawn later with
-#'  \code{grid::grid.draw()}. Lines drawn by any \code{geom_line()} geoms
-#'  without line widths explicitly specified are assigned a thicker width
-#'  (specifically, \code{cmapplot_globals$consts$lwd_plotline}) in all outputs
-#'  except for when exporting as an object.
+#'  \code{grid::grid.draw()}.
 #'
 #'@importFrom utils modifyList
 #'@importFrom generics intersect
@@ -118,6 +119,7 @@ finalize_plot <- function(plot = NULL,
                           legend_shift = TRUE,
                           legend_bump = 0,
                           debug = FALSE,
+                          use_cmap_aes = TRUE,
                           ...
                           ){
 
@@ -199,30 +201,11 @@ finalize_plot <- function(plot = NULL,
     caption <- input_caption
   }
 
-  # # Size conversion for line widths in line graphs
-  # default_lwd <- ggplot2::GeomLine$default_aes$size
-  # ggplot2::update_geom_defaults(
-  #   geom = "line",
-  #   new = list(size = ggplot_size_conversion(consts$lwd_plotline))
-  #   )
-  #
-  # # Font defaults for annotations and labels on the graph
-  # default_fontfamily <- ggplot2::theme_get()$text$family
-  # default_fontface <- ggplot2::theme_get()$text$face
-  # default_fontcolor <- ggplot2::theme_get()$text$colour
-  # default_fontsize <- ggplot2::theme_get()$text$size
-  #
-  # ggplot2::update_geom_defaults(
-  #   geom = "text",
-  #   new = list(family = cmapplot_globals$font$strong$family,
-  #              face = cmapplot_globals$font$strong$face,
-  #              size = cmapplot_globals$fsize$M/ggplot2::.pt, # Accounts for the fact that text is sized in mm
-  #              colour = cmapplot_globals$colors$blackish)
-  # )
-
-  # set geom defaults
-  geom_defaults <- fetch_cmap_gg_defaults()
-  set_cmap_gg_defaults(quietly = TRUE)
+  # fetch and set geom defaults
+  if(use_cmap_aes){
+    geom_defaults <- fetch_cmap_geom_defaults()
+    set_cmap_geom_defaults(quietly = TRUE)
+  }
 
   # preformat plot
   plot <- plot + ggplot2::theme(
@@ -245,6 +228,11 @@ finalize_plot <- function(plot = NULL,
              legend_shift = legend_shift,
              debug = debug)
 
+  # return geom defaults as before (now that the plot is a grob object,
+  #  ggplot2 draw settings will not impact it.)
+  if(use_cmap_aes){
+    set_cmap_geom_defaults(values = geom_defaults, quietly = TRUE)
+  }
 
   # Build necessary viewports -----------------------------------------------------
 
@@ -454,17 +442,6 @@ finalize_plot <- function(plot = NULL,
       }
     }
   }
-
-  # # return geom defaults as before
-  # ggplot2::update_geom_defaults("line",list(size = default_lwd))
-  # ggplot2::update_geom_defaults(
-  #   geom = "text",
-  #   new = list(family = default_fontfamily,
-  #              face = default_fontface,
-  #              size = default_fontsize,
-  #              colour = default_fontcolor)
-  # )
-  set_cmap_gg_defaults(values = geom_defaults, quietly = TRUE)
 
   # if user wants an object, return it
   if("object" %in% mode){

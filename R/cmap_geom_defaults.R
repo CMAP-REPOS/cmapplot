@@ -1,6 +1,6 @@
 
 #' @export
-fetch_cmap_gg_defaults <- function(){
+fetch_cmap_geom_defaults <- function(){
 
   geom_changes <- tribble(
     ~geom, ~pkg,
@@ -18,7 +18,7 @@ fetch_cmap_gg_defaults <- function(){
 }
 
 #' @export
-set_cmap_gg_defaults <- function(values = NULL, quietly = FALSE){
+set_cmap_geom_defaults <- function(values = NULL, quietly = FALSE){
 
   geom_changes <- tribble(
     ~geom, ~attr,
