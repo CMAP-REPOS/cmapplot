@@ -57,7 +57,7 @@ NULL
 #' @describeIn cmap_geom_defaults Fetch geom defaults
 #' @importFrom purrr map2
 #' @export
-fetch_cmap_geom_defaults <- function(){
+fetch_cmap_geom_defaults <- function () {
 
   geom_changes <- tribble(
     ~geom, ~pkg,
@@ -67,9 +67,12 @@ fetch_cmap_geom_defaults <- function(){
     "RecessionsText", "cmapplot"
   )
 
-  purrr::map2(geom_changes$geom,
-       geom_changes$pkg,
-       function(geom, pkg){get(paste0("Geom", geom), as_environment(pkg))$default_aes}
+  purrr::map2(
+    geom_changes$geom,
+    geom_changes$pkg,
+    function (geom, pkg) {
+      get(paste0("Geom", geom), as_environment(pkg))$default_aes
+    }
   ) %>%
     set_names(geom_changes$geom)
 }
@@ -86,32 +89,41 @@ fetch_cmap_geom_defaults <- function(){
 #'
 #' @importFrom purrr walk2
 #' @export
-set_cmap_geom_defaults <- function(values = NULL, quietly = FALSE){
+set_cmap_geom_defaults <- function (values = NULL, quietly = FALSE) {
 
   geom_changes <- tribble(
     ~geom, ~attr,
-    "Line", list(size = ggplot_size_conversion(cmapplot_globals$consts$lwd_plotline)),
-    "Text", list(family = cmapplot_globals$font$strong$family,
-                 fontface = ifelse(cmapplot_globals$font$strong$face == "bold", 2, 1),
-                 size = cmapplot_globals$fsize$M/ggplot2::.pt, # Accounts for the fact that text is sized in mm
-                 colour = cmapplot_globals$colors$blackish),
-    "TextLast", list(family = cmapplot_globals$font$strong$family,
-                     fontface = ifelse(cmapplot_globals$font$strong$face == "bold", 2, 1),
-                     size = cmapplot_globals$fsize$M/ggplot2::.pt, # Accounts for the fact that text is sized in mm
-                     colour = cmapplot_globals$colors$blackish),
-    "RecessionsText", list(family = cmapplot_globals$font$regular$family,
-                           fontface = ifelse(cmapplot_globals$font$regular$face == "bold", 2, 1),
-                           size = cmapplot_globals$fsize$S/ggplot2::.pt, # Accounts for the fact that text is sized in mm
-                           colour = cmapplot_globals$colors$blackish)
+    "Line", list(
+      size = ggplot_size_conversion(cmapplot_globals$consts$lwd_plotline)
+    ),
+    "Text", list(
+      family = cmapplot_globals$font$strong$family,
+      fontface = ifelse(cmapplot_globals$font$strong$face == "bold", 2, 1),
+      size = cmapplot_globals$fsize$M/ggplot2::.pt, # pt-to-mm conversion
+      colour = cmapplot_globals$colors$blackish
+    ),
+    "TextLast", list(
+      family = cmapplot_globals$font$strong$family,
+      fontface = ifelse(cmapplot_globals$font$strong$face == "bold", 2, 1),
+      size = cmapplot_globals$fsize$M/ggplot2::.pt, # pt-to-mm conversion
+      colour = cmapplot_globals$colors$blackish
+    ),
+    "RecessionsText", list(
+      family = cmapplot_globals$font$regular$family,
+      fontface = ifelse(cmapplot_globals$font$regular$face == "bold", 2, 1),
+      size = cmapplot_globals$fsize$S/ggplot2::.pt, # pt-to-mm conversion
+      colour = cmapplot_globals$colors$blackish
+    )
   )
 
   if (is.null(values)) {
     values <- geom_changes$attr
   }
 
-  purrr::walk2(geom_changes$geom,
-        values,
-        ggplot2::update_geom_defaults
+  purrr::walk2(
+    geom_changes$geom,
+    values,
+    ggplot2::update_geom_defaults
   )
 
   if (!quietly) {
