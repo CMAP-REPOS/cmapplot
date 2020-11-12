@@ -113,11 +113,7 @@ cmapplot_globals <- list(
     margin_panel_r = 20,
     leading_title = 1,
     leading_caption = 1
-  ),
-
-  ## Establsih location for details about geom defaults to
-  ## be overwritten. These are established in `on.Load`.
-  geom_changes = NULL
+  )
 )
 
 ## Use Whitney or Calibri if on Windows -- *must* be done with .onLoad()
@@ -170,22 +166,6 @@ cmapplot_globals <- list(
       "WARNING: CMAP theme will default to Arial on non-Windows platforms"
     )
   }
-
-
-
-  # Build tibble of geoms whose defaults need to be set
-  cmapplot_globals$geom_changes <<- tribble(
-    ~geom, ~pkg, ~attr,
-    "Line", "ggplot2", list(size = ggplot_size_conversion(cmapplot_globals$consts$lwd_plotline)),
-    "Text", "ggplot2", list(family = cmapplot_globals$font$strong$family,
-                            face = cmapplot_globals$font$strong$face,
-                            size = cmapplot_globals$fsize$M/ggplot2::.pt, # Accounts for the fact that text is sized in mm
-                            colour = cmapplot_globals$colors$blackish),
-    "TextLast", "cmapplot", list(family = cmapplot_globals$font$strong$family,
-                                 face = cmapplot_globals$font$strong$face,
-                                 size = cmapplot_globals$fsize$M/ggplot2::.pt, # Accounts for the fact that text is sized in mm
-                                 colour = cmapplot_globals$colors$blackish)
-  )
 }
 
 
