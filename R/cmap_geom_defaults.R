@@ -1,4 +1,3 @@
-
 #' @export
 fetch_cmap_geom_defaults <- function(){
 
