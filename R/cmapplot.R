@@ -169,9 +169,8 @@ cmapplot_globals <- list(
 }
 
 
+# Font spec visualization helper function ---------------------------------
 
-
-# Define an helper function to visualize the font specifications
 display_cmap_fonts <- function() {
   graphics::plot(c(0,2), c(0,6), type="n", xlab="", ylab="")
 
@@ -195,7 +194,6 @@ display_cmap_fonts <- function() {
   draw.me(name = "Label", font = "strong",  size = "M", 2)
   draw.me(name = "Note",  font = "light",   size = "S", 1)
 }
-#display_cmap_fonts()
 
 
 # Plot sizes and colors ---------------------------------------------------
