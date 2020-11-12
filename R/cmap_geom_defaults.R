@@ -36,7 +36,7 @@ set_cmap_geom_defaults <- function(values = NULL, quietly = FALSE){
                            colour = cmapplot_globals$colors$blackish)
   )
 
-  if(is.null(values)){
+  if (is.null(values)) {
     values <- geom_changes$attr
   }
 
@@ -45,7 +45,7 @@ set_cmap_geom_defaults <- function(values = NULL, quietly = FALSE){
         ggplot2::update_geom_defaults
   )
 
-  if(!quietly){
+  if (!quietly) {
     message(
       paste("Geom defaults overridden in the current session for:",
             paste(geom_changes$geom, collapse = ", ")

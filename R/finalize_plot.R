@@ -159,7 +159,7 @@ finalize_plot <- function(plot = NULL,
   # trigger a new page in that window now. This is needed to prevent the creation
   # of an unnecessary blank plot by other `grid` functions in cases where the
   # default device is not already active.
-  if("plot" %in% mode){ grid::grid.newpage() }
+  if ("plot" %in% mode) { grid::grid.newpage() }
 
   # create list of plot constants, from globals unless overridden by user
   consts <- utils::modifyList(cmapplot_globals$consts, overrides)
@@ -189,7 +189,7 @@ finalize_plot <- function(plot = NULL,
   # If title/caption unspecified, try to extract from plot
   input_title <- plot$labels$title
   if (title == "") {
-    if(!is.null(input_title)) {
+    if (!is.null(input_title)) {
       title <- input_title
     } else {
       title <- "This plot needs a title"
@@ -202,7 +202,7 @@ finalize_plot <- function(plot = NULL,
   }
 
   # fetch and set geom defaults
-  if(use_cmap_aes){
+  if (use_cmap_aes) {
     geom_defaults <- fetch_cmap_geom_defaults()
     set_cmap_geom_defaults(quietly = TRUE)
   }
@@ -230,7 +230,7 @@ finalize_plot <- function(plot = NULL,
 
   # return geom defaults as before (now that the plot is a grob object,
   #  ggplot2 draw settings will not impact it.)
-  if(use_cmap_aes){
+  if (use_cmap_aes) {
     set_cmap_geom_defaults(values = geom_defaults, quietly = TRUE)
   }
 
@@ -333,7 +333,7 @@ finalize_plot <- function(plot = NULL,
                           consts$margin_title_l), # left
                         "bigpts"),
     # set aesthetic variables
-    valign = if(caption_valign == "top"){ 1 } else { 0 },
+    valign = ifelse(caption_valign == "top", 1, 0),
     gp = grid::gpar(fontsize = cmapplot_globals$fsize$S,
                     fontfamily = cmapplot_globals$font$light$family,
                     fontface = cmapplot_globals$font$light$face,
@@ -417,9 +417,9 @@ finalize_plot <- function(plot = NULL,
       grid::grid.draw(final_plot)
       grid::popViewport()
 
-    } else if (this_mode == "window"){
+    } else if (this_mode == "window") {
 
-      if(.Platform$OS.type == "windows"){
+      if (.Platform$OS.type == "windows") {
         # open new device (window)
         grDevices::dev.new(width = width * 1.02,
                            height = height * 1.02,
@@ -444,7 +444,7 @@ finalize_plot <- function(plot = NULL,
   }
 
   # if user wants an object, return it
-  if("object" %in% mode){
+  if ("object" %in% mode) {
     return(final_plot)
   }
 }
@@ -460,21 +460,21 @@ buildChart <- function(plot,
                        debug) {
 
   # add debug rect around plot if in debug mode
-  if(debug){
+  if (debug) {
     plot <- plot + ggplot2::theme(
       plot.background = element_rect(color = "red")
     )
   }
 
   # in safe mode, stop here. Return plot as Grob
-  if(!legend_shift | is.null(ggpubr::get_legend(plot))){
+  if (!legend_shift | is.null(ggpubr::get_legend(plot))) {
     return(ggplotGrob(plot))
   }
 
   # Otherwise, in legend-shift mode...
 
   # add debug rects around legend if in debug mode
-  if(debug){
+  if (debug) {
     plot <- plot + ggplot2::theme(
       legend.background = element_rect(color = "red"),
       legend.box.background = element_rect(color = "red")
