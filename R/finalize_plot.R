@@ -199,26 +199,30 @@ finalize_plot <- function(plot = NULL,
     caption <- input_caption
   }
 
-  # Size conversion for line widths in line graphs
-  default_lwd <- ggplot2::GeomLine$default_aes$size
-  ggplot2::update_geom_defaults(
-    geom = "line",
-    new = list(size = ggplot_size_conversion(consts$lwd_plotline))
-    )
+  # # Size conversion for line widths in line graphs
+  # default_lwd <- ggplot2::GeomLine$default_aes$size
+  # ggplot2::update_geom_defaults(
+  #   geom = "line",
+  #   new = list(size = ggplot_size_conversion(consts$lwd_plotline))
+  #   )
+  #
+  # # Font defaults for annotations and labels on the graph
+  # default_fontfamily <- ggplot2::theme_get()$text$family
+  # default_fontface <- ggplot2::theme_get()$text$face
+  # default_fontcolor <- ggplot2::theme_get()$text$colour
+  # default_fontsize <- ggplot2::theme_get()$text$size
+  #
+  # ggplot2::update_geom_defaults(
+  #   geom = "text",
+  #   new = list(family = cmapplot_globals$font$strong$family,
+  #              face = cmapplot_globals$font$strong$face,
+  #              size = cmapplot_globals$fsize$M/ggplot2::.pt, # Accounts for the fact that text is sized in mm
+  #              colour = cmapplot_globals$colors$blackish)
+  # )
 
-  # Font defaults for annotations and labels on the graph
-  default_fontfamily <- ggplot2::theme_get()$text$family
-  default_fontface <- ggplot2::theme_get()$text$face
-  default_fontcolor <- ggplot2::theme_get()$text$colour
-  default_fontsize <- ggplot2::theme_get()$text$size
-
-  ggplot2::update_geom_defaults(
-    geom = "text",
-    new = list(family = cmapplot_globals$font$strong$family,
-               face = cmapplot_globals$font$strong$face,
-               size = cmapplot_globals$fsize$M/ggplot2::.pt, # Accounts for the fact that text is sized in mm
-               colour = cmapplot_globals$colors$blackish)
-  )
+  # set geom defaults
+  geom_defaults <- fetch_cmap_gg_defaults()
+  set_cmap_gg_defaults(quietly = TRUE)
 
   # preformat plot
   plot <- plot + ggplot2::theme(
@@ -451,15 +455,16 @@ finalize_plot <- function(plot = NULL,
     }
   }
 
-  # return geom defaults as before
-  ggplot2::update_geom_defaults("line",list(size = default_lwd))
-  ggplot2::update_geom_defaults(
-    geom = "text",
-    new = list(family = default_fontfamily,
-               face = default_fontface,
-               size = default_fontsize,
-               colour = default_fontcolor)
-  )
+  # # return geom defaults as before
+  # ggplot2::update_geom_defaults("line",list(size = default_lwd))
+  # ggplot2::update_geom_defaults(
+  #   geom = "text",
+  #   new = list(family = default_fontfamily,
+  #              face = default_fontface,
+  #              size = default_fontsize,
+  #              colour = default_fontcolor)
+  # )
+  set_cmap_gg_defaults(values = geom_defaults, quietly = TRUE)
 
   # if user wants an object, return it
   if("object" %in% mode){
