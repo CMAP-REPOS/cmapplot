@@ -46,6 +46,7 @@ Imports:
     gridExtra,
     gridtext,
     magrittr,
+    purrr,
     rlang,
     scales,
     sysfonts
