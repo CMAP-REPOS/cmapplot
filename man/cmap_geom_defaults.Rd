@@ -49,6 +49,7 @@ user-inputed values
 }}
 
 \examples{
+\dontrun{
 g <- ggplot(mtcars, aes(x = mpg, y = disp, label = rownames(mtcars))) +
   geom_line() +
   geom_text() +
@@ -70,7 +71,6 @@ g
 set_cmap_geom_defaults(old)
 g
 
-\dontrun{
 # finalize alters the defaults implicitly, but then resets them automatically.
 finalize_plot(g)
 
