@@ -21,6 +21,7 @@ finalize_plot(
   legend_shift = TRUE,
   legend_bump = 0,
   debug = FALSE,
+  use_cmap_aes = TRUE,
   ...
 )
 }
@@ -77,6 +78,11 @@ all the way left (on top of the y axis labels) per CMAP design standards.
 \item{debug}{Bool, TRUE enables outlines around components of finalized plot.
 Default = FALSE.}
 
+\item{use_cmap_aes}{Bool, TRUE calls \code{\link{set_cmap_geom_defaults}} and
+\code{\link{fetch_cmap_geom_defaults}} to use CMAP default aesthetic settings
+for geoms. This should usually be \code{TRUE} (the default), but can be turned
+off in special circumstances.}
+
 \item{...}{pass additional arguments to ggplot2's \code{\link[ggplot2]{theme}}
 function to override any elements of the default CMAP theme.}
 }
@@ -84,10 +90,7 @@ function to override any elements of the default CMAP theme.}
 Exports from this function use Cairo graphics drivers, while drawing
  within R is done with default (Windows) drivers. \code{mode = "object"} also
  returns a gTree object that can be stored and drawn later with
- \code{grid::grid.draw()}. Lines drawn by any \code{geom_line()} geoms
- without line widths explicitly specified are assigned a thicker width
- (specifically, \code{cmapplot_globals$consts$lwd_plotline}) in all outputs
- except for when exporting as an object.
+ \code{grid::grid.draw()}.
 }
 \description{
 Place a ggplot into a frame defined by CMAP design standards. It will align
