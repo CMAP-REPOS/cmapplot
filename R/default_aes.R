@@ -97,8 +97,9 @@ apply_cmap_default_aes <- function (quietly = FALSE) {
 
   if (!quietly) {
     message(
-      paste("Geom defaults overridden in the current session for:",
-            paste(cmapplot_globals$geoms_that_change, collapse = ", ")
+      paste0("Aesthetic defaults overridden in the current session for the following Geoms:",
+            "\n  ", paste(cmapplot_globals$geoms_that_change, collapse = ", "),
+            "\nTo undo this change, run `unapply_cmap_default_aes()`."
       )
     )
   }
@@ -115,8 +116,8 @@ unapply_cmap_default_aes <- function (quietly = FALSE) {
 
   if (!quietly) {
     message(
-      paste("Geom defaults reset for:",
-            paste(cmapplot_globals$geoms_that_change, collapse = ", ")
+      paste0("Aesthetic defaults reset to values cached when pkg `cmapplot` was first loaded for Geoms:",
+            "\n  ", paste(cmapplot_globals$geoms_that_change, collapse = ", ")
       )
     )
   }
