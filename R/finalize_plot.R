@@ -47,7 +47,7 @@
 #'  Default = FALSE.
 #'@param use_cmap_aes Bool, \code{TRUE}, the default, temporarily implements
 #'  CMAP default aesthetic settings for geoms (see
-#'  \code{\link{apply_cmap_geom_defaults}}) for the present plot.
+#'  \code{\link{apply_cmap_default_aes}}) for the present plot.
 #'@param ... pass additional arguments to ggplot2's \code{\link[ggplot2]{theme}}
 #'  function to override any elements of the default CMAP theme.
 #'
@@ -202,8 +202,8 @@ finalize_plot <- function(plot = NULL,
 
   # fetch and set geom defaults
   if (use_cmap_aes) {
-    geom_defaults <- fetch_cmap_geom_defaults()
-    apply_cmap_geom_defaults(quietly = TRUE)
+    geom_defaults <- fetch_current_default_aes()
+    apply_cmap_default_aes(quietly = TRUE)
   }
 
   # preformat plot
@@ -230,7 +230,7 @@ finalize_plot <- function(plot = NULL,
   # return geom defaults as before (now that the plot is a grob object,
   #  ggplot2 draw settings will not impact it.)
   if (use_cmap_aes) {
-    set_cmap_geom_defaults(geom_defaults)
+    set_default_aes(geom_defaults)
   }
 
   # Build necessary viewports -----------------------------------------------------

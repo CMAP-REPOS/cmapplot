@@ -115,17 +115,20 @@ cmapplot_globals <- list(
     leading_caption = 1
   ),
 
-  # tibble of geoms whose defaults will be overwritten
-  geom_changes = tribble(
-    ~geom,
+  # list of geoms whose aesthetics will be customized
+  geoms_that_change = c(
     "Line",
     "Text",
     "TextLast",
     "RecessionsText"
   ),
 
-  # empty location for geom defaults, loaded in during `.onLoad`
-  geom_defaults = NULL
+  # empty location for loading in preferred aesthetics during `.onLoad`
+  default_aes_cmap = NULL,
+
+  # empty location for caching existing aesthetics during `.onLoad`
+  default_aes_cached = NULL
+
 )
 
 ## Use Whitney or Calibri if on Windows -- *must* be done with .onLoad()
@@ -179,8 +182,11 @@ cmapplot_globals <- list(
     )
   }
 
-  # cache geom defaults on pkg load
-  cmapplot_globals$geom_defaults <<- fetch_cmap_geom_defaults()
+  # load in CMAP preferred default.aes (can't be done until fonts are specified)
+  cmapplot_globals$default_aes_cmap <<- init_cmap_default_aes()
+
+  # cache existing default.aes
+  cmapplot_globals$default_aes_cached <<- fetch_current_default_aes()
 }
 
 
