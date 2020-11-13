@@ -113,7 +113,19 @@ cmapplot_globals <- list(
     margin_panel_r = 20,
     leading_title = 1,
     leading_caption = 1
-  )
+  ),
+
+  # tibble of geoms whose defaults will be overwritten
+  geom_changes = tribble(
+    ~geom,
+    "Line",
+    "Text",
+    "TextLast",
+    "RecessionsText"
+  ),
+
+  # empty location for geom defaults, loaded in during `.onLoad`
+  geom_defaults = NULL
 )
 
 ## Use Whitney or Calibri if on Windows -- *must* be done with .onLoad()
@@ -166,6 +178,9 @@ cmapplot_globals <- list(
       "WARNING: CMAP theme will default to Arial on non-Windows platforms"
     )
   }
+
+  # cache geom defaults on pkg load
+  cmapplot_globals$geom_defaults <<- fetch_cmap_geom_defaults()
 }
 
 

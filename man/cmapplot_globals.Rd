@@ -5,7 +5,7 @@
 \alias{cmapplot_globals}
 \title{cmapplot global variables}
 \format{
-An object of class \code{list} of length 5.
+An object of class \code{list} of length 7.
 }
 \usage{
 cmapplot_globals

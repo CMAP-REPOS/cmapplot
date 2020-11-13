@@ -68,9 +68,9 @@ respectively.}
 in \code{cmapplot_globals$consts} which are drawn by
 \code{\link{finalize_plot}}. Units are in bigpts (1/72 of an inch).}
 
-\item{legend_shift}{Bool, \code{TRUE}, the default, attempts to align the legend
-all the way left (on top of the y axis labels) per CMAP design standards.
-\code{FALSE} maintains the alignment used in the original plot.}
+\item{legend_shift}{Bool, \code{TRUE}, the default, attempts to align the
+legend all the way left (on top of the y axis labels) per CMAP design
+standards. \code{FALSE} maintains the alignment used in the original plot.}
 
 \item{legend_bump}{Numeric, shift the legend right (positive) or left
 (negative) this many bigpts.}
@@ -78,10 +78,9 @@ all the way left (on top of the y axis labels) per CMAP design standards.
 \item{debug}{Bool, TRUE enables outlines around components of finalized plot.
 Default = FALSE.}
 
-\item{use_cmap_aes}{Bool, TRUE calls \code{\link{set_cmap_geom_defaults}} and
-\code{\link{fetch_cmap_geom_defaults}} to use CMAP default aesthetic settings
-for geoms. This should usually be \code{TRUE} (the default), but can be turned
-off in special circumstances.}
+\item{use_cmap_aes}{Bool, \code{TRUE}, the default, temporarily implements
+CMAP default aesthetic settings for geoms (see
+\code{\link{apply_cmap_geom_defaults}}) for the present plot.}
 
 \item{...}{pass additional arguments to ggplot2's \code{\link[ggplot2]{theme}}
 function to override any elements of the default CMAP theme.}

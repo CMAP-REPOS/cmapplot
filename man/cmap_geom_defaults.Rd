@@ -2,31 +2,26 @@
 % Please edit documentation in R/cmap_geom_defaults.R
 \name{cmap_geom_defaults}
 \alias{cmap_geom_defaults}
-\alias{fetch_cmap_geom_defaults}
-\alias{set_cmap_geom_defaults}
+\alias{apply_cmap_geom_defaults}
+\alias{unapply_cmap_geom_defaults}
 \title{Fetch and set aesthetic defaults}
 \usage{
-fetch_cmap_geom_defaults()
+apply_cmap_geom_defaults(quietly = FALSE)
 
-set_cmap_geom_defaults(values = NULL, quietly = FALSE)
+unapply_cmap_geom_defaults(quietly = FALSE)
 }
 \arguments{
-\item{values}{A list of lists representing the aesthetic defaults to set for
-the impacted geoms. Leave null, the default, to use the CMAP-preferred
-values. Use this field to input the output of \code{fetch_cmap_geom_defaults}
-in order to reset to ggplot defaults.}
-
-\item{quietly}{Suppress confirmatory message}
+\item{quietly}{Should the function suppress confirmation message?}
 }
 \description{
 These functions allow for fetching and setting default aesthetic values for
 certain ggplot2 geoms. This is necessary for geoms to be "themed" to CMAP
 style standards, because (at least at the moment) setting geom aesthetic
 defaults on a plot-by-plot basis (such as with \code{ggplot2::theme}) is not
-possible. The geoms impacted and their preferred settings are hardwired into
-the functions, and at the moment include \code{Line}, \code{Text}, and the
-text-based custom \code{cmapplot} geoms \code{TextLast} and
-\code{RecessionsText}.
+possible. The geoms impacted are stored in
+\code{cmapplot_globals$geom_changes}, and at the moment include \code{Line},
+\code{Text}, and the text-based custom \code{cmapplot} geoms \code{TextLast}
+and \code{RecessionsText}.
 }
 \details{
 These functions are employed implictly within \code{\link{finalize_plot}} to
@@ -34,18 +29,20 @@ apply preferred aesthetic defaults to final outputs. They are only necessary
 to use explicitly if you would like plots to use these defaults
 pre-\code{finalize}.
 
-CAUTION: Running \code{set_cmap_geom_defaults} will set defaults for any
-ggplot drawn in the current session, including those without
-\code{theme_cmap}. If this is not desired, you must re-run the function with
-old values (see examples) or unload and reload the ggplot2 package when
-you're done.
+CAUTION: Running \code{apply_cmap_geom_defaults} will set defaults for all
+ggplot2 plots drawn in the current session. To reset to \code{ggplot2}
+defaults (technically, to whatever the defaults were when \code{cmapplot}
+was loaded), use \code{unapply_cmap_geom_defaults}.
+
+Note: CMAP aesthetic values are hardwired into \code{apply_cmap_geom_defaults}.
 }
 \section{Functions}{
 \itemize{
-\item \code{fetch_cmap_geom_defaults}: Fetch geom defaults
+\item \code{apply_cmap_geom_defaults}: Apply CMAP-preferred defaults to select geoms
+for the current session
 
-\item \code{set_cmap_geom_defaults}: Set geom defaults, either to CMAP-preferred or
-user-inputed values
+\item \code{unapply_cmap_geom_defaults}: Reset modified geom aesthetics to their values
+when \code{cmapplot} was first loaded
 }}
 
 \examples{
@@ -60,15 +57,12 @@ g <- ggplot(mtcars, aes(x = mpg, y = disp, label = rownames(mtcars))) +
 # print normally
 g
 
-# before overwriting defaults, save the current ones
-old <- fetch_cmap_geom_defaults()
-
 # overwite defaults
-set_cmap_geom_defaults()
+apply_cmap_geom_defaults()
 g
 
 # reset to original defaults
-set_cmap_geom_defaults(old)
+unapply_cmap_geom_defaults()
 g
 
 # finalize alters the defaults implicitly, but then resets them automatically.

@@ -38,17 +38,16 @@
 #'@param overrides Named list, overrides the default drawing attributes defined
 #'  in \code{cmapplot_globals$consts} which are drawn by
 #'  \code{\link{finalize_plot}}. Units are in bigpts (1/72 of an inch).
-#'@param legend_shift Bool, \code{TRUE}, the default, attempts to align the legend
-#'  all the way left (on top of the y axis labels) per CMAP design standards.
-#'  \code{FALSE} maintains the alignment used in the original plot.
+#'@param legend_shift Bool, \code{TRUE}, the default, attempts to align the
+#'  legend all the way left (on top of the y axis labels) per CMAP design
+#'  standards. \code{FALSE} maintains the alignment used in the original plot.
 #'@param legend_bump Numeric, shift the legend right (positive) or left
 #'  (negative) this many bigpts.
 #'@param debug Bool, TRUE enables outlines around components of finalized plot.
 #'  Default = FALSE.
-#'@param use_cmap_aes Bool, TRUE calls \code{\link{set_cmap_geom_defaults}} and
-#'  \code{\link{fetch_cmap_geom_defaults}} to use CMAP default aesthetic settings
-#'  for geoms. This should usually be \code{TRUE} (the default), but can be turned
-#'  off in special circumstances.
+#'@param use_cmap_aes Bool, \code{TRUE}, the default, temporarily implements
+#'  CMAP default aesthetic settings for geoms (see
+#'  \code{\link{apply_cmap_geom_defaults}}) for the present plot.
 #'@param ... pass additional arguments to ggplot2's \code{\link[ggplot2]{theme}}
 #'  function to override any elements of the default CMAP theme.
 #'
@@ -204,7 +203,7 @@ finalize_plot <- function(plot = NULL,
   # fetch and set geom defaults
   if (use_cmap_aes) {
     geom_defaults <- fetch_cmap_geom_defaults()
-    set_cmap_geom_defaults(quietly = TRUE)
+    apply_cmap_geom_defaults(quietly = TRUE)
   }
 
   # preformat plot
@@ -231,7 +230,7 @@ finalize_plot <- function(plot = NULL,
   # return geom defaults as before (now that the plot is a grob object,
   #  ggplot2 draw settings will not impact it.)
   if (use_cmap_aes) {
-    set_cmap_geom_defaults(values = geom_defaults, quietly = TRUE)
+    set_cmap_geom_defaults(geom_defaults)
   }
 
   # Build necessary viewports -----------------------------------------------------
