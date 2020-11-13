@@ -59,12 +59,17 @@ init_cmap_default_aes <- function () {
 #'
 #' @examples
 #' \dontrun{
-#' g <- ggplot(mtcars, aes(x = mpg, y = disp, label = rownames(mtcars))) +
+#' g <- ggplot(filter(grp_over_time, category == "Services"),
+#'             aes(x = year, y = realgrp, color = cluster)) +
+#'   geom_recessions(ymax = 0.4, text_nudge_x = 0.1) +
+#'   theme_cmap(hline = 0,
+#'              axislines = "x",
+#'              legend.max.columns = 2) +
+#'   ggtitle("Change in gross regional product over time") +
 #'   geom_line() +
-#'   geom_text() +
-#'   geom_text_lastonly() +
-#'   theme_cmap() +
-#'   coord_cartesian(clip = "off")
+#'   scale_x_continuous("Year", breaks = seq(2007, 2017, 2)) +
+#'   coord_cartesian(clip = "off") +
+#' geom_text_lastonly(aes(label = realgrp), add_points = TRUE)
 #'
 #' # print normally
 #' g

@@ -95,7 +95,7 @@ cmapplot_globals <- list(
 
   ## Establish plotting constants in bigpts (1/72 of inch)
   consts = list(
-    lwd_originline = 1,
+    lwd_originline = 1.6,
     lwd_gridline = 0.3,
     lwd_plotline = 3,
     lwd_topline = 2,
