@@ -38,23 +38,23 @@
 #'@param overrides Named list, overrides the default drawing attributes defined
 #'  in \code{cmapplot_globals$consts} which are drawn by
 #'  \code{\link{finalize_plot}}. Units are in bigpts (1/72 of an inch).
-#'@param legend_shift Bool, \code{TRUE}, the default, attempts to align the legend
-#'  all the way left (on top of the y axis labels) per CMAP design standards.
-#'  \code{FALSE} maintains the alignment used in the original plot.
+#'@param legend_shift Bool, \code{TRUE}, the default, attempts to align the
+#'  legend all the way left (on top of the y axis labels) per CMAP design
+#'  standards. \code{FALSE} maintains the alignment used in the original plot.
 #'@param legend_bump Numeric, shift the legend right (positive) or left
 #'  (negative) this many bigpts.
 #'@param debug Bool, TRUE enables outlines around components of finalized plot.
 #'  Default = FALSE.
+#'@param use_cmap_aes Bool, \code{TRUE}, the default, temporarily implements
+#'  CMAP default aesthetic settings for geoms (see
+#'  \code{\link{apply_cmap_default_aes}}) for the present plot.
 #'@param ... pass additional arguments to ggplot2's \code{\link[ggplot2]{theme}}
 #'  function to override any elements of the default CMAP theme.
 #'
 #'@return Exports from this function use Cairo graphics drivers, while drawing
 #'  within R is done with default (Windows) drivers. \code{mode = "object"} also
 #'  returns a gTree object that can be stored and drawn later with
-#'  \code{grid::grid.draw()}. Lines drawn by any \code{geom_line()} geoms
-#'  without line widths explicitly specified are assigned a thicker width
-#'  (specifically, \code{cmapplot_globals$consts$lwd_plotline}) in all outputs
-#'  except for when exporting as an object.
+#'  \code{grid::grid.draw()}.
 #'
 #'@importFrom utils modifyList
 #'@importFrom generics intersect
@@ -118,6 +118,7 @@ finalize_plot <- function(plot = NULL,
                           legend_shift = TRUE,
                           legend_bump = 0,
                           debug = FALSE,
+                          use_cmap_aes = TRUE,
                           ...
                           ){
 
@@ -157,7 +158,7 @@ finalize_plot <- function(plot = NULL,
   # trigger a new page in that window now. This is needed to prevent the creation
   # of an unnecessary blank plot by other `grid` functions in cases where the
   # default device is not already active.
-  if("plot" %in% mode){ grid::grid.newpage() }
+  if ("plot" %in% mode) { grid::grid.newpage() }
 
   # create list of plot constants, from globals unless overridden by user
   consts <- utils::modifyList(cmapplot_globals$consts, overrides)
@@ -187,7 +188,7 @@ finalize_plot <- function(plot = NULL,
   # If title/caption unspecified, try to extract from plot
   input_title <- plot$labels$title
   if (title == "") {
-    if(!is.null(input_title)) {
+    if (!is.null(input_title)) {
       title <- input_title
     } else {
       title <- "This plot needs a title"
@@ -199,26 +200,11 @@ finalize_plot <- function(plot = NULL,
     caption <- input_caption
   }
 
-  # Size conversion for line widths in line graphs
-  default_lwd <- ggplot2::GeomLine$default_aes$size
-  ggplot2::update_geom_defaults(
-    geom = "line",
-    new = list(size = ggplot_size_conversion(consts$lwd_plotline))
-    )
-
-  # Font defaults for annotations and labels on the graph
-  default_fontfamily <- ggplot2::theme_get()$text$family
-  default_fontface <- ggplot2::theme_get()$text$face
-  default_fontcolor <- ggplot2::theme_get()$text$colour
-  default_fontsize <- ggplot2::theme_get()$text$size
-
-  ggplot2::update_geom_defaults(
-    geom = "text",
-    new = list(family = cmapplot_globals$font$strong$family,
-               face = cmapplot_globals$font$strong$face,
-               size = cmapplot_globals$fsize$M/ggplot2::.pt, # Accounts for the fact that text is sized in mm
-               colour = cmapplot_globals$colors$blackish)
-  )
+  # fetch and set geom defaults
+  if (use_cmap_aes) {
+    geom_defaults <- fetch_current_default_aes()
+    set_default_aes(cmapplot_globals$default_aes_cmap)
+  }
 
   # preformat plot
   plot <- plot + ggplot2::theme(
@@ -241,6 +227,11 @@ finalize_plot <- function(plot = NULL,
              legend_shift = legend_shift,
              debug = debug)
 
+  # return geom defaults as before (now that the plot is a grob object,
+  #  ggplot2 draw settings will not impact it.)
+  if (use_cmap_aes) {
+    set_default_aes(geom_defaults)
+  }
 
   # Build necessary viewports -----------------------------------------------------
 
@@ -341,7 +332,7 @@ finalize_plot <- function(plot = NULL,
                           consts$margin_title_l), # left
                         "bigpts"),
     # set aesthetic variables
-    valign = if(caption_valign == "top"){ 1 } else { 0 },
+    valign = ifelse(caption_valign == "top", 1, 0),
     gp = grid::gpar(fontsize = cmapplot_globals$fsize$S,
                     fontfamily = cmapplot_globals$font$light$family,
                     fontface = cmapplot_globals$font$light$face,
@@ -425,9 +416,9 @@ finalize_plot <- function(plot = NULL,
       grid::grid.draw(final_plot)
       grid::popViewport()
 
-    } else if (this_mode == "window"){
+    } else if (this_mode == "window") {
 
-      if(.Platform$OS.type == "windows"){
+      if (.Platform$OS.type == "windows") {
         # open new device (window)
         grDevices::dev.new(width = width * 1.02,
                            height = height * 1.02,
@@ -451,18 +442,8 @@ finalize_plot <- function(plot = NULL,
     }
   }
 
-  # return geom defaults as before
-  ggplot2::update_geom_defaults("line",list(size = default_lwd))
-  ggplot2::update_geom_defaults(
-    geom = "text",
-    new = list(family = default_fontfamily,
-               face = default_fontface,
-               size = default_fontsize,
-               colour = default_fontcolor)
-  )
-
   # if user wants an object, return it
-  if("object" %in% mode){
+  if ("object" %in% mode) {
     return(final_plot)
   }
 }
@@ -478,21 +459,21 @@ buildChart <- function(plot,
                        debug) {
 
   # add debug rect around plot if in debug mode
-  if(debug){
+  if (debug) {
     plot <- plot + ggplot2::theme(
       plot.background = element_rect(color = "red")
     )
   }
 
   # in safe mode, stop here. Return plot as Grob
-  if(!legend_shift | is.null(ggpubr::get_legend(plot))){
+  if (!legend_shift | is.null(ggpubr::get_legend(plot))) {
     return(ggplotGrob(plot))
   }
 
   # Otherwise, in legend-shift mode...
 
   # add debug rects around legend if in debug mode
-  if(debug){
+  if (debug) {
     plot <- plot + ggplot2::theme(
       legend.background = element_rect(color = "red"),
       legend.box.background = element_rect(color = "red")

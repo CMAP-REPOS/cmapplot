@@ -113,7 +113,22 @@ cmapplot_globals <- list(
     margin_panel_r = 20,
     leading_title = 1,
     leading_caption = 1
-  )
+  ),
+
+  # list of geoms whose aesthetics will be customized
+  geoms_that_change = c(
+    "Line",
+    "Text",
+    "TextLast",
+    "RecessionsText"
+  ),
+
+  # empty location for loading in preferred aesthetics during `.onLoad`
+  default_aes_cmap = NULL,
+
+  # empty location for caching existing aesthetics during `.onLoad`
+  default_aes_cached = NULL
+
 )
 
 ## Use Whitney or Calibri if on Windows -- *must* be done with .onLoad()
@@ -166,9 +181,17 @@ cmapplot_globals <- list(
       "WARNING: CMAP theme will default to Arial on non-Windows platforms"
     )
   }
+
+  # load in CMAP preferred default.aes (can't be done until fonts are specified)
+  cmapplot_globals$default_aes_cmap <<- init_cmap_default_aes()
+
+  # cache existing default.aes
+  cmapplot_globals$default_aes_cached <<- fetch_current_default_aes()
 }
 
-# Define an helper function to visualize the font specifications
+
+# Font spec visualization helper function ---------------------------------
+
 display_cmap_fonts <- function() {
   graphics::plot(c(0,2), c(0,6), type="n", xlab="", ylab="")
 
@@ -192,7 +215,6 @@ display_cmap_fonts <- function() {
   draw.me(name = "Label", font = "strong",  size = "M", 2)
   draw.me(name = "Note",  font = "light",   size = "S", 1)
 }
-#display_cmap_fonts()
 
 
 # Plot sizes and colors ---------------------------------------------------

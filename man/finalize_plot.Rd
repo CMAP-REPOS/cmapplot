@@ -21,6 +21,7 @@ finalize_plot(
   legend_shift = TRUE,
   legend_bump = 0,
   debug = FALSE,
+  use_cmap_aes = TRUE,
   ...
 )
 }
@@ -67,15 +68,19 @@ respectively.}
 in \code{cmapplot_globals$consts} which are drawn by
 \code{\link{finalize_plot}}. Units are in bigpts (1/72 of an inch).}
 
-\item{legend_shift}{Bool, \code{TRUE}, the default, attempts to align the legend
-all the way left (on top of the y axis labels) per CMAP design standards.
-\code{FALSE} maintains the alignment used in the original plot.}
+\item{legend_shift}{Bool, \code{TRUE}, the default, attempts to align the
+legend all the way left (on top of the y axis labels) per CMAP design
+standards. \code{FALSE} maintains the alignment used in the original plot.}
 
 \item{legend_bump}{Numeric, shift the legend right (positive) or left
 (negative) this many bigpts.}
 
 \item{debug}{Bool, TRUE enables outlines around components of finalized plot.
 Default = FALSE.}
+
+\item{use_cmap_aes}{Bool, \code{TRUE}, the default, temporarily implements
+CMAP default aesthetic settings for geoms (see
+\code{\link{apply_cmap_default_aes}}) for the present plot.}
 
 \item{...}{pass additional arguments to ggplot2's \code{\link[ggplot2]{theme}}
 function to override any elements of the default CMAP theme.}
@@ -84,10 +89,7 @@ function to override any elements of the default CMAP theme.}
 Exports from this function use Cairo graphics drivers, while drawing
  within R is done with default (Windows) drivers. \code{mode = "object"} also
  returns a gTree object that can be stored and drawn later with
- \code{grid::grid.draw()}. Lines drawn by any \code{geom_line()} geoms
- without line widths explicitly specified are assigned a thicker width
- (specifically, \code{cmapplot_globals$consts$lwd_plotline}) in all outputs
- except for when exporting as an object.
+ \code{grid::grid.draw()}.
 }
 \description{
 Place a ggplot into a frame defined by CMAP design standards. It will align
