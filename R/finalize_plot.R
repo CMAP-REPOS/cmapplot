@@ -203,7 +203,7 @@ finalize_plot <- function(plot = NULL,
   # fetch and set geom defaults
   if (use_cmap_aes) {
     geom_defaults <- fetch_current_default_aes()
-    apply_cmap_default_aes(quietly = TRUE)
+    set_default_aes(cmapplot_globals$default_aes_cmap)
   }
 
   # preformat plot
