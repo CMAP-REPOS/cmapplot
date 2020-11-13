@@ -134,7 +134,7 @@ fetch_cmap_geom_defaults <- function () {
       get(paste0("Geom", geom))$default_aes
     }
   ) %>%
-    set_names(cmapplot_globals$geom_changes$geom)
+    rlang::set_names(cmapplot_globals$geom_changes$geom)
 }
 
 
