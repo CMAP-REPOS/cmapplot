@@ -131,6 +131,7 @@ cmapplot_globals <- list(
 
 )
 
+
 ## Use Whitney or Calibri if on Windows -- *must* be done with .onLoad()
 .onLoad <- function(...) {
   if (.Platform$OS.type == "windows") {
@@ -188,6 +189,23 @@ cmapplot_globals <- list(
   # cache existing default.aes
   cmapplot_globals$default_aes_cached <<- fetch_current_default_aes()
 }
+
+
+#' Establish `.bigpt` constant
+#'
+#' Divide a size expressed in bigpoints (1/72 inch) by this constant to get the
+#' size of text in millimeters, which is often the size ggplot expects when a
+#' unit object is not accepted.
+#'
+#' The numerator, 72, is bigpts/inch. The denominator, 25.4, is mm/inch. E.g. 72
+#' bigpts / 72 bigpts/inch * 25.4 mm/inch  = 25.4 mm. This constant is similar
+#' to `ggplot2::.pt`, but the variation is needed here because this package
+#' consistently expresses units in bigpts.
+#'
+#' @seealso
+#'   https://stackoverflow.com/questions/17311917/ggplot2-the-unit-of-size
+#'
+.bigpt <- 72/25.4
 
 
 # Font spec visualization helper function ---------------------------------
