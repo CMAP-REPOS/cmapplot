@@ -191,23 +191,6 @@ cmapplot_globals <- list(
 }
 
 
-#' Establish `.bigpt` constant
-#'
-#' Divide a size expressed in bigpoints (1/72 inch) by this constant to get the
-#' size of text in millimeters, which is often the size ggplot expects when a
-#' unit object is not accepted.
-#'
-#' The numerator, 72, is bigpts/inch. The denominator, 25.4, is mm/inch. E.g. 72
-#' bigpts / 72 bigpts/inch * 25.4 mm/inch  = 25.4 mm. This constant is similar
-#' to `ggplot2::.pt`, but the variation is needed here because this package
-#' consistently expresses units in bigpts.
-#'
-#' @seealso
-#'   https://stackoverflow.com/questions/17311917/ggplot2-the-unit-of-size
-#'
-.bigpt <- 72/25.4
-
-
 # Font spec visualization helper function ---------------------------------
 
 display_cmap_fonts <- function() {
@@ -237,28 +220,35 @@ display_cmap_fonts <- function() {
 
 # Plot sizes and colors ---------------------------------------------------
 
-#' Helper function to calculate correct size for ggplot inputs. Takes two inputs:
-#' a value (numeric) and a type (character). The type can be any of the units
-#' accepted by `grid::unit()`, including "bigpt", "pt", "mm", and "in".
+#' Helper function to calculate correct size for ggplot line widths.
 #'
 #' @param value Numeric, the value to be converted.
-#' @param type Char, the unit of the value to be converted.
+#' @param type Char, the unit of the value to be converted. The type can be any
+#'   of the units accepted by \code{grid::unit()}, including "bigpt", "pt",
+#'   "mm", and "in". Default is \code{"bigpt"}.
 #'
-#' @return A unitless value in ggplot units
+#' @return A unitless value that is the size in mm. For reasons not entirely clear,
+#'   line values recieve an extra modification equivalent to\code{ggplot2::.stroke /
+#'   ggplot2::.pt}.
 #'
-#' @seealso <https://stackoverflow.com/questions/17311917/ggplot2-the-unit-of-size>
-#' and [grid::unit()]
+#' @seealso grid's \code{\link[grid]{unit}}, ggplot2's
+#'   \code{\link[ggplot2]{.pt}}, and
+#'   \url{https://stackoverflow.com/questions/17311917/ggplot2-the-unit-of-size}
 #'
-#' @noRd
-ggplot_size_conversion <- function(value, type = "bigpts",isFont) {
-  # convert input type to mm (if not already)
-  value_in_mm <- grid::convertUnit(grid::unit(value, type), "mm", valueOnly = TRUE)
+#' @export
+gg_size_convert <- function(value, unit = "bigpts", use = c("line", "text")) {
 
-  return(
-    value_in_mm
-      * ggplot2::.stroke # Multiply by units for R pixels per mm (=96/25.4)
-      / ggplot2::.pt     # Account for the ggplot2::.pt factor (=72.27/25.4)
-  )
+  use <- match.arg(use)
+
+  # convert input type to mm
+  value_out <- grid::convertUnit(grid::unit(value, unit), "mm", valueOnly = TRUE)
+
+  # use conversion factor if sizing a line
+  if (use == "line") {
+    value_out <- value_out * 96/72.27
+  }
+
+  return(value_out)
 }
 
 
