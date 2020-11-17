@@ -20,7 +20,9 @@
 #'  \code{coord_flip()}.
 #'@param hline,vline Numeric, the location of a strong horizontal or vertical
 #'  line to be added to the plot. Use \code{hline = 0}, for example, to place a
-#'  line at y = 0 to differentiate between positive and negative values.
+#'  line at y = 0 to differentiate between positive and negative values. Note that
+#'  on most displays the difference between this line and gridlines is impossible
+#'  to discern. The difference will be visible upon export.
 #'@param gridlines Char, the grid lines to be displayed on the chart. If left as
 #'  default, horizontal grid lines will be displayed while vertical grid lines
 #'  will be masked. Acceptable values are "h" (horizontal only), "v" (vertical

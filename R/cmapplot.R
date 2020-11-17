@@ -110,7 +110,7 @@ cmapplot_globals <- list(
     margin_title_l = 2,
     margin_title_r = 10,
     margin_plot_r = 10,
-    margin_panel_r = 20,
+    margin_panel_r = 10,
     leading_title = 1,
     leading_caption = 1
   ),
@@ -281,7 +281,7 @@ gg_lwd_convert <- function(value, unit = "bigpts") {
 
   # return with conversion factor
   return(
-    value_out <- value_out / .lwd
+    value_out / .lwd
   )
 }
 
