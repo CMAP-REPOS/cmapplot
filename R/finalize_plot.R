@@ -477,7 +477,14 @@ buildChart <- function(plot,
   margin_legend_i <- ifelse(
     # if not overridden in finalize, use value from ggplot
     is_null(overrides$margin_legend_i),
-    plot$theme$legend.spacing.y,
+    first(purrr::compact(list( # Call first non-NA value in this list:
+      # If plot has a theme:
+      plot$theme$legend.spacing.y, # If available, use specific y-legend spacing
+      plot$theme$legend.spacing, # If not, default to general legend spacing
+      # If plot has no theme, use globally applied theme
+      ggplot2::theme_get()$legend.spacing.y, # If available, use y-legend spacing
+      ggplot2::theme_get()$legend.spacing # If not, default to general legend spacing
+    ))),
     # otherwise, use override value
     overrides$margin_legend_i
   )
@@ -485,7 +492,11 @@ buildChart <- function(plot,
   margin_legend_b <- ifelse(
     # if not overridden in finalize, use value from ggplot
     is_null(overrides$margin_legend_b),
-    convertUnit(plot$theme$legend.box.spacing, unitTo = "bigpts", valueOnly = TRUE),
+    # Repeat logic from margin_legend_i
+    convertUnit(first(purrr::compact(list(
+      plot$theme$legend.box.spacing,
+      ggplot2::theme_get()$legend.box.spacing
+      ))), unitTo = "bigpts", valueOnly = TRUE),
     # otherwise, use override value
     overrides$margin_legend_b
   )
