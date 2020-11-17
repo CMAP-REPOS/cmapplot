@@ -7,7 +7,7 @@
 #'
 #' @noRd
 init_cmap_default_aes <- function () {
-  list(
+  defaults <- list(
     Line = list(
       size = gg_lwd_convert(cmapplot_globals$consts$lwd_plotline)
     ),
@@ -33,6 +33,16 @@ init_cmap_default_aes <- function () {
       colour = cmapplot_globals$colors$blackish
     )
   )
+
+  # Return this list only if it lines up with `geoms_that_change`.
+  # Otherwise, throw an error.
+  if( setequal(names(defaults), cmapplot_globals$geoms_that_change) ){
+    return(defaults)
+  } else {
+    stop("DEV ISSUE: programmed list of `default_aes` does not line up with
+         `cmapplot_globals$geoms_that_change`.", call. = FALSE)
+  }
+
 }
 
 #' Fetch and set aesthetic defaults
