@@ -58,6 +58,7 @@
 #'@importFrom generics intersect
 #'@importFrom gridExtra arrangeGrob
 #'@importFrom ggpubr get_legend
+#'@importFrom purrr compact
 #'
 #'@examples
 #' \dontrun{
@@ -477,7 +478,7 @@ buildChart <- function(plot,
   margin_legend_i <- ifelse(
     # if not overridden in finalize, use value from ggplot
     is_null(overrides$margin_legend_i),
-    first(purrr::compact(list( # Call first non-NA value in this list:
+    dplyr::first(purrr::compact(list( # Call first non-NA value in this list:
       # If plot has a theme:
       plot$theme$legend.spacing.y, # If available, use specific y-legend spacing
       plot$theme$legend.spacing, # If not, default to general legend spacing
@@ -493,7 +494,7 @@ buildChart <- function(plot,
     # if not overridden in finalize, use value from ggplot
     is_null(overrides$margin_legend_b),
     # Repeat logic from margin_legend_i
-    convertUnit(first(purrr::compact(list(
+    convertUnit(dplyr::first(purrr::compact(list(
       plot$theme$legend.box.spacing,
       ggplot2::theme_get()$legend.box.spacing
       ))), unitTo = "bigpts", valueOnly = TRUE),
