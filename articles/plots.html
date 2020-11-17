@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.2</span>
       </span>
     </div>
 
@@ -103,15 +103,16 @@
 
     
     
-<p>This vignette summarizes the basic formatting that the cmapplot package can add to a ggplot, and provides a series of examples for different types of graphs. The vignette relies on sample CMAP datasets which are included with the package.</p>
-<div id="stepping-through-the-construction-of-a-plot" class="section level2">
+<p>This vignette summarizes the basic formatting that the cmapplot package can add to a <code>ggplot()</code>, including via the functions <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code>, <code><a href="../reference/geom_recessions.html">geom_recessions()</a></code>, <code><a href="../reference/geom_text_lastonly.html">geom_text_lastonly()</a></code>, and <code><a href="../reference/cmap_default_aes.html">apply_cmap_default_aes()</a></code>. The vignette relies on one of the sample CMAP datasets included with the package.</p>
+<div id="the-initial-plot" class="section level2">
 <h2 class="hasAnchor">
-<a href="#stepping-through-the-construction-of-a-plot" class="anchor"></a>Stepping through the construction of a plot</h2>
-<div id="the-initial-plot" class="section level3">
-<h3 class="hasAnchor">
-<a href="#the-initial-plot" class="anchor"></a>The initial plot</h3>
-<p>Let’s start with a basic time series line graph, drawn using R’s default theme (<code>theme_grey()</code>):</p>
+<a href="#the-initial-plot" class="anchor"></a>The initial plot</h2>
+<p>Let’s start with a basic time series line graph, drawn using ggplot2’s default theme (<code>theme_grey()</code>). We’ll save this as <code>p</code> for later, but keep the actual data geom (in this case, <code>geom_line()</code>) separate due to how ggplot2 layers geoms.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="co"># load tidyverse (which includes ggplot2) and cmapplot</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://cmap-repos.github.io/cmapplot">cmapplot</a></span><span class="op">)</span>
+
 <span class="co"># clean up dataset</span>
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="va">transit_ridership</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">system</span> <span class="op">!=</span> <span class="st">"pace_ada"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
@@ -122,90 +123,134 @@
     <span class="va">system</span> <span class="op">==</span> <span class="st">"pace"</span> <span class="op">~</span> <span class="st">"Pace"</span>
   <span class="op">)</span><span class="op">)</span>
 
-
+<span class="co"># build plot</span>
 <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">ggplot</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>, 
-       mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">ridership</span>, color <span class="op">=</span> <span class="va">system</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">geom_line</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span>
+            mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">ridership</span>, color <span class="op">=</span> <span class="va">system</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">scale_y_continuous</span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">200</span>, <span class="fl">400</span><span class="op">)</span>, 
                      limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">575</span><span class="op">)</span><span class="op">)</span>
 
-<span class="va">p</span></pre></div>
-<p><img src="plots_files/figure-html/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;"></p>
+<span class="va">p</span> <span class="op">+</span> <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span></pre></div>
+<p><img src="plots_files/figure-html/initial-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
-<div id="theme_cmap" class="section level3">
+<div id="the-cmap-theme" class="section level2">
+<h2 class="hasAnchor">
+<a href="#the-cmap-theme" class="anchor"></a>The CMAP theme</h2>
+<div id="basic-implementation" class="section level3">
 <h3 class="hasAnchor">
-<a href="#theme_cmap" class="anchor"></a><code>theme_cmap()</code>
-</h3>
-<p>To add basic CMAP design elements to the plot, add <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code> like you would any other <code>ggplot</code> theme. The CMAP theme has x and y axis labels turned off by default, but that can be overridden. The help file <code><a href="../reference/theme_cmap.html">?theme_cmap</a></code> describes how to do this, as well as a variety of other built-in customization functions. <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code> can be used to easily adjust axis, origin, and gridlines.</p>
+<a href="#basic-implementation" class="anchor"></a>Basic implementation</h3>
+<p>To add basic CMAP design elements to the plot, add <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code> like you would any other ggplot2 theme.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>ylab <span class="op">=</span> <span class="st">"Annual Ridership (Millions)"</span>,
-               legend.max.columns <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
+<span class="va">p</span> <span class="op">+</span> <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span></pre></div>
-<p><img src="plots_files/figure-html/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;"></p>
-<p>The package contains a list of default <code>cmapplot_globals$consts</code> that control various plotting constants. Most of these impact the function <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code>, but a few impact <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code>. For a complete description of these constants, see <code><a href="../reference/cmapplot_globals.html">?cmapplot_globals</a></code>. These can be modified in the <code>overrides</code> argument:</p>
+<p><img src="plots_files/figure-html/basic-1.png" width="672" style="display: block; margin: auto;"></p>
+</div>
+<div id="built-in-modifiers" class="section level3">
+<h3 class="hasAnchor">
+<a href="#built-in-modifiers" class="anchor"></a>Built-in modifiers</h3>
+<p>The CMAP theme function has a variety of easy built-in modifiers. For example, by default the x- and y-axis labels are turned off, but this can be overridden. The help file <code><a href="../reference/theme_cmap.html">?theme_cmap</a></code> describes how to make these changes.</p>
+<p>For example, <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code> can be used to to add a strong horizontal or vertical line (such as to delineate zero or some other threshold). Note that, on standard-resolution (non-retina) displays, <code>hline</code> and <code>vline</code> may appear as the same thickness as the plot’s gridlines when viewed within R. When exported as a vector file (or raster at high enough resolution) the difference becomes apparent.</p>
+<p>When using <code>hline</code> and/or <code>vline</code>, it is important to place <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code> <em>before</em> the primary data geom. This is because the <code>hline</code> drawn by <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code> is a geom, and ggplot2 layers geoms in the order they are added to the plot. This ordering allows the <code>CTA rail</code> line to be drawn on top of the <code>hline</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>ylab <span class="op">=</span> <span class="st">"Annual Ridership (Millions)"</span>,
-               overrides <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>lwd_gridline <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span>
+               hline <span class="op">=</span> <span class="fl">200</span>, <span class="co"># may not be immediately visible</span>
+               legend.max.columns <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span></pre></div>
-<p><img src="plots_files/figure-html/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;"></p>
-<p>In addition, any ggplot theme element can also be modified directly in <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code> by passing valid arguments from the <code><a href="https://ggplot2.tidyverse.org/reference/theme.html">ggplot2::theme()</a></code> function. In the following example, the addition of <code>axis.ticks.x</code> and the establishment of an <code>axis.ticks.length.x</code> “turns on” the tick marks automatically turned off by <code>theme_cmap</code>’s underlying theme. Note that here, some additional manipulation of the y axis scale is necessary for the axis ticks to touch the lowest horizontal gridline.</p>
+<p><img src="plots_files/figure-html/mods1-1.png" width="672" style="display: block; margin: auto;"></p>
+</div>
+<div id="overriding-plotting-defaults" class="section level3">
+<h3 class="hasAnchor">
+<a href="#overriding-plotting-defaults" class="anchor"></a>Overriding plotting defaults</h3>
+<p>The package contains a list of default values (<code>cmapplot_globals$consts</code>) that control various plotting constants. Most of these impact the function <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code>, but a few impact <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code>. For a complete description of these constants, see <code><a href="../reference/cmapplot_globals.html">?cmapplot_globals</a></code>. These can be modified in the <code>overrides</code> argument:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>ylab <span class="op">=</span> <span class="st">"Annual Ridership (Millions)"</span>,
+               hline <span class="op">=</span> <span class="fl">200</span>,
+               overrides <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>lwd_strongline <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span></pre></div>
+<p><img src="plots_files/figure-html/overrides-1.png" width="672" style="display: block; margin: auto;"></p>
+</div>
+<div id="further-theme-modifications" class="section level3">
+<h3 class="hasAnchor">
+<a href="#further-theme-modifications" class="anchor"></a>Further theme modifications</h3>
+<p>In addition, any ggplot2 theme element can also be modified directly in <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code> by passing valid arguments from the <code><a href="https://ggplot2.tidyverse.org/reference/theme.html">ggplot2::theme()</a></code> function. In the following example, the addition of <code>axis.ticks.x</code> and the establishment of an <code>axis.ticks.length.x</code> “turns on” the tick marks automatically turned off by <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code>’s underlying theme. Note that here, some additional manipulation of the y-axis scale is necessary for the axis ticks to touch the lowest horizontal gridline.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="va">p</span> <span class="op">+</span> <span class="fu">scale_y_continuous</span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">200</span>, <span class="fl">400</span><span class="op">)</span>, 
                        limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">575</span><span class="op">)</span>,
                        expand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>ylab <span class="op">=</span> <span class="st">"Annual Ridership (Millions)"</span>,
              axis.ticks.x <span class="op">=</span> <span class="fu">element_line</span><span class="op">(</span>color <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span>,
-             axis.ticks.length.x <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">10</span>, <span class="st">"bigpts"</span><span class="op">)</span><span class="op">)</span>
+             axis.ticks.length.x <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">10</span>, <span class="st">"bigpts"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; Scale for 'y' is already present. Adding another scale for 'y', which will</span>
 <span class="co">#&gt; replace the existing scale.</span>
 <span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span></pre></div>
-<p><img src="plots_files/figure-html/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="plots_files/figure-html/mods2-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
-<div id="geom_recessions" class="section level3">
+</div>
+<div id="auxiliary-functions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#auxiliary-functions" class="anchor"></a>Auxiliary functions</h2>
+<div id="include-us-recessions-as-a-backdrop" class="section level3">
 <h3 class="hasAnchor">
-<a href="#geom_recessions" class="anchor"></a><code>geom_recessions()</code>
-</h3>
-<p>The <code>cmapplot</code> package also includes two custom geoms that allow the user to easily add common elements used in CMAP plots that would be otherwise difficult to program.</p>
-<p>The function <code><a href="../reference/geom_recessions.html">geom_recessions()</a></code>, allows for the addition of rectangles (and text, if desired) representing US economic recessions. The <code>ggplot2</code> package builds plots from the ground up: geoms are drawn in the order they are added, so the recessions geom should be added before the plot’s primary geom (e.g. <code>geom_line()</code>. In addition, ggplot always draws geoms on top of base plot elements like gridlines. The default fill and alpha for <code><a href="../reference/geom_recessions.html">geom_recessions()</a></code> has been chosen because it is the most transparent way to achieve CMAP palette color #002d49 when drawn on a white background – thus impacting the color of the gridlines as little as possible.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
+<a href="#include-us-recessions-as-a-backdrop" class="anchor"></a>Include US recessions as a backdrop</h3>
+<p>The cmapplot package also includes two custom geoms that allow the user to easily add common elements used in CMAP plots that would be otherwise difficult to program.</p>
+<p>The function <code><a href="../reference/geom_recessions.html">geom_recessions()</a></code>, allows for the addition of rectangles (and text, if desired) representing US economic recessions. Similar to the <code>hline</code> example above, <code><a href="../reference/geom_recessions.html">geom_recessions()</a></code> should be added before the plot’s primary geom (<code>geom_line()</code>) so that lines are drawn on top of recession rectangles.</p>
+<p>In addition, ggplot2 always draws geoms on top of base plot elements like gridlines. The default fill and alpha for <code><a href="../reference/geom_recessions.html">geom_recessions()</a></code> has been chosen because it is the most transparent way to achieve CMAP palette color <code>#002d49</code> when drawn on a white background — thus impacting the color of the gridlines as little as possible.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit">
 <span class="va">q</span> <span class="op">&lt;-</span> <span class="fu">ggplot</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>, 
             mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">ridership</span>, color <span class="op">=</span> <span class="va">system</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/geom_recessions.html">geom_recessions</a></span><span class="op">(</span>ymin <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">geom_line</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>ylab <span class="op">=</span> <span class="st">"Annual Ridership (Millions)"</span><span class="op">)</span>
 <span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span>
 
 <span class="va">q</span></pre></div>
-<p><img src="plots_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="plots_files/figure-html/recessions-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
-<div id="geom_text_lastonly" class="section level3">
+<div id="label-and-highlight-final-data-point" class="section level3">
 <h3 class="hasAnchor">
-<a href="#geom_text_lastonly" class="anchor"></a><code>geom_text_lastonly()</code>
-</h3>
-<p>The function <code><a href="../reference/geom_text_lastonly.html">geom_text_lastonly()</a></code> allows the user to label only the final point in a time series. In addition to applying the label, this function can also highlight the final point via an implicit <code>geom_point</code>. Like <code>geom_text</code>, the value of the label can be passed via ggplot’s <code>mapping</code> argument, either in the top-line <code>ggplot()</code> or in <code><a href="../reference/geom_text_lastonly.html">geom_text_lastonly()</a></code>.</p>
-<p>Due to ggplot’s underlying structure, <code>geom_text</code> labels are clipped by the plot’s default extent. Often, the right side of the plot will need to be expanded–or plot clipping turned off–for correct display of these labels. `?geom_text_lastonly’ describes a number of options to account for this.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="va">q</span> <span class="op">+</span> <span class="fu"><a href="../reference/geom_text_lastonly.html">geom_text_lastonly</a></span><span class="op">(</span>
+<a href="#label-and-highlight-final-data-point" class="anchor"></a>Label and highlight final data point</h3>
+<p>The function <code><a href="../reference/geom_text_lastonly.html">geom_text_lastonly()</a></code> allows the user to label only the final point in a time series. In addition to applying the label, this function can also highlight the final point via an implicit <code>geom_point()</code>. Like <code>geom_text()</code>, the value of the label can be passed via the <code>mapping</code> argument, either in the top-line <code>ggplot()</code> or in <code><a href="../reference/geom_text_lastonly.html">geom_text_lastonly()</a></code>.</p>
+<p>Due to ggplot2’s underlying structure, <code>geom_text()</code> labels are clipped by the plot’s default extent. Often, the right side of the plot will need to be expanded — or plot clipping turned off — for correct display of these labels. <code><a href="../reference/geom_text_lastonly.html">?geom_text_lastonly</a></code> describes a number of methods to account for this.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="va">q</span> <span class="op">&lt;-</span> <span class="va">q</span> <span class="op">+</span> <span class="fu"><a href="../reference/geom_text_lastonly.html">geom_text_lastonly</a></span><span class="op">(</span>
   mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">ridership</span>, digits <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span>, 
   add_points <span class="op">=</span> <span class="cn">TRUE</span>,
   nudge_x <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">coord_cartesian</span><span class="op">(</span>clip <span class="op">=</span> <span class="st">"off"</span><span class="op">)</span></pre></div>
-<p><img src="plots_files/figure-html/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;"></p>
+  <span class="fu">coord_cartesian</span><span class="op">(</span>clip <span class="op">=</span> <span class="st">"off"</span><span class="op">)</span>
+
+<span class="va">q</span></pre></div>
+<p><img src="plots_files/figure-html/textlast-1.png" width="672" style="display: block; margin: auto;"></p>
+</div>
+<div id="overriding-ggplot2s-default-aesthetics" class="section level3">
+<h3 class="hasAnchor">
+<a href="#overriding-ggplot2s-default-aesthetics" class="anchor"></a>Overriding ggplot2’s default aesthetics</h3>
+<p>Every geom has default aesthetics that cannot be modified by a ggplot2 theme (and therefore, cannot be modified by <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code>). Notice, for example, that the text drawn in the plot via <code>geom_text_last()</code> and <code><a href="../reference/geom_recessions.html">geom_recessions()</a></code> still appears in Arial (R’s default font), although the legend and axis fonts appear in Calibri/Whitney. This is automatically corrected in <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code>. However, if you’d like to see these impacts at this stage, you can override ggplot2’s default aesthetics for line and text geoms with CMAP defaults via <code><a href="../reference/cmap_default_aes.html">apply_cmap_default_aes()</a></code>.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="fu"><a href="../reference/cmap_default_aes.html">apply_cmap_default_aes</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; Aesthetic defaults overridden in the current session for the following Geoms:</span>
+<span class="co">#&gt;   Line, Text, TextLast, PointLast, RecessionsText</span>
+<span class="co">#&gt; To undo this change, run `unapply_cmap_default_aes()`.</span>
+
+<span class="va">q</span></pre></div>
+<p><img src="plots_files/figure-html/aes-1.png" width="672" style="display: block; margin: auto;"></p>
+<p>It is important to note that this change is “sticky” for the duration of the session, but you can reverse the change with <code><a href="../reference/cmap_default_aes.html">unapply_cmap_default_aes()</a></code>. This function will revert to whatever the default aesthetics were before cmapplot was loaded.</p>
 </div>
 </div>
 <div id="debug-mode" class="section level2">
 <h2 class="hasAnchor">
 <a href="#debug-mode" class="anchor"></a>Debug mode</h2>
 <p>In addition, <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code> provides a debug mode in which it draws outlines around the rectangular elements in the plot. This can help the user understand what is being drawn and identify additional modifications that they might want to make via <code>overrides</code> or <code><a href="https://ggplot2.tidyverse.org/reference/theme.html">ggplot2::theme()</a></code> arguments:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
+<div class="sourceCode" id="cb9"><pre class="downlit">
 <span class="fu">ggplot</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>, 
             mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">ridership</span>, color <span class="op">=</span> <span class="va">system</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/geom_recessions.html">geom_recessions</a></span><span class="op">(</span>ymin <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">geom_line</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>ylab <span class="op">=</span> <span class="st">"Annual Ridership (Millions)"</span>,
              debug <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span></pre></div>
-<p><img src="plots_files/figure-html/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="plots_files/figure-html/debug-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
   </div>
 

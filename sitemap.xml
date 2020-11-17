@@ -7,6 +7,9 @@
     <loc>https://cmap-repos.github.io/cmapplot/reference/cluster_jobchange.html</loc>
   </url>
   <url>
+    <loc>https://cmap-repos.github.io/cmapplot/reference/cmap_default_aes.html</loc>
+  </url>
+  <url>
     <loc>https://cmap-repos.github.io/cmapplot/reference/cmap_fill_continuous.html</loc>
   </url>
   <url>
@@ -29,6 +32,12 @@
   </url>
   <url>
     <loc>https://cmap-repos.github.io/cmapplot/reference/cmapplot_globals.html</loc>
+  </url>
+  <url>
+    <loc>https://cmap-repos.github.io/cmapplot/reference/customproto.html</loc>
+  </url>
+  <url>
+    <loc>https://cmap-repos.github.io/cmapplot/reference/dot-lwd.html</loc>
   </url>
   <url>
     <loc>https://cmap-repos.github.io/cmapplot/reference/economy_basic.html</loc>

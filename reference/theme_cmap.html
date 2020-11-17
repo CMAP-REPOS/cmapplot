@@ -81,7 +81,7 @@ accordance with CMAP design standards." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.2</span>
       </span>
     </div>
 
@@ -173,7 +173,10 @@ details for unexpected outcomes when using these arguments along with
       <th>hline, vline</th>
       <td><p>Numeric, the location of a strong horizontal or vertical
 line to be added to the plot. Use <code>hline = 0</code>, for example, to place a
-line at y = 0 to differentiate between positive and negative values.</p></td>
+line at y = 0 to differentiate between positive and negative values. The width
+of this line is determined by <code>cmapplot_globals$lwd_strongline</code>. Note that
+on most displays the difference between this line and gridlines is impossible
+to discern in R. The difference will be visible upon export.</p></td>
     </tr>
     <tr>
       <th>gridlines</th>

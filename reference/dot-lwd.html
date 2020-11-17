@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>cmapplot — cmapplot • cmapplot</title>
+<title>Line width conversion — .lwd • cmapplot</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,9 +46,12 @@
 
 
 
-<meta property="og:title" content="cmapplot — cmapplot" />
-<meta property="og:description" content="This package contains extra palettes, themes and geoms for ggplot2,
-based on Chicago Metropolitan Agency for Planning (CMAP) design guidelines." />
+<meta property="og:title" content="Line width conversion — .lwd" />
+<meta property="og:description" content="The factor .lwd is used to calculate correct output sizes for line
+widths. For line widths in ggplot2, the size in mm must be divided
+by this factor for correct output. Because the user is likely to prefer
+other units besides for mm, gg_lwd_convert() is provided as a
+convenience function, converting from any unit all the way to ggplot units." />
 <meta property="og:image" content="https://cmap-repos.github.io/cmapplot/logo.png" />
 
 
@@ -135,50 +138,81 @@ based on Chicago Metropolitan Agency for Planning (CMAP) design guidelines." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>cmapplot</h1>
+    <h1>Line width conversion</h1>
     <small class="dont-index">Source: <a href='https://github.com/CMAP-REPOS/cmapplot/blob/master/R/cmapplot.R'><code>R/cmapplot.R</code></a></small>
-    <div class="hidden name"><code>cmapplot.Rd</code></div>
+    <div class="hidden name"><code>dot-lwd.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This package contains extra palettes, themes and geoms for <span class="pkg">ggplot2</span>,
-based on Chicago Metropolitan Agency for Planning (CMAP) design guidelines.</p>
+    <p>The factor <code>.lwd</code> is used to calculate correct output sizes for line
+widths. For line widths in <code>ggplot2</code>, the size in mm must be divided
+by this factor for correct output. Because the user is likely to prefer
+other units besides for mm, <code>gg_lwd_convert()</code> is provided as a
+convenience function, converting from any unit all the way to ggplot units.</p>
     </div>
 
+    <pre class="usage"><span class='va'>.lwd</span>
 
+<span class='fu'>gg_lwd_convert</span><span class='op'>(</span><span class='va'>value</span>, unit <span class='op'>=</span> <span class='st'>"bigpts"</span><span class='op'>)</span></pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>value</th>
+      <td><p>Numeric, the value to be converted.</p></td>
+    </tr>
+    <tr>
+      <th>unit</th>
+      <td><p>Char, the unit of the value to be converted. Can be any
+of the units accepted by <code><a href='https://rdrr.io/r/grid/unit.html'>grid::unit()</a></code>, including "bigpts", "pt",
+"mm", and "in". Default is <code>bigpts</code>.</p></td>
+    </tr>
+    </table>
+
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+
+    <p>An object of class <code>numeric</code> of length 1.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Detailed documentation can be viewed at
-<a href='https://cmap-repos.github.io/cmapplot'>https://cmap-repos.github.io/cmapplot</a>.</p>
-<p>Please report issues and suggest improvements at
-<a href='https://github.com/CMAP-REPOS/cmapplot/issues'>https://github.com/CMAP-REPOS/cmapplot/issues</a>.</p>
+    <p><code>.lwd</code> is equal to <code>ggplot2::.stroke / ggplot2::.pt</code>. In
+<code>ggplot2</code>, the size in mm is divided by <code>.lwd</code> to achieve the
+correct output. In the <code>grid</code> package, however, the size in points
+(<code>pts</code> (or maybe <code>bigpts</code>? Unclear.) must be divided by
+<code>.lwd</code>. The user is unlikely to interact directly with <code>grid</code>,
+but this is how <code><a href='finalize_plot.html'>finalize_plot()</a></code> does its work.</p>
+<p>This is closely related to <code>ggplot::.pt</code>, which is the factor that
+font sizes (in <code>pts</code>) must be divided by for text geoms within
+<code>ggplot2</code>. Confusingly, <code>.pt</code> is not required for <code>ggplot2</code>
+font sizes outside the plot area: e.g. axis titles, etc.</p>
+    <h2 class="hasAnchor" id="functions"><a class="anchor" href="#functions"></a>Functions</h2>
+
+    
+<ul>
+<li><p><code>gg_lwd_convert</code>: Function to convert from any unit directly to</p></li>
+</ul>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Useful links:</p><ul>
-<li><p><a href='https://cmap-repos.github.io/cmapplot'>https://cmap-repos.github.io/cmapplot</a></p></li>
-<li><p><a href='https://github.com/CMAP-REPOS/cmapplot'>https://github.com/CMAP-REPOS/cmapplot</a></p></li>
-<li><p>Report bugs at <a href='https://github.com/CMAP-REPOS/cmapplot/issues'>https://github.com/CMAP-REPOS/cmapplot/issues</a></p></li>
-</ul>
+    <div class='dont-index'><p>grid's <code><a href='https://rdrr.io/r/grid/unit.html'>unit</a></code>, ggplot2's
+  <code><a href='https://ggplot2.tidyverse.org/reference/graphical-units.html'>.pt</a></code>, and
+  <a href='https://stackoverflow.com/questions/17311917/ggplot2-the-unit-of-size'>https://stackoverflow.com/questions/17311917/ggplot2-the-unit-of-size</a></p></div>
 
-</div>
-    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>ggplot</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'>coord_cartesian</span><span class='op'>(</span>xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>3</span>, <span class='fl'>3</span><span class='op'>)</span>, ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>3</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
 
-    <p><strong>Maintainer</strong>: Matthew Stern <a href='mailto:mstern@cmap.illinois.gov'>mstern@cmap.illinois.gov</a> (<a href='https://orcid.org/0000-0001-9119-2121'>ORCID</a>)</p>
-<p>Authors:</p><ul>
-<li><p>Sarah Buchhorn <a href='mailto:sbuchhorn@cmap.illinois.gov'>sbuchhorn@cmap.illinois.gov</a></p></li>
-<li><p>Daniel Comeaux <a href='mailto:dcomeaux@cmap.illinois.gov'>dcomeaux@cmap.illinois.gov</a> (<a href='https://orcid.org/0000-0002-8412-9092'>ORCID</a>)</p></li>
-<li><p>Martin Menninger <a href='mailto:mmenninger@cmap.illinois.gov'>mmenninger@cmap.illinois.gov</a></p></li>
-<li><p>Noel Peterson <a href='mailto:npeterson@cmap.illinois.gov'>npeterson@cmap.illinois.gov</a> (<a href='https://orcid.org/0000-0003-1290-2362'>ORCID</a>)</p></li>
-<li><p>Greta Ritzenthaler <a href='mailto:gritzenthaler@cmap.illinois.gov'>gritzenthaler@cmap.illinois.gov</a></p></li>
-</ul>
+  <span class='co'># a green line 3 points wide</span>
+  <span class='fu'>geom_hline</span><span class='op'>(</span>yintercept <span class='op'>=</span> <span class='fl'>1</span>, color <span class='op'>=</span> <span class='st'>"green"</span>, size <span class='op'>=</span> <span class='fu'>gg_lwd_convert</span><span class='op'>(</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
 
-<p>Other contributors:</p><ul>
-<li><p>Chicago Metropolitan Agency for Planning [copyright holder]</p></li>
-</ul>
+  <span class='co'># black text of size 24 points</span>
+  <span class='fu'>annotate</span><span class='op'>(</span><span class='st'>"text"</span>, <span class='op'>-</span><span class='fl'>2</span>, <span class='fl'>0</span>, label <span class='op'>=</span> <span class='st'>"text"</span>, size <span class='op'>=</span> <span class='fl'>24</span><span class='op'>/</span><span class='fu'>ggplot2</span><span class='fu'>::</span><span class='va'><a href='https://ggplot2.tidyverse.org/reference/graphical-units.html'>.pt</a></span><span class='op'>)</span>
+</div><div class='input'>
 
+<span class='co'># a blue line 6 points wide, drawn over the plot with  the `grid` package</span>
+<span class='fu'>grid</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/grid/grid.lines.html'>grid.lines</a></span><span class='op'>(</span>y <span class='op'>=</span> <span class='fl'>0.4</span>,
+                 gp <span class='op'>=</span> <span class='fu'>grid</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/grid/gpar.html'>gpar</a></span><span class='op'>(</span>col <span class='op'>=</span> <span class='st'>"blue"</span>, lwd <span class='op'>=</span> <span class='fl'>6</span> <span class='op'>/</span> <span class='va'>.lwd</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='dot-lwd-1.png' alt='' width='700' height='433' /></div><div class='input'>
 
-
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
