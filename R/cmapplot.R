@@ -120,6 +120,7 @@ cmapplot_globals <- list(
     "Line",
     "Text",
     "TextLast",
+    "PointLast",
     "RecessionsText"
   ),
 
