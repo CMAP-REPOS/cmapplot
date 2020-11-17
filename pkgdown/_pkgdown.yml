@@ -15,13 +15,18 @@ template:
     bootswatch: flatly
 
 reference:
-- title: Theme and Plotting Functions
+- title: Key functions
 - contents:
   - theme_cmap
   - finalize_plot
+- title: Additional geoms & auxiliary functions
+- contents:
   - starts_with("geom_")
+  - apply_cmap_default_aes
+  - gg_lwd_convert
   - integer_breaks
   - update_recessions
+  - cmapplot_globals
 - title: Color Palettes and Gradients
 - contents:
   - cmap_gradients
