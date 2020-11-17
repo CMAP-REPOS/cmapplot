@@ -26,7 +26,10 @@ details for unexpected outcomes when using these arguments along with
 
 \item{hline, vline}{Numeric, the location of a strong horizontal or vertical
 line to be added to the plot. Use \code{hline = 0}, for example, to place a
-line at y = 0 to differentiate between positive and negative values.}
+line at y = 0 to differentiate between positive and negative values. The width
+of this line is determined by \code{cmapplot_globals$lwd_strongline}. Note that
+on most displays the difference between this line and gridlines is impossible
+to discern in R. The difference will be visible upon export.}
 
 \item{gridlines}{Char, the grid lines to be displayed on the chart. If left as
 default, horizontal grid lines will be displayed while vertical grid lines

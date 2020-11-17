@@ -38,28 +38,27 @@
 #'@param overrides Named list, overrides the default drawing attributes defined
 #'  in \code{cmapplot_globals$consts} which are drawn by
 #'  \code{\link{finalize_plot}}. Units are in bigpts (1/72 of an inch).
-#'@param legend_shift Bool, \code{TRUE}, the default, attempts to align the legend
-#'  all the way left (on top of the y axis labels) per CMAP design standards.
-#'  \code{FALSE} maintains the alignment used in the original plot.
-#'@param legend_bump Numeric, shift the legend right (positive) or left
-#'  (negative) this many bigpts.
+#'@param legend_shift Bool, \code{TRUE}, the default, attempts to align the
+#'  legend all the way left (on top of the y axis labels) per CMAP design
+#'  standards. \code{FALSE} maintains the alignment used in the original plot.
 #'@param debug Bool, TRUE enables outlines around components of finalized plot.
 #'  Default = FALSE.
+#'@param use_cmap_aes Bool, \code{TRUE}, the default, temporarily implements
+#'  CMAP default aesthetic settings for geoms (see
+#'  \code{\link{apply_cmap_default_aes}}) for the present plot.
 #'@param ... pass additional arguments to ggplot2's \code{\link[ggplot2]{theme}}
 #'  function to override any elements of the default CMAP theme.
 #'
 #'@return Exports from this function use Cairo graphics drivers, while drawing
 #'  within R is done with default (Windows) drivers. \code{mode = "object"} also
 #'  returns a gTree object that can be stored and drawn later with
-#'  \code{grid::grid.draw()}. Lines drawn by any \code{geom_line()} geoms
-#'  without line widths explicitly specified are assigned a thicker width
-#'  (specifically, \code{cmapplot_globals$consts$lwd_plotline}) in all outputs
-#'  except for when exporting as an object.
+#'  \code{grid::grid.draw()}.
 #'
 #'@importFrom utils modifyList
 #'@importFrom generics intersect
 #'@importFrom gridExtra arrangeGrob
 #'@importFrom ggpubr get_legend
+#'@importFrom purrr compact
 #'
 #'@examples
 #' \dontrun{
@@ -116,8 +115,8 @@ finalize_plot <- function(plot = NULL,
                           fill_canvas = "gray90",
                           overrides = list(),
                           legend_shift = TRUE,
-                          legend_bump = 0,
                           debug = FALSE,
+                          use_cmap_aes = TRUE,
                           ...
                           ){
 
@@ -157,7 +156,7 @@ finalize_plot <- function(plot = NULL,
   # trigger a new page in that window now. This is needed to prevent the creation
   # of an unnecessary blank plot by other `grid` functions in cases where the
   # default device is not already active.
-  if("plot" %in% mode){ grid::grid.newpage() }
+  if ("plot" %in% mode) { grid::grid.newpage() }
 
   # create list of plot constants, from globals unless overridden by user
   consts <- utils::modifyList(cmapplot_globals$consts, overrides)
@@ -169,7 +168,6 @@ finalize_plot <- function(plot = NULL,
       height = grid::convertUnit(unit(height, "in"), "bigpts", valueOnly = TRUE),
       width = grid::convertUnit(unit(width, "in"), "bigpts", valueOnly = TRUE),
       title_width = grid::convertUnit(unit(title_width, "in"), "bigpts", valueOnly = TRUE),
-      legend_bump = legend_bump,
       margin_title_to_top = consts$margin_topline_t + consts$margin_title_t
     )
   )
@@ -187,7 +185,7 @@ finalize_plot <- function(plot = NULL,
   # If title/caption unspecified, try to extract from plot
   input_title <- plot$labels$title
   if (title == "") {
-    if(!is.null(input_title)) {
+    if (!is.null(input_title)) {
       title <- input_title
     } else {
       title <- "This plot needs a title"
@@ -199,23 +197,17 @@ finalize_plot <- function(plot = NULL,
     caption <- input_caption
   }
 
-  # Size conversion for line widths in line graphs
-  default_lwd <- ggplot2::GeomLine$default_aes$size
-  ggplot2::update_geom_defaults(
-    geom = "line",
-    new = list(size = ggplot_size_conversion(consts$lwd_plotline))
-    )
+  # fetch and set geom defaults
+  if (use_cmap_aes) {
+    geom_defaults <- fetch_current_default_aes()
+    set_default_aes(cmapplot_globals$default_aes_cmap)
+  }
 
   # preformat plot
   plot <- plot + ggplot2::theme(
     # remove any in-plot titles
     plot.title = element_blank(),
     plot.caption = element_blank(),
-    # add in legend_bump
-    legend.margin = margin(
-       l = grid::convertUnit(plot$theme$legend.margin[[4]], "bigpts", valueOnly = TRUE) +
-         consts$legend_bump,
-       unit = "bigpts"),
     # apply any extra `ggplot2::theme()` args
     ...
   )
@@ -227,6 +219,11 @@ finalize_plot <- function(plot = NULL,
              legend_shift = legend_shift,
              debug = debug)
 
+  # return geom defaults as before (now that the plot is a grob object,
+  #  ggplot2 draw settings will not impact it.)
+  if (use_cmap_aes) {
+    set_default_aes(geom_defaults)
+  }
 
   # Build necessary viewports -----------------------------------------------------
 
@@ -275,7 +272,7 @@ finalize_plot <- function(plot = NULL,
     y = consts$height - consts$margin_topline_t,
     gp = grid::gpar(col = cmapplot_globals$colors$blackish,
                     lineend = "butt",
-                    lwd = consts$lwd_topline)
+                    lwd = consts$lwd_topline / .lwd)
   )
 
   # title textbox (ROOT vp)
@@ -327,7 +324,7 @@ finalize_plot <- function(plot = NULL,
                           consts$margin_title_l), # left
                         "bigpts"),
     # set aesthetic variables
-    valign = if(caption_valign == "top"){ 1 } else { 0 },
+    valign = ifelse(caption_valign == "top", 1, 0),
     gp = grid::gpar(fontsize = cmapplot_globals$fsize$S,
                     fontfamily = cmapplot_globals$font$light$family,
                     fontface = cmapplot_globals$font$light$face,
@@ -411,9 +408,9 @@ finalize_plot <- function(plot = NULL,
       grid::grid.draw(final_plot)
       grid::popViewport()
 
-    } else if (this_mode == "window"){
+    } else if (this_mode == "window") {
 
-      if(.Platform$OS.type == "windows"){
+      if (.Platform$OS.type == "windows") {
         # open new device (window)
         grDevices::dev.new(width = width * 1.02,
                            height = height * 1.02,
@@ -437,11 +434,8 @@ finalize_plot <- function(plot = NULL,
     }
   }
 
-  # return geom defaults as before
-  ggplot2::update_geom_defaults("line",list(size = default_lwd))
-
   # if user wants an object, return it
-  if("object" %in% mode){
+  if ("object" %in% mode) {
     return(final_plot)
   }
 }
@@ -457,21 +451,21 @@ buildChart <- function(plot,
                        debug) {
 
   # add debug rect around plot if in debug mode
-  if(debug){
+  if (debug) {
     plot <- plot + ggplot2::theme(
       plot.background = element_rect(color = "red")
     )
   }
 
   # in safe mode, stop here. Return plot as Grob
-  if(!legend_shift | is.null(ggpubr::get_legend(plot))){
+  if (!legend_shift | is.null(ggpubr::get_legend(plot))) {
     return(ggplotGrob(plot))
   }
 
   # Otherwise, in legend-shift mode...
 
   # add debug rects around legend if in debug mode
-  if(debug){
+  if (debug) {
     plot <- plot + ggplot2::theme(
       legend.background = element_rect(color = "red"),
       legend.box.background = element_rect(color = "red")
@@ -484,7 +478,14 @@ buildChart <- function(plot,
   margin_legend_i <- ifelse(
     # if not overridden in finalize, use value from ggplot
     is_null(overrides$margin_legend_i),
-    plot$theme$legend.spacing.y,
+    dplyr::first(purrr::compact(list( # Call first non-NA value in this list:
+      # If plot has a theme:
+      plot$theme$legend.spacing.y, # If available, use specific y-legend spacing
+      plot$theme$legend.spacing, # If not, default to general legend spacing
+      # If plot has no theme, use globally applied theme
+      ggplot2::theme_get()$legend.spacing.y, # If available, use y-legend spacing
+      ggplot2::theme_get()$legend.spacing # If not, default to general legend spacing
+    ))),
     # otherwise, use override value
     overrides$margin_legend_i
   )
@@ -492,7 +493,11 @@ buildChart <- function(plot,
   margin_legend_b <- ifelse(
     # if not overridden in finalize, use value from ggplot
     is_null(overrides$margin_legend_b),
-    convertUnit(plot$theme$legend.box.spacing, unitTo = "bigpts", valueOnly = TRUE),
+    # Repeat logic from margin_legend_i
+    convertUnit(dplyr::first(purrr::compact(list(
+      plot$theme$legend.box.spacing,
+      ggplot2::theme_get()$legend.box.spacing
+      ))), unitTo = "bigpts", valueOnly = TRUE),
     # otherwise, use override value
     overrides$margin_legend_b
   )

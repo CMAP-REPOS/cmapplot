@@ -123,7 +123,20 @@ geom_text_lastonly <- function(mapping = NULL, data = NULL,
 }
 
 
-# Define modified text geom for last label(s) only
+#' Custom ggproto classes
+#'
+#' The \code{cmapplot} package contains a few custom ggproto objects. For the
+#' most part, these are slightly tweaked versions of ggplot2's default proto
+#' objects. For more information about these, see
+#' \code{\link[ggplot2:ggplot2-ggproto]{ggplot2::ggplot2-ggproto}}.
+#'
+#' @name customproto
+NULL
+
+#' @describeIn customproto Add text to plot for maximum x-value in dataset only.
+#' @format NULL
+#' @usage NULL
+#' @export
 GeomTextLast <- ggproto(
   "GeomTextLast", Geom,
   required_aes = c("x", "y"),
@@ -198,7 +211,10 @@ just_dir <- function(x, tol = 0.001) {
 }
 
 
-# Define modified point geom for last point(s) only
+#' @describeIn customproto Add points to plot for maximum x-value in dataset only.
+#' @format NULL
+#' @usage NULL
+#' @export
 GeomPointLast <- ggproto(
   "GeomPointLast", Geom,
   required_aes = c("x", "y"),
