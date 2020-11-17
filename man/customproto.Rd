@@ -12,7 +12,7 @@
 The \code{cmapplot} package contains a few custom ggproto objects. For the
 most part, these are slightly tweaked versions of ggplot2's default proto
 objects. For more information about these, see
-\code{\link[ggplot2::ggproto]{ggplot2::ggproto}}.
+\code{\link[ggplot2:ggplot2-ggproto]{ggplot2::ggplot2-ggproto}}.
 }
 \section{Functions}{
 \itemize{
