@@ -41,8 +41,6 @@
 #'@param legend_shift Bool, \code{TRUE}, the default, attempts to align the
 #'  legend all the way left (on top of the y axis labels) per CMAP design
 #'  standards. \code{FALSE} maintains the alignment used in the original plot.
-#'@param legend_bump Numeric, shift the legend right (positive) or left
-#'  (negative) this many bigpts.
 #'@param debug Bool, TRUE enables outlines around components of finalized plot.
 #'  Default = FALSE.
 #'@param use_cmap_aes Bool, \code{TRUE}, the default, temporarily implements
@@ -116,7 +114,6 @@ finalize_plot <- function(plot = NULL,
                           fill_canvas = "gray90",
                           overrides = list(),
                           legend_shift = TRUE,
-                          legend_bump = 0,
                           debug = FALSE,
                           use_cmap_aes = TRUE,
                           ...
@@ -170,7 +167,6 @@ finalize_plot <- function(plot = NULL,
       height = grid::convertUnit(unit(height, "in"), "bigpts", valueOnly = TRUE),
       width = grid::convertUnit(unit(width, "in"), "bigpts", valueOnly = TRUE),
       title_width = grid::convertUnit(unit(title_width, "in"), "bigpts", valueOnly = TRUE),
-      legend_bump = legend_bump,
       margin_title_to_top = consts$margin_topline_t + consts$margin_title_t
     )
   )
@@ -211,11 +207,6 @@ finalize_plot <- function(plot = NULL,
     # remove any in-plot titles
     plot.title = element_blank(),
     plot.caption = element_blank(),
-    # add in legend_bump
-    legend.margin = margin(
-       l = grid::convertUnit(plot$theme$legend.margin[[4]], "bigpts", valueOnly = TRUE) +
-         consts$legend_bump,
-       unit = "bigpts"),
     # apply any extra `ggplot2::theme()` args
     ...
   )

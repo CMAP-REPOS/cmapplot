@@ -19,7 +19,6 @@ finalize_plot(
   fill_canvas = "gray90",
   overrides = list(),
   legend_shift = TRUE,
-  legend_bump = 0,
   debug = FALSE,
   use_cmap_aes = TRUE,
   ...
@@ -71,9 +70,6 @@ in \code{cmapplot_globals$consts} which are drawn by
 \item{legend_shift}{Bool, \code{TRUE}, the default, attempts to align the
 legend all the way left (on top of the y axis labels) per CMAP design
 standards. \code{FALSE} maintains the alignment used in the original plot.}
-
-\item{legend_bump}{Numeric, shift the legend right (positive) or left
-(negative) this many bigpts.}
 
 \item{debug}{Bool, TRUE enables outlines around components of finalized plot.
 Default = FALSE.}
