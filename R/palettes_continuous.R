@@ -2,9 +2,6 @@
 #'
 #' A sample of comms-approved colors arranged into palettes
 #'
-#' @examples
-#' viz_gradient(cmap_gradients$seq_red_purple)
-#'
 #' @export
 cmap_gradients <- list(
 
@@ -77,8 +74,7 @@ cmap_gradients <- list(
 #' @param pal = select from cmap_gradients list
 #' @param ttl = display title (optional)
 #'
-#' @examples
-#' viz_gradient(cmap_gradients$seq_orange_red)
+#' @describeIn cmap_gradients function to vizualize gradients
 #'
 #' @export
 viz_gradient <- function(pal, ttl = deparse(substitute(pal))) {
