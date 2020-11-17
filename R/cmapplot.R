@@ -31,7 +31,7 @@
 #'  these are marked with \strong{T}.
 #'
 #'  \itemize{
-#'    \item \code{lwd_originline}: This stronger-width line is drawn vertically or
+#'    \item \code{lwd_strongline}: This stronger-width line is drawn vertically or
 #'    horizontally with the \code{hline, vline} args of \code{theme_cmap()}. \strong{(T)}
 #'    \item \code{lwd_gridline}: This thinner-width line is drawn vertically or
 #'    horizontally with the \code{gridlines, axislines} args of \code{theme_cmap()}. \strong{(T)}
@@ -95,8 +95,8 @@ cmapplot_globals <- list(
 
   ## Establish plotting constants in bigpts (1/72 of inch)
   consts = list(
-    lwd_originline = 1,
     lwd_gridline = 0.3,
+    lwd_strongline = 1,
     lwd_plotline = 3,
     lwd_topline = 2,
     margin_topline_t = 5,

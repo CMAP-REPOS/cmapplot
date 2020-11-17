@@ -24,7 +24,7 @@ and a list of constants which aid in drawing cmap-themed plots.
  these are marked with \strong{T}.
 
  \itemize{
-   \item \code{lwd_originline}: This stronger-width line is drawn vertically or
+   \item \code{lwd_strongline}: This stronger-width line is drawn vertically or
    horizontally with the \code{hline, vline} args of \code{theme_cmap()}. \strong{(T)}
    \item \code{lwd_gridline}: This thinner-width line is drawn vertically or
    horizontally with the \code{gridlines, axislines} args of \code{theme_cmap()}. \strong{(T)}

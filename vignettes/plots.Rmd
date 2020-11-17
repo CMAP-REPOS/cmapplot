@@ -19,14 +19,12 @@ knitr::opts_chunk$set(
 
 library(tidyverse)
 library(cmapplot)
+unapply_cmap_default_aes()
 ```
 
-This vignette summarizes the basic formatting that the cmapplot package can add to a ggplot, and provides a series of examples for different types of graphs. The vignette relies on sample CMAP datasets which are included with the package. 
+This vignette summarizes the basic formatting that the cmapplot package can add to a ggplot, including via the functions `theme_cmap`, `geom_recessions`, `geom_text_lastonly`, and `apply_cmap_default_aes`. The vignette relies on one of the sample CMAP datasets included with the package. 
 
-
-## Stepping through the construction of a plot
-
-### The initial plot 
+## The initial plot 
 
 Let's start with a basic time series line graph, drawn using R's default theme (`theme_grey()`):
 
@@ -44,29 +42,43 @@ df <- transit_ridership %>%
 
 p <- ggplot(data = df, 
        mapping = aes(x = year, y = ridership, color = system)) +
-  geom_line(size = 1) +
+  geom_line() +
   scale_y_continuous(breaks = c(0, 200, 400), 
                      limits = c(-1, 575))
 
 p
 ```
 
-### `theme_cmap()`
+## The CMAP theme
+### Basic implementation
 
-To add basic CMAP design elements to the plot, add `theme_cmap()` like you would any other `ggplot` theme. The CMAP theme has x and y axis labels turned off by default, but that can be overridden. The help file `?theme_cmap` describes how to do this, as well as a variety of other built-in customization functions. `theme_cmap()` can be used to easily adjust axis, origin, and gridlines. 
+To add basic CMAP design elements to the plot, add `theme_cmap()` like you would any other `ggplot2` theme. 
+
+```{r}
+p + theme_cmap()
+```
+
+### Built-in modifiers
+The CMAP theme function has a variety of easy built-in modifiers. For example, by default the x and y axis labels are turned off, but this can be overridden. The help file `?theme_cmap` describes how to make these changes. 
+
+`theme_cmap()` can be used to easily add or change axis lines, gridlines, and strong horizontal or vertical lines (such as to deliniate zero or some other threshold). Note that, depending on the display, hline and vline may appear as the same thickness as gridlines within R. When exported as a vector file (or raster at high enough resolution) the difference becomes apparent. 
 
 ```{r}
 p + theme_cmap(ylab = "Annual Ridership (Millions)",
+               hline = 200, # may not be immediately visible
                legend.max.columns = 2)
 ```
 
+### Overridding plotting defaults
 The package contains a list of default `cmapplot_globals$consts` that control various plotting constants. Most of these impact the function `finalize_plot()`, but a few impact `theme_cmap()`. For a complete description of these constants, see `?cmapplot_globals`.  These can be modified in the `overrides` argument:
 
 ```{r}
 p + theme_cmap(ylab = "Annual Ridership (Millions)",
-               overrides = list(lwd_gridline = 3))
+               hline = 200,
+               overrides = list(lwd_strongline = 3))
 ```
 
+### Further theme modifications
 In addition, any ggplot theme element can also be modified directly in `theme_cmap()` by passing valid arguments from the `ggplot2::theme()` function. In the following example, the addition of `axis.ticks.x` and the establishment of an `axis.ticks.length.x` "turns on" the tick marks automatically turned off by `theme_cmap`'s underlying theme. Note that here, some additional manipulation of the y axis scale is necessary for the axis ticks to touch the lowest horizontal gridline.
 
 ```{r}
@@ -78,8 +90,8 @@ p + scale_y_continuous(breaks = c(0, 200, 400),
              axis.ticks.length.x = unit(10, "bigpts"))
 ```
 
-
-### `geom_recessions()`
+## Auxiliary functions
+### Include US recessions as a backdrop
 
 The `cmapplot` package also includes two custom geoms that allow the user to easily add common elements used in CMAP plots that would be otherwise difficult to program. 
 
@@ -89,26 +101,41 @@ The function `geom_recessions()`, allows for the addition of rectangles (and tex
 q <- ggplot(data = df, 
             mapping = aes(x = year, y = ridership, color = system)) +
   geom_recessions(ymin = 0) +
-  geom_line(size = 1) +
+  geom_line() +
   theme_cmap(ylab = "Annual Ridership (Millions)")
 
 q
 ```
 
-### `geom_text_lastonly()`
+### Label and highlight final data point
 
 The function `geom_text_lastonly()` allows the user to label only the final point in a time series. In addition to applying the label, this function can also highlight the final point via an implicit `geom_point`. Like `geom_text`, the value of the label can be passed via ggplot's `mapping` argument, either in the top-line `ggplot()` or in `geom_text_lastonly()`. 
 
 Due to ggplot's underlying structure, `geom_text` labels are clipped by the plot's default extent. Often, the right side of the plot will need to be expanded--or plot clipping turned off--for correct display of these labels. `?geom_text_lastonly' describes a number of options to account for this.    
 
 ```{r}
-q + geom_text_lastonly(
+q <- q + geom_text_lastonly(
   mapping = aes(label = round(ridership, digits = 0)), 
   add_points = TRUE,
   nudge_x = 0.5) +
   coord_cartesian(clip = "off")
+
+q
 ```
 
+### Overridding ggplot's default aesthetics
+
+Every geom has default aesthetics that cannot be modified by a `ggplot2` theme (and therefore, cannot be modified by `theme_cmap()`). Notice, for example, that the text drawn in the plot via `geom_text_last` and `geom_recessions` still appears in Arial, although the legend and axis fonts appear in Calibri/Whitney. This is automatically corrected in `finalize_plot()`. However, if you'd like to see these impacts at this stage,
+you can override ggplot's default aesthetics for line and text geoms with CMAP defaults via `apply_cmap_default_aes()`.
+
+```{r}
+apply_cmap_default_aes()
+
+q
+
+```
+
+It is important to note that this change is "sticky" for the duration of the session, but you can reverse the change with `unapply_cmap_default_aes()`. This function will revert to whatever the default aesthetics were before `cmapplot` was loaded.
 
 ## Debug mode
 In addition, `theme_cmap()` provides a debug mode in which it draws outlines around the rectangular elements in the plot. This can help the user understand what is being drawn and identify additional modifications that they might want to make via `overrides` or `ggplot2::theme()` arguments:
@@ -117,7 +144,7 @@ In addition, `theme_cmap()` provides a debug mode in which it draws outlines aro
 ggplot(data = df, 
             mapping = aes(x = year, y = ridership, color = system)) +
   geom_recessions(ymin = 0) +
-  geom_line(size = 1) +
+  geom_line() +
   theme_cmap(ylab = "Annual Ridership (Millions)",
              debug = TRUE)
 ```
