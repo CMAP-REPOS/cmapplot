@@ -22,7 +22,8 @@ reference:
 - title: Additional geoms & auxiliary functions
 - contents:
   - starts_with("geom_")
-  - apply_cmap_default_aes
+  - customproto
+  - cmap_default_aes
   - gg_lwd_convert
   - integer_breaks
   - update_recessions

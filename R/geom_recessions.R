@@ -249,7 +249,10 @@ filter_recessions <- function(min, max, xformat, recess_table){
 }
 
 
-#' @rdname customproto
+#' @name customproto
+NULL
+
+#' @describeIn customproto Add recession bars to plot.
 #' @format NULL
 #' @usage NULL
 #' @export
@@ -322,7 +325,7 @@ GeomRecessions <- ggproto(
 )
 
 
-#' @rdname customproto
+#' @describeIn customproto Add recession bar labels to plot.
 #' @format NULL
 #' @usage NULL
 #' @export
