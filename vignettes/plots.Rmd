@@ -26,7 +26,7 @@ This vignette summarizes the basic formatting that the cmapplot package can add 
 
 ## The initial plot 
 
-Let's start with a basic time series line graph, drawn using R's default theme (`theme_grey()`):
+Let's start with a basic time series line graph, drawn using R's default theme (`theme_grey()`). We'll save this as `p` for later, but keep the actual data geom (in this case, `geom_line`) separate due to how ggplot layers geoms.
 
 ```{r}
 # clean up dataset
@@ -41,12 +41,11 @@ df <- transit_ridership %>%
 
 
 p <- ggplot(data = df, 
-       mapping = aes(x = year, y = ridership, color = system)) +
-  geom_line() +
+            mapping = aes(x = year, y = ridership, color = system)) +
   scale_y_continuous(breaks = c(0, 200, 400), 
                      limits = c(-1, 575))
 
-p
+p + geom_line()
 ```
 
 ## The CMAP theme
@@ -55,18 +54,21 @@ p
 To add basic CMAP design elements to the plot, add `theme_cmap()` like you would any other `ggplot2` theme. 
 
 ```{r}
-p + theme_cmap()
+p + geom_line() + theme_cmap()
 ```
 
 ### Built-in modifiers
 The CMAP theme function has a variety of easy built-in modifiers. For example, by default the x and y axis labels are turned off, but this can be overridden. The help file `?theme_cmap` describes how to make these changes. 
 
-`theme_cmap()` can be used to easily add or change axis lines, gridlines, and strong horizontal or vertical lines (such as to deliniate zero or some other threshold). Note that, depending on the display, hline and vline may appear as the same thickness as gridlines within R. When exported as a vector file (or raster at high enough resolution) the difference becomes apparent. 
+For example, `theme_cmap()` can be used to to add a strong horizontal or vertical line (such as to deliniate zero or some other threshold). Note that, depending on the display, `hline` and `vline` may appear as the same thickness as gridlines within R. When exported as a vector file (or raster at high enough resolution) the difference becomes apparent. 
+
+Note that here it is important to place `theme_cmap()` BEFORE the primary data geom. This is because the `hline` drawn by `theme_cmap` is a geom, and `ggplot2` layers geoms in the order they are added to the plot. This ordering allows the `CTA rail` line to be drawn on top of the strong `hline = 200`. 
 
 ```{r}
 p + theme_cmap(ylab = "Annual Ridership (Millions)",
                hline = 200, # may not be immediately visible
-               legend.max.columns = 2)
+               legend.max.columns = 2) +
+  geom_line()
 ```
 
 ### Overridding plotting defaults
@@ -75,7 +77,8 @@ The package contains a list of default `cmapplot_globals$consts` that control va
 ```{r}
 p + theme_cmap(ylab = "Annual Ridership (Millions)",
                hline = 200,
-               overrides = list(lwd_strongline = 3))
+               overrides = list(lwd_strongline = 3)) +
+  geom_line()
 ```
 
 ### Further theme modifications
@@ -87,7 +90,8 @@ p + scale_y_continuous(breaks = c(0, 200, 400),
                        expand = c(0, 0)) + 
   theme_cmap(ylab = "Annual Ridership (Millions)",
              axis.ticks.x = element_line(color = "red"),
-             axis.ticks.length.x = unit(10, "bigpts"))
+             axis.ticks.length.x = unit(10, "bigpts")) +
+  geom_line()
 ```
 
 ## Auxiliary functions
@@ -95,7 +99,9 @@ p + scale_y_continuous(breaks = c(0, 200, 400),
 
 The `cmapplot` package also includes two custom geoms that allow the user to easily add common elements used in CMAP plots that would be otherwise difficult to program. 
 
-The function `geom_recessions()`, allows for the addition of rectangles (and text, if desired) representing US economic recessions. The `ggplot2` package builds plots from the ground up: geoms are drawn in the order they are added, so the recessions geom should be added before the plot's primary geom (e.g. `geom_line()`. In addition, ggplot always draws geoms  on top of base plot elements like gridlines. The default fill and alpha for `geom_recessions()` has been chosen because it is the most transparent way to achieve CMAP palette color #002d49 when drawn on a white background -- thus impacting the color of the gridlines as little as possible. 
+The function `geom_recessions()`, allows for the addition of rectangles (and text, if desired) representing US economic recessions. Similar to the `hline` example above, `geom_recessions` should be added before the plot's primary geom (`geom_line`) so that lines are drawn on top of recession rectangles. 
+
+In addition, ggplot always draws geoms  on top of base plot elements like gridlines. The default fill and alpha for `geom_recessions()` has been chosen because it is the most transparent way to achieve CMAP palette color #002d49 when drawn on a white background -- thus impacting the color of the gridlines as little as possible. 
 
 ```{r}
 q <- ggplot(data = df, 
