@@ -36,9 +36,7 @@
 #'    \item \code{lwd_gridline}: This thinner-width line is drawn vertically or
 #'    horizontally with the \code{gridlines, axislines} args of \code{theme_cmap()}. \strong{(T)}
 #'    \item \code{lwd_plotline}: The width of any lines drawn by geoms in the plot
-#'    (e.g. \code{geom_line}) but not explicitly sized by the geom's aesthetic. Due to
-#'    limitations in ggplot2's construction, this does not apply to
-#'    \code{finalize_plot(mode = "object")} outputs. \strong{(F)}
+#'    (e.g. \code{geom_line}) but not explicitly sized by the geom's aesthetic. \strong{(F)}
 #'    \item \code{lwd_topline}: The width of the line above the plot and title. \strong{(F)}
 #'    \item \code{margin_topline_t}: The margin between the top edge of the
 #'    image and the top line. \strong{(F)}
@@ -66,8 +64,8 @@
 #'    and the edge of the image. \strong{(F)}
 #'    \item \code{margin_panel_r}: Padding between the plot and its right-hand drawing
 #'    extent. Override this based on space needed for x axis labels. \strong{(T)}
-#'    \item \code{leading_title}: Text leading for Title text.
-#'    \item \code{leading_caption}: Text leading for Caption text.
+#'    \item \code{leading_title}: Text leading for Title text. \strong{(F)}
+#'    \item \code{leading_caption}: Text leading for Caption text. \strong{(F)}
 #'  }
 #'
 #' @export
