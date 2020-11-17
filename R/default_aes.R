@@ -9,7 +9,7 @@
 init_cmap_default_aes <- function () {
   list(
     Line = list(
-      size = gg_size_convert(cmapplot_globals$consts$lwd_plotline, "line")
+      size = gg_lwd_convert(cmapplot_globals$consts$lwd_plotline)
     ),
     Text = list(
       family = cmapplot_globals$font$strong$family,

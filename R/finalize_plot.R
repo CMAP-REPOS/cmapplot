@@ -280,7 +280,7 @@ finalize_plot <- function(plot = NULL,
     y = consts$height - consts$margin_topline_t,
     gp = grid::gpar(col = cmapplot_globals$colors$blackish,
                     lineend = "butt",
-                    lwd = consts$lwd_topline)
+                    lwd = consts$lwd_topline / .lwd)
   )
 
   # title textbox (ROOT vp)

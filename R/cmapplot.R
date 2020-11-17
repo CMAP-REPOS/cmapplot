@@ -220,35 +220,70 @@ display_cmap_fonts <- function() {
 
 # Plot sizes and colors ---------------------------------------------------
 
-#' Helper function to calculate correct size for ggplot line widths.
+
+#' Line width conversion
 #'
-#' @param value Numeric, the value to be converted.
-#' @param type Char, the unit of the value to be converted. The type can be any
-#'   of the units accepted by \code{grid::unit()}, including "bigpt", "pt",
-#'   "mm", and "in". Default is \code{"bigpt"}.
+#' The factor \code{.lwd} is used to calculate correct output sizes for line
+#' widths. For line widths in \code{ggplot2}, the size in mm must be divided
+#' by this factor for correct output. Because the user is likely to prefer
+#' other units besides for mm, \code{gg_lwd_convert()} is provided as a
+#' convenience function, converting from any unit all the way to ggplot units.
 #'
-#' @return A unitless value that is the size in mm. For reasons not entirely clear,
-#'   line values recieve an extra modification equivalent to\code{ggplot2::.stroke /
-#'   ggplot2::.pt}.
+#' \code{.lwd} is equal to \code{ggplot2::.stroke / ggplot2::.pt}. In
+#' \code{ggplot2}, the size in mm is divided by \code{.lwd} to achieve the
+#' correct output. In the \code{grid} package, however, the size in points
+#' (\code{pts} (or maybe \code{bigpts}? Unclear.) must be divided by
+#' \code{.lwd}. The user is unlikely to interact directly with \code{grid},
+#' but this is how \code{finalize_plot()} does its work.
+#'
+#' This is closely related to \code{ggplot::.pt}, which is the factor that
+#' font sizes (in \code{pts}) must be divided by for text geoms within
+#' \code{ggplot2}. Confusingly, \code{.pt} is not required for \code{ggplot2}
+#' font sizes outside the plot area: e.g. axis titles, etc.
 #'
 #' @seealso grid's \code{\link[grid]{unit}}, ggplot2's
 #'   \code{\link[ggplot2]{.pt}}, and
 #'   \url{https://stackoverflow.com/questions/17311917/ggplot2-the-unit-of-size}
 #'
+#' @examples
+#' ggplot() + coord_cartesian(xlim = c(-3, 3), ylim = c(-3, 3)) +
+#'
+#'   # a green line 3 points wide
+#'   geom_hline(yintercept = 1, color = "green", size = gg_lwd_convert(3)) +
+#'
+#'   # black text of size 24 points
+#'   annotate("text", -2, 0, label = "text", size = 24/ggplot2::.pt)
+#'
+#'
+#' # a blue line 6 points wide, drawn over the plot with  the `grid` package
+#' grid::grid.lines(y = 0.4,
+#'                  gp = grid::gpar(col = "blue", lwd = 6 / .lwd))
+#'
+#'
 #' @export
-gg_size_convert <- function(value, unit = "bigpts", use = c("line", "text")) {
+.lwd <- ggplot2::.pt / ggplot2::.stroke
 
-  use <- match.arg(use)
+
+#' Helper function to calculate correct size for ggplot line widths.
+#'
+#' @param value Numeric, the value to be converted.
+#' @param unit Char, the unit of the value to be converted. Can be any
+#'   of the units accepted by \code{grid::unit()}, including "bigpts", "pt",
+#'   "mm", and "in". Default is \code{bigpts}.
+#'
+#' @describeIn dot-lwd Function to convert from any unit directly to
+#'
+#' @export
+gg_lwd_convert <- function(value, unit = "bigpts") {
 
   # convert input type to mm
   value_out <- grid::convertUnit(grid::unit(value, unit), "mm", valueOnly = TRUE)
 
-  # use conversion factor if sizing a line
-  if (use == "line") {
-    value_out <- value_out * 96/72.27
-  }
-
-  return(value_out)
+  # return with conversion factor
+  return(
+    value_out <- value_out / .lwd
+  )
 }
+
 
 

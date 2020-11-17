@@ -128,14 +128,14 @@ theme_cmap <- function(
   # Add x origin line, if specified
   if(!is.null(hline)){
     add_to_obj(ggplot2::geom_hline(yintercept = hline,
-                                   size = gg_size_convert(consts$lwd_originline),
+                                   size = gg_lwd_convert(consts$lwd_originline),
                                    color = cmapplot_globals$colors$blackish))
   }
 
   # Add y origin line, if specified
   if(!is.null(vline)){
     add_to_obj(ggplot2::geom_vline(xintercept = vline,
-                                   size = gg_size_convert(consts$lwd_originline),
+                                   size = gg_lwd_convert(consts$lwd_originline),
                                    color = cmapplot_globals$colors$blackish))
   }
 
@@ -143,7 +143,7 @@ theme_cmap <- function(
   if (grepl("h", gridlines)) {
     add_to_obj(ggplot2::theme(
       panel.grid.major.y = ggplot2::element_line(
-        size = gg_size_convert(consts$lwd_gridline),
+        size = gg_lwd_convert(consts$lwd_gridline),
         color = cmapplot_globals$colors$blackish)
     ))
   }
@@ -152,7 +152,7 @@ theme_cmap <- function(
   if (grepl("v", gridlines)) {
     add_to_obj(ggplot2::theme(
       panel.grid.major.x = ggplot2::element_line(
-        size = gg_size_convert(consts$lwd_gridline),
+        size = gg_lwd_convert(consts$lwd_gridline),
         color = cmapplot_globals$colors$blackish)
     ))
   }
@@ -161,7 +161,7 @@ theme_cmap <- function(
   if (grepl("x", axislines)) {
     add_to_obj(ggplot2::theme(
       axis.line.x = ggplot2::element_line(
-        size = gg_size_convert(consts$lwd_gridline),
+        size = gg_lwd_convert(consts$lwd_gridline),
         color = cmapplot_globals$colors$blackish)
     ))
   }
@@ -170,7 +170,7 @@ theme_cmap <- function(
   if (grepl("y", axislines)) {
     add_to_obj(ggplot2::theme(
       axis.line.y = ggplot2::element_line(
-        size = gg_size_convert(consts$lwd_gridline),
+        size = gg_lwd_convert(consts$lwd_gridline),
         color = cmapplot_globals$colors$blackish)
     ))
   }
