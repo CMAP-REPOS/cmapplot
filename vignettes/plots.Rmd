@@ -107,9 +107,9 @@ p + scale_y_continuous(breaks = c(0, 200, 400),
 
 ## Auxiliary functions
 
-### Include US recessions as a backdrop
-
 The cmapplot package also includes two custom geoms that allow the user to easily add common elements used in CMAP plots that would be otherwise difficult to program. 
+
+### Include US recessions as a backdrop
 
 The function `geom_recessions()`, allows for the addition of rectangles (and text, if desired) representing US economic recessions. Similar to the `hline` example above, `geom_recessions()` should be added before the plot's primary geom (`geom_line()`) so that lines are drawn on top of recession rectangles. 
 
@@ -143,7 +143,7 @@ q
 
 ### Overriding ggplot2's default aesthetics
 
-Every geom has default aesthetics that cannot be modified by a ggplot2 theme (and therefore, cannot be modified by `theme_cmap()`). Notice, for example, that the text drawn in the plot via `geom_text_last()` and `geom_recessions()` still appears in Arial (R's default font), although the legend and axis fonts appear in Calibri/Whitney. This is automatically corrected in `finalize_plot()`. However, if you'd like to see these impacts at this stage,
+Every geom has default aesthetics that cannot be modified by a ggplot2 theme (and therefore, cannot be modified by `theme_cmap()`). Notice, for example, that the text drawn in the plot via `geom_text_lastonly()` and `geom_recessions()` still appears in Arial (R's default font), although the legend and axis fonts appear in Calibri/Whitney. This is automatically corrected in `finalize_plot()`. However, if you'd like to see these impacts at this stage,
 you can override ggplot2's default aesthetics for line and text geoms with CMAP defaults via `apply_cmap_default_aes()`.
 
 ```{r aes}
