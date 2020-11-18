@@ -113,11 +113,11 @@ mid_rescaler2 <- function(mid) {
     }
 }
 
-#' Apply continuous CMAP palettes to ggplot2 aesthetics. On diverging palettes,
-#' a midpoint can be manually adjusted (defaults to 0)
+#' Apply continuous CMAP palettes to ggplot2 aesthetics.
 #'
 #' Pick the function depending on the aesthetic of your ggplot object (fill or
-#' color)
+#' color). On diverging palettes, a midpoint can be manually adjusted (defaults
+#' to 0).
 #'
 #' @param palette String; Choose from 'cmap_gradients' list
 #' @param reverse Logical; Reverse color order?
