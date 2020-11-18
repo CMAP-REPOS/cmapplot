@@ -42,3 +42,11 @@ reference:
   - traded_emp_by_race
   - transit_ridership
   - vehicle_ownership
+
+articles:
+- title: Articles
+  navbar: ~
+  contents:
+  - plots
+  - colors
+  - cookbook
