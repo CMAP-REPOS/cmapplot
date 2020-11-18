@@ -19,68 +19,152 @@ knitr::opts_chunk$set(
 
 library(tidyverse)
 library(cmapplot)
+unapply_cmap_default_aes()  # For testing purposes
 ```
 
-For testing, the cmapplot package contains a variety of sample datasets. Each dataset has a man file that can be queried for additional details. Datasets currently included are:
+This vignette summarizes the basic formatting that the cmapplot package can add to a `ggplot()`, including via the functions `theme_cmap()`, `geom_recessions()`, `geom_text_lastonly()`, and `apply_cmap_default_aes()`. The vignette relies on one of the sample CMAP datasets included with the package. 
 
-```{r datasets, echo = FALSE}
-cat("",
-    dir(path = "./../data/", pattern = "\\.RData$") %>%
-      str_replace(".RData$", "") %>%
-      paste(collapse = "\n "))
+
+## The initial plot 
+
+Let's start with a basic time series line graph, drawn using ggplot2's default theme (`theme_grey()`). We'll save this as `p` for later, but keep the actual data geom (in this case, `geom_line()`) separate due to how ggplot2 layers geoms.
+
+```{r initial}
+# load tidyverse (which includes ggplot2) and cmapplot
+library(tidyverse)
+library(cmapplot)
+
+# clean up dataset
+df <- transit_ridership %>% 
+  filter(system != "pace_ada") %>% 
+  mutate(system = case_when(
+    system == "cta_bus" ~ "CTA bus",
+    system == "cta_rail" ~ "CTA rail",
+    system == "metra" ~ "Metra",
+    system == "pace" ~ "Pace"
+  ))
+
+# build plot
+p <- ggplot(data = df, 
+            mapping = aes(x = year, y = ridership, color = system)) +
+  scale_y_continuous(breaks = c(0, 200, 400), 
+                     limits = c(-1, 575))
+
+p + geom_line()
 ```
 
-The following provided code uses the sample datasets to produce publishable or near-publishable graphics:
 
-```{r bars, eval=TRUE}
-# A bar chart
-ggplot(cluster_jobchange, aes(x = reorder(name, jobchange), y = jobchange, fill = category)) +
-  geom_col() +
-  coord_flip() +
-  theme_cmap()
+## The CMAP theme
+
+### Basic implementation
+
+To add basic CMAP design elements to the plot, add `theme_cmap()` like you would any other ggplot2 theme. 
+
+```{r basic}
+p + geom_line() + theme_cmap()
 ```
 
-```{r stackedbars1, eval=TRUE}
-# a stacked bar chart
-filter(traded_emp_by_race, variable %in% c("SpecializedTraded", "UnspecializedTraded")) %>%
-  ggplot(aes(x = reorder(Race, -value), y = value, fill = variable)) +
-  geom_col(position = position_stack(reverse = TRUE)) +
-  scale_y_continuous(labels = scales::percent) +
-  theme_cmap()
+### Built-in modifiers
+
+The CMAP theme function has a variety of easy built-in modifiers. For example, by default the x- and y-axis labels are turned off, but this can be overridden. The help file `?theme_cmap` describes how to make these changes. 
+
+For example, `theme_cmap()` can be used to to add a strong horizontal or vertical line (such as to delineate zero or some other threshold). Note that, on standard-resolution (non-retina) displays, `hline` and `vline` may appear as the same thickness as the plot's gridlines when viewed within R. When exported as a vector file (or raster at high enough resolution) the difference becomes apparent.
+
+When using `hline` and/or `vline`, it is important to place `theme_cmap()` *before* the primary data geom. This is because the `hline` drawn by `theme_cmap()` is a geom, and ggplot2 layers geoms in the order they are added to the plot. This ordering allows the `CTA rail` line to be drawn on top of the `hline`.
+
+```{r mods1}
+p + theme_cmap(ylab = "Annual Ridership (Millions)",
+               hline = 200, # may not be immediately visible
+               legend.max.columns = 2) +
+  geom_line()
 ```
 
-```{r stackedbars2, eval=TRUE}
-# a grouped and stacked bar chart (via `interaction()`)
-ggplot(pop_and_laborforce_by_age, aes(x = interaction(year, variable), y = value, fill = age)) +
-  geom_col(position = position_stack(reverse = TRUE)) +
-  coord_flip() +
-  theme_cmap()
+### Overriding plotting defaults
+
+The package contains a list of default values (`cmapplot_globals$consts`) that control various plotting constants. Most of these impact the function `finalize_plot()`, but a few impact `theme_cmap()`. For a complete description of these constants, see `?cmapplot_globals`.  These can be modified in the `overrides` argument:
+
+```{r overrides}
+p + theme_cmap(ylab = "Annual Ridership (Millions)",
+               hline = 200,
+               overrides = list(lwd_strongline = 3)) +
+  geom_line()
 ```
 
-```{r stackedbars3, eval=TRUE}
-# a grouped and stacked bar chart (via `interaction()`)
-ggplot(economy_basic, aes(x = interaction(year, variable), y = value, fill = sector)) +
-  geom_col(position = "fill") +
-  scale_y_continuous(labels = scales::percent) +
-  coord_flip() +
-  theme_cmap()
+### Further theme modifications
+
+In addition, any ggplot2 theme element can also be modified directly in `theme_cmap()` by passing valid arguments from the `ggplot2::theme()` function. In the following example, the addition of `axis.ticks.x` and the establishment of an `axis.ticks.length.x` "turns on" the tick marks automatically turned off by `theme_cmap()`'s underlying theme. Note that here, some additional manipulation of the y-axis scale is necessary for the axis ticks to touch the lowest horizontal gridline.
+
+```{r mods2}
+p + scale_y_continuous(breaks = c(0, 200, 400), 
+                       limits = c(-1, 575),
+                       expand = c(0, 0)) + 
+  theme_cmap(ylab = "Annual Ridership (Millions)",
+             axis.ticks.x = element_line(color = "red"),
+             axis.ticks.length.x = unit(10, "bigpts")) +
+  geom_line()
 ```
 
-```{r lines1, eval=TRUE}
-# a non-time-series line chart
-ggplot(percentile_wages, aes(x = percentile, y = wage, color = cluster)) +
+
+## Auxiliary functions
+
+### Include US recessions as a backdrop
+
+The cmapplot package also includes two custom geoms that allow the user to easily add common elements used in CMAP plots that would be otherwise difficult to program. 
+
+The function `geom_recessions()`, allows for the addition of rectangles (and text, if desired) representing US economic recessions. Similar to the `hline` example above, `geom_recessions()` should be added before the plot's primary geom (`geom_line()`) so that lines are drawn on top of recession rectangles. 
+
+In addition, ggplot2 always draws geoms on top of base plot elements like gridlines. The default fill and alpha for `geom_recessions()` has been chosen because it is the most transparent way to achieve CMAP palette color `#002d49` when drawn on a white background — thus impacting the color of the gridlines as little as possible. 
+
+```{r recessions}
+q <- ggplot(data = df, 
+            mapping = aes(x = year, y = ridership, color = system)) +
+  geom_recessions(ymin = 0) +
   geom_line() +
-  scale_y_continuous(labels = scales::dollar) +
-  theme_cmap()
+  theme_cmap(ylab = "Annual Ridership (Millions)")
+
+q
 ```
 
-```{r lines2, eval=TRUE}
-# a time-series line chart
-ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
-  geom_line() +
-  geom_text_lastonly(add_points = TRUE) +
-  theme_cmap()  +
-  geom_hline(yintercept = 0,
-             color = "black",
-             size = 1)
+### Label and highlight final data point
+
+The function `geom_text_lastonly()` allows the user to label only the final point in a time series. In addition to applying the label, this function can also highlight the final point via an implicit `geom_point()`. Like `geom_text()`, the value of the label can be passed via the `mapping` argument, either in the top-line `ggplot()` or in `geom_text_lastonly()`. 
+
+Due to ggplot2's underlying structure, `geom_text()` labels are clipped by the plot's default extent. Often, the right side of the plot will need to be expanded — or plot clipping turned off — for correct display of these labels. `?geom_text_lastonly` describes a number of methods to account for this.    
+
+```{r textlast}
+q <- q + geom_text_lastonly(
+  mapping = aes(label = round(ridership, digits = 0)), 
+  add_points = TRUE,
+  nudge_x = 0.5) +
+  coord_cartesian(clip = "off")
+
+q
 ```
+
+### Overriding ggplot2's default aesthetics
+
+Every geom has default aesthetics that cannot be modified by a ggplot2 theme (and therefore, cannot be modified by `theme_cmap()`). Notice, for example, that the text drawn in the plot via `geom_text_last()` and `geom_recessions()` still appears in Arial (R's default font), although the legend and axis fonts appear in Calibri/Whitney. This is automatically corrected in `finalize_plot()`. However, if you'd like to see these impacts at this stage,
+you can override ggplot2's default aesthetics for line and text geoms with CMAP defaults via `apply_cmap_default_aes()`.
+
+```{r aes}
+apply_cmap_default_aes()
+
+q
+```
+
+It is important to note that this change is "sticky" for the duration of the session, but you can reverse the change with `unapply_cmap_default_aes()`. This function will revert to whatever the default aesthetics were before cmapplot was loaded.
+
+
+## Debug mode
+
+In addition, `theme_cmap()` provides a debug mode in which it draws outlines around the rectangular elements in the plot. This can help the user understand what is being drawn and identify additional modifications that they might want to make via `overrides` or `ggplot2::theme()` arguments:
+
+```{r debug}
+ggplot(data = df, 
+            mapping = aes(x = year, y = ridership, color = system)) +
+  geom_recessions(ymin = 0) +
+  geom_line() +
+  theme_cmap(ylab = "Annual Ridership (Millions)",
+             debug = TRUE)
+```
+

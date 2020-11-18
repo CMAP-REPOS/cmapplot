@@ -249,7 +249,13 @@ filter_recessions <- function(min, max, xformat, recess_table){
 }
 
 
-# Modification of GeomRect
+#' @name customproto
+NULL
+
+#' @describeIn customproto Add recession bars to plot.
+#' @format NULL
+#' @usage NULL
+#' @export
 GeomRecessions <- ggproto(
   "GeomRecessions", Geom,
   default_aes = aes(colour = NA, alpha = 0.11, size = 0.5, linetype = 1, na.rm = TRUE),
@@ -319,7 +325,10 @@ GeomRecessions <- ggproto(
 )
 
 
-# Modification of GeomText
+#' @describeIn customproto Add recession bar labels to plot.
+#' @format NULL
+#' @usage NULL
+#' @export
 GeomRecessionsText <- ggproto(
   "GeomRecessionsText", Geom,
 

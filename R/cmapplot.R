@@ -31,7 +31,7 @@
 #'  these are marked with \strong{T}.
 #'
 #'  \itemize{
-#'    \item \code{lwd_originline}: This stronger-width line is drawn vertically or
+#'    \item \code{lwd_strongline}: This stronger-width line is drawn vertically or
 #'    horizontally with the \code{hline, vline} args of \code{theme_cmap()}. \strong{(T)}
 #'    \item \code{lwd_gridline}: This thinner-width line is drawn vertically or
 #'    horizontally with the \code{gridlines, axislines} args of \code{theme_cmap()}. \strong{(T)}
@@ -95,8 +95,8 @@ cmapplot_globals <- list(
 
   ## Establish plotting constants in bigpts (1/72 of inch)
   consts = list(
-    lwd_originline = 1.6,
     lwd_gridline = 0.3,
+    lwd_strongline = 1,
     lwd_plotline = 3,
     lwd_topline = 2,
     margin_topline_t = 5,
@@ -110,11 +110,28 @@ cmapplot_globals <- list(
     margin_title_l = 2,
     margin_title_r = 10,
     margin_plot_r = 10,
-    margin_panel_r = 20,
+    margin_panel_r = 10,
     leading_title = 1,
     leading_caption = 1
-  )
+  ),
+
+  # list of geoms whose aesthetics will be customized
+  geoms_that_change = c(
+    "Line",
+    "Text",
+    "TextLast",
+    "PointLast",
+    "RecessionsText"
+  ),
+
+  # empty location for loading in preferred aesthetics during `.onLoad`
+  default_aes_cmap = NULL,
+
+  # empty location for caching existing aesthetics during `.onLoad`
+  default_aes_cached = NULL
+
 )
+
 
 ## Use Whitney or Calibri if on Windows -- *must* be done with .onLoad()
 .onLoad <- function(...) {
@@ -166,9 +183,17 @@ cmapplot_globals <- list(
       "WARNING: CMAP theme will default to Arial on non-Windows platforms"
     )
   }
+
+  # load in CMAP preferred default.aes (can't be done until fonts are specified)
+  cmapplot_globals$default_aes_cmap <<- init_cmap_default_aes()
+
+  # cache existing default.aes
+  cmapplot_globals$default_aes_cached <<- fetch_current_default_aes()
 }
 
-# Define an helper function to visualize the font specifications
+
+# Font spec visualization helper function ---------------------------------
+
 display_cmap_fonts <- function() {
   graphics::plot(c(0,2), c(0,6), type="n", xlab="", ylab="")
 
@@ -192,31 +217,74 @@ display_cmap_fonts <- function() {
   draw.me(name = "Label", font = "strong",  size = "M", 2)
   draw.me(name = "Note",  font = "light",   size = "S", 1)
 }
-#display_cmap_fonts()
 
 
 # Plot sizes and colors ---------------------------------------------------
 
-#' Helper function to calculate correct size for ggplot inputs. Takes two inputs:
-#' a value (numeric) and a type (character). The type can be any of the units
-#' accepted by `grid::unit()`, including "bigpt", "pt", "mm", and "in".
+
+#' Line width conversion
+#'
+#' The factor \code{.lwd} is used to calculate correct output sizes for line
+#' widths. For line widths in \code{ggplot2}, the size in mm must be divided
+#' by this factor for correct output. Because the user is likely to prefer
+#' other units besides for mm, \code{gg_lwd_convert()} is provided as a
+#' convenience function, converting from any unit all the way to ggplot units.
+#'
+#' \code{.lwd} is equal to \code{ggplot2::.stroke / ggplot2::.pt}. In
+#' \code{ggplot2}, the size in mm is divided by \code{.lwd} to achieve the
+#' correct output. In the \code{grid} package, however, the size in points
+#' (\code{pts} (or maybe \code{bigpts}? Unclear.) must be divided by
+#' \code{.lwd}. The user is unlikely to interact directly with \code{grid},
+#' but this is how \code{finalize_plot()} does its work.
+#'
+#' This is closely related to \code{ggplot::.pt}, which is the factor that
+#' font sizes (in \code{pts}) must be divided by for text geoms within
+#' \code{ggplot2}. Confusingly, \code{.pt} is not required for \code{ggplot2}
+#' font sizes outside the plot area: e.g. axis titles, etc.
+#'
+#' @seealso grid's \code{\link[grid]{unit}}, ggplot2's
+#'   \code{\link[ggplot2]{.pt}}, and
+#'   \url{https://stackoverflow.com/questions/17311917/ggplot2-the-unit-of-size}
+#'
+#' @examples
+#' ggplot() + coord_cartesian(xlim = c(-3, 3), ylim = c(-3, 3)) +
+#'
+#'   # a green line 3 points wide
+#'   geom_hline(yintercept = 1, color = "green", size = gg_lwd_convert(3)) +
+#'
+#'   # black text of size 24 points
+#'   annotate("text", -2, 0, label = "text", size = 24/ggplot2::.pt)
+#'
+#'
+#' # a blue line 6 points wide, drawn over the plot with  the `grid` package
+#' grid::grid.lines(y = 0.4,
+#'                  gp = grid::gpar(col = "blue", lwd = 6 / .lwd))
+#'
+#'
+#' @export
+.lwd <- ggplot2::.pt / ggplot2::.stroke
+
+
+#' Helper function to calculate correct size for ggplot line widths.
 #'
 #' @param value Numeric, the value to be converted.
-#' @param type Char, the unit of the value to be converted.
+#' @param unit Char, the unit of the value to be converted. Can be any
+#'   of the units accepted by \code{grid::unit()}, including "bigpts", "pt",
+#'   "mm", and "in". Default is \code{bigpts}.
 #'
-#' @return A unitless value in ggplot units
+#' @describeIn dot-lwd Function to convert from any unit directly to
 #'
-#' @seealso <https://stackoverflow.com/questions/17311917/ggplot2-the-unit-of-size>
-#' and [grid::unit()]
-#'
-#' @noRd
-ggplot_size_conversion <- function(value, type = "bigpts") {
-  # convert input type to bigpts (if not already)
-  value_in_bigpts <- grid::convertUnit(grid::unit(value, type), "bigpts", valueOnly = TRUE)
+#' @export
+gg_lwd_convert <- function(value, unit = "bigpts") {
+
+  # convert input type to mm
+  value_out <- grid::convertUnit(grid::unit(value, unit), "mm", valueOnly = TRUE)
+
+  # return with conversion factor
   return(
-    value_in_bigpts / 72 # Normalize from big points
-      * 96               # Multiply by units for R pixels (per inch)
-      / ggplot2::.pt     # Account for the ggplot2::.pt factor (=72.27/25.4)
+    value_out / .lwd
   )
 }
+
+
 
