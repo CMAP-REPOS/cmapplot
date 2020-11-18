@@ -113,7 +113,7 @@ The cmapplot package also includes two custom geoms that allow the user to easil
 
 The function `geom_recessions()`, allows for the addition of rectangles (and text, if desired) representing US economic recessions. Similar to the `hline` example above, `geom_recessions()` should be added before the plot's primary geom (`geom_line()`) so that lines are drawn on top of recession rectangles. 
 
-In addition, ggplot2 always draws geoms on top of base plot elements like gridlines. The default fill and alpha for `geom_recessions()` has been chosen because it is the most transparent way to achieve CMAP palette color `#002d49` when drawn on a white background — thus impacting the color of the gridlines as little as possible. 
+`ggplot()` always draws geoms *on top* of base plot elements like gridlines. The default fill and alpha values for `geom_recessions()` are the most transparent way possible to achieve CMAP palette color `#002d49` when drawn on a white background — thus impacting the color of the gridlines as little as possible. 
 
 ```{r recessions}
 q <- ggplot(data = df, 
