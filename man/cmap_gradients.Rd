@@ -29,4 +29,11 @@ Modeled after viz_palette from the \href{https://github.com/ropenscilabs/ochRe}{
 \item \code{viz_gradient}: function to vizualize gradients
 }}
 
+\examples{
+viz_gradient(cmap_gradients$seq_orange_red)
+
+# ggplot example here would be nice
+
+
+}
 \keyword{datasets}

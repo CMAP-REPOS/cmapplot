@@ -74,6 +74,12 @@ cmap_gradients <- list(
 #' @param pal = select from cmap_gradients list
 #' @param ttl = display title (optional)
 #'
+#' @examples
+#' viz_gradient(cmap_gradients$seq_orange_red)
+#'
+#' # ggplot example here would be nice
+#'
+#'
 #' @describeIn cmap_gradients function to vizualize gradients
 #'
 #' @export
