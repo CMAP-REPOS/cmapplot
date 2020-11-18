@@ -36,7 +36,10 @@
 #'    \item \code{lwd_gridline}: This thinner-width line is drawn vertically or
 #'    horizontally with the \code{gridlines, axislines} args of \code{theme_cmap()}. \strong{(T)}
 #'    \item \code{lwd_plotline}: The width of any lines drawn by geoms in the plot
-#'    (e.g. \code{geom_line}) but not explicitly sized by the geom's aesthetic. \strong{(F)}
+#'    (e.g. \code{geom_line}) but not explicitly sized by the geom's aesthetic. Implemented
+#'    by \code{finalize_plot} or by \code{apply_cmap_default_aes} but not overridable in
+#'    either context. (Modify by setting the size explicitly in the geom, but see
+#'    \code{gg_lwd_convert} first.)
 #'    \item \code{lwd_topline}: The width of the line above the plot and title. \strong{(F)}
 #'    \item \code{margin_topline_t}: The margin between the top edge of the
 #'    image and the top line. \strong{(F)}
