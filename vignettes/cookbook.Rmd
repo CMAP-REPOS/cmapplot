@@ -21,7 +21,7 @@ library(tidyverse)
 library(cmapplot)
 ```
 
-This vignette uses the package's sample datasets to create a wide variety of example plots. The plots have been selected to showcase the code necessary to produce high quality graphics under a variety of circumstances.
+This vignette uses the package's sample datasets to create a wide variety of example plots. In a few cases, this vignette includes additional data to recreate published CMAP graphics (created before the development of cmapplot). The plots have been selected to showcase the code necessary to produce high quality graphics under a variety of circumstances.
 
 
 ## Sample datasets
@@ -36,7 +36,7 @@ cat("",
 ```
 
 
-## Sample plots
+## Sample plots using only theme_cmap()
 
 ### Bar chart
 
@@ -99,4 +99,424 @@ ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
   geom_hline(yintercept = 0,
              color = "black",
              size = 1)
+```
+
+## Sample plots using both theme_cmap() and finalize_plot()
+
+### Finalized line graph (with race/ethnicity palette)
+
+This line graph demonstrates the `cmap_color_race()` color palette, which should be used for charts that display information broken down by race and ethnicity
+
+```{r finalized_line1 eval=TRUE}
+# Get example dataset
+df <- read_csv("https://raw.githubusercontent.com/CMAP-REPOS/ONTO2050-indicators/master/household-income-race-ethnicity/household-income-race-ethnicity.csv") %>%
+  as_tibble() %>%
+  pivot_longer(cols = starts_with("MED_HH_INC"),
+               names_to = "RACE_ETH",
+               names_prefix = "MED_HH_INC_",
+               values_to = "MED_HH_INC") %>%
+  mutate(RACE_ETH = recode(RACE_ETH,
+                        "ALL" = "All",
+                        "ASIAN" = "Asian",
+                        "BLACK" = "Black",
+                        "HISPANIC" = "Hispanic",
+                        "WHITE" = "White (non-Hispanic)"))
+
+
+# Create line graph with race/ethnicity palette
+p <- ggplot(data = df, mapping = aes(x = YEAR, y = MED_HH_INC, color = RACE_ETH)) +
+
+  # Add lines and label each by its name
+  geom_line() +
+  geom_text_lastonly(mapping = aes(label = scales::label_dollar()(MED_HH_INC)),
+                     add_points = TRUE) +
+
+  # Apply CMAP theme and apply race/ethnicity palette
+  theme_cmap() +
+  cmap_color_race(white = "White (non-Hispanic)",
+                  black = "Black",
+                  hispanic = "Hispanic",
+                  asian = "Asian",
+                  other = "All") +
+
+  # Don't clip labels
+  coord_cartesian(clip = "off") +
+
+  # Manually set axis limits and format y-axis labels as dollars
+  scale_x_continuous(limits = c(2005, 2020)) +
+  scale_y_continuous(limits = c(0, 100000),
+                     n.breaks = 6,
+                     labels = scales::label_dollar())
+
+
+# Create final plot
+finalize_plot(
+  p, #mode = "png", filename = "/Users/nmp/Desktop/line_raceeth.png",
+  title = "Median household income by race and ethnicity, 2006-2019, in 2016 inflation-adjusted dollars",
+  caption = "Source: CMAP analysis of American Community Survey data, 1-year estimates.",
+  caption_valign = "top"
+)
+```
+
+### Finalized line graph (with highlight function)
+
+This graph demonstrates the `cmap_color_highlight` function, which will selectively color one element of a chart to highlight it in comparison to other plotted data.
+
+```{r finalized_line2 eval=TRUE}
+
+# Get example dataset
+df <- read_csv("https://raw.githubusercontent.com/CMAP-REPOS/ONTO2050-indicators/master/income-inequality/income-inequality.csv") %>%
+  as_tibble() %>%
+  pivot_longer(cols = starts_with("GINI"),
+               names_to = "REGION",
+               names_prefix = "GINI_COEFF_",
+               values_to = "GINI_COEFF") %>%
+  mutate(REGION = recode(REGION,
+                         "CHI" = "Chicago",
+                         "BOS" = "Boston",
+                         "LA" = "Los Angeles",
+                         "NY" = "New York",
+                         "WAS" = "Washington, D.C."))
+
+
+# Create highlighted line graph
+p <- ggplot(data = df, mapping = aes(x = YEAR, y = GINI_COEFF, color = REGION)) +
+
+  # Add lines and label each by its name
+  geom_line() +
+  geom_text_lastonly(mapping = aes(label=REGION), add_points = TRUE) +
+
+  # Apply CMAP theme and highlight Chicago line
+  theme_cmap() +
+  cmap_color_highlight(field = df$REGION, value = "Chicago") +
+
+  # Expand x-axis to make room for labels
+  scale_x_continuous(expand = expansion(mult = c(0, 0.4))) +
+
+  # Manually set y-axis limits
+  ylim(c(0.425, 0.525)) +
+
+  # Turn off legend (redundant because of labels)
+  guides(color = "none")
+
+
+# Create final plot
+finalize_plot(
+  p, #mode = "png", filename = "/Users/nmp/Desktop/line_highlight.png",
+  title = "Gini coefficient, Chicago and select Metropolitan Statistical Areas, 2006-2019",
+  caption = "Source: CMAP analysis of American Community Survey data, 1-year estimates.",
+  caption_valign = "top"
+)
+```
+
+### Finalized clustered bar chart
+
+This recreates a published CMAP graphic, viewable [here](https://www.cmap.illinois.gov/updates/all/-/asset_publisher/UIMfSLnFfMB6/content/illinois-at-risk-of-a-census-undercount-especially-in-communities-of-color). It also provides an example of how to add text annotations and specify value lines.
+
+```{r finalized_clustered_bar, eval=TRUE}
+# load base data
+df <- tibble("race" = c("White","White","No majority","No majority",
+                        "Asian","Asian","Hispanic","Hispanic",
+                        "Black","Black"),
+             "year" = c("2010","2020","2010","2020",
+                        "2010","2020","2010","2020",
+                        "2010","2020"),
+             "response" = c(.76,.761,.67,.671,
+                            .634,.605,.625,.55,
+                            .58,.55))
+
+# Add new field to format values as %
+df <- df %>%
+  mutate(label = sprintf("%i%%", as.integer(round(response * 100,0))))
+
+g <- df %>%
+  # Create base ggplot object
+  ggplot(aes(x = reorder(race,-response), # Order race by decreasing response rate
+             y = response, # Set y values as response
+             fill = year,  # Colors change based on year
+             label = label)) + # Use `label` defined above as value labels
+
+  # Add CMAP color palette
+  cmap_fill_discrete(palette = "governance") + # Can substitute other palettes as desired
+
+  # Add gap between bars in same cluster
+  geom_col(width = 0.65, # Width should be less than position_dodge(width)
+           position = position_dodge(width = 0.7)) + # Difference of 0.05 is usually sufficient
+
+  # Change y-axis labels to percents
+  scale_y_continuous(labels = scales::percent) +
+
+  # Add dashed line at average value
+  geom_hline(yintercept = .71, # Specify value for line
+             linetype = "dashed", # Set aesthetic type of line
+             color = "gray") + # Set color of line
+
+  # Add value labels for response rates
+  geom_text(aes(y = response + .025), # Shift upward to eliminate overlap
+            position = position_dodge(width = 0.7), # Match to clustering pattern specified above
+            hjust = .5) + # Center label (0 is left aligned, 1 is right aligned)
+
+  # Add label to dashed line
+  annotate(geom = "text", # What geom do you want to use for the annotation?
+                          #  Normally, this will be "text"
+           x = 5.6, y = 0.695, # Specify position of annotation. You may need to
+                               #  "guess and check" to determine suitable x and y.
+           label = "2020 Chicago region average: 69%", # Text of annotation
+           hjust = 1, # Right align the text (0 is left aligned, 0.5 is centered,
+                      #  1 is right aligned)
+           color = "gray") + # set the color of the text (here, matched to above)
+
+  theme_cmap() # Call CMAP theme. No manual adjustments needed for this chart.
+
+
+finalize_plot(g,
+              title = "Average self-response rates in Chicago region census
+              tracts by majority race and ethnicity",
+              caption = "Note: These figures are weighted averages based on
+              tract-level response rates and housing unit totals. This analysis
+              relies on data from the U.S. Census Bureau's American Community
+              Survey and leverages Census designations of race and ethnicity.
+              This includes the term 'Hispanic,' which in this context refers to
+              residents of any race who categorized themselves as Hispanic. See
+              'About the data' below for more detail.
+              <br><br>
+              Sources: CMAP analysis of U.S. Census Bureau data
+              <br>
+              (as of August 19, 2020).",
+
+              # Note that line breaks in the text above are not reflected in the
+              #  plot unless specifically called using HTML-style "<br>" tags.
+              title_width = 2.4, # If necessary, manually specify title width
+              # mode = "png", filename = "clustered_bar.png",
+              overrides= list(margin_legend_b = 50)) # Increase margin below legend
+```
+
+### Finalized stacked bar chart
+
+```{r finalized_stacked_bar eval=TRUE}
+# Get example dataset
+df <- read_csv("https://raw.githubusercontent.com/CMAP-REPOS/ONTO2050-indicators/master/non-single-occupancy-modes/non-single-occupancy-modes.csv") %>%
+  as_tibble() %>%
+  pivot_longer(cols = starts_with("PCT_NONSOV"),
+               names_to = "MODE",
+               names_prefix = "PCT_NONSOV_",
+               values_to = "PCT_NONSOV") %>%
+  filter(MODE != "TOTAL",
+         ACTUAL_OR_TARGET == "Actual") %>%
+  mutate(MODE = recode(MODE,
+                       "CARPOOL" = "Carpool",
+                       "TRANSIT" = "Public transportation",
+                       "BIKE" = "Bicycle",
+                       "WALK" = "Walk",
+                       "HOME" = "Work at home"))
+
+
+# Create stacked bar chart
+p <- ggplot(data = df, aes(x = YEAR, y = PCT_NONSOV, fill = MODE)) +
+
+    # Add bars
+    geom_col() +
+
+    # Apply CMAP theme and color palette
+    theme_cmap() +
+    cmap_fill_discrete(palette = "legislation") +
+
+    # Format y-axis numbers as percentages, and set axis limits
+    scale_y_continuous(labels = scales::label_percent(accuracy = 1, scale = 1),
+                       limits = c(0, 35),
+                       breaks = seq(from = 0, to = 35, by = 5)) +
+
+    # Label every bar along x-axis
+    scale_x_continuous(n.breaks = length(unique(df$YEAR)))
+
+
+# Create final plot
+finalize_plot(
+  p, #mode = "png", filename = "/Users/nmp/Desktop/stackedbar.png",
+  title = "Percentage of trips to work via non-single occupancy vehicle
+    (non-SOV) modes, 2009-2018",
+  caption = "Source: CMAP analysis of American Community Survey (ACS) data
+    for the 7-county CMAP region, 1-year estimates.
+    <br><br>
+    Note: The Kendall County portion of this data is based on ACS 5-year
+    estimates, since 1-year estimates of mode share are not consistently
+    available there due to its relatively small population.",
+  caption_valign = "bottom"
+)
+```
+
+
+### Finalized area chart
+
+```{r finalized_area, eval=TRUE}
+# clean data
+df <- transit_ridership %>%
+  filter(!is.na(ridership)) %>% # Remove entries with no ridership (in this case, 
+                            #  values before PACE ADA is broken out in the data)
+  
+  # Change system names to desired legend output
+  mutate(system = recode(system, 
+                         "cta_bus" = "CTA - Bus",
+                         "cta_rail" = "CTA - Rail",
+                         "metra" = "Metra",
+                         "pace" = "Pace",
+                         "pace_ada" = "Pace ADA")) %>%
+  
+  # Make into factor with defined order for plotting
+  mutate(system = factor(system,
+                         levels = c("Pace ADA","Pace","Metra",
+                                    "CTA - Rail","CTA - Bus")))
+                                
+g <- df %>%
+  # Create base ggplot
+  ggplot(aes(x = year, # x-axis is the year
+             y = ridership, # y-axis is ridership (total)
+             fill = system)) + # fill is the relevant system
+  
+  # Add the area chart
+  geom_area() +
+  
+  # Add the desired color palette
+  cmap_fill_discrete(palette = "legislation") +
+  
+  # Call the CMAP theme
+  theme_cmap(gridlines = "hv",
+             panel.grid.major.x = element_line(color = "light gray")) +
+  
+  # Reverse the order of the legend (optional)
+  guides(fill = guide_legend(reverse = TRUE))
+
+
+finalize_plot(g,
+              title = "Annual unlinked passenger trips on Regional Transportation
+               Authority systems over time, by service board (in millions).",
+              # mode = "png", filename = "area_chart.png",
+              caption = "Source: CMAP analysis of RTA data.")
+```
+
+### Finalized donut chart
+
+This recreates a published CMAP graphic, viewable [here](https://www.cmap.illinois.gov/updates/all/-/asset_publisher/UIMfSLnFfMB6/content/cmap-estimates-show-improved-regional-air-quality-due-to-recent-transportation-shifts).
+
+```{r finalized_donut, eval=TRUE}
+# Create example dataset
+df <- tibble(
+  SECTOR = c("Stationary energy", "Transportation", "Waste"),
+  EMISSIONS = c(81.9, 34.3, 3.2)
+)
+
+# Create donut chart
+p <- df %>%
+
+  # Compute temporary variables needed for constructing the donut segments
+  mutate(
+    fraction = EMISSIONS / sum(EMISSIONS),
+    xmax = cumsum(fraction),
+    xmin = lag(xmax, default = 0)
+  ) %>%
+
+  ggplot(mapping = aes(fill=SECTOR)) +
+
+    # Create donut segments as rectangles of proportional width, fixed height
+    geom_rect(mapping = aes(xmin = xmin, xmax = xmax,
+                            ymin = 2, ymax = 3)) +
+
+    # Add formatted labels to center of each donut segment
+    geom_text(mapping = aes(label = sprintf("%.0f%%", fraction * 100),
+                            x = (xmax+xmin)/2,
+                            y = 2.5),
+              color = "white") +  # Change label color
+
+    # Switch from rectangular to circular grid, centered at y=0
+    coord_polar() +
+    ylim(c(0, 3)) +  # Without this, result would be a pie chart
+
+    # Apply CMAP theme (without gridlines) and a color palette
+    theme_cmap(gridline = "none") +
+    cmap_fill_discrete(palette = "community") +
+
+    # Turn off axis labels
+    theme(axis.text = element_blank())
+
+
+# Create final plot
+finalize_plot(
+  p, #mode = "png", filename = "/Users/nmp/Desktop/donut.png",
+  title = "Regional emissions by sector, 2015",
+  caption = "Source: Chicago Metropolitan Agency for Planning.",
+  caption_valign = "top")
+```
+
+### Finalized scatter plot
+
+This recreates a published CMAP graphic, viewable [here](https://www.cmap.illinois.gov/documents/10180/1034772/PU20-0001_AGE_LABOR_FORCE_Change_in_size+copy.png/5c50d430-a633-97a8-26d9-7ffadadca080?t=1564670176836)
+
+```{r finalized_scatter eval=TRUE}
+# Create example dataset
+df <- tibble(
+  REGION = c("Boston", "Chicago", "Los Angeles", "New York", "Washington, D.C."),
+  TOT_POP_DIFF = c(41695, -114387, 110955, 322308, 198931),
+  LF_POP_DIFF = c(46296, -68524, 113307, 315163, 173036),
+  LF_RATE_DIFF_MAG = c(0.5349653, 0.684531, 0.4036736, 0.5853668, 0.0386677),
+  LF_RATE_DIFF_DIR = c("Increase", "Increase", "Increase", "Increase", "Decrease")
+)
+
+
+# Create scatterplot
+p <- ggplot(data = df, mapping = aes(x = TOT_POP_DIFF, y = LF_POP_DIFF)) +
+
+  # Apply CMAP theme with optional arguments
+  theme_cmap(
+    xlab = "Change in population aged 25-54",  # Label x-axis
+    ylab = "Change in size of labor force aged 25-54",  # Label y-axis
+    hline = 0, vline = 0,  # Add horizontal and vertical origin lines at 0
+    gridlines = "hv"  # Include both horizontal and vertical gridlines
+  ) +
+
+  # Adding points after theme_cmap() puts points in front of origin lines
+  geom_point(mapping = aes(
+    size = LF_RATE_DIFF_MAG,  # Associate point size with a variable
+    color = LF_RATE_DIFF_DIR  # Associate point color with a variable
+  )) +
+  geom_text(mapping = aes(label = REGION)) +  # Label each point with its name
+
+  # Manually adjust point size/color aesthetics and legend items
+  scale_size(range = c(5, 25)) +  # Minimum/maximum size of points
+  scale_color_manual(
+    values = c(`Increase` = cmap_palettes$legislation[1],  # Modify point colors
+               `Decrease` = cmap_palettes$legislation[2]),
+    breaks = c("Increase", "Decrease"),  # Specify order of legend items
+    labels = c("Increase in labor force\nparticipation rate",  # Modify legend labels for each color
+               "Decrease in labor force\nparticipation rate")  # ("\n" inserts a line break)
+  ) +
+  guides(size = "none",  # Omit size aesthetic from legend
+         color = guide_legend(override.aes = list(size = 5))) +  # Increase legend point size
+
+  # Adjust gridlines and their labels
+  scale_x_continuous(labels = scales::label_comma(),  # Format x-axis numbers with commas
+                     limits = c(-200000, 400000),     # Set x-axis limits
+                     n.breaks = 7) +                  # Set number of gridlines on x-axis
+  scale_y_continuous(labels = scales::label_comma(),  # Format y-axis numbers with commas
+                     limits = c(-200000, 400000),     # Set y-axis limits
+                     n.breaks = 7) +                  # Set number of gridlines on y-axis
+  theme(axis.text.x = element_text(
+    angle = 45,   # Set an angle for the x-axis numbers,
+    hjust = 1,    # a horizontal justification (between 0-1, trial & error),
+    vjust = 1     # and a vertical justification (between 0-1, trial & error).
+  ))
+
+
+# Create final plot
+finalize_plot(
+  p, #mode = "png", filename = "/Users/nmp/Desktop/scatter.png",
+  title = "Changes in population, size of labor force, and labor force
+    participation rate among prime working age residents (ages 25-54), Chicago
+    and select Metropolitan Statistical Areas, 2006-10 to 2013-17",
+  caption = "Size of bubble represents the absolute value of percentage point
+    change in labor force participation rate.<br><br>
+    Source: Chicago Metropolitan Agency for Planning analysis of American
+    Community Survey data, five-year estimates, 2006-10 and 2013-17.",
+  caption_valign = "bottom"
+)
+
 ```
