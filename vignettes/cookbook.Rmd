@@ -107,7 +107,7 @@ ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
 
 This line graph demonstrates the `cmap_color_race()` color palette, which should be used for charts that display information broken down by race and ethnicity
 
-```{r finalized_line1, eval=TRUE}
+```{r finalized_line1 eval=TRUE}
 # Get example dataset
 df <- read_csv("https://raw.githubusercontent.com/CMAP-REPOS/ONTO2050-indicators/master/household-income-race-ethnicity/household-income-race-ethnicity.csv") %>%
   as_tibble() %>%
@@ -162,7 +162,7 @@ finalize_plot(
 
 This graph demonstrates the `cmap_color_highlight` function, which will selectively color one element of a chart to highlight it in comparison to other plotted data.
 
-```{r finalized_line2, eval=TRUE}
+```{r finalized_line2 eval=TRUE}
 
 # Get example dataset
 df <- read_csv("https://raw.githubusercontent.com/CMAP-REPOS/ONTO2050-indicators/master/income-inequality/income-inequality.csv") %>%
@@ -293,7 +293,7 @@ finalize_plot(g,
 
 ### Finalized stacked bar chart
 
-```{r finalized_stacked_bar, eval=TRUE}
+```{r finalized_stacked_bar eval=TRUE}
 # Get example dataset
 df <- read_csv("https://raw.githubusercontent.com/CMAP-REPOS/ONTO2050-indicators/master/non-single-occupancy-modes/non-single-occupancy-modes.csv") %>%
   as_tibble() %>%
@@ -451,7 +451,7 @@ finalize_plot(
 
 This recreates a published CMAP graphic, viewable [here](https://www.cmap.illinois.gov/documents/10180/1034772/PU20-0001_AGE_LABOR_FORCE_Change_in_size+copy.png/5c50d430-a633-97a8-26d9-7ffadadca080?t=1564670176836)
 
-```{r finalized_scatter, eval=TRUE}
+```{r finalized_scatter eval=TRUE}
 # Create example dataset
 df <- tibble(
   REGION = c("Boston", "Chicago", "Los Angeles", "New York", "Washington, D.C."),
