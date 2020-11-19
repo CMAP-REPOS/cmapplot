@@ -135,7 +135,7 @@ finalize_plot <- function(plot = NULL,
   # check args with default vectors
   caption_valign <- match.arg(caption_valign)
 
-  # check mode argument and validate filename
+  # check mode argument
   savetypes_raster <- c("png","tiff","jpeg","bmp")
   savetypes_vector <- c("svg","ps","pdf")
   savetypes_print <- c("plot", "window")
@@ -197,161 +197,80 @@ finalize_plot <- function(plot = NULL,
     caption <- input_caption
   }
 
-  # fetch and set geom defaults
+
+  # Prepare ggplot -------------------------------------------------------------
+
+  # cache then temporary override geom defaults
   if (use_cmap_aes) {
     geom_defaults <- fetch_current_default_aes()
     set_default_aes(cmapplot_globals$default_aes_cmap)
   }
 
-  # preformat plot
-  plot <- plot + ggplot2::theme(
-    # remove any in-plot titles
-    plot.title = element_blank(),
-    plot.caption = element_blank(),
-    # apply any extra `ggplot2::theme()` args
-    ...
-  )
-
-  # Use helper function to develop full stack of legend, buffer, and plot, and debug rects
+  # Build full stack of legend, buffer, and plot, and debug rects as a grob
   plot <- buildChart(plot = plot,
-             consts = consts,
-             overrides = overrides,
-             legend_shift = legend_shift,
-             debug = debug)
+                     consts = consts,
+                     overrides = overrides,
+                     legend_shift = legend_shift,
+                     debug = debug,
+                     ...)
 
-  # return geom defaults as before (now that the plot is a grob object,
-  #  ggplot2 draw settings will not impact it.)
+  # reset geom defaults
   if (use_cmap_aes) {
     set_default_aes(geom_defaults)
   }
 
-  # Build necessary viewports -----------------------------------------------------
 
-  # create a parent viewport for centering the final_plot when drawing within R
-  vp.centerframe <- grid::viewport(
-    name = "vp.centerframe",
-    default.units = "bigpts",
-    width = consts$width,
-    height = consts$height,
-    clip = "on"
-  )
+  # Assemble final plot --------------------------------------------------------
 
-  # create plotbox viewport
-  vp.plotbox <- grid::viewport(
-    name = "vp.plotbox",
-    x = consts$title_width,
-    y = consts$margin_plot_b,
-    just = c(0,0),
-    default.units = "bigpts",
-    height = consts$plotbox_height,
-    width = consts$plotbox_width,
-    clip = "on"
-  )
+  final_plot <- construct_plot(plot = plot,
+                               consts = consts,
+                               fill_bg = fill_bg,
+                               title = title,
+                               caption = caption,
+                               caption_valign = caption_valign,
+                               debug = debug)
 
-  # Build necessary grobs -----------------------------------------------------
-
-  # grob to fill canvas (ROOT vp)
-  grob_canvas <- grid::rectGrob(
-    name = "canvas",
-    gp = grid::gpar(fill = fill_canvas,
-                    col = fill_canvas)
-  )
-
-  # grob to fill behind output (ROOT vp)
-  grob_background <- grid::rectGrob(
-    name = "background",
-    gp = grid::gpar(fill = fill_bg,
-                    col = fill_bg)
-  )
-
-  #  top line (ROOT vp)
-  grob_topline <- grid::linesGrob(
-    name = "topline",
-    default.units = "bigpts",
-    x = c(0, consts$width),
-    y = consts$height - consts$margin_topline_t,
-    gp = grid::gpar(col = cmapplot_globals$colors$blackish,
-                    lineend = "butt",
-                    lwd = consts$lwd_topline / .lwd)
-  )
-
-  # title textbox (ROOT vp)
-  grob_title <- gridtext::textbox_grob(
-    name = "title",
-    text = title,
-    default.units = "bigpts",
-    # set location down from top left corner
-    x = 0,
-    y = consts$height - consts$margin_title_to_top,
-    hjust = 0,
-    vjust = 1,
-    # set dimensions
-    width = consts$title_width,
-    maxheight = consts$height - consts$margin_title_to_top - consts$margin_title_b,
-    # retract texbox size on left and right
-    margin = grid::unit(c(0,                     # top
-                          consts$margin_title_r, # right
-                          0,                     # bottom
-                          consts$margin_title_l),# left
-                          "bigpts"),
-    # set font aesthetic variables
-    gp = grid::gpar(fontsize=cmapplot_globals$fsize$L,
-                    fontfamily=cmapplot_globals$font$strong$family,
-                    fontface=cmapplot_globals$font$strong$face,
-                    lineheight=consts$leading_title,
-                    col=cmapplot_globals$colors$blackish),
-    box_gp = grid::gpar(col = ifelse(debug, "red", NA),
-                        fill = NA)
-  )
-
-  # caption textbox (ROOT vp)
-  grob_caption <- gridtext::textbox_grob(
-    name = "caption",
-    text = caption,
-    default.units = "bigpts",
-    # set location
-    x = 0,
-    y = 0,
-    hjust = 0,
-    vjust = 0,
-    # set dimensions
-    width = consts$title_width,
-    height = grid::unit(consts$height - consts$margin_title_to_top, "bigpts") - grid::grobHeight(grob_title),
-    # retract texbox size on each side
-    margin = grid::unit(c(consts$margin_title_b,  # top
-                          consts$margin_title_r,  # right
-                          consts$margin_caption_b,# bottom
-                          consts$margin_title_l), # left
-                        "bigpts"),
-    # set aesthetic variables
-    valign = ifelse(caption_valign == "top", 1, 0),
-    gp = grid::gpar(fontsize = cmapplot_globals$fsize$S,
-                    fontfamily = cmapplot_globals$font$light$family,
-                    fontface = cmapplot_globals$font$light$face,
-                    lineheight = consts$leading_caption,
-                    col = cmapplot_globals$colors$blackish),
-    box_gp = grid::gpar(col = ifelse(debug, "red", NA),
-                        fill = NA)
-  )
-
-  # ggplot as grob (vp.plotbox)
-  grob_plot <- grid::grobTree(
-    plot,
-    vp = vp.plotbox,
-    name = "plot"
-  )
-
-
-  # Assemble final plot -----------------------------------------------------
-
-  final_plot <- grid::grobTree(
-    grob_background, grob_topline, grob_title, grob_caption, grob_plot,
-    name = "final_plot"
-  )
 
   # Output the figure based on mode selected -----------------------------------
 
-  for(this_mode in mode){
+
+  # first, do in-R drawing
+  for(this_mode in intersect(mode, savetypes_print)){
+
+    # create a parent viewport for centering the final_plot when drawing within R
+    vp.centerframe <- grid::viewport(
+      name = "vp.centerframe",
+      default.units = "bigpts",
+      width = consts$width,
+      height = consts$height,
+      clip = "on"
+    )
+
+    # in window mode, open new drawing device
+    if (this_mode == "window" & .Platform$OS.type == "windows") {
+      grDevices::dev.new(width = width * 1.02,
+                           height = height * 1.02,
+                           noRStudioGD = TRUE)
+    }
+
+    # draw blank canvas
+    grid::grid.rect(gp = grid::gpar(fill = fill_canvas,
+                                    col = fill_canvas)
+    )
+
+    # enter centerframe, draw plot, exit centerframe
+    grid::pushViewport(vp.centerframe)
+    grid::grid.draw(final_plot)
+    grid::popViewport()
+
+    # in window mode, reset device to default without closing window
+    if (this_mode == "window" & .Platform$OS.type == "windows") {
+      grDevices::dev.next()
+    }
+
+  }
+
+  for(this_mode in intersect(mode, c(savetypes_raster, savetypes_vector))){
 
     # if filename does not contain correct extension, add it
     # (in print modes this functions but is meaningless)
@@ -398,39 +317,6 @@ finalize_plot <- function(plot = NULL,
       message(paste("Export successful:", this_mode))
 
     # OR display the grob in the plot window
-    } else if (this_mode == "plot") {
-
-      # set up blank canvas
-      grid::grid.draw(grob_canvas)
-
-      # enter centerframe, draw plot, exit centerframe
-      grid::pushViewport(vp.centerframe)
-      grid::grid.draw(final_plot)
-      grid::popViewport()
-
-    } else if (this_mode == "window") {
-
-      if (.Platform$OS.type == "windows") {
-        # open new device (window)
-        grDevices::dev.new(width = width * 1.02,
-                           height = height * 1.02,
-                           noRStudioGD = TRUE)
-
-        # set up blank canvas
-        grid::grid.draw(grob_canvas)
-
-        # enter centerframe, draw plot, exit centerframe
-        grid::pushViewport(vp.centerframe)
-        grid::grid.draw(final_plot)
-        grid::popViewport()
-
-        # reset device to default without closing window
-        grDevices::dev.next()
-
-      } else {
-
-        message("`Window` mode not available on non-Windows platforms")
-      }
     }
   }
 
@@ -441,14 +327,23 @@ finalize_plot <- function(plot = NULL,
 }
 
 
-
+#' Sub-fn to create plot grob, including legend-realignment
 #' @noRd
-# Function to create plot object with left aligned legend on top
 buildChart <- function(plot,
                        consts,
                        overrides,
                        legend_shift,
-                       debug) {
+                       debug,
+                       ...) {
+
+  # preformat plot
+  plot <- plot + ggplot2::theme(
+    # remove any in-plot titles
+    plot.title = element_blank(),
+    plot.caption = element_blank(),
+    # apply any extra `ggplot2::theme()` args
+    ...
+  )
 
   # add debug rect around plot if in debug mode
   if (debug) {
@@ -553,4 +448,130 @@ buildChart <- function(plot,
 
   # return the combined grob
   return(built)
+}
+
+
+
+
+
+
+#' Sub-fn to create final plot layout, and return as grobTree
+#' @noRd
+construct_plot <- function(plot,
+                           consts,
+                           fill_bg,
+                           title,
+                           caption,
+                           caption_valign,
+                           debug) {
+
+  # Build necessary viewports -----------------------------------------------------
+
+  # create plotbox viewport
+  vp.plotbox <- grid::viewport(
+    name = "vp.plotbox",
+    x = consts$title_width,
+    y = consts$margin_plot_b,
+    just = c(0,0),
+    default.units = "bigpts",
+    height = consts$plotbox_height,
+    width = consts$plotbox_width,
+    clip = "on"
+  )
+
+  # Build necessary grobs -----------------------------------------------------
+
+  # grob to fill behind output (ROOT vp)
+  grob_background <- grid::rectGrob(
+    name = "background",
+    gp = grid::gpar(fill = fill_bg,
+                    col = fill_bg)
+  )
+
+  #  top line (ROOT vp)
+  grob_topline <- grid::linesGrob(
+    name = "topline",
+    default.units = "bigpts",
+    x = c(0, consts$width),
+    y = consts$height - consts$margin_topline_t,
+    gp = grid::gpar(col = cmapplot_globals$colors$blackish,
+                    lineend = "butt",
+                    lwd = consts$lwd_topline / .lwd)
+  )
+
+  # title textbox (ROOT vp)
+  grob_title <- gridtext::textbox_grob(
+    name = "title",
+    text = title,
+    default.units = "bigpts",
+    # set location down from top left corner
+    x = 0,
+    y = consts$height - consts$margin_title_to_top,
+    hjust = 0,
+    vjust = 1,
+    # set dimensions
+    width = consts$title_width,
+    maxheight = consts$height - consts$margin_title_to_top - consts$margin_title_b,
+    # retract texbox size on left and right
+    margin = grid::unit(c(0,                     # top
+                          consts$margin_title_r, # right
+                          0,                     # bottom
+                          consts$margin_title_l),# left
+                        "bigpts"),
+    # set font aesthetic variables
+    gp = grid::gpar(fontsize=cmapplot_globals$fsize$L,
+                    fontfamily=cmapplot_globals$font$strong$family,
+                    fontface=cmapplot_globals$font$strong$face,
+                    lineheight=consts$leading_title,
+                    col=cmapplot_globals$colors$blackish),
+    box_gp = grid::gpar(col = ifelse(debug, "red", NA),
+                        fill = NA)
+  )
+
+  # caption textbox (ROOT vp)
+  grob_caption <- gridtext::textbox_grob(
+    name = "caption",
+    text = caption,
+    default.units = "bigpts",
+    # set location
+    x = 0,
+    y = 0,
+    hjust = 0,
+    vjust = 0,
+    # set dimensions
+    width = consts$title_width,
+    height = grid::unit(consts$height - consts$margin_title_to_top, "bigpts") - grid::grobHeight(grob_title),
+    # retract texbox size on each side
+    margin = grid::unit(c(consts$margin_title_b,  # top
+                          consts$margin_title_r,  # right
+                          consts$margin_caption_b,# bottom
+                          consts$margin_title_l), # left
+                        "bigpts"),
+    # set aesthetic variables
+    valign = ifelse(caption_valign == "top", 1, 0),
+    gp = grid::gpar(fontsize = cmapplot_globals$fsize$S,
+                    fontfamily = cmapplot_globals$font$light$family,
+                    fontface = cmapplot_globals$font$light$face,
+                    lineheight = consts$leading_caption,
+                    col = cmapplot_globals$colors$blackish),
+    box_gp = grid::gpar(col = ifelse(debug, "red", NA),
+                        fill = NA)
+  )
+
+  # ggplot as grob (vp.plotbox)
+  grob_plot <- grid::grobTree(
+    plot,
+    vp = vp.plotbox,
+    name = "plot"
+  )
+
+
+  # Assemble final plot -----------------------------------------------------
+
+  final_plot <- grid::grobTree(
+    grob_background, grob_topline, grob_title, grob_caption, grob_plot,
+    name = "final_plot"
+  )
+
+  return(final_plot)
 }
