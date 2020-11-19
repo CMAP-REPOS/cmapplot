@@ -236,7 +236,7 @@ finalize_plot <- function(plot = NULL,
   # Output the figure based on mode selected -----------------------------------
 
   # first, do in-R drawing
-  for(this_mode in intersect(mode, savetypes_print)){
+  for (this_mode in intersect(mode, savetypes_print)) {
     draw_plot(final_plot = final_plot,
               consts = consts,
               fill_canvas = fill_canvas,
@@ -244,7 +244,7 @@ finalize_plot <- function(plot = NULL,
   }
 
   # second, export vectors
-  for(this_mode in intersect(mode, savetypes_vector)){
+  for (this_mode in intersect(mode, savetypes_vector)) {
 
     # construct arglist for drawing device
     arglist <- list(filename = filename,
@@ -259,7 +259,7 @@ finalize_plot <- function(plot = NULL,
   }
 
   # third, export rasters
-  for(this_mode in intersect(mode, savetypes_raster)){
+  for (this_mode in intersect(mode, savetypes_raster)) {
 
     # construct arglist for drawing device
     arglist <- list(filename = filename,
@@ -593,7 +593,7 @@ save_plot <- function(final_plot,
   mode <- ifelse (mode == "pdf" | mode == "ps", paste0("cairo_" , mode), mode)
 
   # if file exists and overwrite == FALSE, do not write
-  if(file.exists(arglist$filename) & !overwrite){
+  if (file.exists(arglist$filename) & !overwrite) {
     message(paste0(fname, ": SKIPPED (try `overwrite = TRUE`?)"))
     return()
   }
