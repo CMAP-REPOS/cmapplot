@@ -63,6 +63,7 @@
 #'@importFrom gridExtra arrangeGrob
 #'@importFrom ggpubr get_legend
 #'@importFrom purrr compact
+#'@importFrom stringr str_replace
 #'
 #'@examples
 #' \dontrun{
@@ -140,21 +141,23 @@ finalize_plot <- function(plot = NULL,
   # check args with default vectors
   caption_valign <- match.arg(caption_valign)
 
+  # remove any `window` mode specified if OS is not Windows
+  if ("window" %in% mode & .Platform$OS.type != "windows"){
+    mode <- stringr::str_replace(mode, "^window$", "plot")
+    message("`mode='window'` is not supported on non-Windows systems. Switching to `mode='plot'` instead.")
+  }
+
   # check mode argument
   savetypes_raster <- c("png","tiff","jpeg","bmp")
   savetypes_vector <- c("svg","ps","pdf")
   savetypes_print <- c("plot", "window")
 
-  mode <- match.arg(arg = mode,
+  mode <- match.arg(arg = unique(mode),
                     choices = c(savetypes_print,
                                 savetypes_vector,
                                 savetypes_raster),
                     several.ok = TRUE)
 
-  # remove any `window` mode specified if OS is not Windows
-  if (.Platform$OS.type != "windows"){
-    mode <- mode[mode != "window"]
-  }
 
   # if any save modes specified, check for filename
   if (length(generics::intersect(mode, c(savetypes_raster, savetypes_vector))) > 0) {
@@ -253,7 +256,7 @@ finalize_plot <- function(plot = NULL,
   # Output the figure based on mode selected -----------------------------------
 
   # first, do in-R drawing
-  for (this_mode in intersect(mode, savetypes_print)) {
+  for (this_mode in generics::intersect(mode, savetypes_print)) {
     draw_plot(final_plot = final_plot,
               consts = consts,
               fill_canvas = fill_canvas,
@@ -261,7 +264,7 @@ finalize_plot <- function(plot = NULL,
   }
 
   # second, export vectors
-  for (this_mode in intersect(mode, savetypes_vector)) {
+  for (this_mode in generics::intersect(mode, savetypes_vector)) {
 
     # construct arglist for drawing device
     arglist <- list(filename = filename,
@@ -276,7 +279,7 @@ finalize_plot <- function(plot = NULL,
   }
 
   # third, export rasters
-  for (this_mode in intersect(mode, savetypes_raster)) {
+  for (this_mode in generics::intersect(mode, savetypes_raster)) {
 
     # construct arglist for drawing device
     arglist <- list(filename = filename,
@@ -534,7 +537,6 @@ construct_layout <- function(plot,
     vp = vp.plotbox,
     name = "plot"
   )
-
 
   # Assemble final plot -----------------------------------------------------
 
