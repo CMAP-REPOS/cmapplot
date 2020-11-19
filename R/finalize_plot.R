@@ -568,8 +568,8 @@ draw_plot <- function(final_plot,
 
   # in window mode, open new drawing device
   if (mode == "window") {
-    grDevices::dev.new(width = consts$width * 72 * 1.02,
-                       height = consts$height * 72 * 1.02,
+    grDevices::dev.new(width = consts$width / 72 * 1.02,
+                       height = consts$height / 72 * 1.02,
                        noRStudioGD = TRUE)
   }
 
