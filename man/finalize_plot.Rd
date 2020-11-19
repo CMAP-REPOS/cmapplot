@@ -13,7 +13,8 @@ finalize_plot(
   title_width = NULL,
   caption_valign = c("bottom", "top"),
   mode = c("plot"),
-  filename = "",
+  filename = NULL,
+  overwrite = FALSE,
   ppi = 300,
   fill_bg = "white",
   fill_canvas = "gray90",
@@ -46,15 +47,19 @@ use 25 percent of the total output width (per Comms guidance).}
 the available space between the title and bottom of image. This argument
 accepts abbreviations, too: \code{c("bottom", "b", "top", "t")}.}
 
-\item{mode}{Vector, the action(s) to be taken with the plot. Save using any of
-the following: \code{png}, \code{tiff}, \code{jpeg}, \code{bmp}, \code{svg},
-\code{pdf}, \code{ps}. View in R with: \code{plot}, \code{window} (`window`
-currently works only on computers running Windows). Return an object with
-\code{object}.}
+\item{mode}{Vector, the action(s) to be taken with the plot. View in R with
+\code{plot}, the default, or \code{window} (\code{window} only works on
+computers running Windows). Save using any of the following: \code{png},
+\code{tiff}, \code{jpeg}, \code{bmp}, \code{svg}, \code{pdf}, \code{ps}. Run
+multiple simultaneous outputs with a vector, e.g. \code{c("plot", "png",
+"pdf")}.}
 
 \item{filename}{Char, the file path and name you want the plot to be saved to.
 You may specify an extension to use. If you don't, the correct extension
 will be added for you.}
+
+\item{overwrite}{Bool, set to \code{TRUE} if you would like the function to
+overwrite existing files by the same name. The default is \code{FALSE}.}
 
 \item{ppi}{Numeric, the resolution of exported images (pixels per inch).
 Default = 300.}
@@ -71,8 +76,8 @@ in \code{cmapplot_globals$consts} which are drawn by
 legend all the way left (on top of the y axis labels) per CMAP design
 standards. \code{FALSE} maintains the alignment used in the original plot.}
 
-\item{debug}{Bool, TRUE enables outlines around components of finalized plot.
-Default = FALSE.}
+\item{debug}{Bool, \code{TRUE} enables outlines around components of finalized
+plot. Defaults to \code{FALSE}.}
 
 \item{use_cmap_aes}{Bool, \code{TRUE}, the default, temporarily implements
 CMAP default aesthetic settings for geoms (see
@@ -82,17 +87,18 @@ CMAP default aesthetic settings for geoms (see
 function to override any elements of the default CMAP theme.}
 }
 \value{
-Exports from this function use Cairo graphics drivers, while drawing
- within R is done with default (Windows) drivers. \code{mode = "object"} also
- returns a gTree object that can be stored and drawn later with
- \code{grid::grid.draw()}.
+This function invisibly returns the final plot as a gTree object. If
+ stored (e.g. \code{g <- finalize_plot(...)}), the gTree can be drawn later
+ with \code{grid} (e.g. \code{grid::grid.draw(g)}).
 }
 \description{
 Place a ggplot into a frame defined by CMAP design standards. It will align
 your title and caption to the left, add a horizontal line on top, and make
 other adjustments. It can show you the final plot and/or export it as a raster
 or vector file. This function will not apply CMAP design standards to the plot
-itself: use with \code{theme_cmap()} for that.
+itself: use with \code{theme_cmap()} for that. Exports from this function use
+Cairo graphics drivers, while drawing within R is done with default (Windows)
+drivers.
 }
 \examples{
 \dontrun{
