@@ -427,7 +427,7 @@ GeomRecessionsText <- ggproto(
 #'@export
 update_recessions <- function(quietly = FALSE){
 
-  pkgs <- c("RCurl", "readxl", "tibble", "lubridate", "stringr")
+  pkgs <- c("RCurl", "readxl", "tibble", "lubridate")
   if(FALSE %in% lapply(pkgs, requireNamespace, quietly = TRUE)){
     stop(paste("This function requires the following packages:", paste(pkgs, collapse = ", ")), call. = FALSE)
   }
