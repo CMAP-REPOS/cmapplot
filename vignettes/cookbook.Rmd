@@ -473,7 +473,8 @@ p <- df %>%
               color = "white") +  # Change label color
 
     # Switch from rectangular to circular grid, centered at y=0
-    coord_polar() +
+    # `start` (in radians) by trial and error to match original graphic
+    coord_polar(start = 4.88) +
     ylim(c(0, 3)) +  # Without this, result would be a pie chart
 
     # Apply CMAP theme (without gridlines) and a color palette
@@ -487,7 +488,8 @@ p <- df %>%
 # Create final plot
 finalize_plot(
   p, mode="png", filename="cookbook_donut.png",
-  title = "Regional emissions by sector, 2015",
+  # use HTML tags to customize breaks in title, caption
+  title = "Regional emissions<br>by sector, 2015",
   caption = "Source: Chicago Metropolitan Agency for Planning.",
   caption_valign = "top")
 ```
