@@ -2,9 +2,6 @@
 #'
 #' A sample of comms-approved colors arranged into palettes
 #'
-#' @examples
-#' viz_gradient(cmap_gradients$seq_red_purple)
-#'
 #' @export
 cmap_gradients <- list(
 
@@ -80,6 +77,11 @@ cmap_gradients <- list(
 #' @examples
 #' viz_gradient(cmap_gradients$seq_orange_red)
 #'
+#' # ggplot example here would be nice
+#'
+#'
+#' @describeIn cmap_gradients function to vizualize gradients
+#'
 #' @export
 viz_gradient <- function(pal, ttl = deparse(substitute(pal))) {
     pal_func <- grDevices::colorRampPalette(pal, space = "Lab")
@@ -111,11 +113,11 @@ mid_rescaler2 <- function(mid) {
     }
 }
 
-#' Apply continuous CMAP palettes to ggplot2 aesthetics. On diverging palettes,
-#' a midpoint can be manually adjusted (defaults to 0)
+#' Apply continuous CMAP palettes to ggplot2 aesthetics.
 #'
 #' Pick the function depending on the aesthetic of your ggplot object (fill or
-#' color)
+#' color). On diverging palettes, a midpoint can be manually adjusted (defaults
+#' to 0).
 #'
 #' @param palette String; Choose from 'cmap_gradients' list
 #' @param reverse Logical; Reverse color order?
