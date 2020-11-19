@@ -49,9 +49,8 @@ accepts abbreviations, too: \code{c("bottom", "b", "top", "t")}.}
 
 \item{mode}{Vector, the action(s) to be taken with the plot. Save using any of
 the following: \code{png}, \code{tiff}, \code{jpeg}, \code{bmp}, \code{svg},
-\code{pdf}, \code{ps}. View in R with: \code{plot}, \code{window} (`window`
-currently works only on computers running Windows). Return an object with
-\code{object}.}
+\code{pdf}, \code{ps}. View in R with: \code{plot}, \code{window}
+(\code{window} = \code{plot} on computers not running Windows OS).}
 
 \item{filename}{Char, the file path and name you want the plot to be saved to.
 You may specify an extension to use. If you don't, the correct extension
@@ -86,9 +85,8 @@ CMAP default aesthetic settings for geoms (see
 function to override any elements of the default CMAP theme.}
 }
 \value{
-Exports from this function use Cairo graphics drivers, while drawing
- within R is done with default (Windows) drivers. \code{mode = "object"} also
- returns a gTree object that can be stored and drawn later with
+This function invisibly returns a gTree object. If stored (e.g. with
+ \code{g <- finalize_plot(...)}), the gTree can be drawn later with
  \code{grid::grid.draw()}.
 }
 \description{
@@ -96,7 +94,9 @@ Place a ggplot into a frame defined by CMAP design standards. It will align
 your title and caption to the left, add a horizontal line on top, and make
 other adjustments. It can show you the final plot and/or export it as a raster
 or vector file. This function will not apply CMAP design standards to the plot
-itself: use with \code{theme_cmap()} for that.
+itself: use with \code{theme_cmap()} for that. Exports from this function use
+Cairo graphics drivers, while drawing within R is done with default (Windows)
+drivers.
 }
 \examples{
 \dontrun{

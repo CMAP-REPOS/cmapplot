@@ -4,7 +4,9 @@
 #'your title and caption to the left, add a horizontal line on top, and make
 #'other adjustments. It can show you the final plot and/or export it as a raster
 #'or vector file. This function will not apply CMAP design standards to the plot
-#'itself: use with \code{theme_cmap()} for that.
+#'itself: use with \code{theme_cmap()} for that. Exports from this function use
+#'Cairo graphics drivers, while drawing within R is done with default (Windows)
+#'drivers.
 #'
 #'@param plot ggplot object, the variable name of the plot you have created that
 #'  you want to finalize. If null (the default), the most recent plot will be
@@ -24,9 +26,8 @@
 #'  accepts abbreviations, too: \code{c("bottom", "b", "top", "t")}.
 #'@param mode Vector, the action(s) to be taken with the plot. Save using any of
 #'  the following: \code{png}, \code{tiff}, \code{jpeg}, \code{bmp}, \code{svg},
-#'  \code{pdf}, \code{ps}. View in R with: \code{plot}, \code{window} (`window`
-#'  currently works only on computers running Windows). Return an object with
-#'  \code{object}.
+#'  \code{pdf}, \code{ps}. View in R with: \code{plot}, \code{window}
+#'  (\code{window} = \code{plot} on computers not running Windows OS).
 #'@param filename Char, the file path and name you want the plot to be saved to.
 #'  You may specify an extension to use. If you don't, the correct extension
 #'  will be added for you.
@@ -51,9 +52,8 @@
 #'@param ... pass additional arguments to ggplot2's \code{\link[ggplot2]{theme}}
 #'  function to override any elements of the default CMAP theme.
 #'
-#'@return Exports from this function use Cairo graphics drivers, while drawing
-#'  within R is done with default (Windows) drivers. \code{mode = "object"} also
-#'  returns a gTree object that can be stored and drawn later with
+#'@return This function invisibly returns a gTree object. If stored (e.g. with
+#'  \code{g <- finalize_plot(...)}), the gTree can be drawn later with
 #'  \code{grid::grid.draw()}.
 #'
 #'@importFrom utils modifyList
@@ -146,8 +146,7 @@ finalize_plot <- function(plot = NULL,
   mode <- match.arg(arg = mode,
                     choices = c(savetypes_raster,
                                 savetypes_vector,
-                                savetypes_print,
-                                "object"),
+                                savetypes_print),
                     several.ok = TRUE)
 
   # if any save modes specified, check for filename
@@ -236,7 +235,6 @@ finalize_plot <- function(plot = NULL,
 
   # Output the figure based on mode selected -----------------------------------
 
-
   # first, do in-R drawing
   for(this_mode in intersect(mode, savetypes_print)){
     draw_plot(final_plot = final_plot,
@@ -278,10 +276,8 @@ finalize_plot <- function(plot = NULL,
               overwrite = overwrite)
   }
 
-  # finally, if user wants an object, return it
-  if ("object" %in% mode) {
-    return(final_plot)
-  }
+  # finally, return plot as grob
+  invisible(final_plot)
 }
 
 
