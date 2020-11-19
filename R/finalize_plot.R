@@ -144,9 +144,9 @@ finalize_plot <- function(plot = NULL,
   savetypes_print <- c("plot", "window")
 
   mode <- match.arg(arg = mode,
-                    choices = c(savetypes_raster,
+                    choices = c(savetypes_print,
                                 savetypes_vector,
-                                savetypes_print),
+                                savetypes_raster),
                     several.ok = TRUE)
 
   # if any save modes specified, check for filename
