@@ -258,7 +258,8 @@ finalize_plot <- function(plot = NULL,
   # first, do in-R drawing
   for (this_mode in generics::intersect(mode, savetypes_print)) {
     draw_plot(final_plot = final_plot,
-              consts = consts,
+              width = width,
+              height = height,
               fill_canvas = fill_canvas,
               mode = this_mode)
   }
@@ -553,23 +554,24 @@ construct_layout <- function(plot,
 #' Sub-fn to draw plot within R
 #' @noRd
 draw_plot <- function(final_plot,
-                      consts,
+                      width,
+                      height,
                       fill_canvas,
                       mode){
 
   # create a parent viewport for centering the final_plot when drawing within R
   vp.centerframe <- grid::viewport(
     name = "vp.centerframe",
-    default.units = "bigpts",
-    width = consts$width,
-    height = consts$height,
+    default.units = "in",
+    width = width,
+    height = height,
     clip = "on"
   )
 
   # in window mode, open new drawing device
   if (mode == "window") {
-    grDevices::dev.new(width = consts$width / 72 * 1.02,
-                       height = consts$height / 72 * 1.02,
+    grDevices::dev.new(width = width * 1.02,
+                       height = height * 1.02,
                        noRStudioGD = TRUE)
   }
 
