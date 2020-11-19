@@ -3,16 +3,33 @@
 \docType{data}
 \name{cmap_palettes}
 \alias{cmap_palettes}
+\alias{viz_palette}
 \title{CMAP discrete color palettes}
 \format{
 An object of class \code{list} of length 8.
 }
 \usage{
 cmap_palettes
+
+viz_palette(pal, ttl = deparse(substitute(pal)), num = length(pal))
+}
+\arguments{
+\item{pal}{character, vector of (hexadecimal) colours representing a palette}
+
+\item{ttl}{character, title to be displayed (the name of the palette)}
+
+\item{num}{numeric, the number of colours to display}
 }
 \description{
 A sample of comms-approved colors arranged into palettes
+
+Directly from the \href{https://github.com/ropenscilabs/ochRe}{ochRe package}
 }
+\section{Functions}{
+\itemize{
+\item \code{viz_palette}: function to vizualize a palette
+}}
+
 \examples{
 viz_palette(cmap_palettes$mobility)
 

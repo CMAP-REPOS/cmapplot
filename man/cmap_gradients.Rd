@@ -3,18 +3,37 @@
 \docType{data}
 \name{cmap_gradients}
 \alias{cmap_gradients}
+\alias{viz_gradient}
 \title{CMAP continuous color palettes}
 \format{
 An object of class \code{list} of length 23.
 }
 \usage{
 cmap_gradients
+
+viz_gradient(pal, ttl = deparse(substitute(pal)))
+}
+\arguments{
+\item{pal}{= select from cmap_gradients list}
+
+\item{ttl}{= display title (optional)}
 }
 \description{
 A sample of comms-approved colors arranged into palettes
+
+Displays 25 interpolated colors from the cmap continuous palettes.
+Modeled after viz_palette from the \href{https://github.com/ropenscilabs/ochRe}{ochRe package}
 }
+\section{Functions}{
+\itemize{
+\item \code{viz_gradient}: function to vizualize gradients
+}}
+
 \examples{
-viz_gradient(cmap_gradients$seq_red_purple)
+viz_gradient(cmap_gradients$seq_orange_red)
+
+# ggplot example here would be nice
+
 
 }
 \keyword{datasets}

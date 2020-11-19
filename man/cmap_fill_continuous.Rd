@@ -4,8 +4,7 @@
 \alias{cmap_fill_continuous}
 \alias{cmap_color_continuous}
 \alias{cmap_colour_continuous}
-\title{Apply continuous CMAP palettes to ggplot2 aesthetics. On diverging palettes,
-a midpoint can be manually adjusted (defaults to 0)}
+\title{Apply continuous CMAP palettes to ggplot2 aesthetics.}
 \usage{
 cmap_fill_continuous(palette = "seq_reds", reverse = FALSE, middle = 0)
 
@@ -23,7 +22,8 @@ cmap_colour_continuous(palette = "seq_reds", reverse = FALSE, middle = 0)
 }
 \description{
 Pick the function depending on the aesthetic of your ggplot object (fill or
-color)
+color). On diverging palettes, a midpoint can be manually adjusted (defaults
+to 0).
 }
 \section{Functions}{
 \itemize{

@@ -44,9 +44,7 @@ cmap_palettes <- list(
 #' @param ttl character, title to be displayed (the name of the palette)
 #' @param num numeric, the number of colours to display
 #'
-#' @examples
-#' viz_palette(cmap_palettes$mobility)
-#'
+#' @describeIn cmap_palettes function to vizualize a palette
 #' @export
 viz_palette <- function(pal, ttl = deparse(substitute(pal)), num = length(pal)) {
     if (num <= 0) {
