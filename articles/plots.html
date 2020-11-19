@@ -61,13 +61,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/plots.html">Creating CMAP-themed plots</a>
+    </li>
+    <li>
       <a href="../articles/colors.html">Applying CMAP color schemes</a>
     </li>
     <li>
       <a href="../articles/cookbook.html">A cookbook for cmapplot</a>
-    </li>
-    <li>
-      <a href="../articles/plots.html">Creating CMAP-themed plots</a>
     </li>
   </ul>
 </li>
@@ -191,12 +191,12 @@
 <div id="auxiliary-functions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#auxiliary-functions" class="anchor"></a>Auxiliary functions</h2>
+<p>The cmapplot package also includes two custom geoms that allow the user to easily add common elements used in CMAP plots that would be otherwise difficult to program.</p>
 <div id="include-us-recessions-as-a-backdrop" class="section level3">
 <h3 class="hasAnchor">
 <a href="#include-us-recessions-as-a-backdrop" class="anchor"></a>Include US recessions as a backdrop</h3>
-<p>The cmapplot package also includes two custom geoms that allow the user to easily add common elements used in CMAP plots that would be otherwise difficult to program.</p>
 <p>The function <code><a href="../reference/geom_recessions.html">geom_recessions()</a></code>, allows for the addition of rectangles (and text, if desired) representing US economic recessions. Similar to the <code>hline</code> example above, <code><a href="../reference/geom_recessions.html">geom_recessions()</a></code> should be added before the plot’s primary geom (<code>geom_line()</code>) so that lines are drawn on top of recession rectangles.</p>
-<p>In addition, ggplot2 always draws geoms on top of base plot elements like gridlines. The default fill and alpha for <code><a href="../reference/geom_recessions.html">geom_recessions()</a></code> has been chosen because it is the most transparent way to achieve CMAP palette color <code>#002d49</code> when drawn on a white background — thus impacting the color of the gridlines as little as possible.</p>
+<p><code>ggplot()</code> always draws geoms <em>on top</em> of base plot elements like gridlines. The default fill and alpha values for <code><a href="../reference/geom_recessions.html">geom_recessions()</a></code> are the most transparent way possible to achieve CMAP palette color <code>#002d49</code> when drawn on a white background — thus impacting the color of the gridlines as little as possible.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
 <span class="va">q</span> <span class="op">&lt;-</span> <span class="fu">ggplot</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>, 
             mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">ridership</span>, color <span class="op">=</span> <span class="va">system</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
@@ -226,7 +226,7 @@
 <div id="overriding-ggplot2s-default-aesthetics" class="section level3">
 <h3 class="hasAnchor">
 <a href="#overriding-ggplot2s-default-aesthetics" class="anchor"></a>Overriding ggplot2’s default aesthetics</h3>
-<p>Every geom has default aesthetics that cannot be modified by a ggplot2 theme (and therefore, cannot be modified by <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code>). Notice, for example, that the text drawn in the plot via <code>geom_text_last()</code> and <code><a href="../reference/geom_recessions.html">geom_recessions()</a></code> still appears in Arial (R’s default font), although the legend and axis fonts appear in Calibri/Whitney. This is automatically corrected in <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code>. However, if you’d like to see these impacts at this stage, you can override ggplot2’s default aesthetics for line and text geoms with CMAP defaults via <code><a href="../reference/cmap_default_aes.html">apply_cmap_default_aes()</a></code>.</p>
+<p>Every geom has default aesthetics that cannot be modified by a ggplot2 theme (and therefore, cannot be modified by <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code>). Notice, for example, that the text drawn in the plot via <code><a href="../reference/geom_text_lastonly.html">geom_text_lastonly()</a></code> and <code><a href="../reference/geom_recessions.html">geom_recessions()</a></code> still appears in Arial (R’s default font), although the legend and axis fonts appear in Calibri/Whitney. This is automatically corrected in <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code>. However, if you’d like to see these impacts at this stage, you can override ggplot2’s default aesthetics for line and text geoms with CMAP defaults via <code><a href="../reference/cmap_default_aes.html">apply_cmap_default_aes()</a></code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit">
 <span class="fu"><a href="../reference/cmap_default_aes.html">apply_cmap_default_aes</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; Aesthetic defaults overridden in the current session for the following Geoms:</span>

@@ -47,7 +47,9 @@
 
 
 <meta property="og:title" content="CMAP continuous color palettes — cmap_gradients" />
-<meta property="og:description" content="A sample of comms-approved colors arranged into palettes" />
+<meta property="og:description" content="A sample of comms-approved colors arranged into palettes
+Displays 25 interpolated colors from the cmap continuous palettes.
+Modeled after viz_palette from the ochRe package" />
 <meta property="og:image" content="https://cmap-repos.github.io/cmapplot/logo.png" />
 
 
@@ -103,13 +105,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/plots.html">Creating CMAP-themed plots</a>
+    </li>
+    <li>
       <a href="../articles/colors.html">Applying CMAP color schemes</a>
     </li>
     <li>
       <a href="../articles/cookbook.html">A cookbook for cmapplot</a>
-    </li>
-    <li>
-      <a href="../articles/plots.html">Creating CMAP-themed plots</a>
     </li>
   </ul>
 </li>
@@ -141,18 +143,43 @@
 
     <div class="ref-description">
     <p>A sample of comms-approved colors arranged into palettes</p>
+<p>Displays 25 interpolated colors from the cmap continuous palettes.
+Modeled after viz_palette from the <a href='https://github.com/ropenscilabs/ochRe'>ochRe package</a></p>
     </div>
 
-    <pre class="usage"><span class='va'>cmap_gradients</span></pre>
+    <pre class="usage"><span class='va'>cmap_gradients</span>
 
+<span class='fu'>viz_gradient</span><span class='op'>(</span><span class='va'>pal</span>, ttl <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/deparse.html'>deparse</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>substitute</a></span><span class='op'>(</span><span class='va'>pal</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>pal</th>
+      <td><p>= select from cmap_gradients list</p></td>
+    </tr>
+    <tr>
+      <th>ttl</th>
+      <td><p>= display title (optional)</p></td>
+    </tr>
+    </table>
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
     <p>An object of class <code>list</code> of length 23.</p>
+    <h2 class="hasAnchor" id="functions"><a class="anchor" href="#functions"></a>Functions</h2>
+
+    
+<ul>
+<li><p><code>viz_gradient</code>: function to vizualize gradients</p></li>
+</ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='viz_gradient.html'>viz_gradient</a></span><span class='op'>(</span><span class='va'>cmap_gradients</span><span class='op'>$</span><span class='va'>seq_red_purple</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='fu'>viz_gradient</span><span class='op'>(</span><span class='va'>cmap_gradients</span><span class='op'>$</span><span class='va'>seq_orange_red</span><span class='op'>)</span>
 </div><div class='img'><img src='cmap_gradients-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># ggplot example here would be nice</span>
+
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

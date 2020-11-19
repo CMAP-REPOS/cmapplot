@@ -47,7 +47,8 @@
 
 
 <meta property="og:title" content="CMAP discrete color palettes — cmap_palettes" />
-<meta property="og:description" content="A sample of comms-approved colors arranged into palettes" />
+<meta property="og:description" content="A sample of comms-approved colors arranged into palettes
+Directly from the ochRe package" />
 <meta property="og:image" content="https://cmap-repos.github.io/cmapplot/logo.png" />
 
 
@@ -103,13 +104,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/plots.html">Creating CMAP-themed plots</a>
+    </li>
+    <li>
       <a href="../articles/colors.html">Applying CMAP color schemes</a>
     </li>
     <li>
       <a href="../articles/cookbook.html">A cookbook for cmapplot</a>
-    </li>
-    <li>
-      <a href="../articles/plots.html">Creating CMAP-themed plots</a>
     </li>
   </ul>
 </li>
@@ -141,17 +142,42 @@
 
     <div class="ref-description">
     <p>A sample of comms-approved colors arranged into palettes</p>
+<p>Directly from the <a href='https://github.com/ropenscilabs/ochRe'>ochRe package</a></p>
     </div>
 
-    <pre class="usage"><span class='va'>cmap_palettes</span></pre>
+    <pre class="usage"><span class='va'>cmap_palettes</span>
 
+<span class='fu'>viz_palette</span><span class='op'>(</span><span class='va'>pal</span>, ttl <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/deparse.html'>deparse</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>substitute</a></span><span class='op'>(</span><span class='va'>pal</span><span class='op'>)</span><span class='op'>)</span>, num <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>pal</span><span class='op'>)</span><span class='op'>)</span></pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>pal</th>
+      <td><p>character, vector of (hexadecimal) colours representing a palette</p></td>
+    </tr>
+    <tr>
+      <th>ttl</th>
+      <td><p>character, title to be displayed (the name of the palette)</p></td>
+    </tr>
+    <tr>
+      <th>num</th>
+      <td><p>numeric, the number of colours to display</p></td>
+    </tr>
+    </table>
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
     <p>An object of class <code>list</code> of length 8.</p>
+    <h2 class="hasAnchor" id="functions"><a class="anchor" href="#functions"></a>Functions</h2>
+
+    
+<ul>
+<li><p><code>viz_palette</code>: function to vizualize a palette</p></li>
+</ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='viz_palette.html'>viz_palette</a></span><span class='op'>(</span><span class='va'>cmap_palettes</span><span class='op'>$</span><span class='va'>mobility</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='fu'>viz_palette</span><span class='op'>(</span><span class='va'>cmap_palettes</span><span class='op'>$</span><span class='va'>mobility</span><span class='op'>)</span>
 </div><div class='img'><img src='cmap_palettes-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>pop_and_laborforce_by_age</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>variable</span>, y <span class='op'>=</span> <span class='va'>value</span>, fill <span class='op'>=</span> <span class='va'>age</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
    <span class='fu'>geom_col</span><span class='op'>(</span>position <span class='op'>=</span> <span class='fu'>position_stack</span><span class='op'>(</span>reverse <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>

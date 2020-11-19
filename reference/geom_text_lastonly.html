@@ -107,13 +107,13 @@ is less than the maximum." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/plots.html">Creating CMAP-themed plots</a>
+    </li>
+    <li>
       <a href="../articles/colors.html">Applying CMAP color schemes</a>
     </li>
     <li>
       <a href="../articles/cookbook.html">A cookbook for cmapplot</a>
-    </li>
-    <li>
-      <a href="../articles/plots.html">Creating CMAP-themed plots</a>
     </li>
   </ul>
 </li>
@@ -265,6 +265,11 @@ to the text geom here, rather than in <code>text_aes</code>, without breaking.</
     <p>Labels are placed by default to the right of the final point, and may be
 partially cut off by the plot limits. There are two known ways to address
 this:</p><ol>
+<li><p>Turn off panel clipping, e.g. with
+<code>coord_cartesian(clip = "off")</code>. Substitute the correct coordinate
+system for your plot--all have a <code>clip</code> argument available. Note that
+this will allow all geoms in the plot to draw outside the panel area, which
+may have unintended consequences.</p></li>
 <li><p>Manually expand the <code>x</code> scale,
 e.g. with <code>scale_x_continuous(expand=expand_scale(mult=0.10))</code> or
 <code>coord_cartesian(xlim = c(min, max))</code>.</p></li>

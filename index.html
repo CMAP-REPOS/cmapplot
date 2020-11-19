@@ -62,13 +62,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="articles/plots.html">Creating CMAP-themed plots</a>
+    </li>
+    <li>
       <a href="articles/colors.html">Applying CMAP color schemes</a>
     </li>
     <li>
       <a href="articles/cookbook.html">A cookbook for cmapplot</a>
-    </li>
-    <li>
-      <a href="articles/plots.html">Creating CMAP-themed plots</a>
     </li>
   </ul>
 </li>
@@ -117,38 +117,41 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>Run the following to install or update cmapplot:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co">## Install current version from GitHub</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"CMAP-REPOS/cmapplot"</span>, <span class="dt">build_vignettes=</span><span class="ot">TRUE</span>)</span>
-<span id="cb1-3"><a href="#cb1-3"></a></span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="co">## Then load the package as you would any other</span></span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="kw">library</span>(cmapplot)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="co">## Install current version from GitHub</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"CMAP-REPOS/cmapplot"</span>, build_vignettes<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
+
+<span class="co">## Then load the package as you would any other</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://cmap-repos.github.io/cmapplot">cmapplot</a></span><span class="op">)</span></pre></div>
 <p><strong>Important note:</strong> cmapplot works best when installed on a Windows computer with the Whitney family of fonts installed (specifically the Book, Medium, and Semibold variants). To install on macOS, users must install <a href="https://www.xquartz.org">XQuartz</a> before cmapplot can be loaded. (This can be easily accomplished via the <a href="https://brew.sh">Homebrew</a> package manager with the command <code>brew cask install xquartz</code>.)</p>
 <p>If installed on a Windows computer <em>without</em> Whitney, the package will still work, but the fonts will default to Calibri. If installed on macOS or Linux, the fonts will default to Arial, <em>even if Whitney is installed.</em></p>
 </div>
 <div id="cmap-theme-and-colors" class="section level2">
 <h2 class="hasAnchor">
 <a href="#cmap-theme-and-colors" class="anchor"></a>CMAP theme and colors</h2>
-<p>The function <code><a href="reference/theme_cmap.html">theme_cmap()</a></code> returns a complete ggplot2 theme that can be added to a ggplot code block (similar to <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">ggplot2::theme_minimal()</a></code> or <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">ggplot2::theme_bw</a></code>). Additionally, <code><a href="reference/theme_cmap.html">theme_cmap()</a></code> accepts a variety of arguments to additionally customize the theme output. CMAP color functions apply colors from the CMAP color palette to the plot.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> pop_and_laborforce_by_age, </span>
-<span id="cb2-2"><a href="#cb2-2"></a>       <span class="kw">aes</span>(<span class="dt">x =</span> value,</span>
-<span id="cb2-3"><a href="#cb2-3"></a>           <span class="dt">y =</span> <span class="kw">interaction</span>(year, variable, <span class="dt">sep =</span> <span class="st">" "</span>),</span>
-<span id="cb2-4"><a href="#cb2-4"></a>           <span class="dt">fill =</span> age)) <span class="op">+</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="st">  </span><span class="kw">geom_col</span>(<span class="dt">position =</span> <span class="kw">position_stack</span>(<span class="dt">reverse =</span> <span class="ot">TRUE</span>)) <span class="op">+</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">labels =</span> scales<span class="op">::</span>percent) <span class="op">+</span></span>
-<span id="cb2-7"><a href="#cb2-7"></a><span class="st">  </span><span class="kw">theme_cmap</span>(<span class="dt">xlab =</span> <span class="st">"Percent"</span>,</span>
-<span id="cb2-8"><a href="#cb2-8"></a>             <span class="dt">gridlines =</span> <span class="st">"v"</span>,</span>
-<span id="cb2-9"><a href="#cb2-9"></a>             <span class="dt">vline =</span> <span class="dv">0</span>) <span class="op">+</span></span>
-<span id="cb2-10"><a href="#cb2-10"></a><span class="st">  </span><span class="kw">cmap_fill_discrete</span>(<span class="dt">palette =</span> <span class="st">"mobility"</span>)</span>
-<span id="cb2-11"><a href="#cb2-11"></a><span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span></span></code></pre></div>
+<p>The function <code><a href="reference/theme_cmap.html">theme_cmap()</a></code> returns a complete ggplot2 theme that can be added to a ggplot code block (similar to <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">ggplot2::theme_minimal()</a></code> or <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">ggplot2::theme_bw()</a></code>). Additionally, <code><a href="reference/theme_cmap.html">theme_cmap()</a></code> accepts a variety of arguments to additionally customize the theme output. CMAP color functions apply colors from the CMAP color palette to the plot.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="fu">ggplot</span><span class="op">(</span>data <span class="op">=</span> <span class="va">pop_and_laborforce_by_age</span>, 
+       <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">value</span>,
+           y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/interaction.html">interaction</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">variable</span>, sep <span class="op">=</span> <span class="st">" "</span><span class="op">)</span>,
+           fill <span class="op">=</span> <span class="va">age</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">geom_col</span><span class="op">(</span>position <span class="op">=</span> <span class="fu">position_stack</span><span class="op">(</span>reverse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">scale_x_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org//reference/label_percent.html">percent</a></span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>xlab <span class="op">=</span> <span class="st">"Percent"</span>,
+             gridlines <span class="op">=</span> <span class="st">"v"</span>,
+             vline <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="reference/cmap_fill_discrete.html">cmap_fill_discrete</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"environment"</span><span class="op">)</span>
+<span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span></pre></div>
 <p><img src="reference/figures/README-theme-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div id="finalizing-the-plot" class="section level2">
 <h2 class="hasAnchor">
 <a href="#finalizing-the-plot" class="anchor"></a>Finalizing the plot</h2>
 <p>The function <code><a href="reference/finalize_plot.html">finalize_plot()</a></code> places a ggplot within a frame defined by CMAP design standards. It provides a variety of customization options via arguments, and allows for in-R viewing and/or exporting in various formats.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">finalize_plot</span>(<span class="dt">title =</span> <span class="st">"Regional population and labor force participation"</span>,</span>
-<span id="cb3-2"><a href="#cb3-2"></a>              <span class="dt">caption =</span> <span class="st">"Data from the American Community Survey"</span>,</span>
-<span id="cb3-3"><a href="#cb3-3"></a>              <span class="dt">width =</span> <span class="dv">7</span>, <span class="dt">height =</span> <span class="fl">4.25</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="fu"><a href="reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Regional population and labor force participation"</span>,
+              caption <span class="op">=</span> <span class="st">"Data from the American Community Survey"</span>,
+              width <span class="op">=</span> <span class="fl">7</span>, height <span class="op">=</span> <span class="fl">4.25</span><span class="op">)</span></pre></div>
 <p><img src="reference/figures/README-finalize-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 </div>

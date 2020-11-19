@@ -105,13 +105,13 @@ and a list of constants which aid in drawing cmap-themed plots." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/plots.html">Creating CMAP-themed plots</a>
+    </li>
+    <li>
       <a href="../articles/colors.html">Applying CMAP color schemes</a>
     </li>
     <li>
       <a href="../articles/cookbook.html">A cookbook for cmapplot</a>
-    </li>
-    <li>
-      <a href="../articles/plots.html">Creating CMAP-themed plots</a>
     </li>
   </ul>
 </li>
@@ -167,9 +167,10 @@ and a list of constants which aid in drawing cmap-themed plots.</p>
 <li><p><code>lwd_gridline</code>: This thinner-width line is drawn vertically or
    horizontally with the <code>gridlines, axislines</code> args of <code><a href='theme_cmap.html'>theme_cmap()</a></code>. <strong>(T)</strong></p></li>
 <li><p><code>lwd_plotline</code>: The width of any lines drawn by geoms in the plot
-   (e.g. <code>geom_line</code>) but not explicitly sized by the geom's aesthetic. Due to
-   limitations in ggplot2's construction, this does not apply to
-   <code><a href='finalize_plot.html'>finalize_plot(mode = "object")</a></code> outputs. <strong>(F)</strong></p></li>
+   (e.g. <code>geom_line</code>) but not explicitly sized by the geom's aesthetic. Implemented
+   by <code>finalize_plot</code> or by <code>apply_cmap_default_aes</code> but not overridable in
+   either context. (Modify by setting the size explicitly in the geom, but see
+   <code>gg_lwd_convert</code> first.)</p></li>
 <li><p><code>lwd_topline</code>: The width of the line above the plot and title. <strong>(F)</strong></p></li>
 <li><p><code>margin_topline_t</code>: The margin between the top edge of the
    image and the top line. <strong>(F)</strong></p></li>
@@ -197,8 +198,8 @@ and a list of constants which aid in drawing cmap-themed plots.</p>
    and the edge of the image. <strong>(F)</strong></p></li>
 <li><p><code>margin_panel_r</code>: Padding between the plot and its right-hand drawing
    extent. Override this based on space needed for x axis labels. <strong>(T)</strong></p></li>
-<li><p><code>leading_title</code>: Text leading for Title text.</p></li>
-<li><p><code>leading_caption</code>: Text leading for Caption text.</p></li>
+<li><p><code>leading_title</code>: Text leading for Title text. <strong>(F)</strong></p></li>
+<li><p><code>leading_caption</code>: Text leading for Caption text. <strong>(F)</strong></p></li>
 </ul>
 
 
