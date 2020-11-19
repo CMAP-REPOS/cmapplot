@@ -21,82 +21,568 @@ library(tidyverse)
 library(cmapplot)
 ```
 
-This vignette uses the package's sample datasets to create a wide variety of example plots. The plots have been selected to showcase the code necessary to produce high quality graphics under a variety of circumstances.
+This vignette is a showcase of cmapplot's full capabilities by replicating as closely as possible a variety of published CMAP graphics. The sample code here can be used as a starting point for creating a number of common chart types. Before running any of this code, be sure to load the both tidyverse and cmapplot packages with `library(tidyverse)` and `library(cmapplot)`.
 
 
-## Sample datasets
+## Line graph
 
-For testing, the cmapplot package contains a variety of sample datasets. Each dataset has a man file that can be queried for additional details. Datasets currently included are:
+Intro text
 
-```{r datasets, echo = FALSE}
-cat("",
-    dir(path = "./../data/", pattern = "\\.RData$") %>%
-      str_replace(".RData$", "") %>%
-      paste(collapse = "\n "))
+#### Example code
+
+```{r line, message=FALSE}
+
 ```
 
+<!--<img src="" width="100%" style="display: block; margin: auto;"/>-->
 
-## Sample plots
+<!--#### Original graphic
 
-### Bar chart
+<img src="" width="100%" style="display: block; margin: auto;"/>
 
-```{r bars, eval=TRUE}
-# A bar chart
-ggplot(cluster_jobchange, aes(x = reorder(name, jobchange), y = jobchange, fill = category)) +
+[Source]()-->
+
+
+## Area plot
+
+Area plots are useful for showing changes in composition over time. (See also: stacked bar charts.)
+
+#### Example code
+
+```{r area, message=FALSE}
+# Get & format example dataset
+df <- cmapplot::transit_ridership %>%
+  filter(!is.na(ridership)) %>% # Remove entries with no ridership (in this case, 
+                            #  values before PACE ADA is broken out in the data)
+  
+  # Change system names to desired legend output
+  mutate(system = recode(system, 
+                         "cta_bus" = "CTA Bus",
+                         "cta_rail" = "CTA Rail",
+                         "metra" = "Metra",
+                         "pace" = "Pace",
+                         "pace_ada" = "Pace ADA")) %>%
+  
+  # Make into factor with defined order for plotting (top to bottom)
+  mutate(system = factor(system, levels = c(
+    "Pace ADA", "Pace", "Metra", "CTA Rail", "CTA Bus"
+  )))
+
+# Create area plot
+p <- ggplot(data = df, mapping = aes(x = year, y = ridership, fill = system)) +
+  
+  # Add the area plot
+  geom_area() +
+  
+  # Add the desired color palette
+  cmap_fill_discrete(palette = "legislation") +
+  
+  # Apply the CMAP theme
+  theme_cmap(gridlines = "hv") +
+  
+  # Reverse the order of the legend (optional)
+  guides(fill = guide_legend(reverse = TRUE))
+
+
+# Create final plot
+finalize_plot(
+  p, mode = "png", filename = "./cookbook_area.png",
+  title = "Annual unlinked passenger trips on Regional Transportation Authority
+    systems over time, by service board (in millions).",
+  caption = "Source: CMAP analysis of RTA data.")
+```
+
+<img src="cookbook_area.png" width="100%" style="display: block; margin: auto;"/>
+
+<!--#### Original graphic
+
+<img src="" width="100%" style="display: block; margin: auto;"/>
+
+[Source]()-->
+
+
+## Scatterplot
+
+Scatterplots show relationships between two numeric variables, plotted on the x- and y-axes. Additionally, color and size can be used to represent additional variables.
+
+#### Example code
+
+```{r scatter, message=FALSE}
+# Create example dataset
+df <- tibble(
+  REGION = c("Boston", "Chicago", "Los Angeles", "New York", "Washington, D.C."),
+  TOT_POP_DIFF = c(41695, -114387, 110955, 322308, 198931),
+  LF_POP_DIFF = c(46296, -68524, 113307, 315163, 173036),
+  LF_RATE_DIFF_MAG = c(0.5349653, 0.684531, 0.4036736, 0.5853668, 0.0386677),
+  LF_RATE_DIFF_DIR = c("Increase", "Increase", "Increase", "Increase", "Decrease")
+)
+
+
+# Create scatterplot
+p <- ggplot(data = df, mapping = aes(x = TOT_POP_DIFF, y = LF_POP_DIFF)) +
+
+  # Apply CMAP theme with optional arguments
+  theme_cmap(
+    xlab = "Change in population aged 25-54",  # Label x-axis
+    ylab = "Change in size of labor force aged 25-54",  # Label y-axis
+    hline = 0, vline = 0,  # Add horizontal and vertical origin lines at 0
+    gridlines = "hv"  # Include both horizontal and vertical gridlines
+  ) +
+
+  # Adding points after theme_cmap() puts points in front of origin lines
+  geom_point(mapping = aes(
+    size = LF_RATE_DIFF_MAG,  # Associate point size with a variable
+    color = LF_RATE_DIFF_DIR  # Associate point color with a variable
+  )) +
+  geom_text(mapping = aes(label = REGION)) +  # Label each point with its name
+
+  # Manually adjust point size/color aesthetics and legend items
+  scale_size(range = c(5, 25)) +  # Minimum/maximum size of points
+  scale_color_manual(
+    values = c(`Increase` = cmap_palettes$legislation[1],  # Modify point colors
+               `Decrease` = cmap_palettes$legislation[2]),
+    breaks = c("Increase", "Decrease"),  # Specify order of legend items
+    labels = c("Increase in labor force\nparticipation rate",  # Modify legend labels for each color
+               "Decrease in labor force\nparticipation rate")  # ("\n" inserts a line break)
+  ) +
+  guides(size = "none",  # Omit size aesthetic from legend
+         color = guide_legend(override.aes = list(size = 5))) +  # Increase legend point size
+
+  # Adjust gridlines and their labels
+  scale_x_continuous(labels = scales::label_comma(),  # Format x-axis numbers with commas
+                     limits = c(-200000, 400000),     # Set x-axis limits
+                     n.breaks = 7,                    # Set number of gridlines on x-axis
+                     expand = expansion(mult = 0)) +  # No padding beyond specified limits
+  scale_y_continuous(labels = scales::label_comma(),  # Format y-axis numbers with commas
+                     limits = c(-200000, 400000),     # Set y-axis limits
+                     n.breaks = 7,                    # Set number of gridlines on y-axis
+                     expand = expansion(mult = 0)) +  # No padding beyond specified limits
+  theme(axis.text.x = element_text(
+    angle = 45,   # Set an angle for the x-axis numbers,
+    hjust = 1,    # a horizontal justification (between 0-1, trial & error),
+    vjust = 1     # and a vertical justification (between 0-1, trial & error).
+  ))
+
+
+# Create final plot
+finalize_plot(
+  p, mode="png", filename="cookbook_scatter.png",
+  title = "Changes in population, size of labor force, and labor force
+    participation rate among prime working age residents (ages 25-54), Chicago
+    and select Metropolitan Statistical Areas, 2006-10 to 2013-17",
+  caption = "Size of bubble represents the absolute value of percentage point
+    change in labor force participation rate.<br><br>
+    Source: Chicago Metropolitan Agency for Planning analysis of American
+    Community Survey data, five-year estimates, 2006-10 and 2013-17."
+)
+```
+
+<img src="cookbook_scatter.png" width="100%" style="display: block; margin: auto;"/>
+
+#### Original graphic
+
+<img src="https://www.cmap.illinois.gov/documents/10180/1034772/PU20-0001_AGE_LABOR_FORCE_Change_in_size+copy.png" width="100%" style="display: block; margin: auto;"/>
+
+[Source](https://www.cmap.illinois.gov/updates/all/-/asset_publisher/UIMfSLnFfMB6/content/population-change-across-age-groups-in-the-cmap-region)
+
+
+## Highlighted bar chart
+
+The cmapplot package includes functionality for highlighting specified data using a distinct color. This is useful to compare Chicago against peer regions, for example.
+
+#### Example code
+
+```{r highlightbar, message=FALSE}
+# Create example dataset
+df <- tibble(
+  REGION = c("Boston", "Chicago", "Los Angeles", "New York", "Washington, D.C."),
+  MED_HH_INC = c(77809, 63327, 62216, 69211, 93804)
+)
+
+
+# Create highlighted bar chart
+p <- ggplot(data = df,
+            mapping = aes(
+              x = reorder(REGION, -MED_HH_INC), # Order race by decreasing income
+              y = MED_HH_INC,
+              fill = REGION  # Fill must be set for a highlighted chart
+            )) +
+
+  # Add bars
+  geom_col(width = 0.5) +
+
+  # Add horizontal line at specified value
+  geom_hline(yintercept = 55322) +
+
+  # Label bars
+  geom_text(
+    mapping = aes(
+      y = MED_HH_INC + 2500,  # Offset by trial & error
+      label = scales::label_dollar()(MED_HH_INC)  # Format labels as dollars
+    ),
+    hjust = .5  # Center label (0 = left aligned, 1 = right aligned)
+  ) +
+
+  # Annotate the horizontal line
+  annotate(
+    geom = "text",
+    x = 5.6, y = 52822, # Specify position of annotation (trial & error)
+    label = "U.S. Average $55,322",
+    hjust = 1 # Right align the text
+  ) +
+
+  # Wrap long labels along the x-axis
+  scale_x_discrete(labels = scales::label_wrap(12)) +
+
+  # Format y-axis numbers as percentages, and set axis limits
+  scale_y_continuous(labels = scales::label_dollar(),
+                     limits = c(0, 100000),
+                     breaks = seq(from = 0, to = 100000, by = 10000)) +
+
+  # Apply CMAP theme and color palette
+  theme_cmap() +
+  cmap_fill_highlight(field = df$REGION, value = "Chicago") +
+
+  # Omit fill aesthetic from legend
+  guides(fill = "none")
+
+
+# Create final plot
+finalize_plot(
+  p, mode = "png", filename = "./cookbook_highlightbar.png",
+  title = "Median household income in select metropolitan statistical areas, 2016",
+  caption = "Source: Chicago Metropolitan Agency for Planning analysis of U.S.
+    Census Bureau data."
+)
+```
+
+<img src="cookbook_highlightbar.png" width="100%" style="display: block; margin: auto;"/>
+
+#### Original graphic
+
+<img src="https://www.cmap.illinois.gov/documents/10180/854316/MedianIncome_3.svg" width="100%" style="display: block; margin: auto;"/>
+
+[Source](https://www.cmap.illinois.gov/programs/regional-economic-indicators/trends)
+
+
+## Clustered bar chart
+
+Intro text
+
+#### Example code
+
+```{r clusterbar, message=FALSE}
+# Create example dataset
+df <- tibble(
+  RACE = c("White", "White", "No majority", "No majority", "Asian", "Asian", "Hispanic", "Hispanic", "Black", "Black"),
+  YEAR = c("2010", "2020", "2010", "2020", "2010", "2020", "2010", "2020", "2010", "2020"),
+  RESPONSE = c(.760, .761, .670, .671, .634, .605, .625, .550, .580, .550)
+) %>%
+  mutate(LABEL = sprintf("%i%%", as.integer(round(RESPONSE * 100,0))))
+
+
+# Create clustered bar chart
+p <- ggplot(data = df,
+            mapping = aes(
+              x = reorder(RACE, -RESPONSE), # Order race by decreasing response rate
+              y = RESPONSE, fill = YEAR, label = LABEL
+            )) +
+  
+  # Add gap between bars in same cluster
+  geom_col(width = 0.65,  # Width should be less than position_dodge(width)
+           position = position_dodge(width = 0.7)) +  # Difference of 0.05 is usually sufficient
+  
+  # Add horizontal dashed line at specified value
+  geom_hline(yintercept = .69, linetype = "dashed", color = "gray") +
+  
+  # Label bars
+  geom_text(
+    mapping = aes(y = RESPONSE + .025),  # Shift upward to eliminate overlap
+    position = position_dodge(width = 0.7),  # Match geom_col's width
+    hjust = .5  # Center label (0 = left aligned, 1 = right aligned)
+  ) +
+  
+  # Annotate the dashed line
+  annotate(
+    geom = "text",
+    x = 5.6, y = 0.715, # Specify position of annotation (trial & error)
+    label = "2020 Chicago region average: 69%",
+    hjust = 1, # Right align the text
+    color = "gray" # set the color of the text (here, matched to above)
+  ) +
+  
+  # Format y-axis numbers as percentages
+  scale_y_continuous(labels = scales::label_percent()) +
+  
+  # Apply CMAP theme and color palette
+  theme_cmap() +
+  cmap_fill_discrete(palette = "governance")
+
+
+# Create final plot
+finalize_plot(
+  p, mode = "png", filename = "./cookbook_clusterbar.png",
+  title = "Average self-response rates in Chicago region census tracts by
+    majority race and ethnicity",
+  caption = "Note: These figures are weighted averages based on tract-level
+    response rates and housing unit totals. This analysis relies on data from
+    the U.S. Census Bureau's American Community Survey and leverages Census
+    designations of race and ethnicity. This includes the term 'Hispanic,'
+    which in this context refers to residents of any race who categorized
+    themselves as Hispanic. See 'About the data' below for more detail.
+    <br><br>
+    Sources: CMAP analysis of U.S. Census Bureau data
+    <br>
+    (as of August 19, 2020).",
+  title_width = 2.4,  # Manually specify title width
+  overrides = list(margin_legend_b = 50)  # Increase margin below legend
+)
+```
+
+<img src="cookbook_clusterbar.png" width="100%" style="display: block; margin: auto;"/>
+
+#### Original graphic
+
+<img src="https://www.cmap.illinois.gov/documents/10180/1173426/Census_Self-Response+_Chicago.svg" width="100%" style="display: block; margin: auto;"/>
+
+[Source](https://www.cmap.illinois.gov/updates/all/-/asset_publisher/UIMfSLnFfMB6/content/illinois-at-risk-of-a-census-undercount-especially-in-communities-of-color)
+
+
+## Stacked bar chart
+
+Stacked bar charts allow for the bars to represent multiple variables: the sub-bars represent individual components of a group, and the total bar height represents the sum of all of the group's components.
+
+#### Example code
+
+```{r stackbar, message=FALSE}
+# Get & format example dataset from ON TO 2050 indicators GitHub repository
+df <- read_csv("https://raw.githubusercontent.com/CMAP-REPOS/ONTO2050-indicators/master/non-single-occupancy-modes/non-single-occupancy-modes.csv") %>%
+  as_tibble() %>%
+  pivot_longer(cols = starts_with("PCT_NONSOV"),
+               names_to = "MODE",
+               names_prefix = "PCT_NONSOV_",
+               values_to = "PCT_NONSOV") %>%
+  filter(MODE != "TOTAL",
+         ACTUAL_OR_TARGET == "Actual") %>%
+  mutate(MODE = recode(MODE,
+                       "CARPOOL" = "Carpool",
+                       "TRANSIT" = "Public transportation",
+                       "BIKE" = "Bicycle",
+                       "WALK" = "Walk",
+                       "HOME" = "Work at home")) %>%
+  mutate(MODE = factor(MODE, levels = c(
+    "Work at home", "Walk", "Bicycle", "Public transportation", "Carpool"
+  )))
+
+
+# Create stacked bar chart
+p <- ggplot(data = df, aes(x = YEAR, y = PCT_NONSOV, fill = MODE)) +
+
+  # Add bars
   geom_col() +
-  coord_flip() +
-  theme_cmap()
+
+  # Format y-axis numbers as percentages, and set axis limits
+  scale_y_continuous(labels = scales::label_percent(accuracy = 1, scale = 1),
+                     limits = c(0, 35),
+                     breaks = seq(from = 0, to = 35, by = 5)) +
+
+  # Label every bar along x-axis
+  scale_x_continuous(n.breaks = length(unique(df$YEAR))) +
+
+  # Apply CMAP theme and color palette
+  theme_cmap() +
+  cmap_fill_discrete(palette = "legislation")
+
+
+# Create final plot
+finalize_plot(
+  p, mode="png", filename="cookbook_stackbar.png",
+  title = "Percentage of trips to work via non-single occupancy vehicle
+    (non-SOV) modes, 2009-2018",
+  caption = "Source: CMAP analysis of American Community Survey (ACS) data
+    for the 7-county CMAP region, 1-year estimates.
+    <br><br>
+    Note: The Kendall County portion of this data is based on ACS 5-year
+    estimates, since 1-year estimates of mode share are not consistently
+    available there due to its relatively small population."
+)
 ```
 
-### Stacked bar chart
+<img src="cookbook_stackbar.png" width="100%" style="display: block; margin: auto;"/>
 
-```{r stackedbars1, eval=TRUE}
-# a stacked bar chart
-filter(traded_emp_by_race, variable %in% c("SpecializedTraded", "UnspecializedTraded")) %>%
-  ggplot(aes(x = reorder(Race, -value), y = value, fill = variable)) +
-  geom_col(position = position_stack(reverse = TRUE)) +
-  scale_y_continuous(labels = scales::percent) +
-  theme_cmap()
+#### Original graphic
+
+<img src="https://www.cmap.illinois.gov/documents/10180/911367/MOB_Percent_Trips_to_work_INDICATOR_FINAL.png" width="100%" style="display: block; margin: auto;"/>
+
+[Source](https://www.cmap.illinois.gov/2050/indicators/non-single-occupancy-modes)
+
+
+## Histogram
+
+Intro text
+
+#### Example code
+
+```{r histogram, message=FALSE}
+
 ```
 
-### Grouped and stacked bar chart
+<!--<img src="" width="100%" style="display: block; margin: auto;"/>-->
 
-```{r stackedbars2, eval=TRUE}
-# a grouped and stacked bar chart (via `interaction()`)
-ggplot(pop_and_laborforce_by_age, aes(x = interaction(year, variable), y = value, fill = age)) +
-  geom_col(position = position_stack(reverse = TRUE)) +
-  coord_flip() +
-  theme_cmap()
+<!--#### Original graphic
+
+<img src="" width="100%" style="display: block; margin: auto;"/>
+
+[Source]()-->
+
+
+## Donut chart (or pie chart)
+
+The donut chart is a CMAP favorite for visualizing percentages of a whole. It is a variant of the pie chart, where the center has been replaced by a hole. While ggplot2 does not have a native geom for donut or pie charts, they can be constructed with a combination of `geom_rect()` and `coord_polar()`.
+
+#### Example code
+
+```{r donut, message=FALSE}
+# Create example dataset
+df <- tibble(
+  SECTOR = c("Stationary energy", "Transportation", "Waste"),
+  EMISSIONS = c(81.9, 34.3, 3.2)
+)
+
+
+# Create donut chart
+p <- df %>%
+
+  # Compute temporary variables needed for constructing the donut segments
+  mutate(
+    fraction = EMISSIONS / sum(EMISSIONS),
+    xmax = cumsum(fraction),
+    xmin = lag(xmax, default = 0)
+  ) %>%
+
+  ggplot(mapping = aes(fill=SECTOR)) +
+
+    # Create donut segments as rectangles of proportional width, fixed height
+    geom_rect(mapping = aes(xmin = xmin, xmax = xmax,
+                            ymin = 2, ymax = 3)) +
+
+    # Add formatted labels to center of each donut segment
+    geom_text(mapping = aes(label = sprintf("%.0f%%", fraction * 100),
+                            x = (xmax+xmin)/2,
+                            y = 2.5),
+              color = "white") +  # Change label color
+
+    # Switch from rectangular to circular grid, centered at y=0
+    coord_polar() +
+    ylim(c(0, 3)) +  # Without this, result would be a pie chart
+
+    # Apply CMAP theme (without gridlines) and a color palette
+    theme_cmap(gridline = "none") +
+    cmap_fill_discrete(palette = "community") +
+
+    # Turn off axis labels
+    theme(axis.text = element_blank())
+
+
+# Create final plot
+finalize_plot(
+  p, mode="png", filename="cookbook_donut.png",
+  title = "Regional emissions by sector, 2015",
+  caption = "Source: Chicago Metropolitan Agency for Planning.",
+  caption_valign = "top")
 ```
 
-```{r stackedbars3, eval=TRUE}
-# a grouped and stacked bar chart (via `interaction()`)
-ggplot(economy_basic, aes(x = interaction(year, variable), y = value, fill = sector)) +
-  geom_col(position = "fill") +
-  scale_y_continuous(labels = scales::percent) +
-  coord_flip() +
-  theme_cmap()
+<img src="cookbook_donut.png" width="100%" style="display: block; margin: auto;"/>
+
+#### Original graphic
+
+<img src="https://www.cmap.illinois.gov/documents/10180/1132711/PU20-0000+covid+climate_regional+emissions+by+sector.jpg" width="100%" style="display: block; margin: auto;"/>
+
+[Source](https://www.cmap.illinois.gov/updates/all/-/asset_publisher/UIMfSLnFfMB6/content/cmap-estimates-show-improved-regional-air-quality-due-to-recent-transportation-shifts)
+
+
+## Faceted chart
+
+Intro text
+
+#### Example code
+
+```{r facet, message=FALSE}
+
 ```
 
-### Line chart
+<!--<img src="" width="100%" style="display: block; margin: auto;"/>-->
 
-```{r lines1, eval=TRUE}
-# a non-time-series line chart
-ggplot(percentile_wages, aes(x = percentile, y = wage, color = cluster)) +
+<!--#### Original graphic
+
+<img src="" width="100%" style="display: block; margin: auto;"/>
+
+[Source]()-->
+
+
+## Race and ethnicity time series line graph
+
+Given CMAP's focus on inclusive growth, many of our graphics depict data by race and ethnicity. Notably, several of the ON TO 2050 indicators track trends over time by race and ethnicity. For these cases, the cmapplot package includes a special race/ethnicity color palette that can be applied to the `color` or `fill` aesthetics of any geom.
+
+#### Example code
+
+```{r racepalette, message=FALSE}
+# Get & format example dataset from ON TO 2050 indicators GitHub repository
+df <- read_csv("https://raw.githubusercontent.com/CMAP-REPOS/ONTO2050-indicators/master/household-income-race-ethnicity/household-income-race-ethnicity.csv") %>%
+  as_tibble() %>%
+  pivot_longer(cols = starts_with("MED_HH_INC"),
+               names_to = "RACE_ETH",
+               names_prefix = "MED_HH_INC_",
+               values_to = "MED_HH_INC") %>%
+  mutate(RACE_ETH = recode(RACE_ETH,
+                        "ALL" = "All",
+                        "ASIAN" = "Asian",
+                        "BLACK" = "Black",
+                        "HISPANIC" = "Hispanic",
+                        "WHITE" = "White (non-Hispanic)"))
+
+
+# Create line graph with race/ethnicity palette
+p <- ggplot(data = df, mapping = aes(x = YEAR, y = MED_HH_INC, color = RACE_ETH)) +
+
+  # Add lines and label final value with dollar formatting
   geom_line() +
-  scale_y_continuous(labels = scales::dollar) +
-  theme_cmap()
+  geom_text_lastonly(mapping = aes(label = scales::label_dollar()(MED_HH_INC)),
+                     add_points = TRUE) +
+
+  # Don't clip labels
+  coord_cartesian(clip = "off") +
+
+  # Manually set axis limits and format y-axis labels as dollars
+  scale_x_continuous(limits = c(2005, 2020)) +
+  scale_y_continuous(limits = c(0, 100000),
+                     n.breaks = 6,
+                     labels = scales::label_dollar()) +
+
+  # Apply CMAP theme and apply race/ethnicity palette
+  theme_cmap() +
+  cmap_color_race(white = "White (non-Hispanic)",
+                  black = "Black",
+                  hispanic = "Hispanic",
+                  asian = "Asian",
+                  other = "All")
+
+
+# Create final plot
+finalize_plot(
+  p, mode="png", filename="cookbook_racepalette.png",
+  title = "Median household income by race and ethnicity, 2006-2019, in 2016
+    inflation-adjusted dollars",
+  caption = "Source: CMAP analysis of American Community Survey data, 1-year
+    estimates.",
+  caption_valign = "top"
+)
 ```
 
-### Time-series line chart
+<img src="cookbook_racepalette.png" width="100%" style="display: block; margin: auto;"/>
 
-```{r lines2, eval=TRUE}
-# a time-series line chart
-ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
-  geom_line() +
-  geom_text_lastonly(add_points = TRUE) +
-  theme_cmap()  +
-  geom_hline(yintercept = 0,
-             color = "black",
-             size = 1)
-```
+#### Original graphic
+
+<img src="https://www.cmap.illinois.gov/documents/10180/911394/MISC_median-household-income_indicator_V1.png" width="100%" style="display: block; margin: auto;"/>
+
+[Source](https://www.cmap.illinois.gov/2050/indicators/household-income-race-ethnicity)
