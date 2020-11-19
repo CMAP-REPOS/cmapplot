@@ -47,10 +47,10 @@ use 25 percent of the total output width (per Comms guidance).}
 the available space between the title and bottom of image. This argument
 accepts abbreviations, too: \code{c("bottom", "b", "top", "t")}.}
 
-\item{mode}{Vector, the action(s) to be taken with the plot. Save using any of
-the following: \code{png}, \code{tiff}, \code{jpeg}, \code{bmp}, \code{svg},
-\code{pdf}, \code{ps}. View in R with: \code{plot}, \code{window}
-(\code{window} = \code{plot} on computers not running Windows OS).}
+\item{mode}{Vector, the action(s) to be taken with the plot. View in R with
+\code{plot} or \code{window} (which only works on computers running
+Windows). Save using any of the following: \code{png}, \code{tiff},
+\code{jpeg}, \code{bmp}, \code{svg}, \code{pdf}, \code{ps}.}
 
 \item{filename}{Char, the file path and name you want the plot to be saved to.
 You may specify an extension to use. If you don't, the correct extension

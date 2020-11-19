@@ -24,10 +24,10 @@
 #'@param caption_valign Char, align the caption text at the top or the bottom of
 #'  the available space between the title and bottom of image. This argument
 #'  accepts abbreviations, too: \code{c("bottom", "b", "top", "t")}.
-#'@param mode Vector, the action(s) to be taken with the plot. Save using any of
-#'  the following: \code{png}, \code{tiff}, \code{jpeg}, \code{bmp}, \code{svg},
-#'  \code{pdf}, \code{ps}. View in R with: \code{plot}, \code{window}
-#'  (\code{window} = \code{plot} on computers not running Windows OS).
+#'@param mode Vector, the action(s) to be taken with the plot. View in R with
+#'  \code{plot}, the default, or \code{window} (\code{window} only works on
+#'  computers running Windows). Save using any of the following: \code{png},
+#'  \code{tiff}, \code{jpeg}, \code{bmp}, \code{svg}, \code{pdf}, \code{ps}.
 #'@param filename Char, the file path and name you want the plot to be saved to.
 #'  You may specify an extension to use. If you don't, the correct extension
 #'  will be added for you.
@@ -111,7 +111,7 @@ finalize_plot <- function(plot = NULL,
                           title_width = NULL, # if unspecified, default to width/4
                           caption_valign = c("bottom", "top"),
                           mode = c("plot"),
-                          filename = "",
+                          filename = NULL,
                           overwrite = FALSE,
                           ppi = 300,
                           fill_bg = "white",
@@ -149,9 +149,14 @@ finalize_plot <- function(plot = NULL,
                                 savetypes_raster),
                     several.ok = TRUE)
 
+  # remove any `window` mode specified if OS is not Windows
+  if (.Platform$OS.type != "windows"){
+    mode <- mode[mode != "window"]
+  }
+
   # if any save modes specified, check for filename
   if (length(generics::intersect(mode, c(savetypes_raster, savetypes_vector))) > 0) {
-    if (filename == "") { stop("You must specify a filename if saving", call. = FALSE) }
+    if (is.null(filename)) { stop("You must specify a filename if saving", call. = FALSE) }
   }
 
   # if function will be drawing to the default plotting device (the plot window),
@@ -547,7 +552,7 @@ draw_plot <- function(final_plot,
   )
 
   # in window mode, open new drawing device
-  if (mode == "window" & .Platform$OS.type == "windows") {
+  if (mode == "window") {
     grDevices::dev.new(width = consts$width * 72 * 1.02,
                        height = consts$height * 72 * 1.02,
                        noRStudioGD = TRUE)
@@ -564,7 +569,7 @@ draw_plot <- function(final_plot,
   grid::popViewport()
 
   # in window mode, reset device to default without closing window
-  if (mode == "window" & .Platform$OS.type == "windows") {
+  if (mode == "window") {
     grDevices::dev.next()
   }
 }
