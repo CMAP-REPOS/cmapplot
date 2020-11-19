@@ -13,7 +13,7 @@ finalize_plot(
   title_width = NULL,
   caption_valign = c("bottom", "top"),
   mode = c("plot"),
-  filename = "",
+  filename = NULL,
   overwrite = FALSE,
   ppi = 300,
   fill_bg = "white",
@@ -48,9 +48,11 @@ the available space between the title and bottom of image. This argument
 accepts abbreviations, too: \code{c("bottom", "b", "top", "t")}.}
 
 \item{mode}{Vector, the action(s) to be taken with the plot. View in R with
-\code{plot} or \code{window} (which only works on computers running
-Windows). Save using any of the following: \code{png}, \code{tiff},
-\code{jpeg}, \code{bmp}, \code{svg}, \code{pdf}, \code{ps}.}
+\code{plot}, the default, or \code{window} (\code{window} only works on
+computers running Windows). Save using any of the following: \code{png},
+\code{tiff}, \code{jpeg}, \code{bmp}, \code{svg}, \code{pdf}, \code{ps}. Run
+multiple simultaneous outputs with a vector, e.g. \code{c("plot", "png",
+"pdf")}.}
 
 \item{filename}{Char, the file path and name you want the plot to be saved to.
 You may specify an extension to use. If you don't, the correct extension
@@ -74,8 +76,8 @@ in \code{cmapplot_globals$consts} which are drawn by
 legend all the way left (on top of the y axis labels) per CMAP design
 standards. \code{FALSE} maintains the alignment used in the original plot.}
 
-\item{debug}{Bool, TRUE enables outlines around components of finalized plot.
-Default = FALSE.}
+\item{debug}{Bool, \code{TRUE} enables outlines around components of finalized
+plot. Defaults to \code{FALSE}.}
 
 \item{use_cmap_aes}{Bool, \code{TRUE}, the default, temporarily implements
 CMAP default aesthetic settings for geoms (see
@@ -85,9 +87,9 @@ CMAP default aesthetic settings for geoms (see
 function to override any elements of the default CMAP theme.}
 }
 \value{
-This function invisibly returns a gTree object. If stored (e.g. with
- \code{g <- finalize_plot(...)}), the gTree can be drawn later with
- \code{grid::grid.draw()}.
+This function invisibly returns the final plot as a gTree object. If
+ stored (e.g. \code{g <- finalize_plot(...)}), the gTree can be drawn later
+ with \code{grid} (e.g. \code{grid::grid.draw(g)}).
 }
 \description{
 Place a ggplot into a frame defined by CMAP design standards. It will align

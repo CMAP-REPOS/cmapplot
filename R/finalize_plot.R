@@ -27,7 +27,9 @@
 #'@param mode Vector, the action(s) to be taken with the plot. View in R with
 #'  \code{plot}, the default, or \code{window} (\code{window} only works on
 #'  computers running Windows). Save using any of the following: \code{png},
-#'  \code{tiff}, \code{jpeg}, \code{bmp}, \code{svg}, \code{pdf}, \code{ps}.
+#'  \code{tiff}, \code{jpeg}, \code{bmp}, \code{svg}, \code{pdf}, \code{ps}. Run
+#'  multiple simultaneous outputs with a vector, e.g. \code{c("plot", "png",
+#'  "pdf")}.
 #'@param filename Char, the file path and name you want the plot to be saved to.
 #'  You may specify an extension to use. If you don't, the correct extension
 #'  will be added for you.
@@ -44,17 +46,17 @@
 #'@param legend_shift Bool, \code{TRUE}, the default, attempts to align the
 #'  legend all the way left (on top of the y axis labels) per CMAP design
 #'  standards. \code{FALSE} maintains the alignment used in the original plot.
-#'@param debug Bool, TRUE enables outlines around components of finalized plot.
-#'  Default = FALSE.
+#'@param debug Bool, \code{TRUE} enables outlines around components of finalized
+#'  plot. Defaults to \code{FALSE}.
 #'@param use_cmap_aes Bool, \code{TRUE}, the default, temporarily implements
 #'  CMAP default aesthetic settings for geoms (see
 #'  \code{\link{apply_cmap_default_aes}}) for the present plot.
 #'@param ... pass additional arguments to ggplot2's \code{\link[ggplot2]{theme}}
 #'  function to override any elements of the default CMAP theme.
 #'
-#'@return This function invisibly returns a gTree object. If stored (e.g. with
-#'  \code{g <- finalize_plot(...)}), the gTree can be drawn later with
-#'  \code{grid::grid.draw()}.
+#'@return This function invisibly returns the final plot as a gTree object. If
+#'  stored (e.g. \code{g <- finalize_plot(...)}), the gTree can be drawn later
+#'  with \code{grid} (e.g. \code{grid::grid.draw(g)}).
 #'
 #'@importFrom utils modifyList
 #'@importFrom generics intersect
@@ -214,12 +216,22 @@ finalize_plot <- function(plot = NULL,
   }
 
   # Build full stack of legend, buffer, and plot, and debug rects as a grob
-  plot <- buildChart(plot = plot,
-                     consts = consts,
-                     overrides = overrides,
-                     legend_shift = legend_shift,
-                     debug = debug,
-                     ...)
+  plot <- tryCatch(
+    prepare_chart(plot = plot,
+                  consts = consts,
+                  overrides = overrides,
+                  legend_shift = legend_shift,
+                  debug = debug,
+                  ...),
+
+    # if any error occurs, reset geom defaults before halting.
+    error = function(cond){
+      if (use_cmap_aes) {
+        set_default_aes(geom_defaults)
+      }
+      stop("An error occurred in ggplot preparation", call. = FALSE)
+    }
+  )
 
   # reset geom defaults
   if (use_cmap_aes) {
@@ -288,12 +300,12 @@ finalize_plot <- function(plot = NULL,
 
 #' Sub-fn to create plot grob, including legend-realignment
 #' @noRd
-buildChart <- function(plot,
-                       consts,
-                       overrides,
-                       legend_shift,
-                       debug,
-                       ...) {
+prepare_chart <- function(plot,
+                         consts,
+                         overrides,
+                         legend_shift,
+                         debug,
+                         ...) {
 
   # preformat plot ---------------------------------------------
 
@@ -314,6 +326,7 @@ buildChart <- function(plot,
   }
 
   # return plot as grob if no legend shift ---------------------
+
   if (!legend_shift | is.null(ggpubr::get_legend(plot))) {
     return(ggplotGrob(plot))
   }
@@ -422,9 +435,9 @@ construct_plot <- function(plot,
                            caption_valign,
                            debug) {
 
-  # Build necessary viewports -----------------------------------------------------
+  # Build plotbox viewport --------------------------------------------------
+  # this is the area in which the plot should be drawn
 
-  # create plotbox viewport
   vp.plotbox <- grid::viewport(
     name = "vp.plotbox",
     x = consts$title_width,
