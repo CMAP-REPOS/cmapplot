@@ -241,13 +241,13 @@ finalize_plot <- function(plot = NULL,
 
   # Assemble final plot --------------------------------------------------------
 
-  final_plot <- construct_plot(plot = plot,
-                               consts = consts,
-                               fill_bg = fill_bg,
-                               title = title,
-                               caption = caption,
-                               caption_valign = caption_valign,
-                               debug = debug)
+  final_plot <- construct_layout(plot = plot,
+                                 consts = consts,
+                                 fill_bg = fill_bg,
+                                 title = title,
+                                 caption = caption,
+                                 caption_valign = caption_valign,
+                                 debug = debug)
 
 
   # Output the figure based on mode selected -----------------------------------
@@ -427,13 +427,13 @@ prepare_chart <- function(plot,
 
 #' Sub-fn to create final plot layout, and return as grobTree
 #' @noRd
-construct_plot <- function(plot,
-                           consts,
-                           fill_bg,
-                           title,
-                           caption,
-                           caption_valign,
-                           debug) {
+construct_layout <- function(plot,
+                             consts,
+                             fill_bg,
+                             title,
+                             caption,
+                             caption_valign,
+                             debug) {
 
   # Build plotbox viewport --------------------------------------------------
   # this is the area in which the plot should be drawn
