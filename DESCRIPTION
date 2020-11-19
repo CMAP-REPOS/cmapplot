@@ -49,6 +49,7 @@ Imports:
     purrr,
     rlang,
     scales,
+    stringr,
     sysfonts
 Suggests:
     knitr,
