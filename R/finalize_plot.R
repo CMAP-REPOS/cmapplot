@@ -559,15 +559,6 @@ draw_plot <- function(final_plot,
                       fill_canvas,
                       mode){
 
-  # create a parent viewport for centering the final_plot when drawing within R
-  vp.centerframe <- grid::viewport(
-    name = "vp.centerframe",
-    default.units = "in",
-    width = width,
-    height = height,
-    clip = "on"
-  )
-
   # in window mode, open new drawing device
   if (mode == "window") {
     grDevices::dev.new(width = width * 1.02,
@@ -580,8 +571,19 @@ draw_plot <- function(final_plot,
                                   col = fill_canvas)
   )
 
-  # enter centerframe, draw plot, exit centerframe
-  grid::pushViewport(vp.centerframe)
+  # create and enter a viewport for drawing the final_plot.
+  # this creates a drawing space in the center of the active device
+  # that is the user-specified dimensions.
+  grid::pushViewport(
+    grid::viewport(
+      width = width,
+      height = height,
+      default.units = "in",
+      clip = "on"
+    )
+  )
+
+  # draw plot, exit centerframe
   grid::grid.draw(final_plot)
   grid::popViewport()
 
