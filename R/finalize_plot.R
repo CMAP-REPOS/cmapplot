@@ -236,91 +236,44 @@ finalize_plot <- function(plot = NULL,
 
   # first, do in-R drawing
   for(this_mode in intersect(mode, savetypes_print)){
-
-    # create a parent viewport for centering the final_plot when drawing within R
-    vp.centerframe <- grid::viewport(
-      name = "vp.centerframe",
-      default.units = "bigpts",
-      width = consts$width,
-      height = consts$height,
-      clip = "on"
-    )
-
-    # in window mode, open new drawing device
-    if (this_mode == "window" & .Platform$OS.type == "windows") {
-      grDevices::dev.new(width = width * 1.02,
-                           height = height * 1.02,
-                           noRStudioGD = TRUE)
-    }
-
-    # draw blank canvas
-    grid::grid.rect(gp = grid::gpar(fill = fill_canvas,
-                                    col = fill_canvas)
-    )
-
-    # enter centerframe, draw plot, exit centerframe
-    grid::pushViewport(vp.centerframe)
-    grid::grid.draw(final_plot)
-    grid::popViewport()
-
-    # in window mode, reset device to default without closing window
-    if (this_mode == "window" & .Platform$OS.type == "windows") {
-      grDevices::dev.next()
-    }
-
+    draw_plot(final_plot = final_plot,
+              consts = consts,
+              fill_canvas = fill_canvas,
+              mode = this_mode)
   }
 
-  for(this_mode in intersect(mode, c(savetypes_raster, savetypes_vector))){
+  # second, export vectors
+  for(this_mode in intersect(mode, savetypes_vector)){
 
-    # if filename does not contain correct extension, add it
-    # (in print modes this functions but is meaningless)
-    if (!(grepl(paste0("\\.", this_mode, "$"), filename))) {
-      this_filename <- paste0(filename, ".", this_mode)
-    } else {
-      this_filename <- filename
-    }
+    # construct arglist for drawing device
+    arglist <- list(filename = filename,
+                    width = width,
+                    height = height)
 
-    # export as raster
-    if (this_mode %in% savetypes_raster) {
-
-      # Open the device
-      do.call(this_mode,
-              list(filename = this_filename,
-                   type = "cairo",
-                   width = width,
-                   height = height,
-                   units = "in",
-                   res = ppi))
-
-      # draw the plot and close the device
-      grid::grid.draw(final_plot)
-      dev.off()
-
-      message(paste("Export successful:", this_mode))
-
-    # OR export as vector
-    } else if (this_mode %in% savetypes_vector) {
-
-      # add required cairo prefix for non-svg files
-      mode_modified <- if (this_mode != "svg") { paste0("cairo_" , this_mode) } else { this_mode }
-
-      # open the device
-      do.call(mode_modified,
-              list(filename = this_filename,
-                   width = width,
-                   height = height))
-
-      # draw the plot and close the device
-      grid::grid.draw(final_plot)
-      dev.off()
-
-      message(paste("Export successful:", this_mode))
-
-    # OR display the grob in the plot window
-    }
+    # export the plot
+    save_plot(final_plot = final_plot,
+              mode = this_mode,
+              arglist = arglist)
   }
 
-  # if user wants an object, return it
+  # third, export rasters
+  for(this_mode in intersect(mode, savetypes_raster)){
+
+    # construct arglist for drawing device
+    arglist <- list(filename = filename,
+                    type = "cairo",
+                    width = width,
+                    height = height,
+                    units = "in",
+                    res = ppi)
+
+    # export the plot
+    save_plot(final_plot = final_plot,
+              mode = this_mode,
+              arglist = arglist)
+  }
+
+  # finally, if user wants an object, return it
   if ("object" %in% mode) {
     return(final_plot)
   }
@@ -336,7 +289,9 @@ buildChart <- function(plot,
                        debug,
                        ...) {
 
-  # preformat plot
+  # preformat plot ---------------------------------------------
+
+  # the basics
   plot <- plot + ggplot2::theme(
     # remove any in-plot titles
     plot.title = element_blank(),
@@ -352,12 +307,12 @@ buildChart <- function(plot,
     )
   }
 
-  # in safe mode, stop here. Return plot as Grob
+  # return plot as grob if no legend shift ---------------------
   if (!legend_shift | is.null(ggpubr::get_legend(plot))) {
     return(ggplotGrob(plot))
   }
 
-  # Otherwise, in legend-shift mode...
+  # Shift legend -----------------------------------------------
 
   # add debug rects around legend if in debug mode
   if (debug) {
@@ -449,10 +404,6 @@ buildChart <- function(plot,
   # return the combined grob
   return(built)
 }
-
-
-
-
 
 
 #' Sub-fn to create final plot layout, and return as grobTree
@@ -574,4 +525,70 @@ construct_plot <- function(plot,
   )
 
   return(final_plot)
+}
+
+
+
+#' Sub-fn to draw plot within R
+#' @noRd
+draw_plot <- function(final_plot,
+                      consts,
+                      fill_canvas,
+                      mode){
+
+  # create a parent viewport for centering the final_plot when drawing within R
+  vp.centerframe <- grid::viewport(
+    name = "vp.centerframe",
+    default.units = "bigpts",
+    width = consts$width,
+    height = consts$height,
+    clip = "on"
+  )
+
+  # in window mode, open new drawing device
+  if (mode == "window" & .Platform$OS.type == "windows") {
+    grDevices::dev.new(width = consts$width * 72 * 1.02,
+                       height = consts$height * 72 * 1.02,
+                       noRStudioGD = TRUE)
+  }
+
+  # draw blank canvas
+  grid::grid.rect(gp = grid::gpar(fill = fill_canvas,
+                                  col = fill_canvas)
+  )
+
+  # enter centerframe, draw plot, exit centerframe
+  grid::pushViewport(vp.centerframe)
+  grid::grid.draw(final_plot)
+  grid::popViewport()
+
+  # in window mode, reset device to default without closing window
+  if (mode == "window" & .Platform$OS.type == "windows") {
+    grDevices::dev.next()
+  }
+}
+
+
+#' Sub-fn to save plot using various device functions
+#' @noRd
+save_plot <- function(final_plot,
+                      mode,
+                      arglist){
+
+  # if filename does not contain correct extension, add it
+  if (!(grepl(paste0("\\.", mode, "$"), arglist$filename))) {
+    arglist$filename <- paste0(arglist$filename, ".", mode)
+  }
+
+  # add required cairo prefix to function name for pdf and ps (see `?cairo`)
+  mode <- ifelse (mode == "pdf" | mode == "ps", paste0("cairo_" , mode), mode)
+
+  # open the device
+  do.call(mode, arglist)
+
+  # draw the plot and close the device
+  grid::grid.draw(final_plot)
+  dev.off()
+
+  message(paste("Export successful:", mode))
 }
