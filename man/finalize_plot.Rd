@@ -14,6 +14,7 @@ finalize_plot(
   caption_valign = c("bottom", "top"),
   mode = c("plot"),
   filename = "",
+  overwrite = FALSE,
   ppi = 300,
   fill_bg = "white",
   fill_canvas = "gray90",
@@ -55,6 +56,9 @@ currently works only on computers running Windows). Return an object with
 \item{filename}{Char, the file path and name you want the plot to be saved to.
 You may specify an extension to use. If you don't, the correct extension
 will be added for you.}
+
+\item{overwrite}{Bool, set to \code{TRUE} if you would like the function to
+overwrite existing files by the same name. The default is \code{FALSE}.}
 
 \item{ppi}{Numeric, the resolution of exported images (pixels per inch).
 Default = 300.}

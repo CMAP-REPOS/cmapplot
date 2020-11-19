@@ -30,6 +30,8 @@
 #'@param filename Char, the file path and name you want the plot to be saved to.
 #'  You may specify an extension to use. If you don't, the correct extension
 #'  will be added for you.
+#'@param overwrite Bool, set to \code{TRUE} if you would like the function to
+#'  overwrite existing files by the same name. The default is \code{FALSE}.
 #'@param ppi Numeric, the resolution of exported images (pixels per inch).
 #'  Default = 300.
 #'@param fill_bg,fill_canvas Char, strings that represent colors R can
@@ -110,6 +112,7 @@ finalize_plot <- function(plot = NULL,
                           caption_valign = c("bottom", "top"),
                           mode = c("plot"),
                           filename = "",
+                          overwrite = FALSE,
                           ppi = 300,
                           fill_bg = "white",
                           fill_canvas = "gray90",
@@ -253,7 +256,8 @@ finalize_plot <- function(plot = NULL,
     # export the plot
     save_plot(final_plot = final_plot,
               mode = this_mode,
-              arglist = arglist)
+              arglist = arglist,
+              overwrite = overwrite)
   }
 
   # third, export rasters
@@ -270,7 +274,8 @@ finalize_plot <- function(plot = NULL,
     # export the plot
     save_plot(final_plot = final_plot,
               mode = this_mode,
-              arglist = arglist)
+              arglist = arglist,
+              overwrite = overwrite)
   }
 
   # finally, if user wants an object, return it
@@ -573,11 +578,18 @@ draw_plot <- function(final_plot,
 #' @noRd
 save_plot <- function(final_plot,
                       mode,
-                      arglist){
+                      arglist,
+                      overwrite){
 
   # if filename does not contain correct extension, add it
   if (!(grepl(paste0("\\.", mode, "$"), arglist$filename))) {
     arglist$filename <- paste0(arglist$filename, ".", mode)
+  }
+
+  # if file exists and overwrite == FALSE, do not write
+  if(file.exists(arglist$filename) & !overwrite){
+    message(paste(arglist$filename, "already exists. Skipped. Try `overwrite = TRUE`?"))
+    return()
   }
 
   # add required cairo prefix to function name for pdf and ps (see `?cairo`)
