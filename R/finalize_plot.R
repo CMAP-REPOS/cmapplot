@@ -571,32 +571,51 @@ draw_plot <- function(final_plot,
 
 
 #' Sub-fn to save plot using various device functions
+#' @importFrom stringr str_trunc
 #' @noRd
 save_plot <- function(final_plot,
                       mode,
                       arglist,
                       overwrite){
 
+  # Prepare some things -----------------------------------------------
+
   # if filename does not contain correct extension, add it
   if (!(grepl(paste0("\\.", mode, "$"), arglist$filename))) {
     arglist$filename <- paste0(arglist$filename, ".", mode)
   }
 
-  # if file exists and overwrite == FALSE, do not write
-  if(file.exists(arglist$filename) & !overwrite){
-    message(paste(arglist$filename, "already exists. Skipped. Try `overwrite = TRUE`?"))
-    return()
-  }
+  # construct pretty filename for messages
+  fname <- stringr::str_trunc(arglist$filename, 50, "left")
+
 
   # add required cairo prefix to function name for pdf and ps (see `?cairo`)
   mode <- ifelse (mode == "pdf" | mode == "ps", paste0("cairo_" , mode), mode)
 
-  # open the device
-  do.call(mode, arglist)
+  # if file exists and overwrite == FALSE, do not write
+  if(file.exists(arglist$filename) & !overwrite){
+    message(paste0(fname, ": SKIPPED (try `overwrite = TRUE`?)"))
+    return()
+  }
 
-  # draw the plot and close the device
-  grid::grid.draw(final_plot)
-  dev.off()
+  # Write to device -----------------------------------------------
+  tryCatch(
+    {
+      # open the device, draw the plot, close the device
+      suppressWarnings(do.call(mode, arglist))
+      grid::grid.draw(final_plot)
+      dev.off()
 
-  message(paste("Export successful:", mode))
+      # notify
+      message(paste0(fname, ": Export successful"))
+
+      # return nothing
+      NULL
+    },
+    error = function(cond) {
+      # Or safely error
+      message(paste0(fname, ": FAILED (is file open?)"))
+    }
+  )
+
 }
