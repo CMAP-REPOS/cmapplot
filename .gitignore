@@ -6,3 +6,5 @@ inst/doc
 docs
 doc
 Meta
+Rplots.pdf
+vignettes/*.png
