@@ -51,7 +51,9 @@
 your title and caption to the left, add a horizontal line on top, and make
 other adjustments. It can show you the final plot and/or export it as a raster
 or vector file. This function will not apply CMAP design standards to the plot
-itself: use with theme_cmap() for that." />
+itself: use with theme_cmap() for that. Exports from this function use
+Cairo graphics drivers, while drawing within R is done with default (Windows)
+drivers." />
 <meta property="og:image" content="https://cmap-repos.github.io/cmapplot/logo.png" />
 
 
@@ -148,7 +150,9 @@ itself: use with theme_cmap() for that." />
 your title and caption to the left, add a horizontal line on top, and make
 other adjustments. It can show you the final plot and/or export it as a raster
 or vector file. This function will not apply CMAP design standards to the plot
-itself: use with <code><a href='theme_cmap.html'>theme_cmap()</a></code> for that.</p>
+itself: use with <code><a href='theme_cmap.html'>theme_cmap()</a></code> for that. Exports from this function use
+Cairo graphics drivers, while drawing within R is done with default (Windows)
+drivers.</p>
     </div>
 
     <pre class="usage"><span class='fu'>finalize_plot</span><span class='op'>(</span>
@@ -160,7 +164,8 @@ itself: use with <code><a href='theme_cmap.html'>theme_cmap()</a></code> for tha
   title_width <span class='op'>=</span> <span class='cn'>NULL</span>,
   caption_valign <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"bottom"</span>, <span class='st'>"top"</span><span class='op'>)</span>,
   mode <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"plot"</span><span class='op'>)</span>,
-  filename <span class='op'>=</span> <span class='st'>""</span>,
+  filename <span class='op'>=</span> <span class='cn'>NULL</span>,
+  overwrite <span class='op'>=</span> <span class='cn'>FALSE</span>,
   ppi <span class='op'>=</span> <span class='fl'>300</span>,
   fill_bg <span class='op'>=</span> <span class='st'>"white"</span>,
   fill_canvas <span class='op'>=</span> <span class='st'>"gray90"</span>,
@@ -207,17 +212,23 @@ accepts abbreviations, too: <code><a href='https://rdrr.io/r/base/c.html'>c("bot
     </tr>
     <tr>
       <th>mode</th>
-      <td><p>Vector, the action(s) to be taken with the plot. Save using any of
-the following: <code>png</code>, <code>tiff</code>, <code>jpeg</code>, <code>bmp</code>, <code>svg</code>,
-<code>pdf</code>, <code>ps</code>. View in R with: <code>plot</code>, <code>window</code> (`window`
-currently works only on computers running Windows). Return an object with
-<code>object</code>.</p></td>
+      <td><p>Vector, the action(s) to be taken with the plot. View in R with
+<code>plot</code>, the default, or <code>window</code> (<code>window</code> only works on
+computers running Windows). Save using any of the following: <code>png</code>,
+<code>tiff</code>, <code>jpeg</code>, <code>bmp</code>, <code>svg</code>, <code>pdf</code>, <code>ps</code>. Run
+multiple simultaneous outputs with a vector, e.g. <code><a href='https://rdrr.io/r/base/c.html'>c("plot", "png",
+"pdf")</a></code>.</p></td>
     </tr>
     <tr>
       <th>filename</th>
       <td><p>Char, the file path and name you want the plot to be saved to.
 You may specify an extension to use. If you don't, the correct extension
 will be added for you.</p></td>
+    </tr>
+    <tr>
+      <th>overwrite</th>
+      <td><p>Bool, set to <code>TRUE</code> if you would like the function to
+overwrite existing files by the same name. The default is <code>FALSE</code>.</p></td>
     </tr>
     <tr>
       <th>ppi</th>
@@ -244,8 +255,8 @@ standards. <code>FALSE</code> maintains the alignment used in the original plot.
     </tr>
     <tr>
       <th>debug</th>
-      <td><p>Bool, TRUE enables outlines around components of finalized plot.
-Default = FALSE.</p></td>
+      <td><p>Bool, <code>TRUE</code> enables outlines around components of finalized
+plot. Defaults to <code>FALSE</code>.</p></td>
     </tr>
     <tr>
       <th>use_cmap_aes</th>
@@ -262,10 +273,9 @@ function to override any elements of the default CMAP theme.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Exports from this function use Cairo graphics drivers, while drawing
- within R is done with default (Windows) drivers. <code>mode = "object"</code> also
- returns a gTree object that can be stored and drawn later with
- <code><a href='https://rdrr.io/r/grid/grid.draw.html'>grid::grid.draw()</a></code>.</p>
+    <p>This function invisibly returns the final plot as a gTree object. If
+ stored (e.g. <code>g &lt;- finalize_plot(...)</code>), the gTree can be drawn later
+ with <code>grid</code> (e.g. <code><a href='https://rdrr.io/r/grid/grid.draw.html'>grid::grid.draw(g)</a></code>).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
