@@ -22,19 +22,15 @@ reference:
 - title: Additional geoms & auxiliary functions
 - contents:
   - starts_with("geom_")
-  - customproto
   - cmap_default_aes
-  - gg_lwd_convert
   - integer_breaks
+  - gg_lwd_convert
   - update_recessions
   - cmapplot_globals
+  - customproto
 - title: Color Palettes and Gradients
 - contents:
-  - cmap_gradients
-  - cmap_palettes
   - starts_with("cmap_fill_")
-  - starts_with("cmap_color_")
-  - starts_with("cmap_colour_")
   - starts_with("viz_")
 - title: Sample Datasets
 - contents:
@@ -46,3 +42,11 @@ reference:
   - traded_emp_by_race
   - transit_ridership
   - vehicle_ownership
+
+articles:
+- title: Articles
+  navbar: ~
+  contents:
+  - plots
+  - colors
+  - cookbook

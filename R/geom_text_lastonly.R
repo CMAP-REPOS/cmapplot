@@ -8,13 +8,13 @@
 #'
 #' Labels are placed by default to the right of the final point, and may be
 #' partially cut off by the plot limits. There are two known ways to address
-#' this: \enumerate{\item Turn off panel clipping, e.g. with
+#' this: \enumerate{ \item Turn off panel clipping, e.g. with
 #' \code{coord_cartesian(clip = "off")}. Substitute the correct coordinate
 #' system for your plot--all have a \code{clip} argument available. Note that
 #' this will allow all geoms in the plot to draw outside the panel area, which
 #' may have unintended consequences. \item Manually expand the \code{x} scale,
 #' e.g. with \code{scale_x_continuous(expand=expand_scale(mult=0.10))} or
-#' \code{coord_cartesian(xlim = c(min, max))}.}
+#' \code{coord_cartesian(xlim = c(min, max))}. }
 #'
 #' Code was mostly copied from the source of \code{ggplot2::geom_text()} and
 #' \code{ggplot2::geom_point()}.

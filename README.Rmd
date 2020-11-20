@@ -55,7 +55,7 @@ If installed on a Windows computer *without* Whitney, the package will still wor
 
 ## CMAP theme and colors
 
-The function `theme_cmap()` returns a complete ggplot2 theme that can be added to a ggplot code block (similar to `ggplot2::theme_minimal()` or `ggplot2::theme_bw`). Additionally, `theme_cmap()` accepts a variety of arguments to additionally customize the theme output. CMAP color functions apply colors from the CMAP color palette to the plot.
+The function `theme_cmap()` returns a complete ggplot2 theme that can be added to a ggplot code block (similar to `ggplot2::theme_minimal()` or `ggplot2::theme_bw()`). Additionally, `theme_cmap()` accepts a variety of arguments to additionally customize the theme output. CMAP color functions apply colors from the CMAP color palette to the plot.
 
 ```{r theme}
 ggplot(data = pop_and_laborforce_by_age, 
@@ -67,7 +67,7 @@ ggplot(data = pop_and_laborforce_by_age,
   theme_cmap(xlab = "Percent",
              gridlines = "v",
              vline = 0) +
-  cmap_fill_discrete(palette = "mobility")
+  cmap_fill_discrete(palette = "environment")
 ```
 
 
