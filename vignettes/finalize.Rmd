@@ -53,7 +53,7 @@ The function has a number of customization options built in, accepting 16 (or mo
 
 After creating a plot and applying `theme_cmap()`, `finalize_plot()` produces the following output with title, caption, export mode, and filename arguments.  Note that the file will be exported to your current working directory if the full file path is not specified. 
 
-For this example, we will use the final version of the line chart developed in `vignette("plots")`.
+For this example, we will use the final version of the line chart developed in the <a href="./plots.html">article</a> on `theme_cmap`.
 
 ```{r lines1, eval=TRUE}
 # finalize and export plot
