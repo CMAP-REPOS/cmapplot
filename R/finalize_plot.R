@@ -8,20 +8,20 @@
 #'Cairo graphics drivers, while drawing within R is done with default (Windows)
 #'drivers.
 #'
-#'@param plot A ggplot object, the variable name of the plot you want to finalize.
-#'  If null (the default), the most recent plot will be retrieved
-#'  via \code{ggplot2::last_plot()}.
-#'@param title,caption Character, the text you want to appear in the title and
+#'@param plot ggplot object, the variable name of the plot you have created that
+#'  you want to finalize. If null (the default), the most recent plot will be
+#'  retrieved via \code{ggplot2::last_plot()}.
+#'@param title,caption Char, the text you want to appear in the title and
 #'  caption blocks. If empty, any non-Null values from \code{plot} will be
 #'  retrieved. These blocks take html formatting, so manual text breaks can be
 #'  created with \code{<br>} and formatting can be changed with \code{<span>}.
-#'@param width,height Numeric, the dimensions for the output image including
+#'@param width,height Numeric, the dimensions for the output image, including
 #'  the title. Units in inches, which interacts with \code{ppi} to define the
 #'  pixel dimensions of raster outputs. Default is 9.31 inches wide (670/72) and
-#'  5.56 inches tall (400/72), to match Comms specification for web graphics (670px by 400px at 72ppi).
-#'@param title_width Numeric, the width in inches for the title.
-#'  Default is 25 percent of the total output width.
-#'@param caption_valign Character, align the caption text at the top or the bottom of
+#'  5.56 inches tall (400/72), to match Comms specification for web graphics.
+#'@param title_width Numeric, the width in inches for the title. If unspecified,
+#'  use 25 percent of the total output width (per Comms guidance).
+#'@param caption_valign Char, align the caption text at the top or the bottom of
 #'  the available space between the title and bottom of image. This argument
 #'  accepts abbreviations, too: \code{c("bottom", "b", "top", "t")}.
 #'@param mode Vector, the action(s) to be taken with the plot. View in R with
@@ -37,9 +37,9 @@
 #'  overwrite existing files by the same name. The default is \code{FALSE}.
 #'@param ppi Numeric, the resolution of exported images (pixels per inch).
 #'  Default = 300.
-#'@param fill_bg,fill_canvas Character, represents colors R can
+#'@param fill_bg,fill_canvas Char, strings that represent colors R can
 #'  interpret. They are used to fill behind and around the finished plot,
-#'  respectively. Default to `white` for the background and `gray90` for the canvas.
+#'  respectively.
 #'@param overrides Named list, overrides the default drawing attributes defined
 #'  in \code{cmapplot_globals$consts} which are drawn by
 #'  \code{\link{finalize_plot}}. Units are in bigpts (1/72 of an inch).
