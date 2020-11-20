@@ -3,21 +3,10 @@
 #' A sample of comms-approved colors arranged into palettes
 #'
 #' @examples
-#' viz_palette(cmap_palettes$mobility)
-#'
-#' ggplot(pop_and_laborforce_by_age, aes(x = variable, y = value, fill = age)) +
-#'    geom_col(position = position_stack(reverse = TRUE)) +
-#'    facet_wrap(~year) +
-#'    cmap_fill_discrete(palette = "community")
+#' purrr::walk2(cmap_palettes, names(cmap_palettes), viz_palette)
 #'
 #' @export
 cmap_palettes <- list(
-
-    race = c(white    = "#72a6e5",
-             black    = "#8de572",
-             hispanic = "#cca600",
-             asian    = "#cc3000",
-             other    = "#8a9ea8"),
 
     prosperity = c("#662f00", "#e5d072", "#44008c", "#c8e572", "#c9a7ef"),
 
@@ -31,14 +20,20 @@ cmap_palettes <- list(
 
     legislation = c("#00becc", "#cc5f00", "#3f0e00", "#cca600", "#003f8c", "#67ac00"),
 
-    friday = c("#00093f", "#ac8c00", "#475c66", "#e5d072", "#b5c1c8", "#006b8c")
+    friday = c("#00093f", "#ac8c00", "#475c66", "#e5d072", "#b5c1c8", "#006b8c"),
+
+    race = c(white    = "#72a6e5",
+             black    = "#8de572",
+             hispanic = "#cca600",
+             asian    = "#cc3000",
+             other    = "#8a9ea8")
 
 )
 
 
 #' Print palette for reference
 #'
-#' Directly from the \href{https://github.com/ropenscilabs/ochRe}{ochRe package}
+#' Visualize function is directly from the \href{https://github.com/ropenscilabs/ochRe}{ochRe package}
 #'
 #' @param pal character, vector of (hexadecimal) colours representing a palette
 #' @param ttl character, title to be displayed (the name of the palette)

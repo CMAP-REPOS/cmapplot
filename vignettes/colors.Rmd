@@ -36,11 +36,7 @@ ggplot(percentile_wages, aes(x = percentile, y = wage, color = cluster)) +
   cmap_color_discrete(palette = "prosperity")
 ```
 
-The following gradients are available:
-
-```{r pal, echo=FALSE, out.width="60%"}
-walk2(cmap_palettes, names(cmap_palettes), viz_palette)
-```
+See the discrete palettes reference page for displays of all palettes.
 
 
 ## Continuous palettes
@@ -58,18 +54,23 @@ percentile_wages %>%
   cmap_color_continuous(palette = "seq_red_purple")
 ```
 
-### Sequential gradients (single- and multi-hue)
+See the gradients reference page for displays of all gradients.
 
-```{r seq, echo=FALSE, out.width="60%"}
-cmap_gradients %>%
-  keep(str_detect(names(.), "^seq")) %>%
-  walk2(., names(.), viz_gradient)
+
+## Race/ethnicity palette
+
+If you have a graph with categories based on race and ethnicity, there are functions to apply pre-determined colors for each demographic group: `cmap_fill_race()` and `cmap_color_race()`. In the arguments, specify the case-sensitive name of each group as it appears in your data. The function will operate even if you do not have every group.
+
+```{r race, eval=TRUE}
+# example
 ```
 
-### Diverging gradients
 
-```{r div, echo=FALSE, out.width="60%"}
-cmap_gradients %>%
-  keep(str_detect(names(.), "^div")) %>%
-  walk2(., names(.), viz_gradient)
+## Highlighting categories
+
+If you want to draw attention to a specific group in your graph, use `cmap_fill_highlight()` or `cmap_color_highlight()`. This will make your highlighted group one color and all other groups identical in another color. Specify the vector in your data that determines the groups, and then the value of the group to be singled out. The highlight and 'other' colors have defaults, but can be changed with hexcode strings.
+
+```{r hlgt, eval=TRUE}
+# example
 ```
+

@@ -23,7 +23,7 @@ viz_palette(pal, ttl = deparse(substitute(pal)), num = length(pal))
 \description{
 A sample of comms-approved colors arranged into palettes
 
-Directly from the \href{https://github.com/ropenscilabs/ochRe}{ochRe package}
+Visualize function is directly from the \href{https://github.com/ropenscilabs/ochRe}{ochRe package}
 }
 \section{Functions}{
 \itemize{
@@ -31,12 +31,7 @@ Directly from the \href{https://github.com/ropenscilabs/ochRe}{ochRe package}
 }}
 
 \examples{
-viz_palette(cmap_palettes$mobility)
-
-ggplot(pop_and_laborforce_by_age, aes(x = variable, y = value, fill = age)) +
-   geom_col(position = position_stack(reverse = TRUE)) +
-   facet_wrap(~year) +
-   cmap_fill_discrete(palette = "community")
+purrr::walk2(cmap_palettes, names(cmap_palettes), viz_palette)
 
 }
 \keyword{datasets}

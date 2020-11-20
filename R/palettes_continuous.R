@@ -2,6 +2,9 @@
 #'
 #' A sample of comms-approved colors arranged into palettes
 #'
+#' @examples
+#' purrr::walk2(cmap_gradients, names(cmap_gradients), viz_gradient)
+#'
 #' @export
 cmap_gradients <- list(
 
@@ -69,16 +72,10 @@ cmap_gradients <- list(
 #' Visualize CMAP color gradients
 #'
 #' Displays 25 interpolated colors from the cmap continuous palettes.
-#' Modeled after viz_palette from the \href{https://github.com/ropenscilabs/ochRe}{ochRe package}
+#' Visualize function is modeled after viz_palette from the \href{https://github.com/ropenscilabs/ochRe}{ochRe package}
 #'
 #' @param pal = select from cmap_gradients list
 #' @param ttl = display title (optional)
-#'
-#' @examples
-#' viz_gradient(cmap_gradients$seq_orange_red)
-#'
-#' # ggplot example here would be nice
-#'
 #'
 #' @describeIn cmap_gradients function to vizualize gradients
 #'
