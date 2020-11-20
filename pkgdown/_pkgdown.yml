@@ -48,5 +48,6 @@ articles:
   navbar: ~
   contents:
   - plots
+  - finalize
   - colors
   - cookbook

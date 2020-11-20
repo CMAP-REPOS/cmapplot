@@ -27,105 +27,120 @@ The function has a number of customization options built in, accepting 16 (or mo
 
 ## Basic implementation
 
-After creating a plot using one of the sample datasets included in the package and applying `theme_cmap()`, `finalize_plot()` produces the following output with title, caption, export mode, and filename arguments.  Note that the file will be exported to your current working directory if the full file path is not specified.
-```{r bars, eval=TRUE}
-# A bar chart
-bar_chart <- ggplot(cluster_jobchange, aes(x = reorder(name, jobchange), y = jobchange, fill = category)) +
-  geom_col() +
-  coord_flip() +
+### Finalizing a plot with no customizations
+
+After creating a plot and applying `theme_cmap()`, `finalize_plot()` produces the following output with title, caption, export mode, and filename arguments.  Note that the file will be exported to your current working directory if the full file path is not specified. 
+
+For this example, we will use the final version of the line chart developed in `vignette("plots")`.
+
+```{r lines1, eval=TRUE}
+# clean up dataset
+df <- transit_ridership %>% 
+  filter(system != "pace_ada") %>% 
+  mutate(system = case_when(
+    system == "cta_bus" ~ "CTA bus",
+    system == "cta_rail" ~ "CTA rail",
+    system == "metra" ~ "Metra",
+    system == "pace" ~ "Pace"
+  ))
+
+# build plot
+p <- ggplot(data = df, 
+            mapping = aes(x = year, y = ridership, color = system)) +
+  geom_recessions(ymin = 0) +
+  geom_line() +
   theme_cmap()
-  
-finalize_plot(bar_chart,
-              title = "Cluster-level employment changes in the Chicago MSA, 2001-17",
-              caption = "Source: Chicago Metropolitan Agency for Planning analysis",
+
+# finalize and export plot
+finalize_plot(p,
+              title = "Annual unlinked passenger trips (in millions).",
+              caption = "Source: Chicago Metropolitan Agency for Planning
+              analysis of Regional Transportation Authority data.",
               mode = "png",
-              filename = "chart1.png")
+              filename = "chart1a.png")
               
 ```
-![](chart1.png){width=670px}
+<img src="chart1a.png" width="100%" style="display: block; margin: auto;"/>
 
-### Title and Caption Formatting
+### Exporting behavior
+
+In that example, the only mode specified was `png`. However, you can specify multiple modes simultaneously using `finalize_plot()`, using the form `mode = c("png","pdf","plot")`. That would export the plot as both a `pdf` and `png`, as well as display it in the plotting window of your R console. 
+
+When naming your exports, you can include only the name of the file (e.g., `"chart"`) if desired - `cmapplot` will automatically add the appropriate extension to each of your exported files (e.g., `"chart.pdf"` and `"chart.png"`). If a file with that name already exists in the specified directory, they will not be overwritten unless the user sets `overwrite = TRUE`. Users should be aware that PDFs will not allow overwriting if the existing file is open.
+
+### Title and caption formatting
 
 The title and caption blocks take HTML formatting, so you can manually set line breaks and font formatting.  
-```{r bars1b, eval=TRUE}
-# A bar chart
-bar_chart <- ggplot(cluster_jobchange, aes(x = reorder(name, jobchange), y = jobchange, fill = category)) +
-  geom_col() +
-  coord_flip() +
-  theme_cmap()
-  
-finalize_plot(bar_chart,
-              title = "Cluster-level employment changes in the Chicago MSA, 2001-17",
-              caption = "Source: Chicago <br> Metropolitan Agency <br> for Planning analysis",
+```{r lines1b, eval=TRUE}
+# a finalized line graph, with text tweaks
+finalize_plot(p,
+              title = "Annual <br> unlinked passenger trips <br> (in millions).",
+              caption = "Source: Chicago Metropolitan Agency for Planning
+              analysis of <i>Regional Transportation Authority</i> data.",
               mode = "png",
               filename = "chart1b.png")
               
 ```
-![](chart1b.png){width=670px}
-
-## Adjusting positions with debug mode
-Default values in `finalize_plot()` attempt to reflect CMAP design standards, but users can also manually adjust various elements of the finalized plot. The easiest way to identify current positions and how they relate to other objects within the finalized plot object is to set `debug = TRUE`:
-```{r bars2, eval=TRUE}
-# A bar chart
-bar_chart <- ggplot(cluster_jobchange, aes(x = reorder(name, jobchange), y = jobchange, fill = category)) +
-  geom_col() +
-  coord_flip() +
-  theme_cmap()
-  
-finalize_plot(bar_chart,
-              title = "Cluster-level employment changes in the Chicago MSA, 2001-17",
-              caption = "Source: Chicago Metropolitan Agency for Planning analysis",
-              mode = "png",
-              filename = "chart2.png",
-              debug = TRUE)
-              
-```
-
-![](chart2.png){width=670px}
-
-With debug on, we can easily see the effects of various adjustments, such as changing the width of the title and caption (`title_width`), the vertical alignment of the caption (`caption_valign`), and keeping the legend alignment of the original plot (`legend_shift`):
-```{r bars3, eval=TRUE}
-# A bar chart
-bar_chart <- ggplot(cluster_jobchange, aes(x = reorder(name, jobchange), y = jobchange, fill = category)) +
-  geom_col() +
-  coord_flip() +
-  theme_cmap()
-  
-finalize_plot(bar_chart,
-              title = "Cluster-level employment changes in the Chicago MSA, 2001-17",
-              caption = "Source: Chicago Metropolitan Agency for Planning analysis",
-              mode = "png",
-              filename = "chart3.png",
-              title_width = 1.8,
-              caption_valign = "top",
-              legend_shift=FALSE,
-              debug = TRUE)
-              
-```
-
-![](chart3.png){width=670px}
+<img src="chart1b.png" width="100%" style="display: block; margin: auto;"/>
 
 ## Overrides
 
-Any of the attributes defined in `cmapplot_globals$consts` can be changed by passing a named list to the overrides arguments.  Read more about these in `?cmapplot_globals()`. 
+Any of the attributes defined in `cmapplot_globals$consts` can be changed by passing a named list to the `overrides` arguments. For example, the chart below uses the `overrides` argument to modify the margin below the title (`margin_title_b`), the margin to the left of the title and the caption (`margin_title_l`), and the margin above the legend (`margin_legend_t`).
 
-```{r bars4, eval=TRUE}
-# A bar chart
-bar_chart <- ggplot(cluster_jobchange, aes(x = reorder(name, jobchange), y = jobchange, fill = category)) +
-  geom_col() +
-  coord_flip() +
-  theme_cmap()
-  
-finalize_plot(bar_chart,
-              title = "Cluster-level employment changes in the Chicago MSA, 2001-17",
-              caption = "Source: Chicago Metropolitan Agency for Planning analysis",
+You can read more about available options for customization in `?cmapplot_globals`.
+
+```{r lines2, eval=TRUE}
+# a finalized plot with some formatting overrides
+finalize_plot(p,
+              title = "Annual unlinked passenger trips (in millions).",
+              caption = "Source: Chicago Metropolitan Agency for Planning
+              analysis of Regional Transportation Authority data.",
               mode = "png",
-              filename = "chart4.png",
-              caption_valign="top",
-              overrides = list(margin_title_b=20, margin_title_l=5, margin_caption_l=5, 
-                               margin_legend_t=10)
+              filename = "chart2.png",
+              caption_valign = "top",
+              overrides = list(margin_title_b = 30, 
+                               margin_title_l = 5,
+                               margin_legend_t = 10)
                 )
               
 ```
 
-![](chart4.png){width=670px}
+<img src="chart2.png" width="100%" style="display: block; margin: auto;"/>
+
+## Adjusting positions with debug mode
+
+### Enabling debug mode
+
+Default values in `finalize_plot()` attempt to reflect CMAP design standards, but users can also manually adjust various elements of the finalized plot. The easiest way to identify current positions and how they relate to other objects within the finalized plot object is to set `debug = TRUE`:
+```{r lines3, eval=TRUE}
+# a debugged finalized plot
+finalize_plot(p,
+              title = "Annual unlinked passenger trips (in millions).",
+              caption = "Source: Chicago Metropolitan Agency for Planning
+              analysis of Regional Transportation Authority data.",
+              mode = "png",
+              filename = "chart3.png",
+              debug = TRUE)
+```
+
+<img src="chart3.png" width="100%" style="display: block; margin: auto;"/>
+
+### Using debug to understand formatting shifts
+
+With debug on, we can easily see the effects of various adjustments, such as changing the width of the title and caption (`title_width`), the vertical alignment of the caption (`caption_valign`), and keeping the legend alignment of the original plot (`legend_shift`):
+```{r lines4, eval=TRUE}
+# a debugged and modified finalized plot
+finalize_plot(p,
+              title = "Annual unlinked passenger trips (in millions).",
+              caption = "Source: Chicago Metropolitan Agency for Planning
+              analysis of Regional Transportation Authority data.",
+              mode = "png",
+              filename = "chart4.png",
+              title_width = 1.8,
+              caption_valign = "top",
+              legend_shift = FALSE,
+              debug = TRUE)
+              
+```
+
+<img src="chart4.png" width="100%" style="display: block; margin: auto;"/>
