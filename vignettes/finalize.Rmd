@@ -19,21 +19,7 @@ knitr::opts_chunk$set(
 
 library(tidyverse)
 library(cmapplot)
-```
 
-`finalize_plot()` will place a ggplot into a frame defined by CMAP design standards. It will align your title and caption to the left, add a horizontal line on top, and make other adjustments. It can show you the final plot and/or export it as a raster or vector file. This function will not apply CMAP design standards to the plot itself; use `theme_cmap()` for that.
-
-The function has a number of customization options built in, accepting 16 (or more) arguments. Refer to the object documentation, `?finalize_plot`, for detailed information on all arguments.  
-
-## Basic implementation
-
-### Finalizing a plot with no customizations
-
-After creating a plot and applying `theme_cmap()`, `finalize_plot()` produces the following output with title, caption, export mode, and filename arguments.  Note that the file will be exported to your current working directory if the full file path is not specified. 
-
-For this example, we will use the final version of the line chart developed in `vignette("plots")`.
-
-```{r lines1, eval=TRUE}
 # clean up dataset
 df <- transit_ridership %>% 
   filter(system != "pace_ada") %>% 
@@ -49,8 +35,27 @@ p <- ggplot(data = df,
             mapping = aes(x = year, y = ridership, color = system)) +
   geom_recessions(ymin = 0) +
   geom_line() +
+  geom_text_lastonly(
+    mapping = aes(label = round(ridership, digits = 0)), 
+    add_points = TRUE,
+    nudge_x = 0.5) +
+  coord_cartesian(clip = "off") + 
   theme_cmap()
+```
 
+`finalize_plot()` will place a ggplot into a frame defined by CMAP design standards. It will align your title and caption to the left, add a horizontal line on top, and make other adjustments. It can show you the final plot and/or export it as a raster or vector file. This function will not apply CMAP design standards to the plot itself; use `theme_cmap()` for that.
+
+The function has a number of customization options built in, accepting 16 (or more) arguments. Refer to the object documentation, `?finalize_plot`, for detailed information on all arguments.  
+
+## Basic implementation
+
+### Finalizing a plot with no customizations
+
+After creating a plot and applying `theme_cmap()`, `finalize_plot()` produces the following output with title, caption, export mode, and filename arguments.  Note that the file will be exported to your current working directory if the full file path is not specified. 
+
+For this example, we will use the final version of the line chart developed in `vignette("plots")`.
+
+```{r lines1, eval=TRUE}
 # finalize and export plot
 finalize_plot(p,
               title = "Annual unlinked passenger trips (in millions).",
