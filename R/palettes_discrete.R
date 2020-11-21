@@ -1,8 +1,9 @@
 #' CMAP discrete color palettes
 #'
-#' A sample of comms-approved colors arranged into palettes
+#' A sample of Comms-approved colors arranged into palettes
 #'
 #' @examples
+#' # Run the following function to visualize each discrete palette
 #' purrr::walk2(cmap_palettes, names(cmap_palettes), viz_palette)
 #'
 #' @export
@@ -47,7 +48,8 @@ viz_palette <- function(pal, ttl = deparse(substitute(pal)), num = length(pal)) 
     }
     pal_func <- grDevices::colorRampPalette(pal)
     graphics::image(seq_len(num), 1, as.matrix(seq_len(num)), col = pal_func(num),
-                    main = paste0(ttl, " (", length(pal), " colours in palette, ", num, " displayed)"),
+                    main = paste0(ttl, " (", length(pal), " colours in palette, ",
+                                  num, " displayed)"),
                     xlab = "", ylab = "", xaxt = "n", yaxt = "n",  bty = "n")
 }
 

@@ -30,6 +30,7 @@ Visualize function is modeled after viz_palette from the \href{https://github.co
 }}
 
 \examples{
+# Run the following function to visualize each continuous palette
 purrr::walk2(cmap_gradients, names(cmap_gradients), viz_gradient)
 
 }

@@ -3,6 +3,7 @@
 #' A sample of comms-approved colors arranged into palettes
 #'
 #' @examples
+#' # Run the following function to visualize each continuous palette
 #' purrr::walk2(cmap_gradients, names(cmap_gradients), viz_gradient)
 #'
 #' @export
@@ -136,14 +137,13 @@ cmap_fill_continuous <- function(palette = "seq_reds",
         ggplot2::scale_fill_gradientn(
             colours = cmap_pal_continuous(palette, reverse = reverse)(256),
             rescaler = mid_rescaler2(middle)
-        )} else {
-            ggplot2::scale_fill_gradientn(
-                colours = cmap_pal_continuous(palette, reverse = reverse)(256)
-            )
-        }
+        )
+    } else {
+        ggplot2::scale_fill_gradientn(
+            colours = cmap_pal_continuous(palette, reverse = reverse)(256)
+        )
+    }
 }
-
-
 
 
 #' @describeIn cmap_fill_continuous For color aesthetic
@@ -152,10 +152,11 @@ cmap_color_continuous <- function(palette = "seq_reds",
                                   reverse = FALSE,
                                   middle = 0) {
     if (substr(palette,1,3) == "div") {
-    ggplot2::scale_colour_gradientn(
-        colours = cmap_pal_continuous(palette, reverse = reverse)(256),
-        rescaler = mid_rescaler2(middle)
-    )} else {
+        ggplot2::scale_colour_gradientn(
+            colours = cmap_pal_continuous(palette, reverse = reverse)(256),
+            rescaler = mid_rescaler2(middle)
+        )
+    } else {
         ggplot2::scale_colour_gradientn(
             colours = cmap_pal_continuous(palette, reverse = reverse)(256)
         )

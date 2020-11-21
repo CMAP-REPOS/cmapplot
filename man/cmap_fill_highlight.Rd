@@ -65,24 +65,23 @@ value(s) to highlight and some generic "Other" label.
 }}
 
 \examples{
+p <- ggplot(data = dplyr::filter(transit_ridership, year=="2019"),
+            mapping = aes(x = system, y = ridership, fill = system)) +
+  geom_col()
+
 # one value, default colors
-ggplot(dplyr::filter(transit_ridership, year=="2019"),
-       aes(x = system, y = ridership, fill = system)) +
-   geom_col() +
-   cmap_fill_highlight(transit_ridership$system, "metra")
+p + cmap_fill_highlight(field = transit_ridership$system,
+                        value = "metra")
 
 # multiple values, default colors
-ggplot(dplyr::filter(transit_ridership, year=="2019"),
-       aes(x = system, y = ridership, fill = system)) +
-   geom_col() +
-   cmap_fill_highlight(transit_ridership$system, c("metra", "pace_ada"))
+p + cmap_fill_highlight(field = transit_ridership$system,
+                        value = c("metra", "pace_ada"))
 
 # multiple values, multiple colors
-ggplot(dplyr::filter(transit_ridership, year=="2019"),
-       aes(x = system, y = ridership, fill = system)) +
-   geom_col() +
-   cmap_fill_highlight(transit_ridership$system,
-   c("metra", "pace_ada"),
-   c("red", "orange"))
+p + cmap_fill_highlight(
+     field = transit_ridership$system,
+     value = c("metra", "pace_ada"),
+     color_value = c("red", "orange")
+   )
 
 }
