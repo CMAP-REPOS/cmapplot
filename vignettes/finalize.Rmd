@@ -47,14 +47,23 @@ p <- ggplot(data = df,
 
 The function has a number of customization options built in, accepting 16 (or more) arguments. Refer to the object documentation, `?finalize_plot`, for detailed information on all arguments.
 
+In this vignette we will use the final version of the line chart developed in `vignette("plots")`. That plot is referenced in the following examples as `p`.
 
 ## Basic implementation
 
+After creating a plot and applying `theme_cmap()`, use `finalize_plot()` to complete the implementation of
+CMAP design standards. You will probably want to set at least the `title` and `caption`, although the function will extract them from the ggplot if they were specified. As you are preparing the plot, you will likely want to view it within R. Do this by leaving leaving the default `mode = "plot"` to send the finished plot to the "Plots" tab within RStudio. Windows users may prefer `mode = "window"`, which draws the plot in a popup window.
+
+```{r finalize1, eval = FALSE}
+finalize_plot(plot = p,
+              title = "Annual unlinked passenger trips (in millions).",
+              caption = "Source: Chicago Metropolitan Agency for Planning
+                analysis of Regional Transportation Authority data.")
+```
+
 ### Finalizing a plot with no customizations
 
-After creating a plot and applying `theme_cmap()`, `finalize_plot()` produces the following output with title, caption, export mode, and filename arguments.  Note that the file will be exported to your current working directory if the full file path is not specified. 
-
-For this example, we will use the final version of the line chart developed in the article on `theme_cmap()` (see `vignette("plots")`). That plot is referenced in the following examples as `p`.
+Once you are happy with your plot, export it using `finalize_plot()` with one of the write modes `c("svg", "ps", "pdf", "png", "tiff", "jpeg", "bmp")` as well as the filename argument.  Note that the file will be exported to your current working directory if the full file path is not specified. 
 
 ```{r finalize1a, message = FALSE}
 # finalize and export plot
@@ -72,7 +81,7 @@ finalize_plot(plot = p,
 
 In that example, the only mode specified was `png`. However, you can specify multiple modes simultaneously using `finalize_plot()`, using the form `mode = c("png", "pdf", "plot")`. That would export the plot as both a `pdf` and `png`, as well as display it in the plotting window of your R console. 
 
-When naming your exports, you can include only the name of the file (e.g., `"my_chart"`) if desired - `cmapplot` will automatically add the appropriate extension to each of your exported files (e.g., `"my_chart.pdf"` and `"my_chart.png"`). If a file with that name already exists in the specified directory, they will not be overwritten unless the user sets `overwrite = TRUE`. Users should be aware that PDFs cannot be overwritten if the existing file is open.
+When naming your exports, you can include only the name of the file (e.g., `"my_chart"`) if desired - `cmapplot` will automatically add the appropriate extension to each of your exported files (e.g., `"my_chart.pdf"` and `"my_chart.png"`). If a file with that name already exists in the specified directory, it will not be overwritten unless the user sets `overwrite = TRUE`.
 
 ### Title and caption formatting
 
@@ -134,7 +143,7 @@ finalize_plot(plot = p,
 
 ### Using debug to understand formatting shifts
 
-With debug on, we can easily see the effects of various adjustments, such as changing the width of the title and caption (`title_width`), the vertical alignment of the caption (`caption_valign`), and keeping the legend alignment of the original plot (`legend_shift`):
+With debug on, we can easily see the effects of various adjustments, such as changing the width of the title and caption (`title_width`), the vertical alignment of the caption (`caption_valign`), and keeping the legend alignment of the original plot (`legend_shift`). Note that with `legend_shift = FALSE`, `finalize_plot()` does not separate the legend from the plot, as indicated by the debug boxes. 
 
 ```{r finalize4, message = FALSE}
 # a debugged and modified finalized plot
