@@ -34,8 +34,8 @@ df <- dplyr::filter(grp_over_time, category == "Goods-Producing")
 ggplot(data = df) +
   geom_line(mapping = aes(x = year, y = realgrp, color = cluster), 
             size = 1.25) +
-  cmap_color_discrete(palette = "community", reverse = TRUE) +
   scale_x_continuous(breaks = seq(from = 2007, to = 2017, by = 2)) +
+  cmap_color_discrete(palette = "community", reverse = TRUE) +
   theme_cmap() +
   ggtitle("Real GRP of goods-producing clusters over time")
 ```
@@ -56,8 +56,8 @@ ggplot(data = df) +
              size = 5) +
   scale_y_continuous(labels = scales::dollar) +
   scale_x_discrete(labels = scales::label_wrap(18)) +
-  cmap_color_continuous(palette = "seq_red_purple") +
   coord_flip() +
+  cmap_color_continuous(palette = "seq_red_purple") +
   theme_cmap() +
   ggtitle("Wage percentiles for key clusters")
 ```
@@ -77,12 +77,12 @@ df <- dplyr::filter(
 
 ggplot(data = df) +
   geom_col(mapping = aes(x = Race, y = value, fill = Race)) +
+  scale_y_continuous(labels = scales::label_percent(accuracy = 1)) +
   cmap_fill_race(white = "White",
                  black = "Black",
                  hispanic = "Hispanic",
                  asian = "Asian",
                  other = "Other") +
-  scale_y_continuous(labels = scales::label_percent(accuracy = 1)) +
   theme_cmap(show.legend = FALSE) +  # Legend is redundant in this example
   ggtitle("Percent employed in specialized traded clusters, by race")
 ```

@@ -19,7 +19,7 @@ viz_gradient(pal, ttl = deparse(substitute(pal)))
 \item{ttl}{= display title (optional)}
 }
 \description{
-A sample of comms-approved colors arranged into palettes
+A sample of Comms-approved colors arranged into palettes.
 
 Displays 25 interpolated colors from the cmap continuous palettes.
 Visualize function is modeled after viz_palette from the \href{https://github.com/ropenscilabs/ochRe}{ochRe package}
@@ -30,7 +30,11 @@ Visualize function is modeled after viz_palette from the \href{https://github.co
 }}
 
 \examples{
-# Run the following function to visualize each continuous palette
+# Get names of available continuous palettes.
+# (Call viz_palette("name_of_palette") to preview one.)
+names(cmap_gradients)
+
+# Run the following function to visualize *all* continuous palette
 purrr::walk2(cmap_gradients, names(cmap_gradients), viz_gradient)
 
 }

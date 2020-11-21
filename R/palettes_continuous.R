@@ -1,9 +1,13 @@
 #' CMAP continuous color palettes
 #'
-#' A sample of comms-approved colors arranged into palettes
+#' A sample of Comms-approved colors arranged into palettes.
 #'
 #' @examples
-#' # Run the following function to visualize each continuous palette
+#' # Get names of available continuous palettes.
+#' # (Call viz_palette("name_of_palette") to preview one.)
+#' names(cmap_gradients)
+#'
+#' # Run the following function to visualize *all* continuous palette
 #' purrr::walk2(cmap_gradients, names(cmap_gradients), viz_gradient)
 #'
 #' @export

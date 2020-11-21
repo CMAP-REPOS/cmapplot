@@ -1,9 +1,13 @@
 #' CMAP discrete color palettes
 #'
-#' A sample of Comms-approved colors arranged into palettes
+#' A sample of Comms-approved colors arranged into palettes.
 #'
 #' @examples
-#' # Run the following function to visualize each discrete palette
+#' # Get names of avialable discrete palettes.
+#' # (Call viz_palette("name_of_palette") to preview one.)
+#' names(cmap_palettes)
+#'
+#' # Run the following function to visualize *all* discrete palettes
 #' purrr::walk2(cmap_palettes, names(cmap_palettes), viz_palette)
 #'
 #' @export
