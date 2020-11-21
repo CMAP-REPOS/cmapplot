@@ -30,8 +30,8 @@ reference:
   - customproto
 - title: Color Palettes and Gradients
 - contents:
-  - starts_with("cmap_fill_")
   - starts_with("viz_")
+  - starts_with("cmap_fill_")
 - title: Sample Datasets
 - contents:
   - cluster_jobchange
