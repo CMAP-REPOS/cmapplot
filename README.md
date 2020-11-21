@@ -18,8 +18,8 @@ Metropolitan Agency for Planning (CMAP) design guidelines.
 The cmapplot package contains a few key components:
 
 1.  Apply a CMAP theme to ggplots with `theme_cmap()`
-2.  Easily provide common CMAP plot customization with custom geoms
-    `geom_recessions()` and `geom_text_lastonly()`
+2.  Easily provide common CMAP plot customizations, such as with custom
+    geoms `geom_recessions()` and `geom_text_lastonly()`
 3.  Apply CMAP colors using a variety of custom functions
     (e.g. `cmap_fill_discrete()`)
 4.  Place the themed plot within a CMAP layout, and export the plot from
@@ -37,18 +37,17 @@ devtools::install_github("CMAP-REPOS/cmapplot", build_vignettes=TRUE)
 library(cmapplot)
 ```
 
-**Important note:** cmapplot works best when installed on a Windows
-computer with the Whitney family of fonts installed (specifically the
-Book, Medium, and Semibold variants). To install on macOS, users must
-install [XQuartz](https://www.xquartz.org) before cmapplot can be
-loaded. (This can be easily accomplished via the
-[Homebrew](https://brew.sh) package manager with the command
-`brew cask install xquartz`.)
+To install on macOS, users must install
+[XQuartz](https://www.xquartz.org) before cmapplot can be loaded. (This
+can be easily accomplished via the [Homebrew](https://brew.sh) package
+manager with the command `brew cask install xquartz`.)
 
-If installed on a Windows computer *without* Whitney, the package will
-still work, but the fonts will default to Calibri. If installed on macOS
-or Linux, the fonts will default to Arial, *even if Whitney is
-installed.*
+**A note about fonts**: The cmapplot package works best when installed
+on a Windows computer with the Whitney family of fonts installed
+(specifically the Book, Medium, and Semibold variants). If installed on
+a Windows computer *without* Whitney, the package will still work, but
+the fonts will default to Calibri. If installed on macOS or Linux, the
+fonts will default to Arial, *even if Whitney is installed.*
 
 ## CMAP theme and colors
 
@@ -88,3 +87,26 @@ finalize_plot(title = "Regional population and labor force participation",
 ```
 
 <img src="man/figures/README-finalize-1.png" width="672" style="display: block; margin: auto;" />
+
+## Additional reading
+
+While this package is designed to make the application of CMAP design
+standards to plots relatively easy, developing a professional, finished
+plot in R will require a decent familiarity with the grammar of
+[ggplot2](ggplot2.tidyverse.org/). Excellent resources in this category
+already exist:
+
+  - The [R graphics cookbook](https://r-graphics.org/) provides
+    accessible examples of how to make almost [any
+    type](https://r-graphics.org/recipe-miscgraph-vectorfield) of plot,
+    as well as how to modify things like [limits,
+    scales](https://r-graphics.org/recipe-axes-range), [coordinate
+    systems](https://r-graphics.org/recipe-axes-polar), and
+    [facets](https://r-graphics.org/recipe-facet-basic).
+
+  - The [ggplot2 book](https://ggplot2-book.org/) delves deeper into why
+    and how ggplot2 works the way it does, also with distinct chapters
+    on topics like
+    [scales](https://ggplot2-book.org/scales-guides.html), [coordinate
+    systems](https://ggplot2-book.org/coord.html),
+    [facets](https://ggplot2-book.org/facet.html), etc.
