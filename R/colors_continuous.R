@@ -1,13 +1,13 @@
-#' CMAP continuous color palettes
+#' CMAP continuous color palettes (gradients)
 #'
-#' A sample of Comms-approved colors arranged into palettes.
+#' Sequential and divergent gradients extracted from the CMAP color palette.
 #'
 #' @examples
 #' # Get names of available continuous palettes.
 #' # (Call viz_palette("name_of_palette") to preview one.)
 #' names(cmap_gradients)
 #'
-#' # Run the following function to visualize *all* continuous palette
+#' # Run the following function to visualize *all* continuous palettes
 #' purrr::walk2(cmap_gradients, names(cmap_gradients), viz_gradient)
 #'
 #' @export
@@ -76,13 +76,12 @@ cmap_gradients <- list(
 
 #' Visualize CMAP color gradients
 #'
-#' Displays 25 interpolated colors from the cmap continuous palettes.
-#' Visualize function is modeled after viz_palette from the \href{https://github.com/ropenscilabs/ochRe}{ochRe package}
-#'
 #' @param pal = select from cmap_gradients list
 #' @param ttl = display title (optional)
 #'
-#' @describeIn cmap_gradients function to vizualize gradients
+#' @describeIn cmap_gradients Display CMAP continuous palettes, interpolating
+#'   additional colors as needed. Modeled after viz_palette from the
+#'   \href{https://github.com/ropenscilabs/ochRe}{ochRe package}
 #'
 #' @export
 viz_gradient <- function(pal, ttl = deparse(substitute(pal))) {
@@ -106,8 +105,11 @@ cmap_pal_continuous <- function(palette = "seq_reds", reverse = FALSE) {
     }
     return(grDevices::colorRampPalette(pal))
 }
+
+
 #' internal helper function to rescale. Credit for idea is due to ijlyttle:
 #  \url{https://github.com/tidyverse/ggplot2/issues/3738#issuecomment-583750802}
+#'
 #' @noRd
 mid_rescaler2 <- function(mid) {
     function(x, to = c(0, 1), from = range(x, na.rm = TRUE)) {
@@ -115,11 +117,12 @@ mid_rescaler2 <- function(mid) {
     }
 }
 
-#' Apply continuous CMAP palettes to ggplot2 aesthetics.
+
+#' Apply continuous CMAP palettes (gradients) to ggplot2 aesthetics
 #'
 #' Pick the function depending on the aesthetic of your ggplot object (fill or
 #' color). On diverging palettes, a midpoint can be manually adjusted (defaults
-#' to 0).
+#' to 0). See \code{\link{cmap_gradients}} for a listing of available gradients.
 #'
 #' @param palette String; Choose from 'cmap_gradients' list
 #' @param reverse Logical; Reverse color order?
@@ -133,6 +136,7 @@ mid_rescaler2 <- function(mid) {
 #'     cmap_color_continuous(palette = "seq_red_purple")
 #'
 #' @describeIn cmap_fill_continuous For fill aesthetic
+#'
 #' @export
 cmap_fill_continuous <- function(palette = "seq_reds",
                                  reverse = FALSE,
@@ -151,6 +155,7 @@ cmap_fill_continuous <- function(palette = "seq_reds",
 
 
 #' @describeIn cmap_fill_continuous For color aesthetic
+#'
 #' @export
 cmap_color_continuous <- function(palette = "seq_reds",
                                   reverse = FALSE,

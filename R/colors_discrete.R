@@ -1,6 +1,6 @@
 #' CMAP discrete color palettes
 #'
-#' A sample of Comms-approved colors arranged into palettes.
+#' A selection of discrete color palettes from the CMAP color palette.
 #'
 #' @examples
 #' # Get names of avialable discrete palettes.
@@ -38,13 +38,14 @@ cmap_palettes <- list(
 
 #' Print palette for reference
 #'
-#' Visualize function is directly from the \href{https://github.com/ropenscilabs/ochRe}{ochRe package}
-#'
 #' @param pal character, vector of (hexadecimal) colours representing a palette
 #' @param ttl character, title to be displayed (the name of the palette)
 #' @param num numeric, the number of colours to display
 #'
-#' @describeIn cmap_palettes function to vizualize a palette
+#' @describeIn cmap_palettes Display CMAP diverging palettes. Borrowed with
+#'   respect from the \href{https://github.com/ropenscilabs/ochRe}{ochRe
+#'   package}
+#'
 #' @export
 viz_palette <- function(pal, ttl = deparse(substitute(pal)), num = length(pal)) {
     if (num <= 0) {
@@ -75,7 +76,8 @@ cmap_pal_discrete <- function(palette = "prosperity", reverse = FALSE) {
 
 #' Apply discrete CMAP palettes to ggplot2 aesthetics
 #'
-#' Pick the function depending on the aesthetic of your ggplot object (fill or color)
+#' Pick the function depending on the aesthetic of your ggplot object (fill or
+#' color). See \code{link{cmap_palettes}} for a listing of available gradients.
 #'
 #' @param palette Choose from 'cmap_palettes' list
 #' @param reverse Logical; reverse color order?

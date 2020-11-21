@@ -18,7 +18,7 @@ make_race_palette <- function(white, black, hispanic, asian, other) {
 }
 
 
-#' Apply official CMAP race/ethnicity chart colors to ggplot2
+#' Apply official CMAP race/ethnicity chart colors to ggplot2 aesthetics
 #'
 #' Pick the function depending on the aesthetic of your ggplot object (fill or color).
 #' Specify your dataset's unique race factor names (as case-sensitive strings) in the arguments.
