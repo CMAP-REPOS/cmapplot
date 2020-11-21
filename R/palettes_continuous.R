@@ -122,10 +122,8 @@ mid_rescaler2 <- function(mid) {
 #'   0.
 #'
 #' @examples
-#' library(dplyr)
-#' grp_over_time %>%
-#'   filter(cluster=="Biopharmaceuticals") %>%
-#'   ggplot(aes(x = year, y = realgrp, color = realgrp)) +
+#' ggplot(dplyr::filter(grp_over_time, cluster=="Biopharmaceuticals"),
+#'        aes(x = year, y = realgrp, color = realgrp)) +
 #'     geom_line() +
 #'     cmap_color_continuous(palette = "seq_red_purple")
 #'

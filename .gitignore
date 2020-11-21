@@ -7,3 +7,4 @@ docs
 doc
 Meta
 Rplots.pdf
+vignettes/*.png
