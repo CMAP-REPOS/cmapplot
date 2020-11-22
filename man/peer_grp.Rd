@@ -7,10 +7,10 @@
 \format{
 A tibble. 121 rows and 5 variables:
 \describe{
-   \item{Area}{Char. The name of the region}
-   \item{year}{Double. The year of the data}
-   \item{realgrp}{Double. The real gross regional product of the cluster in year `year`.
-   Not exactly sure on the inflation year but I believe it is 2012}
+   \item{Area}{Char. name of the region}
+   \item{year}{Double. year of the data}
+   \item{value}{Double. real gross regional product}
+   \item{relative}{Double, real GRP indexed to 2001}
 }
 }
 \source{

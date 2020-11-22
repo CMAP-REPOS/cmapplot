@@ -31,7 +31,8 @@ Intro text
 #### Example code
 
 ```{r line, message=FALSE}
-
+df <- peer_grp %>% 
+  
 ```
 
 <!--<img src="" width="100%" style="display: block; margin: auto;"/>-->
