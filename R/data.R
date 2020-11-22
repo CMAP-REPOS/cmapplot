@@ -68,6 +68,27 @@
 "grp_over_time"
 
 
+#' Gross Regional Product by region, with peers, 2001-17
+#'
+#' A test dataset containing real GRP data for the CMAP and peer regions.
+#'
+#' @format A tibble. 121 rows and 5 variables:
+#' \describe{
+#'    \item{Area}{Char. The name of the region}
+#'    \item{year}{Double. The year of the data}
+#'    \item{realgrp}{Double. The real gross regional product of the cluster in year `year`.
+#'    Not exactly sure on the inflation year but I believe it is 2012}
+#' }
+#' @source CMAP traded clusters report
+#'
+#' @examples
+#' # a time-series line chart
+#' ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
+#'   geom_line()
+#'
+"peer_grp"
+
+
 #' Wage percentiles by cluster
 #'
 #' A test dataset containing the 10th, 25th, 50th, 75th, and 90th percentile wage by cluster in the CMAP region.
