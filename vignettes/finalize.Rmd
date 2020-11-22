@@ -23,11 +23,11 @@ library(cmapplot)
 # clean up dataset
 df <- transit_ridership %>% 
   filter(system != "pace_ada") %>% 
-  mutate(system = case_when(
-    system == "cta_bus" ~ "CTA bus",
-    system == "cta_rail" ~ "CTA rail",
-    system == "metra" ~ "Metra",
-    system == "pace" ~ "Pace"
+  mutate(system = recode_factor(system,
+    cta_bus = "CTA bus",
+    cta_rail = "CTA rail",
+    metra = "Metra",
+    pace = "Pace"
   ))
 
 # build plot
