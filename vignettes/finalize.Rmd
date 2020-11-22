@@ -52,9 +52,9 @@ In this vignette we will use the final version of the line chart developed in `v
 ## Basic implementation
 
 After creating a plot and applying `theme_cmap()`, use `finalize_plot()` to complete the implementation of
-CMAP design standards. You will probably want to set at least the `title` and `caption`, although the function will extract them from the ggplot if they were specified. As you are preparing the plot, you will likely want to view it within R. Do this by leaving leaving the default `mode = "plot"` to send the finished plot to the "Plots" tab within RStudio. Windows users may prefer `mode = "window"`, which draws the plot in a popup window.
+CMAP design standards. You will probably want to set at least the `title` and `caption`, although the function will extract them from the ggplot if they were specified. As you are preparing the plot, you will likely want to view it within R. Do this by leaving leaving the default `mode = "plot"` to send the finished plot to the "Plots" tab within RStudio. Windows users may prefer `mode = "window"`, which draws the plot in a popup window. In both modes, the plot will show up "actual size" (depending on your screen's resolution) surrounded by a grey canvas.
 
-```{r finalize1, eval = FALSE}
+```{r finalize1, fig.width= 11, out.width = "100%"}
 finalize_plot(plot = p,
               title = "Annual unlinked passenger trips (in millions).",
               caption = "Source: Chicago Metropolitan Agency for Planning
@@ -99,8 +99,10 @@ finalize_plot(plot = p,
 
 <img src="finalize1b.png" width="100%" style="display: block; margin: auto;"/>
 
-## Overrides
+## Advanced customization
+While `finalize_plot()` can be run successfully with very few arguments, a number of additional arguments allow for further customization of the plot.
 
+### Overriding plotting constants
 Any of the attributes defined in `cmapplot_globals$consts` can be changed by passing a named list to the `overrides` arguments. For example, the chart below uses the `overrides` argument to modify the margin below the title (`margin_title_b`), the margin to the left of the title and the caption (`margin_title_l`), and the margin above the legend (`margin_legend_t`).
 
 You can read more about available options for customization in `?cmapplot_globals`.
@@ -122,9 +124,7 @@ finalize_plot(plot = p,
 <img src="finalize2.png" width="100%" style="display: block; margin: auto;"/>
 
 
-## Adjusting positions with debug mode
-
-### Enabling debug mode
+### Adjusting positions with debug mode
 
 Default values in `finalize_plot()` attempt to reflect CMAP design standards, but users can also manually adjust various elements of the finalized plot. The easiest way to identify current positions and how they relate to other objects within the finalized plot object is to set `debug = TRUE`:
 
