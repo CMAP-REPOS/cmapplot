@@ -36,6 +36,7 @@ reference:
 - contents:
   - cluster_jobchange
   - economy_basic
+  - peer_grp
   - grp_over_time
   - percentile_wages
   - pop_and_laborforce_by_age

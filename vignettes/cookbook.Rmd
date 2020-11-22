@@ -26,7 +26,7 @@ This vignette is a showcase of cmapplot's full capabilities by replicating as cl
 
 ## Line graph
 
-Line graphs are useful for showing change over time, and are well-suited for combination with `geom_text_lastonly()` and `geom_recessions()` custom geoms. This particular plot also demonstrates the utility of a few other `ggplot2`-adjacent functions from the tidyverse:
+Line graphs are useful for showing change over time, and are well-suited for combination with `geom_text_lastonly()` and `geom_recessions()` custom geoms. This particular plot also demonstrates the utility of a few other functions from the tidyverse that are quite useful when working with `ggplot2::ggplot()`:
 
 * `forcats::fct_reorder()` and `forcats::fct_reorder2()` are useful to automatically order of factors within `mapping`, which establishes legend order. (See also [the relevant R4DS chapter](https://r4ds.had.co.nz/factors.html#modifying-factor-order).)
 
