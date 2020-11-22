@@ -74,10 +74,9 @@
 #'
 #' @format A tibble. 121 rows and 5 variables:
 #' \describe{
-#'    \item{Area}{Char. name of the region}
+#'    \item{area}{Char. name of the region}
 #'    \item{year}{Double. year of the data}
-#'    \item{value}{Double. real gross regional product}
-#'    \item{relative}{Double, real GRP indexed to 2001}
+#'    \item{grp}{Double. real gross regional product}
 #' }
 #' @source CMAP traded clusters report
 #'

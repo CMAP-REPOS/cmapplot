@@ -31,7 +31,9 @@ Intro text
 #### Example code
 
 ```{r line, message=FALSE}
-df <- peer_grp %>% 
+df <- peer_grp
+
+
   
 ```
 
