@@ -26,7 +26,13 @@ This vignette is a showcase of cmapplot's full capabilities by replicating as cl
 
 ## Line graph
 
-Intro text
+Line graphs are useful for showing change over time, and are well-suited for combination with `geom_text_lastonly()` and `geom_recessions()` custom geoms. This particular plot also demonstrates the utility of a few other `ggplot2`-adjacent functions from the tidyverse:
+
+* `forcats::fct_reorder()` and `forcats::fct_reorder2()` are useful to automatically order of factors within `mapping`, which establishes legend order. (See also [the relevant R4DS chapter](https://r4ds.had.co.nz/factors.html#modifying-factor-order).)
+
+* functions from the `scales` package, such as `scales::percent()` and `scales::label_percent()`, which reformat numbers into attractive formats.
+
+* ggplot2 scale functions, such as `ggplot2::scale_x_continuous()`, which allow for control over the extent and breaks of each axis. 
 
 #### Example code
 
@@ -40,7 +46,7 @@ df <- peer_grp %>%
 # create line plot
 p <- ggplot(data = df, mapping = aes(
   x = year, y = indexed,
-  color = fct_reorder2(area, year, indexed),           # order legend by last `relative` in last `year`
+  color = fct_reorder2(area, year, indexed),    # order legend by last `indexed` value in last `year`
   label = scales::percent(indexed, accuracy = 1))) +   # format labels as percents with no decimals
   
   # add geoms, making sure to keep recessions under lines
@@ -89,9 +95,9 @@ finalize_plot(
 
 #### Original graphic
 
-<img src="https://www.dropbox.com/s/xol70o61citlpjj/Cumulative_Growth-01.png" width="100%" style="display: block; margin: auto;"/>
+<img src="https://www.dropbox.com/s/xol70o61citlpjj/Cumulative_Growth-01.png?raw=1" width="100%" style="display: block; margin: auto;"/>
 
-[Source](https://www.dropbox.com/s/xol70o61citlpjj/Cumulative_Growth-01.png)
+[Source](https://www.dropbox.com/s/xol70o61citlpjj/Cumulative_Growth-01.png?dl=0)
 
 
 ## Area plot
