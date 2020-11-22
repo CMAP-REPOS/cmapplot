@@ -74,7 +74,7 @@
 #'
 #' @format A tibble. 121 rows and 5 variables:
 #' \describe{
-#'    \item{area}{Char. name of the region}
+#'    \item{area}{Factor. name of the region}
 #'    \item{year}{Double. year of the data}
 #'    \item{grp}{Double. real gross regional product}
 #' }

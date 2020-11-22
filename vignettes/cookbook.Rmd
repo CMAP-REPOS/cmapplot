@@ -31,19 +31,67 @@ Intro text
 #### Example code
 
 ```{r line, message=FALSE}
-df <- peer_grp
+# get example dataset, and create a relative GRP field
+df <- peer_grp %>% 
+  group_by(area) %>% 
+  mutate(indexed = grp / first(grp) - 1)
 
 
+# create line plot
+p <- ggplot(data = df, mapping = aes(
+  x = year, y = indexed,
+  color = fct_reorder2(area, year, indexed),           # order legend by last `relative` in last `year`
+  label = scales::percent(indexed, accuracy = 1))) +   # format labels as percents with no decimals
   
+  # add geoms, making sure to keep recessions under lines
+  geom_recessions(ymin = 0, ymax = .5) +
+  geom_line(lineend = "round") +
+  geom_text_lastonly() +
+  
+  # establish an attractive Y scale
+  scale_y_continuous(
+    labels = scales::label_percent(accuracy = 1),      # Format y-axis numbers with commas
+    expand = expansion(add = 0)) +                     # No padding beyond specified limits
+  
+  # establish an attractive X scale
+  scale_x_continuous(
+    breaks = seq(min(df$year), max(df$year), by = 2),  # Set breaks to every other year
+    expand = expansion(add = c(0.5, 1.25))) +          # Set custom padding for L and R side of axis 
+  
+  # Apply CMAP theme
+  theme_cmap(
+    overrides = list(margin_panel_r = 3)  # shrink distance btwn gridlines ending and plotting extent
+  )
+  
+
+# Create final plot
+finalize_plot(
+  p, mode = "png", filename = "./cookbook_line.png",
+  
+  # modify default sizes a touch
+  height = 4.5,
+  title_width = 2.6,
+  
+  # use some <br> tags to get the title and caption to match perfectly
+  title = "Cumulative growth<br>in real gross regional product, 2001-19",
+  caption = "Note: Indext year 2001. <br><br> Source: Chicago Metropolitan
+    Agency for Planning analysis of U.S. Bureau <br>of Economic Analysis and 
+    Economic Modeling Specialists International <br>data (Emsi 2020.4).",
+  
+  # change some plotting constants
+  overrides = list(margin_plot_r = 0,    # eliminate distance btwn plot and right side of image
+                   margin_legend_b = 25) # larger than usual gap between legend and plot
+)
+
 ```
 
-<!--<img src="" width="100%" style="display: block; margin: auto;"/>-->
+<img src="cookbook_line.png" width="100%" style="display: block; margin: auto;"/>
 
-<!--#### Original graphic
+#### Original graphic
 
-<img src="" width="100%" style="display: block; margin: auto;"/>
+<img src="https://www.dropbox.com/s/xol70o61citlpjj/Cumulative_Growth-01.png" width="100%" style="display: block; margin: auto;"/>
 
-[Source]()-->
+[Source](https://www.dropbox.com/s/xol70o61citlpjj/Cumulative_Growth-01.png)
 
 
 ## Area plot
