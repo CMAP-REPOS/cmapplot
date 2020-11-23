@@ -26,6 +26,8 @@ library(tidyverse)
 
 This R package provides themes, color scales, and other custom functions for [ggplot2](https://github.com/tidyverse/ggplot2), based on Chicago Metropolitan Agency for Planning (CMAP) design guidelines.
 
+CMAP staff who are interested in using this package, or merely staying in the loop, are encouraged to join the [R team](https://teams.microsoft.com/l/team/19%3ad705bfd7596a4518b588ad529d2367c8%40thread.skype/conversations?groupId=d7bab529-9c30-441e-9db6-4edfdca8202c&tenantId=43b185b9-e6d9-45a5-8e36-4c08dc0ab1a2) in Microsoft Teams and follow the "cmapplot" channel.
+
 
 ## The basics
 The cmapplot package contains a few key components:
