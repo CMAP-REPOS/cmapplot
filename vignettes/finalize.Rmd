@@ -11,10 +11,11 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.width = 7,
+  fig.width = 670/72,
   fig.asp = 400/670,
   fig.retina = 4,
-  fig.align = "center"
+  fig.align = "center",
+  out.width = "100%"
 )
 
 library(tidyverse)
@@ -55,7 +56,7 @@ In this vignette we will use the final version of the line chart developed in `v
 After creating a plot and applying `theme_cmap()`, use `finalize_plot()` to complete the implementation of
 CMAP design standards. You will probably want to set at least the `title` and `caption`, although the function will extract them from the ggplot if they were specified. As you are preparing the plot, you will likely want to view it within R. Do this by leaving leaving the default `mode = "plot"` to send the finished plot to the "Plots" tab within RStudio. Windows users may prefer `mode = "window"`, which draws the plot in a popup window. In both modes, the plot will show up "actual size" (depending on your screen's resolution) surrounded by a grey canvas.
 
-```{r finalize1, fig.width= 11, out.width = "100%"}
+```{r finalize1, fig.width=11, out.width="100%"}
 finalize_plot(plot = p,
               title = "Annual unlinked passenger trips (in millions).",
               caption = "Source: Chicago Metropolitan Agency for Planning
@@ -66,17 +67,17 @@ finalize_plot(plot = p,
 
 Once you are happy with your plot, export it using `finalize_plot()` with one of the write modes `c("svg", "ps", "pdf", "png", "tiff", "jpeg", "bmp")` as well as the filename argument.  Note that the file will be exported to your current working directory if the full file path is not specified. 
 
-```{r finalize1a, message = FALSE}
-# finalize and export plot
+```{r finalize1a, message=FALSE}
+# Finalize and export plot to PNG
 finalize_plot(plot = p,
               title = "Annual unlinked passenger trips (in millions).",
               caption = "Source: Chicago Metropolitan Agency for Planning
                 analysis of Regional Transportation Authority data.",
               mode = "png",
-              filename = "finalize1a.png")
+              filename = "finalized_plot.png")
 ```
 
-<img src="finalize1a.png" width="100%" style="display: block; margin: auto;"/>
+<img src="finalized_plot.png" width="100%" style="display: block; margin: auto;"/>
 
 ### Exporting behavior
 
@@ -88,76 +89,62 @@ When naming your exports, you can include only the name of the file (e.g., `"my_
 
 The title and caption blocks take HTML formatting, so you can manually set line breaks and font formatting.
 
-```{r finalize1b, message = FALSE}
-# a finalized line graph, with text tweaks
+```{r finalize1b, message=FALSE}
+# A finalized line graph, with text tweaks
 finalize_plot(plot = p,
               title = "Annual <br> unlinked passenger trips <br> (in millions).",
               caption = "Source: Chicago Metropolitan Agency for Planning
-                analysis of <i>Regional Transportation Authority</i> data.",
-              mode = "png",
-              filename = "finalize1b.png")
+                analysis of <i>Regional Transportation Authority</i> data.")
 ```
-
-<img src="finalize1b.png" width="100%" style="display: block; margin: auto;"/>
 
 
 ## Advanced customization
+
 While `finalize_plot()` can be run successfully with very few arguments, a number of additional arguments allow for further customization of the plot.
 
 ### Overriding plotting constants
+
 Any of the attributes defined in `cmapplot_globals$consts` can be changed by passing a named list to the `overrides` arguments. For example, the chart below uses the `overrides` argument to modify the margin below the title (`margin_title_b`), the margin to the left of the title and the caption (`margin_title_l`), and the margin above the legend (`margin_legend_t`).
 
 You can read more about available options for customization in `?cmapplot_globals`.
 
-```{r finalize2, message = FALSE}
-# a finalized plot with some formatting overrides
+```{r finalize2, message=FALSE}
+# A finalized plot with some formatting overrides
 finalize_plot(plot = p,
               title = "Annual unlinked passenger trips (in millions).",
               caption = "Source: Chicago Metropolitan Agency for Planning
                 analysis of Regional Transportation Authority data.",
-              mode = "png",
-              filename = "finalize2.png",
               caption_valign = "top",
               overrides = list(margin_title_b = 30, 
                                margin_title_l = 5,
                                margin_legend_t = 10))
 ```
 
-<img src="finalize2.png" width="100%" style="display: block; margin: auto;"/>
-
 ### Adjusting positions with debug mode
 
 Default values in `finalize_plot()` attempt to reflect CMAP design standards, but users can also manually adjust various elements of the finalized plot. The easiest way to identify current positions and how they relate to other objects within the finalized plot object is to set `debug = TRUE`:
 
-```{r finalize3, message = FALSE}
-# a debugged finalized plot
+```{r finalize3, message=FALSE}
+# A debugged finalized plot
 finalize_plot(plot = p,
               title = "Annual unlinked passenger trips (in millions).",
               caption = "Source: Chicago Metropolitan Agency for Planning
                 analysis of Regional Transportation Authority data.",
-              mode = "png",
-              filename = "finalize3.png",
               debug = TRUE)
 ```
-
-<img src="finalize3.png" width="100%" style="display: block; margin: auto;"/>
 
 ### Using debug to understand formatting shifts
 
 With debug on, we can easily see the effects of various adjustments, such as changing the width of the title and caption (`title_width`), the vertical alignment of the caption (`caption_valign`), and keeping the legend alignment of the original plot (`legend_shift`). Note that with `legend_shift = FALSE`, `finalize_plot()` does not separate the legend from the plot, as indicated by the debug boxes. 
 
-```{r finalize4, message = FALSE}
-# a debugged and modified finalized plot
+```{r finalize4, message=FALSE}
+# A debugged and modified finalized plot
 finalize_plot(plot = p,
               title = "Annual unlinked passenger trips (in millions).",
               caption = "Source: Chicago Metropolitan Agency for Planning
                 analysis of Regional Transportation Authority data.",
-              mode = "png",
-              filename = "finalize4.png",
               title_width = 1.8,
               caption_valign = "top",
               legend_shift = FALSE,
               debug = TRUE)
 ```
-
-<img src="finalize4.png" width="100%" style="display: block; margin: auto;"/>
