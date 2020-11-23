@@ -49,6 +49,7 @@ The function has a number of customization options built in, accepting 16 (or mo
 
 In this vignette we will use the final version of the line chart developed in `vignette("plots")`. That plot is referenced in the following examples as `p`.
 
+
 ## Basic implementation
 
 After creating a plot and applying `theme_cmap()`, use `finalize_plot()` to complete the implementation of
@@ -99,6 +100,7 @@ finalize_plot(plot = p,
 
 <img src="finalize1b.png" width="100%" style="display: block; margin: auto;"/>
 
+
 ## Advanced customization
 While `finalize_plot()` can be run successfully with very few arguments, a number of additional arguments allow for further customization of the plot.
 
@@ -122,7 +124,6 @@ finalize_plot(plot = p,
 ```
 
 <img src="finalize2.png" width="100%" style="display: block; margin: auto;"/>
-
 
 ### Adjusting positions with debug mode
 
