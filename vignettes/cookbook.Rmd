@@ -11,10 +11,11 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.width = 7,
+  fig.width = 670/72,
   fig.asp = 400/670,
   fig.retina = 4,
-  fig.align = "center"
+  fig.align = "center",
+  out.width = "100%"
 )
 
 library(tidyverse)
@@ -36,68 +37,72 @@ Line graphs are useful for showing change over time, and are well-suited for com
 
 #### Example code
 
-```{r line, message=FALSE}
-# get example dataset, and create a relative GRP field
+```{r line, fig.asp=4.5/(670/72), message=FALSE}
+# Get example dataset, and create a relative GRP field
 df <- peer_grp %>% 
   group_by(area) %>% 
   mutate(indexed = grp / first(grp) - 1)
 
 
-# create line plot
-p <- ggplot(data = df, mapping = aes(
-  x = year, y = indexed,
-  color = fct_reorder2(area, year, indexed),    # order legend by last `indexed` value in last `year`
-  label = scales::percent(indexed, accuracy = 1))) +   # format labels as percents with no decimals
+# Create line plot
+p <- ggplot(
+  data = df,
+  mapping = aes(
+    x = year,
+    y = indexed,
+    color = fct_reorder2(area, year, indexed),  # Order legend by last `indexed` value in last `year`
+    label = scales::percent(indexed, accuracy = 1)  # Format labels as percents with no decimals
+  )
+) +
   
-  # add geoms, making sure to keep recessions under lines
+  # Add geoms, making sure to keep recessions under lines
   geom_recessions(ymin = 0, ymax = .5) +
   geom_line(lineend = "round") +
   geom_text_lastonly() +
   
-  # establish an attractive Y scale
+  # Establish an attractive Y scale
   scale_y_continuous(
-    labels = scales::label_percent(accuracy = 1),      # Format y-axis numbers with commas
-    expand = expansion(add = 0)) +                     # No padding beyond specified limits
+    labels = scales::label_percent(accuracy = 1),
+    expand = expansion(add = 0)  # No padding beyond specified limits
+  ) +
   
-  # establish an attractive X scale
+  # Establish an attractive X scale
   scale_x_continuous(
-    breaks = seq(min(df$year), max(df$year), by = 2),  # Set breaks to every other year
-    expand = expansion(add = c(0.5, 1.25))) +          # Set custom padding for L and R side of axis 
+    breaks = seq(from = min(df$year), to = max(df$year), by = 2),  # Set breaks to every other year
+    expand = expansion(add = c(0.5, 1.25))  # Set custom padding for L/R sides of axis 
+  ) +
   
-  # Apply CMAP theme
+  # Apply CMAP theme and color palette
   theme_cmap(
-    overrides = list(margin_panel_r = 3)  # shrink distance btwn gridlines ending and plotting extent
-  )
+    overrides = list(margin_panel_r = 3)  # Shrink distance btwn gridlines ending and plotting extent
+  ) +
+  cmap_color_discrete(palette = "legislation")
   
 
 # Create final plot
 finalize_plot(
-  p, mode = "png", filename = "./cookbook_line.png",
+  p,
+  title = "Cumulative growth in real gross regional product, 2001-19",
+  caption = "Note: Index year 2001.<br><br>
+    Source: Chicago Metropolitan Agency for Planning analysis of U.S. Bureau
+    of Economic Analysis and Economic Modeling Specialists International data
+    (Emsi 2020.4).",
   
-  # modify default sizes a touch
+  # Tweak plot layout
   height = 4.5,
   title_width = 2.6,
-  
-  # use some <br> tags to get the title and caption to match perfectly
-  title = "Cumulative growth<br>in real gross regional product, 2001-19",
-  caption = "Note: Indext year 2001. <br><br> Source: Chicago Metropolitan
-    Agency for Planning analysis of U.S. Bureau <br>of Economic Analysis and 
-    Economic Modeling Specialists International <br>data (Emsi 2020.4).",
-  
-  # change some plotting constants
-  overrides = list(margin_plot_r = 0,    # eliminate distance btwn plot and right side of image
-                   margin_legend_b = 25) # larger than usual gap between legend and plot
+  overrides = list(
+    margin_plot_r = 0,  # Eliminate distance btwn plot and right side of image
+    margin_legend_b = 25  # Larger than usual gap between legend and plot
+  )
 )
-
 ```
-
-<img src="cookbook_line.png" width="100%" style="display: block; margin: auto;"/>
 
 #### Original graphic
 
 <img src="https://www.dropbox.com/s/xol70o61citlpjj/Cumulative_Growth-01.png?raw=1" width="100%" style="display: block; margin: auto;"/>
 
-[Source](https://www.dropbox.com/s/xol70o61citlpjj/Cumulative_Growth-01.png?dl=0)
+<!--[Source]()-->
 
 
 ## Area plot
@@ -143,13 +148,11 @@ p <- ggplot(data = df, mapping = aes(x = year, y = ridership, fill = system)) +
 
 # Create final plot
 finalize_plot(
-  p, mode = "png", filename = "./cookbook_area.png",
+  p,
   title = "Annual unlinked passenger trips on Regional Transportation Authority
     systems over time, by service board (in millions).",
   caption = "Source: CMAP analysis of RTA data.")
 ```
-
-<img src="cookbook_area.png" width="100%" style="display: block; margin: auto;"/>
 
 <!--#### Original graphic
 
@@ -223,7 +226,7 @@ p <- ggplot(data = df, mapping = aes(x = TOT_POP_DIFF, y = LF_POP_DIFF)) +
 
 # Create final plot
 finalize_plot(
-  p, mode="png", filename="cookbook_scatter.png",
+  p,
   title = "Changes in population, size of labor force, and labor force
     participation rate among prime working age residents (ages 25-54), Chicago
     and select Metropolitan Statistical Areas, 2006-10 to 2013-17",
@@ -233,8 +236,6 @@ finalize_plot(
     Community Survey data, five-year estimates, 2006-10 and 2013-17."
 )
 ```
-
-<img src="cookbook_scatter.png" width="100%" style="display: block; margin: auto;"/>
 
 #### Original graphic
 
@@ -306,14 +307,12 @@ p <- ggplot(data = df,
 
 # Create final plot
 finalize_plot(
-  p, mode = "png", filename = "./cookbook_highlightbar.png",
+  p,
   title = "Median household income in select metropolitan statistical areas, 2016",
   caption = "Source: Chicago Metropolitan Agency for Planning analysis of U.S.
     Census Bureau data."
 )
 ```
-
-<img src="cookbook_highlightbar.png" width="100%" style="display: block; margin: auto;"/>
 
 #### Original graphic
 
@@ -378,7 +377,7 @@ p <- ggplot(data = df,
 
 # Create final plot
 finalize_plot(
-  p, mode = "png", filename = "./cookbook_clusterbar.png",
+  p,
   title = "Average self-response rates in Chicago region census tracts by
     majority race and ethnicity",
   caption = "Note: These figures are weighted averages based on tract-level
@@ -386,17 +385,13 @@ finalize_plot(
     the U.S. Census Bureau's American Community Survey and leverages Census
     designations of race and ethnicity. This includes the term 'Hispanic,'
     which in this context refers to residents of any race who categorized
-    themselves as Hispanic. See 'About the data' below for more detail.
-    <br><br>
-    Sources: CMAP analysis of U.S. Census Bureau data
-    <br>
+    themselves as Hispanic. See 'About the data' below for more detail.<br><br>
+    Sources: CMAP analysis of U.S. Census Bureau data<br>
     (as of August 19, 2020).",
   title_width = 2.4,  # Manually specify title width
   overrides = list(margin_legend_b = 50)  # Increase margin below legend
 )
 ```
-
-<img src="cookbook_clusterbar.png" width="100%" style="display: block; margin: auto;"/>
 
 #### Original graphic
 
@@ -453,7 +448,7 @@ p <- ggplot(data = df, aes(x = YEAR, y = PCT_NONSOV, fill = MODE)) +
 
 # Create final plot
 finalize_plot(
-  p, mode="png", filename="cookbook_stackbar.png",
+  p,
   title = "Percentage of trips to work via non-single occupancy vehicle
     (non-SOV) modes, 2009-2018",
   caption = "Source: CMAP analysis of American Community Survey (ACS) data
@@ -464,8 +459,6 @@ finalize_plot(
     available there due to its relatively small population."
 )
 ```
-
-<img src="cookbook_stackbar.png" width="100%" style="display: block; margin: auto;"/>
 
 #### Original graphic
 
@@ -483,8 +476,6 @@ Intro text
 ```{r histogram, message=FALSE}
 
 ```
-
-<!--<img src="" width="100%" style="display: block; margin: auto;"/>-->
 
 <!--#### Original graphic
 
@@ -544,14 +535,12 @@ p <- df %>%
 
 # Create final plot
 finalize_plot(
-  p, mode="png", filename="cookbook_donut.png",
+  p,
   # use HTML tags to customize breaks in title, caption
   title = "Regional emissions<br>by sector, 2015",
   caption = "Source: Chicago Metropolitan Agency for Planning.",
   caption_valign = "top")
 ```
-
-<img src="cookbook_donut.png" width="100%" style="display: block; margin: auto;"/>
 
 #### Original graphic
 
@@ -569,8 +558,6 @@ Intro text
 ```{r facet, message=FALSE}
 
 ```
-
-<!--<img src="" width="100%" style="display: block; margin: auto;"/>-->
 
 <!--#### Original graphic
 
@@ -629,7 +616,7 @@ p <- ggplot(data = df, mapping = aes(x = YEAR, y = MED_HH_INC, color = RACE_ETH)
 
 # Create final plot
 finalize_plot(
-  p, mode="png", filename="cookbook_racepalette.png",
+  p,
   title = "Median household income by race and ethnicity, 2006-2019, in 2016
     inflation-adjusted dollars",
   caption = "Source: CMAP analysis of American Community Survey data, 1-year
@@ -637,8 +624,6 @@ finalize_plot(
   caption_valign = "top"
 )
 ```
-
-<img src="cookbook_racepalette.png" width="100%" style="display: block; margin: auto;"/>
 
 #### Original graphic
 
