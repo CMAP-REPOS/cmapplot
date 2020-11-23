@@ -68,7 +68,6 @@ ggplot(data = pop_and_laborforce_by_age,
              gridlines = "v",
              vline = 0) +
   cmap_fill_discrete(palette = "environment")
-#> 'Whitney' font family not found. Using a substitute...
 ```
 
 <img src="man/figures/README-theme-1.png" width="672" style="display: block; margin: auto;" />
@@ -96,7 +95,7 @@ plot in R will require a decent familiarity with the grammar of
 [ggplot2](ggplot2.tidyverse.org/). Excellent resources in this category
 already exist:
 
-  - The [R graphics cookbook](https://r-graphics.org/) provides
+-   The [R graphics cookbook](https://r-graphics.org/) provides
     accessible examples of how to make almost [any
     type](https://r-graphics.org/recipe-miscgraph-vectorfield) of plot,
     as well as how to modify things like [limits,
@@ -104,9 +103,16 @@ already exist:
     systems](https://r-graphics.org/recipe-axes-polar), and
     [facets](https://r-graphics.org/recipe-facet-basic).
 
-  - The [ggplot2 book](https://ggplot2-book.org/) delves deeper into why
+-   The [ggplot2 book](https://ggplot2-book.org/) delves deeper into why
     and how ggplot2 works the way it does, also with distinct chapters
     on topics like
     [scales](https://ggplot2-book.org/scales-guides.html), [coordinate
     systems](https://ggplot2-book.org/coord.html),
     [facets](https://ggplot2-book.org/facet.html), etc.
+
+-   The [ggplot2](ggplot2.tidyverse.org/) website.
+
+-   The [R for Data Science (R4DS)](https://r4ds.had.co.nz/) book,
+    especially the [Graphics for
+    Communication](https://r4ds.had.co.nz/graphics-for-communication.html)
+    chapter.
