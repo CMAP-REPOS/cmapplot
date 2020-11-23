@@ -9,22 +9,22 @@
 cmap_fill_highlight(
   field,
   value,
-  color_value = "#009ccc",
-  color_other = "#9daab3"
+  color_value = "#00b0f0",
+  color_other = "#b0bdcf"
 )
 
 cmap_color_highlight(
   field,
   value,
-  color_value = "#009ccc",
-  color_other = "#9daab3"
+  color_value = "#00b0f0",
+  color_other = "#b0bdcf"
 )
 
 cmap_colour_highlight(
   field,
   value,
-  color_value = "#009ccc",
-  color_other = "#9daab3"
+  color_value = "#00b0f0",
+  color_other = "#b0bdcf"
 )
 }
 \arguments{
