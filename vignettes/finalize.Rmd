@@ -46,15 +46,16 @@ p <- ggplot(data = df,
 
 `finalize_plot()` will place a ggplot into a frame defined by CMAP design standards. It will align your title and caption to the left, add a horizontal line on top, and make other adjustments. It can show you the final plot and/or export it as a raster or vector file. This function will not apply CMAP design standards to the plot itself; use `theme_cmap()` for that.
 
-The function has a number of customization options built in, accepting 16 (or more) arguments. Refer to the object documentation, `?finalize_plot`, for detailed information on all arguments.
-
-In this vignette we will use the final version of the line chart developed in `vignette("plots")`. That plot is referenced in the following examples as `p`.
-
+In this vignette we will use the final version of the line chart developed in `vignette("plots")` to describe standard use of the `finalize_plot()` function. That plot is referenced in the following examples as `p`. The function has numerous additional customization options built in, accepting 16 (or more) arguments. Refer to the object documentation, `?finalize_plot`, for detailed information on all arguments.
 
 ## Basic implementation
 
+### Finalizing a plot with no customizations
+
 After creating a plot and applying `theme_cmap()`, use `finalize_plot()` to complete the implementation of
-CMAP design standards. You will probably want to set at least the `title` and `caption`, although the function will extract them from the ggplot if they were specified. As you are preparing the plot, you will likely want to view it within R. Do this by leaving leaving the default `mode = "plot"` to send the finished plot to the "Plots" tab within RStudio. Windows users may prefer `mode = "window"`, which draws the plot in a popup window. In both modes, the plot will show up "actual size" (depending on your screen's resolution) surrounded by a grey canvas.
+CMAP design standards. You will probably want to set at least the `title` and `caption`, although the function will extract them from the ggplot if they were specified. 
+
+As you are preparing the plot, you will likely want to view it within R. Do this by leaving leaving the default `mode = "plot"` to send the finished plot to the "Plots" tab within RStudio. Windows users may prefer `mode = "window"`, which draws the plot in a popup window. In both modes, the plot will show up "actual size" (depending on your screen's resolution) surrounded by a grey canvas.
 
 ```{r finalize1, fig.width=11, out.width="100%"}
 finalize_plot(plot = p,
@@ -63,7 +64,7 @@ finalize_plot(plot = p,
                 analysis of Regional Transportation Authority data.")
 ```
 
-### Finalizing a plot with no customizations
+### Exporting behavior
 
 Once you are happy with your plot, export it using `finalize_plot()` with one of the write modes `c("svg", "ps", "pdf", "png", "tiff", "jpeg", "bmp")` as well as the filename argument.  Note that the file will be exported to your current working directory if the full file path is not specified. 
 
@@ -79,11 +80,13 @@ finalize_plot(plot = p,
 
 <img src="finalized_plot.png" width="100%" style="display: block; margin: auto;"/>
 
-### Exporting behavior
-
-In that example, the only mode specified was `png`. However, you can specify multiple modes simultaneously using `finalize_plot()`, using the form `mode = c("png", "pdf", "plot")`. That would export the plot as both a `pdf` and `png`, as well as display it in the plotting window of your R console. 
+In this example, the only mode specified was `png`. However, you can specify multiple modes simultaneously using the form `mode = c("png", "pdf", "plot")`. That would export the plot as both a `pdf` and `png`, as well as display it in the plotting window of your R console. 
 
 When naming your exports, you can include only the name of the file (e.g., `"my_chart"`) if desired - `cmapplot` will automatically add the appropriate extension to each of your exported files (e.g., `"my_chart.pdf"` and `"my_chart.png"`). If a file with that name already exists in the specified directory, it will not be overwritten unless the user sets `overwrite = TRUE`.
+
+## Advanced customization
+
+While `finalize_plot()` can be run successfully with very few arguments, the function allows many further customizations, a number of which are described here.
 
 ### Title and caption formatting
 
@@ -96,11 +99,6 @@ finalize_plot(plot = p,
               caption = "Source: Chicago Metropolitan Agency for Planning
                 analysis of <i>Regional Transportation Authority</i> data.")
 ```
-
-
-## Advanced customization
-
-While `finalize_plot()` can be run successfully with very few arguments, a number of additional arguments allow for further customization of the plot.
 
 ### Overriding plotting constants
 
@@ -116,8 +114,8 @@ finalize_plot(plot = p,
                 analysis of Regional Transportation Authority data.",
               caption_valign = "top",
               overrides = list(margin_title_b = 30, 
-                               margin_title_l = 5,
-                               margin_legend_t = 10))
+                               margin_title_l = 10,
+                               margin_legend_t = 15))
 ```
 
 ### Adjusting positions with debug mode
