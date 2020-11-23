@@ -107,7 +107,7 @@ finalize_plot(
 
 ## Area plot
 
-Area plots are useful for showing changes in composition over time. (See also: stacked bar charts.)
+Area plots are useful for showing changes in composition over time. (See also: [Stacked bar chart].)
 
 #### Example code
 
