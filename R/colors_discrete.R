@@ -27,11 +27,11 @@ cmap_palettes <- list(
 
     friday = c("#00093f", "#ac8c00", "#475c66", "#e5d072", "#b5c1c8", "#006b8c"),
 
-    race = c(white    = "#72a6e5",
-             black    = "#8de572",
-             hispanic = "#cca600",
-             asian    = "#cc3000",
-             other    = "#8a9ea8")
+    race = c(white    = "#75a5d8",
+             black    = "#84c87e",
+             hispanic = "#d8ba39",
+             asian    = "#e77272",
+             other    = "#607b88")
 
 )
 
