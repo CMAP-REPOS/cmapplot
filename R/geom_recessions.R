@@ -402,6 +402,9 @@ GeomRecessionsText <- ggproto(
 #' event of new recessions and/or changes to the NBER consensus on recession
 #' dates. This function fetches and reformats this data from the NBER website.
 #'
+#' @param url Char, the web location of the NBER machine-readable Excel file.
+#'   The default, \code{NULL}, uses the most recently identified URL known to
+#'   the package development team.
 #' @param quietly Logical, suppresses messages produced by
 #'   \code{utils::download.file}.
 #'
@@ -425,18 +428,22 @@ GeomRecessionsText <- ggproto(
 #' }
 #'
 #'@export
-update_recessions <- function(quietly = FALSE){
+update_recessions <- function(url = NULL, quietly = FALSE){
 
   pkgs <- c("RCurl", "readxl", "tibble", "lubridate")
   if(FALSE %in% lapply(pkgs, requireNamespace, quietly = TRUE)){
     stop(paste("This function requires the following packages:", paste(pkgs, collapse = ", ")), call. = FALSE)
   }
 
+  if (is_null(url)) {
+    url <- "https://www.nber.org/cycles/NBER%20chronology_062020.xlsx"
+  }
+
   # locally bind variable names
   start_char <- end_char <- start_date <- end_date <- NULL
 
   temp.file <- paste(tempfile(),".xlsx",sep = "")
-  utils::download.file("https://www.nber.org/cycles/NBER%20chronology.xlsx", temp.file, mode = "wb", quiet = quietly)
+  utils::download.file(url, temp.file, mode = "wb", quiet = quietly)
 
   recessions <- readxl::read_excel(temp.file, skip = 2) %>%
     # drop end matter
