@@ -102,7 +102,7 @@ finalize_plot(
 
 <img src="https://www.dropbox.com/s/xol70o61citlpjj/Cumulative_Growth-01.png?raw=1" width="100%" style="display: block; margin: auto;"/>
 
-[Source](https://www.cmap.illinois.gov/programs/regional-economic-indicators/trends#Real_Gross_Regional_Product) (similar enough, although it hasn't been updated here in some time.)
+[Source](https://www.cmap.illinois.gov/programs/regional-economic-indicators/trends#Real_Gross_Regional_Product_2017) (similar enough, although it hasn't been updated here in some time.)
 
 
 ## Area plot
