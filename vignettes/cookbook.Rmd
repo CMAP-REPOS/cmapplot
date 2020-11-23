@@ -323,7 +323,11 @@ finalize_plot(
 
 ## Clustered bar chart
 
-Intro text
+Clustered bar charts allow for multiple variables to be graphed adjacent to one another for the same category. For example, in the chart below, we show Census self-response rates by demogrphic group, with responses from 2020 adjacent to responses from 2010 for each sub-group.
+
+Note that `ggplot2` has two elements that can be used to generate bar charts: `geom_col()` and `geom_bar()`. In most cases, `geom_col()` will be correct, as it will graph the values supplied as heights on the x- or y-axis by default. `geom_bar()` can do the same, but only if the user sets `stat = "identity"`.
+
+The chart below also demonstrates three other `ggplot2` tools that may be of interest: adding value labels above each of the bars; adding a value line (in this case, the regional average at 69%); and adding an annotation above that line to indicate what that line represents.
 
 #### Example code
 
@@ -341,7 +345,8 @@ df <- tibble(
 p <- ggplot(data = df,
             mapping = aes(
               x = reorder(RACE, -RESPONSE), # Order race by decreasing response rate
-              y = RESPONSE, fill = YEAR, label = LABEL
+              y = RESPONSE, fill = YEAR, 
+              label = LABEL # note that this label definition is implicitly referenced by `geom_text()` (below)
             )) +
   
   # Add gap between bars in same cluster
@@ -351,7 +356,7 @@ p <- ggplot(data = df,
   # Add horizontal dashed line at specified value
   geom_hline(yintercept = .69, linetype = "dashed", color = "gray") +
   
-  # Label bars
+  # Add and format value labels for each bar on the graph
   geom_text(
     mapping = aes(y = RESPONSE + .025),  # Shift upward to eliminate overlap
     position = position_dodge(width = 0.7),  # Match geom_col's width
@@ -385,9 +390,12 @@ finalize_plot(
     the U.S. Census Bureau's American Community Survey and leverages Census
     designations of race and ethnicity. This includes the term 'Hispanic,'
     which in this context refers to residents of any race who categorized
-    themselves as Hispanic. See 'About the data' below for more detail.<br><br>
+    themselves as Hispanic. See 'About the data' below for more detail.
+    <br><br>
     Sources: CMAP analysis of U.S. Census Bureau data<br>
     (as of August 19, 2020).",
+    # Note that we used two "<br>" tags to create a line break and empty line 
+    #  between sources and notes.
   title_width = 2.4,  # Manually specify title width
   overrides = list(margin_legend_b = 50)  # Increase margin below legend
 )
