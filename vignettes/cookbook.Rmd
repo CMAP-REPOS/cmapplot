@@ -589,11 +589,11 @@ df <- read_csv("https://raw.githubusercontent.com/CMAP-REPOS/ONTO2050-indicators
                names_prefix = "MED_HH_INC_",
                values_to = "MED_HH_INC") %>%
   mutate(RACE_ETH = recode(RACE_ETH,
-                        "ALL" = "All",
-                        "ASIAN" = "Asian",
-                        "BLACK" = "Black",
-                        "HISPANIC" = "Hispanic",
-                        "WHITE" = "White (non-Hispanic)"))
+                           "ALL" = "All",
+                           "ASIAN" = "Asian",
+                           "BLACK" = "Black",
+                           "HISPANIC" = "Hispanic",
+                           "WHITE" = "White (non-Hispanic)"))
 
 
 # Create line graph with race/ethnicity palette
@@ -610,7 +610,7 @@ p <- ggplot(data = df, mapping = aes(x = YEAR, y = MED_HH_INC, color = RACE_ETH)
   # Manually set axis limits and format y-axis labels as dollars
   scale_x_continuous(limits = c(2005, 2020)) +
   scale_y_continuous(limits = c(0, 100000),
-                     n.breaks = 6,
+                     breaks = seq(from = 0, to = 100000, by = 10000),
                      labels = scales::label_dollar()) +
 
   # Apply CMAP theme and apply race/ethnicity palette
