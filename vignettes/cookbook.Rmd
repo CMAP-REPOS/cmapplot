@@ -345,8 +345,7 @@ df <- tibble(
 p <- ggplot(data = df,
             mapping = aes(
               x = reorder(RACE, -RESPONSE), # Order race by decreasing response rate
-              y = RESPONSE, fill = YEAR, 
-              label = LABEL # note that this label definition is implicitly referenced by `geom_text()` (below)
+              y = RESPONSE, fill = YEAR
             )) +
   
   # Add gap between bars in same cluster
@@ -358,7 +357,9 @@ p <- ggplot(data = df,
   
   # Add and format value labels for each bar on the graph
   geom_text(
-    mapping = aes(y = RESPONSE + .025),  # Shift upward to eliminate overlap
+    mapping = aes(
+      label = LABEL,
+      y = RESPONSE + .025),  # Shift upward to eliminate overlap
     position = position_dodge(width = 0.7),  # Match geom_col's width
     hjust = .5  # Center label (0 = left aligned, 1 = right aligned)
   ) +
