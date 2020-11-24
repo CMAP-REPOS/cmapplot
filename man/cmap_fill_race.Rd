@@ -13,15 +13,15 @@ cmap_color_race(white, black, hispanic, asian, other)
 cmap_colour_race(white, black, hispanic, asian, other)
 }
 \arguments{
-\item{white}{White/Caucasian}
+\item{white}{Data value to map CMAP's White/Caucasian color onto (case-sensitive).}
 
-\item{black}{Black/African American}
+\item{black}{Data value to map CMAP's Black/African American color onto (case-sensitive).}
 
-\item{hispanic}{Hispanic/Latino}
+\item{hispanic}{Data value to map CMAP's Hispanic/Latino color onto (case-sensitive).}
 
-\item{asian}{Asian}
+\item{asian}{Data value to map CMAP's Asian color onto (case-sensitive).}
 
-\item{other}{Other}
+\item{other}{Data value to map CMAP's Other/Multiple Races color onto (case-sensitive).}
 }
 \description{
 Pick the function depending on the aesthetic of your ggplot object (fill or color).

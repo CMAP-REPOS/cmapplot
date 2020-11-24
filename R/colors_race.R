@@ -24,11 +24,11 @@ make_race_palette <- function(white, black, hispanic, asian, other) {
 #' Specify your dataset's unique race factor names (as case-sensitive strings) in the arguments.
 #' All categories are optional in case your dataset does not have some of them.
 #'
-#' @param white White/Caucasian
-#' @param black Black/African American
-#' @param hispanic Hispanic/Latino
-#' @param asian Asian
-#' @param other Other
+#' @param white Data value to map CMAP's White/Caucasian color onto (case-sensitive).
+#' @param black Data value to map CMAP's Black/African American color onto (case-sensitive).
+#' @param hispanic Data value to map CMAP's Hispanic/Latino color onto (case-sensitive).
+#' @param asian Data value to map CMAP's Asian color onto (case-sensitive).
+#' @param other Data value to map CMAP's Other/Multiple Races color onto (case-sensitive).
 #'
 #' @examples
 #' ggplot(dplyr::filter(traded_emp_by_race, Race!="Regional average" &
