@@ -616,10 +616,21 @@ save_plot <- function(final_plot,
   # add required cairo prefix to function name for pdf and ps (see `?cairo`)
   mode <- ifelse (mode == "pdf" | mode == "ps", paste0("cairo_" , mode), mode)
 
+  # correct svg function to call for svg
+  mode <- ifelse (mode == "svg", "svglite", mode)
+
   # if file exists and overwrite == FALSE, do not write
   if (file.exists(arglist$filename) & !overwrite) {
     message(paste0(fname, ": SKIPPED (try `overwrite = TRUE`?)"))
     return()
+  }
+
+  # prepare the arglist for svg
+  if (mode == 'svglite') {
+
+    arglist$file <- arglist$filename
+    arglist$filename <- NULL;
+
   }
 
   # Write to device -----------------------------------------------
