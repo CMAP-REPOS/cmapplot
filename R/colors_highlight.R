@@ -19,8 +19,8 @@
 #'   found. Values need not be unique. Typically, pass the table column that
 #'   defines the color/fill aesthetic as 'table$field'
 #' @param value character string or vector, the name of group(s) to highlight
-#' @param color_value Specify the highlight color(s). Default is #009ccc (blue)
-#' @param color_other Specify non-highlighted color. Default is #9daab3 (gray)
+#' @param color_value Specify the highlight color(s). Default is #00b0f0 (blue)
+#' @param color_other Specify non-highlighted color. Default is #b0bdcf (gray)
 #'
 #' @examples
 #' p <- ggplot(data = dplyr::filter(transit_ridership, year=="2019"),
