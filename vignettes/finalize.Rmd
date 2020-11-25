@@ -50,7 +50,7 @@ In this vignette we will use the final version of the line chart developed in `v
 
 ## Basic implementation
 
-### Finalizing a plot with no customizations
+### Finalizing a plot
 
 After creating a plot and applying `theme_cmap()`, use `finalize_plot()` to complete the implementation of
 CMAP design standards. You will probably want to set at least the `title` and `caption`, although the function will extract them from the ggplot if they were specified. 
@@ -64,25 +64,39 @@ finalize_plot(plot = p,
                 analysis of Regional Transportation Authority data.")
 ```
 
-### Exporting behavior
+### Exporting a plot
 
-Once you are happy with your plot, export it using `finalize_plot()` with one of the write modes `c("svg", "ps", "pdf", "png", "tiff", "jpeg", "bmp")` as well as the filename argument.  Note that the file will be exported to your current working directory if the full file path is not specified. 
+Once you are happy with your plot, export it using `finalize_plot()` with one or more of the write modes `c("svg", "ps", "pdf", "png", "tiff", "jpeg", "bmp")` as well as the filename argument. If Communications staff will be modifying your graphic, they will require one of the vector formats (SVG or PDF). Although many raster formats are available, PNG is likely to look the best. 
 
-```{r finalize1a, message=FALSE}
-# Finalize and export plot to PNG
+You may specify multiple modes simultaneously using the form `mode = c("png", "pdf", "plot")`. That would export the plot as both a `pdf` and `png`, as well as display it in the plotting window of your R console. 
+
+Some additional notes:
+
+- If the full file path is not specified, the file will be exported to your current working directory (check with `getwd()`, change with `setwd(dir)`).
+
+- If a file with the name specified already exists in the specified directory, it will not be overwritten unless the user sets `overwrite = TRUE`.
+
+- When naming your exports, you do not need to include the extension (e.g., `"my_chart"`). `finalize_plot()` will automatically add the appropriate extension to each of your exported files (e.g., `"my_chart.pdf"` and `"my_chart.png"`). This is especially recommended if you're specifying multiple export modes in the same call.
+
+
+<!-- The following code block is NOT evaluated, but its source code is displayed in order to demonstrate usage of the mode and filename parameters. -->
+```{r finalize1a-forshow, eval=FALSE, echo=TRUE}
+# Finalize and export plot to PNG and PDF
 finalize_plot(plot = p,
               title = "Annual unlinked passenger trips (in millions).",
               caption = "Source: Chicago Metropolitan Agency for Planning
                 analysis of Regional Transportation Authority data.",
-              mode = "png",
-              filename = "finalized_plot.png")
+              mode = c("png", "pdf"),
+              filename = "finalized_plot")
 ```
 
-<img src="finalized_plot.png" width="100%" style="display: block; margin: auto;"/>
-
-In this example, the only mode specified was `png`. However, you can specify multiple modes simultaneously using the form `mode = c("png", "pdf", "plot")`. That would export the plot as both a `pdf` and `png`, as well as display it in the plotting window of your R console. 
-
-When naming your exports, you can include only the name of the file (e.g., `"my_chart"`) if desired - `cmapplot` will automatically add the appropriate extension to each of your exported files (e.g., `"my_chart.pdf"` and `"my_chart.png"`). If a file with that name already exists in the specified directory, it will not be overwritten unless the user sets `overwrite = TRUE`.
+<!-- The next code block IS evaluated to generate the graphic, but its source code is hidden because it does not demonstrate usage of the mode or filename parameters. -->
+```{r finalize1a, eval=TRUE, echo=FALSE, message=FALSE}
+finalize_plot(plot = p,
+              title = "Annual unlinked passenger trips (in millions).",
+              caption = "Source: Chicago Metropolitan Agency for Planning
+                analysis of Regional Transportation Authority data.")
+```
 
 ## Advanced customization
 
@@ -100,30 +114,7 @@ finalize_plot(plot = p,
                 analysis of <i>Regional Transportation Authority</i> data.")
 ```
 
-### Overriding plotting constants
-
-Any of the attributes defined in `cmapplot_globals$consts` can be changed by passing a named list to the `overrides` arguments. For example, the chart below uses the `overrides` argument to modify the margin below the title (`margin_title_b`), the margin to the left of the title and the caption (`margin_title_l`), and the margin above the legend (`margin_legend_t`).
-
-```{r finalize2, message=FALSE}
-# A finalized plot with some formatting overrides
-finalize_plot(plot = p,
-              title = "Annual unlinked passenger trips (in millions).",
-              caption = "Source: Chicago Metropolitan Agency for Planning
-                analysis of Regional Transportation Authority data.",
-              caption_valign = "top",
-              overrides = list(margin_title_b = 30, 
-                               margin_title_l = 10,
-                               margin_legend_t = 15))
-```
-
-#### More information on possible overrides
-
-The chart below includes a visual representation of many of the possible uses of `override`: 
-<img src="./../man/figures/margins.png" width="100%" style="display: block; margin: auto;"/>
-
-You can also read more about all the available options for customization in `?cmapplot_globals`.
-
-### Adjusting positions with debug mode
+### Using debug mode to fine-tune your plot
 
 Default values in `finalize_plot()` attempt to reflect CMAP design standards, but users can also manually adjust various elements of the finalized plot. The easiest way to identify current positions and how they relate to other objects within the finalized plot object is to set `debug = TRUE`:
 
@@ -136,9 +127,9 @@ finalize_plot(plot = p,
               debug = TRUE)
 ```
 
-### Using debug to understand formatting shifts
+### Top-level position adjustments
 
-With debug on, we can easily see the effects of various adjustments, such as changing the width of the title and caption (`title_width`), the vertical alignment of the caption (`caption_valign`), and keeping the legend alignment of the original plot (`legend_shift`). Note that with `legend_shift = FALSE`, `finalize_plot()` does not separate the legend from the plot, as indicated by the debug boxes. 
+In addition to setting the plot's `height` and `width`, `finalize_plot()` has a number of top-level arguments that impact the final layout. With debug on, we can easily see the effects of various adjustments, such as changing the width of the title and caption (`title_width`), altering the vertical alignment of the caption (`caption_valign`), or keeping the legend alignment of the original plot (`legend_shift`). Note that with `legend_shift = FALSE`, `finalize_plot()` does not separate the legend from the plot, as indicated by the debug boxes. 
 
 ```{r finalize4, message=FALSE}
 # A debugged and modified finalized plot
@@ -151,3 +142,29 @@ finalize_plot(plot = p,
               legend_shift = FALSE,
               debug = TRUE)
 ```
+
+### Overriding plotting constants
+
+Any of the attributes defined in `cmapplot_globals$consts` can be changed by passing a named list to the `overrides` arguments. For example, the chart below uses the `overrides` argument to modify the margin below the title (`margin_title_b`), the margin to the left of the title and the caption (`margin_title_l`), and the margin above the legend (`margin_legend_t`). 
+
+The [Many, many margins] section of this article describes most of these `consts` visually. To learn more about all possible overrides, see `?cmapplot_globals`.
+
+```{r finalize2, message=FALSE}
+# A finalized plot with some formatting overrides
+finalize_plot(plot = p,
+              title = "Annual unlinked passenger trips (in millions).",
+              caption = "Source: Chicago Metropolitan Agency for Planning
+                analysis of Regional Transportation Authority data.",
+              caption_valign = "top",
+              debug = TRUE,
+              overrides = list(margin_title_b = 30, 
+                               margin_title_l = 10,
+                               margin_legend_t = 15))
+```
+
+### Many, many margins
+
+The chart below includes a visual representation of many of the possible uses of `override`: 
+<img src="./../man/figures/margins.png" width="100%" style="display: block; margin: auto;"/>
+
+You can also read more about all the available options for customization in `?cmapplot_globals`.
