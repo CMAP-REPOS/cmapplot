@@ -50,7 +50,8 @@ Imports:
     rlang,
     scales,
     stringr,
-    sysfonts
+    sysfonts,
+    svglite
 Suggests:
     knitr,
     lubridate,
