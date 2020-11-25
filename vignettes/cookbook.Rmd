@@ -510,8 +510,7 @@ df <- df %>%
 # create the plot object
 p <- ggplot(df) +
   geom_col(aes(x=hours, y=value, fill=cat)) +
-  facet_grid(cat~subgroup,
-             scale = "free_y") +
+  facet_grid(cat~subgroup) +
   cmap_fill_discrete("friday") +
   theme_cmap(show.legend = FALSE) +
   scale_x_time(limits = lubridate::hms(c("05:00:00","23:30:00")),
