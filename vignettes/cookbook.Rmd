@@ -29,11 +29,11 @@ This vignette is a showcase of cmapplot's full capabilities by replicating as cl
 
 Line graphs are useful for showing change over time, and are well-suited for combination with `geom_text_lastonly()` and `geom_recessions()` custom geoms. This particular plot also demonstrates the utility of a few other functions from the tidyverse that are quite useful when working with `ggplot2::ggplot()`:
 
-* `forcats::fct_reorder()` and `forcats::fct_reorder2()` are useful to automatically order of factors within `mapping`, which establishes legend order. (See also [the relevant R4DS chapter](https://r4ds.had.co.nz/factors.html#modifying-factor-order).)
+- `forcats::fct_reorder()` and `forcats::fct_reorder2()` are useful to automatically order of factors within `mapping`, which establishes legend order. (See also [the relevant R4DS chapter](https://r4ds.had.co.nz/factors.html#modifying-factor-order).)
 
-* functions from the `scales` package, such as `scales::percent()` and `scales::label_percent()`, which reformat numbers into attractive formats.
+- functions from the `scales` package, such as `scales::percent()` and `scales::label_percent()`, which reformat numbers into attractive formats.
 
-* ggplot2 scale functions, such as `ggplot2::scale_x_continuous()`, which allow for control over the extent and breaks of each axis. 
+- ggplot2 scale functions, such as `ggplot2::scale_x_continuous()`, which allow for control over the extent and breaks of each axis. 
 
 #### Example code
 
@@ -476,51 +476,74 @@ finalize_plot(
 [Source](https://www.cmap.illinois.gov/2050/indicators/non-single-occupancy-modes)
 
 
-## Histogram and faceted chart
+## Faceted histograms
 
-While statistics such as mean or median are useful for summarizing, they just scratch the surface of trends happening within a large, diverse dataset. Histograms are great for visualizing the distribution of a metric across a large sample. This particular example shows the distribution of trip beginnings and endings over the continuous variable of time. However, the continuous variable has already been made discrete by binning time in half-hour increments and counting the trips in each bin. In cases like this, `geom_col()` is the geom that makes the most sense. If your variable comes in a true continuous form, `geom_histogram()` or `geom_bar()` is appropriate, and allows flexibility for bin sizes.
+While statistics such as mean or median are useful for summarizing, they just scratch the surface of trends happening within a large, diverse dataset. Histograms are great for visualizing the distribution of a metric across a large sample. This particular example shows the distribution of tour beginnings and endings over the continuous variable of time. However, the continuous variable has already been made discrete by binning time in half-hour increments and summing the tours in each bin. In cases like this, `geom_col()` is the geom that makes the most sense. If your variable comes in a true continuous form, `geom_histogram()` is appropriate, and allows flexibility for bin sizes. If your variable is discrete/categorical and has not been summarized, `geom_bar()` is the best choice.
 
 To make histograms even more interesting, split your data up by important categories and visualize them side-by-side to understand how distributions vary for different groups. `facet_grid()` is used here because comparisons are being made across the values of two discrete variables. If you want to split up your graph by only one variable, `facet_wrap()` will do. 
 
 Some smaller formatting choices to pay attention to:
 
-* `forcats::fct_recode` changed the column labels to "Departure" and "Return" for clarity. `forcats::fct_rev` switched the order in which the factors appear on the graph. Notice that these variables had to be turned into factors first.
+- `forcats::fct_recode()` changes the column labels to "Departure" and "Return" for clarity. `forcats::fct_rev()` reverses the order in which the factors appear on the graph. Character/text variables can be converted to factors by `factor()` or `forcats::as_factor()` (which use different rules to determine the factor order).
 
-* Similar to graphs above which needed special formatting on their axis labels, `scale_x_time()` is used to manage the range, breaks, and labels of the x-axis, specifically when that axis represents time. 
+- Similar to graphs above which needed special formatting on their axis labels, `ggplot2::scale_x_time()` is used to manage the range, breaks, and labels of the x-axis, specifically when that axis represents time. 
 
-* `lubridate::hms()` is used to convert a string into a time object. Lubridate is a very useful package if you need to manage dates and times. Learn more about it [here](https://r4ds.had.co.nz/dates-and-times.html).
+- `lubridate::hm()` converts strings into time period objects. Lubridate is a very useful package if you need to manage dates and times. Learn more about it [here](https://r4ds.had.co.nz/dates-and-times.html).
 
 
 #### Example code
 
 ```{r histogram, message=FALSE, warning=FALSE}
-# prepare an example dataset
-df <- read_csv("https://raw.githubusercontent.com/CMAP-REPOS/cmap_abm_report/master/data/csv37_tours_tod.csv")
+# Get & format example dataset from ABM validation report GitHub repository
+df <- read_csv("https://raw.githubusercontent.com/CMAP-REPOS/cmap_abm_report/master/data/csv37_tours_tod.csv") %>%
+  filter(subgroup %in% c("Model-Depart", "Model-Arrive")) %>% 
+  filter(cat %in% c("work", "school", "discretionary")) %>% 
+  mutate(
+    purpose = fct_rev(factor(stringr::str_to_title(cat))),  # Title case
+    dep_arr = fct_rev(fct_recode(factor(subgroup), 
+                                 "Departure" = "Model-Depart", 
+                                 "Return" = "Model-Arrive"))
+  )
 
-df <- df %>% 
-  filter(subgroup=="Model-Depart" | subgroup=="Model-Arrive") %>% 
-  filter(cat=="work" | cat=="school") %>% 
-  mutate(subgroup = factor(subgroup),
-         subgroup = fct_recode(subgroup, 
-                               "Departure" = "Model-Depart", 
-                               "Return" = "Model-Arrive"),
-         subgroup = fct_rev(subgroup),
-         cat = fct_rev(factor(cat)))
-
-# create the plot object
-p <- ggplot(df) +
-  geom_col(aes(x=hours, y=value, fill=cat)) +
-  facet_grid(cat~subgroup) +
-  cmap_fill_discrete("friday") +
-  theme_cmap(show.legend = FALSE) +
-  scale_x_time(limits = lubridate::hms(c("05:00:00","23:30:00")),
-               breaks = lubridate::hms(c("06:00:00", "09:00:00", "12:00:00", "15:00:00", "18:00:00", "21:00:00")),
-               labels = c("6a", "9a", "12p", "3p", "6p", "9p"))
+# Create faceted histograms
+p <- ggplot(data = df, mapping = aes(x = hours, y = value)) +
   
-# finalize the plot
-finalize_plot(p,
-  title = "Modeled departure and return times for work tours vs. school tours",
-  caption = "Note: A tour is a chain of trips that begin at and return to the same location. Frequencies are given in half-hour intervals. <br><br> Source: CMAP activity-based model, 2010 scenario")
+  # Add histogram bars
+  geom_col(  # Or geom_histogram() if data is not already grouped
+    mapping = aes(fill = dep_arr)  # Color bars by tour purpose
+  ) +
+  
+  # Facet horizontally by tour purpose
+  facet_grid(rows = vars(purpose)) +
+  
+  # Apply CMAP theme and color palette
+  theme_cmap(
+    hline = 0,  # Add origin line at 0 for aesthetic reasons
+    gridlines = "hv",  # Show horizontal and vertical gridlines
+    strip.text = element_text(
+      hjust = 0.5  # Center facet labels at axis midpoint
+    )
+  ) +
+  cmap_fill_discrete("friday") +
+  
+  # Adjust axis scales/labels
+  scale_y_continuous(labels = scales::label_comma()) +
+  scale_x_time(
+    limits = lubridate::hm(c("05:00", "22:00")),
+    breaks = lubridate::hm(c("06:00", "09:00", "12:00", "15:00", "18:00", "21:00")),
+    labels = c("6a", "9a", "12p", "3p", "6p", "9p")
+  )
+  
+# Create  final plot
+finalize_plot(
+  p,
+  title = "Modeled departure and return times for work, school and discretionary
+    tours in CMAP's Activity-Based Model",
+  caption = "Note: A tour is a chain of trips that begin at and return to the
+    same location. Frequencies are given in half-hour intervals.
+    <br><br>
+    Source: CMAP activity-based model, 2010 scenario."
+)
 ```
 
 
