@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Apply continuous CMAP palettes to ggplot2 aesthetics. — cmap_fill_continuous • cmapplot</title>
+<title>Apply continuous CMAP palettes (gradients) to ggplot2 aesthetics — cmap_fill_continuous • cmapplot</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,10 +46,10 @@
 
 
 
-<meta property="og:title" content="Apply continuous CMAP palettes to ggplot2 aesthetics. — cmap_fill_continuous" />
+<meta property="og:title" content="Apply continuous CMAP palettes (gradients) to ggplot2 aesthetics — cmap_fill_continuous" />
 <meta property="og:description" content="Pick the function depending on the aesthetic of your ggplot object (fill or
 color). On diverging palettes, a midpoint can be manually adjusted (defaults
-to 0)." />
+to 0). See cmap_gradients for a listing of available gradients." />
 <meta property="og:image" content="https://cmap-repos.github.io/cmapplot/logo.png" />
 
 
@@ -82,7 +82,7 @@ to 0)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.3</span>
       </span>
     </div>
 
@@ -106,6 +106,9 @@ to 0)." />
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/plots.html">Creating CMAP-themed plots</a>
+    </li>
+    <li>
+      <a href="../articles/finalize.html">Finalizing and exporting CMAP-themed plots</a>
     </li>
     <li>
       <a href="../articles/colors.html">Applying CMAP color schemes</a>
@@ -136,15 +139,15 @@ to 0)." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Apply continuous CMAP palettes to ggplot2 aesthetics.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/CMAP-REPOS/cmapplot/blob/master/R/palettes_continuous.R'><code>R/palettes_continuous.R</code></a></small>
+    <h1>Apply continuous CMAP palettes (gradients) to ggplot2 aesthetics</h1>
+    <small class="dont-index">Source: <a href='https://github.com/CMAP-REPOS/cmapplot/blob/master/R/colors_continuous.R'><code>R/colors_continuous.R</code></a></small>
     <div class="hidden name"><code>cmap_fill_continuous.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>Pick the function depending on the aesthetic of your ggplot object (fill or
 color). On diverging palettes, a midpoint can be manually adjusted (defaults
-to 0).</p>
+to 0). See <code><a href='cmap_gradients.html'>cmap_gradients</a></code> for a listing of available gradients.</p>
     </div>
 
     <pre class="usage"><span class='fu'>cmap_fill_continuous</span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"seq_reds"</span>, reverse <span class='op'>=</span> <span class='cn'>FALSE</span>, middle <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
@@ -181,15 +184,8 @@ to 0).</p>
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'><span class='va'>grp_over_time</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>cluster</span><span class='op'>==</span><span class='st'>"Biopharmaceuticals"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>year</span>, y <span class='op'>=</span> <span class='va'>realgrp</span>, color <span class='op'>=</span> <span class='va'>realgrp</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+    <pre class="examples"><div class='input'><span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>grp_over_time</span>, <span class='va'>cluster</span><span class='op'>==</span><span class='st'>"Biopharmaceuticals"</span><span class='op'>)</span>,
+       <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>year</span>, y <span class='op'>=</span> <span class='va'>realgrp</span>, color <span class='op'>=</span> <span class='va'>realgrp</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
     <span class='fu'>geom_line</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
     <span class='fu'>cmap_color_continuous</span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"seq_red_purple"</span><span class='op'>)</span>
 </div><div class='img'><img src='cmap_fill_continuous-1.png' alt='' width='700' height='433' /></div><div class='input'>

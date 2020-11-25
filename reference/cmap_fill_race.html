@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Apply official CMAP race/ethnicity chart colors to ggplot2 — cmap_fill_race • cmapplot</title>
+<title>Apply official CMAP race/ethnicity chart colors to ggplot2 aesthetics — cmap_fill_race • cmapplot</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,10 +46,10 @@
 
 
 
-<meta property="og:title" content="Apply official CMAP race/ethnicity chart colors to ggplot2 — cmap_fill_race" />
+<meta property="og:title" content="Apply official CMAP race/ethnicity chart colors to ggplot2 aesthetics — cmap_fill_race" />
 <meta property="og:description" content="Pick the function depending on the aesthetic of your ggplot object (fill or color).
 Specify your dataset's unique race factor names (as case-sensitive strings) in the arguments.
-All categories are optional in case your dataset does not have all of them." />
+All categories are optional in case your dataset does not have some of them." />
 <meta property="og:image" content="https://cmap-repos.github.io/cmapplot/logo.png" />
 
 
@@ -82,7 +82,7 @@ All categories are optional in case your dataset does not have all of them." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.3</span>
       </span>
     </div>
 
@@ -106,6 +106,9 @@ All categories are optional in case your dataset does not have all of them." />
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/plots.html">Creating CMAP-themed plots</a>
+    </li>
+    <li>
+      <a href="../articles/finalize.html">Finalizing and exporting CMAP-themed plots</a>
     </li>
     <li>
       <a href="../articles/colors.html">Applying CMAP color schemes</a>
@@ -136,15 +139,15 @@ All categories are optional in case your dataset does not have all of them." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Apply official CMAP race/ethnicity chart colors to ggplot2</h1>
-    <small class="dont-index">Source: <a href='https://github.com/CMAP-REPOS/cmapplot/blob/master/R/race_palette.R'><code>R/race_palette.R</code></a></small>
+    <h1>Apply official CMAP race/ethnicity chart colors to ggplot2 aesthetics</h1>
+    <small class="dont-index">Source: <a href='https://github.com/CMAP-REPOS/cmapplot/blob/master/R/colors_race.R'><code>R/colors_race.R</code></a></small>
     <div class="hidden name"><code>cmap_fill_race.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>Pick the function depending on the aesthetic of your ggplot object (fill or color).
 Specify your dataset's unique race factor names (as case-sensitive strings) in the arguments.
-All categories are optional in case your dataset does not have all of them.</p>
+All categories are optional in case your dataset does not have some of them.</p>
     </div>
 
     <pre class="usage"><span class='fu'>cmap_fill_race</span><span class='op'>(</span><span class='va'>white</span>, <span class='va'>black</span>, <span class='va'>hispanic</span>, <span class='va'>asian</span>, <span class='va'>other</span><span class='op'>)</span>
@@ -158,23 +161,23 @@ All categories are optional in case your dataset does not have all of them.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>white</th>
-      <td><p>White/Caucasian</p></td>
+      <td><p>Data value to map CMAP's White/Caucasian color onto (case-sensitive).</p></td>
     </tr>
     <tr>
       <th>black</th>
-      <td><p>Black/African American</p></td>
+      <td><p>Data value to map CMAP's Black/African American color onto (case-sensitive).</p></td>
     </tr>
     <tr>
       <th>hispanic</th>
-      <td><p>Hispanic/Latino</p></td>
+      <td><p>Data value to map CMAP's Hispanic/Latino color onto (case-sensitive).</p></td>
     </tr>
     <tr>
       <th>asian</th>
-      <td><p>Asian</p></td>
+      <td><p>Data value to map CMAP's Asian color onto (case-sensitive).</p></td>
     </tr>
     <tr>
       <th>other</th>
-      <td><p>Other</p></td>
+      <td><p>Data value to map CMAP's Other/Multiple Races color onto (case-sensitive).</p></td>
     </tr>
     </table>
 
@@ -188,13 +191,12 @@ All categories are optional in case your dataset does not have all of them.</p>
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-<span class='va'>traded_emp_by_race</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>Race</span><span class='op'>!=</span><span class='st'>"Regional average"</span> <span class='op'>&amp;</span> <span class='va'>Race</span><span class='op'>!=</span><span class='st'>"Other"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-    <span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span> <span class='op'>+</span>
-    <span class='fu'>geom_col</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>variable</span>, y <span class='op'>=</span> <span class='va'>value</span>, fill <span class='op'>=</span> <span class='va'>Race</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-    <span class='fu'>cmap_fill_race</span><span class='op'>(</span>white <span class='op'>=</span> <span class='st'>"White"</span>, black <span class='op'>=</span> <span class='st'>"Black"</span>,
-                   hispanic <span class='op'>=</span> <span class='st'>"Hispanic"</span>, asian <span class='op'>=</span> <span class='st'>"Asian"</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>traded_emp_by_race</span>, <span class='va'>Race</span><span class='op'>!=</span><span class='st'>"Regional average"</span> <span class='op'>&amp;</span>
+                     <span class='va'>variable</span><span class='op'>==</span><span class='st'>"SpecializedTraded"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+   <span class='fu'>geom_col</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>Race</span>, y <span class='op'>=</span> <span class='va'>value</span>, fill <span class='op'>=</span> <span class='va'>Race</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+   <span class='fu'>cmap_fill_race</span><span class='op'>(</span>white <span class='op'>=</span> <span class='st'>"White"</span>, black <span class='op'>=</span> <span class='st'>"Black"</span>,
+                  hispanic <span class='op'>=</span> <span class='st'>"Hispanic"</span>, asian <span class='op'>=</span> <span class='st'>"Asian"</span>,
+                  other <span class='op'>=</span> <span class='st'>"Other"</span><span class='op'>)</span>
 </div><div class='img'><img src='cmap_fill_race-1.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>

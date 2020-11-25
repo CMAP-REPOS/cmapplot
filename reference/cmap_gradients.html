@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>CMAP continuous color palettes — cmap_gradients • cmapplot</title>
+<title>CMAP continuous color palettes (gradients) — cmap_gradients • cmapplot</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,10 +46,8 @@
 
 
 
-<meta property="og:title" content="CMAP continuous color palettes — cmap_gradients" />
-<meta property="og:description" content="A sample of comms-approved colors arranged into palettes
-Displays 25 interpolated colors from the cmap continuous palettes.
-Modeled after viz_palette from the ochRe package" />
+<meta property="og:title" content="CMAP continuous color palettes (gradients) — cmap_gradients" />
+<meta property="og:description" content="Sequential and divergent gradients extracted from the CMAP color palette." />
 <meta property="og:image" content="https://cmap-repos.github.io/cmapplot/logo.png" />
 
 
@@ -82,7 +80,7 @@ Modeled after viz_palette from the ochRe package" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.3</span>
       </span>
     </div>
 
@@ -106,6 +104,9 @@ Modeled after viz_palette from the ochRe package" />
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/plots.html">Creating CMAP-themed plots</a>
+    </li>
+    <li>
+      <a href="../articles/finalize.html">Finalizing and exporting CMAP-themed plots</a>
     </li>
     <li>
       <a href="../articles/colors.html">Applying CMAP color schemes</a>
@@ -136,15 +137,13 @@ Modeled after viz_palette from the ochRe package" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>CMAP continuous color palettes</h1>
-    <small class="dont-index">Source: <a href='https://github.com/CMAP-REPOS/cmapplot/blob/master/R/palettes_continuous.R'><code>R/palettes_continuous.R</code></a></small>
+    <h1>CMAP continuous color palettes (gradients)</h1>
+    <small class="dont-index">Source: <a href='https://github.com/CMAP-REPOS/cmapplot/blob/master/R/colors_continuous.R'><code>R/colors_continuous.R</code></a></small>
     <div class="hidden name"><code>cmap_gradients.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>A sample of comms-approved colors arranged into palettes</p>
-<p>Displays 25 interpolated colors from the cmap continuous palettes.
-Modeled after viz_palette from the <a href='https://github.com/ropenscilabs/ochRe'>ochRe package</a></p>
+    <p>Sequential and divergent gradients extracted from the CMAP color palette.</p>
     </div>
 
     <pre class="usage"><span class='va'>cmap_gradients</span>
@@ -171,15 +170,26 @@ Modeled after viz_palette from the <a href='https://github.com/ropenscilabs/ochR
 
     
 <ul>
-<li><p><code>viz_gradient</code>: function to vizualize gradients</p></li>
+<li><p><code>viz_gradient</code>: Display CMAP continuous palettes, interpolating
+additional colors as needed. Modeled after viz_palette from the
+<a href='https://github.com/ropenscilabs/ochRe'>ochRe package</a></p></li>
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>viz_gradient</span><span class='op'>(</span><span class='va'>cmap_gradients</span><span class='op'>$</span><span class='va'>seq_orange_red</span><span class='op'>)</span>
-</div><div class='img'><img src='cmap_gradients-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># ggplot example here would be nice</span>
-
-
+    <pre class="examples"><div class='input'><span class='co'># Get names of available continuous palettes.</span>
+<span class='co'># (Call viz_palette("name_of_palette") to preview one.)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>cmap_gradients</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;  [1] "seq_reds"              "seq_oranges"           "seq_yellows"          
+#&gt;  [4] "seq_greens"            "seq_teals"             "seq_blues"            
+#&gt;  [7] "seq_purples"           "seq_grays"             "seq_yellow_orange_red"
+#&gt; [10] "seq_green_teal_blue"   "seq_orange_red"        "seq_yellow_orange"    
+#&gt; [13] "seq_yellow_green"      "seq_green_teal"        "seq_teal_blue"        
+#&gt; [16] "seq_red_purple"        "div_yellow_purple"     "div_orange_blue"      
+#&gt; [19] "div_red_teal"          "div_purple_green"      "div_blue_yellow"      
+#&gt; [22] "div_teal_orange"       "div_green_red"        </div><div class='input'>
+<span class='co'># Run the following function to visualize *all* continuous palettes</span>
+<span class='fu'>purrr</span><span class='fu'>::</span><span class='fu'><a href='https://purrr.tidyverse.org/reference/map2.html'>walk2</a></span><span class='op'>(</span><span class='va'>cmap_gradients</span>, <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>cmap_gradients</span><span class='op'>)</span>, <span class='va'>viz_gradient</span><span class='op'>)</span>
+</div><div class='img'><img src='cmap_gradients-1.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_gradients-2.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_gradients-3.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_gradients-4.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_gradients-5.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_gradients-6.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_gradients-7.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_gradients-8.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_gradients-9.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_gradients-10.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_gradients-11.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_gradients-12.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_gradients-13.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_gradients-14.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_gradients-15.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_gradients-16.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_gradients-17.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_gradients-18.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_gradients-19.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_gradients-20.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_gradients-21.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_gradients-22.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_gradients-23.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

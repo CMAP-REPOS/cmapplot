@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.3</span>
       </span>
     </div>
 
@@ -62,6 +62,9 @@
   <ul class="dropdown-menu" role="menu">
 <li>
       <a href="../articles/plots.html">Creating CMAP-themed plots</a>
+    </li>
+    <li>
+      <a href="../articles/finalize.html">Finalizing and exporting CMAP-themed plots</a>
     </li>
     <li>
       <a href="../articles/colors.html">Applying CMAP color schemes</a>
@@ -116,11 +119,11 @@
 <span class="co"># clean up dataset</span>
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="va">transit_ridership</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">system</span> <span class="op">!=</span> <span class="st">"pace_ada"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>system <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span><span class="op">(</span>
-    <span class="va">system</span> <span class="op">==</span> <span class="st">"cta_bus"</span> <span class="op">~</span> <span class="st">"CTA bus"</span>,
-    <span class="va">system</span> <span class="op">==</span> <span class="st">"cta_rail"</span> <span class="op">~</span> <span class="st">"CTA rail"</span>,
-    <span class="va">system</span> <span class="op">==</span> <span class="st">"metra"</span> <span class="op">~</span> <span class="st">"Metra"</span>,
-    <span class="va">system</span> <span class="op">==</span> <span class="st">"pace"</span> <span class="op">~</span> <span class="st">"Pace"</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>system <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/recode.html">recode_factor</a></span><span class="op">(</span><span class="va">system</span>,
+    cta_bus <span class="op">=</span> <span class="st">"CTA bus"</span>,
+    cta_rail <span class="op">=</span> <span class="st">"CTA rail"</span>,
+    metra <span class="op">=</span> <span class="st">"Metra"</span>,
+    pace <span class="op">=</span> <span class="st">"Pace"</span>
   <span class="op">)</span><span class="op">)</span>
 
 <span class="co"># build plot</span>
@@ -140,8 +143,7 @@
 <a href="#basic-implementation" class="anchor"></a>Basic implementation</h3>
 <p>To add basic CMAP design elements to the plot, add <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code> like you would any other ggplot2 theme.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="va">p</span> <span class="op">+</span> <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span></pre></div>
+<span class="va">p</span> <span class="op">+</span> <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span></pre></div>
 <p><img src="plots_files/figure-html/basic-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div id="built-in-modifiers" class="section level3">
@@ -154,20 +156,21 @@
 <span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>ylab <span class="op">=</span> <span class="st">"Annual Ridership (Millions)"</span>,
                hline <span class="op">=</span> <span class="fl">200</span>, <span class="co"># may not be immediately visible</span>
                legend.max.columns <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span></pre></div>
+  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span></pre></div>
 <p><img src="plots_files/figure-html/mods1-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div id="overriding-plotting-defaults" class="section level3">
 <h3 class="hasAnchor">
 <a href="#overriding-plotting-defaults" class="anchor"></a>Overriding plotting defaults</h3>
-<p>The package contains a list of default values (<code>cmapplot_globals$consts</code>) that control various plotting constants. Most of these impact the function <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code>, but a few impact <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code>. For a complete description of these constants, see <code><a href="../reference/cmapplot_globals.html">?cmapplot_globals</a></code>. These can be modified in the <code>overrides</code> argument:</p>
+<p>The package contains a list of default values (<code>cmapplot_globals$consts</code>) that control various plotting constants. Most of these impact the function <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code>, but a few impact <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code>. For a complete description of these constants, see <code><a href="../reference/cmapplot_globals.html">?cmapplot_globals</a></code>.</p>
+<p>The most important at this stage is <code>margin_panel_r</code>, which controls the distance between the right side of the plot and the right side of the plotting window. Depending on the length and location of your right-most x axis label, you may need to expand this value beyond it’s default. These <code>consts</code> can be modified in the <code>overrides</code> argument:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>ylab <span class="op">=</span> <span class="st">"Annual Ridership (Millions)"</span>,
-               hline <span class="op">=</span> <span class="fl">200</span>,
-               overrides <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>lwd_strongline <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span></pre></div>
+<span class="va">p</span> <span class="op">+</span> <span class="fu">scale_x_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"1980"</span>, <span class="st">"1990"</span>, <span class="st">"2000"</span>, <span class="st">"2010"</span>, <span class="st">"A very long label"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>ylab <span class="op">=</span> <span class="st">"Annual Ridership (Millions)"</span>,
+             hline <span class="op">=</span> <span class="fl">200</span>,
+             overrides <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>margin_panel_r <span class="op">=</span> <span class="fl">50</span>, <span class="co"># the most likely override in theme_cmap()</span>
+                              lwd_strongline <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span></pre></div>
 <p><img src="plots_files/figure-html/overrides-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div id="further-theme-modifications" class="section level3">
@@ -181,10 +184,7 @@
   <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>ylab <span class="op">=</span> <span class="st">"Annual Ridership (Millions)"</span>,
              axis.ticks.x <span class="op">=</span> <span class="fu">element_line</span><span class="op">(</span>color <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span>,
              axis.ticks.length.x <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span><span class="fl">10</span>, <span class="st">"bigpts"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; Scale for 'y' is already present. Adding another scale for 'y', which will</span>
-<span class="co">#&gt; replace the existing scale.</span>
-<span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span></pre></div>
+  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span></pre></div>
 <p><img src="plots_files/figure-html/mods2-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 </div>
@@ -203,7 +203,6 @@
   <span class="fu"><a href="../reference/geom_recessions.html">geom_recessions</a></span><span class="op">(</span>ymin <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>ylab <span class="op">=</span> <span class="st">"Annual Ridership (Millions)"</span><span class="op">)</span>
-<span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span>
 
 <span class="va">q</span></pre></div>
 <p><img src="plots_files/figure-html/recessions-1.png" width="672" style="display: block; margin: auto;"></p>
@@ -223,10 +222,10 @@
 <span class="va">q</span></pre></div>
 <p><img src="plots_files/figure-html/textlast-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
-<div id="overriding-ggplot2s-default-aesthetics" class="section level3">
+<div id="applying-cmap-default-aesthetics" class="section level3">
 <h3 class="hasAnchor">
-<a href="#overriding-ggplot2s-default-aesthetics" class="anchor"></a>Overriding ggplot2’s default aesthetics</h3>
-<p>Every geom has default aesthetics that cannot be modified by a ggplot2 theme (and therefore, cannot be modified by <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code>). Notice, for example, that the text drawn in the plot via <code><a href="../reference/geom_text_lastonly.html">geom_text_lastonly()</a></code> and <code><a href="../reference/geom_recessions.html">geom_recessions()</a></code> still appears in Arial (R’s default font), although the legend and axis fonts appear in Calibri/Whitney. This is automatically corrected in <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code>. However, if you’d like to see these impacts at this stage, you can override ggplot2’s default aesthetics for line and text geoms with CMAP defaults via <code><a href="../reference/cmap_default_aes.html">apply_cmap_default_aes()</a></code>.</p>
+<a href="#applying-cmap-default-aesthetics" class="anchor"></a>Applying CMAP default aesthetics</h3>
+<p>Every ggplot2 “geom” has default aesthetics that cannot be modified by a ggplot2 theme (and therefore, cannot be modified by <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code>). Notice, for example, that the text drawn in the plot via <code><a href="../reference/geom_text_lastonly.html">geom_text_lastonly()</a></code> and <code><a href="../reference/geom_recessions.html">geom_recessions()</a></code> still appears in Arial (R’s default font), although the legend and axis fonts appear in Calibri/Whitney. This is automatically corrected in <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code>. However, if you’d like to see these impacts at this stage, you can override ggplot2’s default aesthetics for line and text geoms with CMAP defaults via <code><a href="../reference/cmap_default_aes.html">apply_cmap_default_aes()</a></code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit">
 <span class="fu"><a href="../reference/cmap_default_aes.html">apply_cmap_default_aes</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; Aesthetic defaults overridden in the current session for the following Geoms:</span>
@@ -248,8 +247,7 @@
   <span class="fu"><a href="../reference/geom_recessions.html">geom_recessions</a></span><span class="op">(</span>ymin <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>ylab <span class="op">=</span> <span class="st">"Annual Ridership (Millions)"</span>,
-             debug <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span></pre></div>
+             debug <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></pre></div>
 <p><img src="plots_files/figure-html/debug-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
   </div>

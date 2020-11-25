@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.3</span>
       </span>
     </div>
 
@@ -63,6 +63,9 @@
   <ul class="dropdown-menu" role="menu">
 <li>
       <a href="articles/plots.html">Creating CMAP-themed plots</a>
+    </li>
+    <li>
+      <a href="articles/finalize.html">Finalizing and exporting CMAP-themed plots</a>
     </li>
     <li>
       <a href="articles/colors.html">Applying CMAP color schemes</a>
@@ -99,6 +102,7 @@
 <!-- badges: start -->
 
 <p>This R package provides themes, color scales, and other custom functions for <a href="https://github.com/tidyverse/ggplot2">ggplot2</a>, based on Chicago Metropolitan Agency for Planning (CMAP) design guidelines.</p>
+<p>CMAP staff who are interested in using this package, or merely staying in the loop, are encouraged to join the <a href="https://teams.microsoft.com/l/team/19%3ad705bfd7596a4518b588ad529d2367c8%40thread.skype/conversations?groupId=d7bab529-9c30-441e-9db6-4edfdca8202c&amp;tenantId=43b185b9-e6d9-45a5-8e36-4c08dc0ab1a2">R team</a> in Microsoft Teams and follow the “cmapplot” channel.</p>
 <div id="the-basics" class="section level2">
 <h2 class="hasAnchor">
 <a href="#the-basics" class="anchor"></a>The basics</h2>
@@ -106,7 +110,7 @@
 <ol>
 <li>Apply a CMAP theme to ggplots with <code><a href="reference/theme_cmap.html">theme_cmap()</a></code>
 </li>
-<li>Easily provide common CMAP plot customization with custom geoms <code><a href="reference/geom_recessions.html">geom_recessions()</a></code> and <code><a href="reference/geom_text_lastonly.html">geom_text_lastonly()</a></code>
+<li>Easily provide common CMAP plot customizations, such as with custom geoms <code><a href="reference/geom_recessions.html">geom_recessions()</a></code> and <code><a href="reference/geom_text_lastonly.html">geom_text_lastonly()</a></code>
 </li>
 <li>Apply CMAP colors using a variety of custom functions (e.g. <code><a href="reference/cmap_fill_discrete.html">cmap_fill_discrete()</a></code>)</li>
 <li>Place the themed plot within a CMAP layout, and export the plot from R if desired with <code><a href="reference/finalize_plot.html">finalize_plot()</a></code>
@@ -123,8 +127,8 @@
 
 <span class="co">## Then load the package as you would any other</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://cmap-repos.github.io/cmapplot">cmapplot</a></span><span class="op">)</span></pre></div>
-<p><strong>Important note:</strong> cmapplot works best when installed on a Windows computer with the Whitney family of fonts installed (specifically the Book, Medium, and Semibold variants). To install on macOS, users must install <a href="https://www.xquartz.org">XQuartz</a> before cmapplot can be loaded. (This can be easily accomplished via the <a href="https://brew.sh">Homebrew</a> package manager with the command <code>brew cask install xquartz</code>.)</p>
-<p>If installed on a Windows computer <em>without</em> Whitney, the package will still work, but the fonts will default to Calibri. If installed on macOS or Linux, the fonts will default to Arial, <em>even if Whitney is installed.</em></p>
+<p>To install on macOS, users must install <a href="https://www.xquartz.org">XQuartz</a> before cmapplot can be loaded. (This can be easily accomplished via the <a href="https://brew.sh">Homebrew</a> package manager with the command <code>brew cask install xquartz</code>.)</p>
+<p><strong>A note about fonts</strong>: The cmapplot package works best when installed on a Windows computer with the Whitney family of fonts installed (specifically the Book, Medium, and Semibold variants). If installed on a Windows computer <em>without</em> Whitney, the package will still work, but the fonts will default to Calibri. If installed on macOS or Linux, the fonts will default to Arial, <em>even if Whitney is installed.</em></p>
 </div>
 <div id="cmap-theme-and-colors" class="section level2">
 <h2 class="hasAnchor">
@@ -140,8 +144,7 @@
   <span class="fu"><a href="reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>xlab <span class="op">=</span> <span class="st">"Percent"</span>,
              gridlines <span class="op">=</span> <span class="st">"v"</span>,
              vline <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="reference/cmap_fill_discrete.html">cmap_fill_discrete</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"environment"</span><span class="op">)</span>
-<span class="co">#&gt; 'Whitney' font family not found. Using a substitute...</span></pre></div>
+  <span class="fu"><a href="reference/cmap_fill_discrete.html">cmap_fill_discrete</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"environment"</span><span class="op">)</span></pre></div>
 <p><img src="reference/figures/README-theme-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div id="finalizing-the-plot" class="section level2">
@@ -153,6 +156,17 @@
               caption <span class="op">=</span> <span class="st">"Data from the American Community Survey"</span>,
               width <span class="op">=</span> <span class="fl">7</span>, height <span class="op">=</span> <span class="fl">4.25</span><span class="op">)</span></pre></div>
 <p><img src="reference/figures/README-finalize-1.png" width="672" style="display: block; margin: auto;"></p>
+</div>
+<div id="additional-reading" class="section level2">
+<h2 class="hasAnchor">
+<a href="#additional-reading" class="anchor"></a>Additional reading</h2>
+<p>While this package is designed to make the application of CMAP design standards to plots relatively easy, developing a professional, finished plot in R will require a decent familiarity with the grammar of <a href="ggplot2.tidyverse.org/">ggplot2</a>. Excellent resources in this category already exist:</p>
+<ul>
+<li><p>The <a href="https://r-graphics.org/">R graphics cookbook</a> provides accessible examples of how to make almost <a href="https://r-graphics.org/recipe-miscgraph-vectorfield">any type</a> of plot, as well as how to modify things like <a href="https://r-graphics.org/recipe-axes-range">limits, scales</a>, <a href="https://r-graphics.org/recipe-axes-polar">coordinate systems</a>, and <a href="https://r-graphics.org/recipe-facet-basic">facets</a>.</p></li>
+<li><p>The <a href="https://ggplot2-book.org/">ggplot2 book</a> delves deeper into why and how ggplot2 works the way it does, also with distinct chapters on topics like <a href="https://ggplot2-book.org/scales-guides.html">scales</a>, <a href="https://ggplot2-book.org/coord.html">coordinate systems</a>, <a href="https://ggplot2-book.org/facet.html">facets</a>, etc.</p></li>
+<li><p>The <a href="ggplot2.tidyverse.org/">ggplot2</a> website.</p></li>
+<li><p>The <a href="https://r4ds.had.co.nz/">R for Data Science (R4DS)</a> book, especially the <a href="https://r4ds.had.co.nz/graphics-for-communication.html">Graphics for Communication</a> chapter.</p></li>
+</ul>
 </div>
 </div>
   </div>

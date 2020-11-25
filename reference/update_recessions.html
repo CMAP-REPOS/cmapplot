@@ -84,7 +84,7 @@ dates. This function fetches and reformats this data from the NBER website." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.3</span>
       </span>
     </div>
 
@@ -108,6 +108,9 @@ dates. This function fetches and reformats this data from the NBER website." />
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/plots.html">Creating CMAP-themed plots</a>
+    </li>
+    <li>
+      <a href="../articles/finalize.html">Finalizing and exporting CMAP-themed plots</a>
     </li>
     <li>
       <a href="../articles/colors.html">Applying CMAP color schemes</a>
@@ -151,11 +154,17 @@ event of new recessions and/or changes to the NBER consensus on recession
 dates. This function fetches and reformats this data from the NBER website.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>update_recessions</span><span class='op'>(</span>quietly <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>update_recessions</span><span class='op'>(</span>url <span class='op'>=</span> <span class='cn'>NULL</span>, quietly <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>url</th>
+      <td><p>Char, the web location of the NBER machine-readable Excel file.
+The default, <code>NULL</code>, uses the most recently identified URL known to
+the package development team.</p></td>
+    </tr>
     <tr>
       <th>quietly</th>
       <td><p>Logical, suppresses messages produced by

@@ -58,6 +58,9 @@
     <loc>https://cmap-repos.github.io/cmapplot/reference/integer_breaks.html</loc>
   </url>
   <url>
+    <loc>https://cmap-repos.github.io/cmapplot/reference/peer_grp.html</loc>
+  </url>
+  <url>
     <loc>https://cmap-repos.github.io/cmapplot/reference/percentile_wages.html</loc>
   </url>
   <url>
@@ -83,6 +86,9 @@
   </url>
   <url>
     <loc>https://cmap-repos.github.io/cmapplot/articles/cookbook.html</loc>
+  </url>
+  <url>
+    <loc>https://cmap-repos.github.io/cmapplot/articles/finalize.html</loc>
   </url>
   <url>
     <loc>https://cmap-repos.github.io/cmapplot/articles/plots.html</loc>

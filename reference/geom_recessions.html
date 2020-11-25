@@ -82,7 +82,7 @@ by default, both rectangles and text identifying each recession." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.3</span>
       </span>
     </div>
 
@@ -106,6 +106,9 @@ by default, both rectangles and text identifying each recession." />
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/plots.html">Creating CMAP-themed plots</a>
+    </li>
+    <li>
+      <a href="../articles/finalize.html">Finalizing and exporting CMAP-themed plots</a>
     </li>
     <li>
       <a href="../articles/colors.html">Applying CMAP color schemes</a>
@@ -198,7 +201,10 @@ CMAP design standards.</p></td>
       <th>text_nudge_x, text_nudge_y</th>
       <td><p>Numeric, the amount to shift the labels along
 each axis. Defaults to 0.2 and 0, respectively. Note that these use the x
-and y scales so will need to be adjusted depending on what is being graphed.</p></td>
+and y scales so will need to be adjusted depending on what is being graphed.
+`text_nudge_y` only works when `ymax` is not set to `+Inf`, which is the
+default. Consider setting `ymax` equal to the top of your graph or top
+gridline as an additional argument in `geom_recessions()`.</p></td>
     </tr>
     <tr>
       <th>show.legend</th>

@@ -82,7 +82,7 @@ color). Specify the unique factor name(s) of the group(s) you're highlighting
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.3</span>
       </span>
     </div>
 
@@ -106,6 +106,9 @@ color). Specify the unique factor name(s) of the group(s) you're highlighting
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/plots.html">Creating CMAP-themed plots</a>
+    </li>
+    <li>
+      <a href="../articles/finalize.html">Finalizing and exporting CMAP-themed plots</a>
     </li>
     <li>
       <a href="../articles/colors.html">Applying CMAP color schemes</a>
@@ -137,7 +140,7 @@ color). Specify the unique factor name(s) of the group(s) you're highlighting
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Highlight one or more discrete groups in a comparison graph</h1>
-    <small class="dont-index">Source: <a href='https://github.com/CMAP-REPOS/cmapplot/blob/master/R/highlight_function.R'><code>R/highlight_function.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/CMAP-REPOS/cmapplot/blob/master/R/colors_highlight.R'><code>R/colors_highlight.R</code></a></small>
     <div class="hidden name"><code>cmap_fill_highlight.Rd</code></div>
     </div>
 
@@ -150,22 +153,22 @@ color). Specify the unique factor name(s) of the group(s) you're highlighting
     <pre class="usage"><span class='fu'>cmap_fill_highlight</span><span class='op'>(</span>
   <span class='va'>field</span>,
   <span class='va'>value</span>,
-  color_value <span class='op'>=</span> <span class='st'>"#009ccc"</span>,
-  color_other <span class='op'>=</span> <span class='st'>"#9daab3"</span>
+  color_value <span class='op'>=</span> <span class='st'>"#00b0f0"</span>,
+  color_other <span class='op'>=</span> <span class='st'>"#b0bdcf"</span>
 <span class='op'>)</span>
 
 <span class='fu'>cmap_color_highlight</span><span class='op'>(</span>
   <span class='va'>field</span>,
   <span class='va'>value</span>,
-  color_value <span class='op'>=</span> <span class='st'>"#009ccc"</span>,
-  color_other <span class='op'>=</span> <span class='st'>"#9daab3"</span>
+  color_value <span class='op'>=</span> <span class='st'>"#00b0f0"</span>,
+  color_other <span class='op'>=</span> <span class='st'>"#b0bdcf"</span>
 <span class='op'>)</span>
 
 <span class='fu'>cmap_colour_highlight</span><span class='op'>(</span>
   <span class='va'>field</span>,
   <span class='va'>value</span>,
-  color_value <span class='op'>=</span> <span class='st'>"#009ccc"</span>,
-  color_other <span class='op'>=</span> <span class='st'>"#9daab3"</span>
+  color_value <span class='op'>=</span> <span class='st'>"#00b0f0"</span>,
+  color_other <span class='op'>=</span> <span class='st'>"#b0bdcf"</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -183,11 +186,11 @@ defines the color/fill aesthetic as 'table$field'</p></td>
     </tr>
     <tr>
       <th>color_value</th>
-      <td><p>Specify the highlight color(s). Default is #009ccc (blue)</p></td>
+      <td><p>Specify the highlight color(s). Default is #00b0f0 (blue)</p></td>
     </tr>
     <tr>
       <th>color_other</th>
-      <td><p>Specify non-highlighted color. Default is #9daab3 (gray)</p></td>
+      <td><p>Specify non-highlighted color. Default is #b0bdcf (gray)</p></td>
     </tr>
     </table>
 
@@ -212,25 +215,24 @@ value(s) to highlight and some generic "Other" label.</p>
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># one value, default colors</span>
-<span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>transit_ridership</span>, <span class='va'>year</span><span class='op'>==</span><span class='st'>"2019"</span><span class='op'>)</span>,
-       <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>system</span>, y <span class='op'>=</span> <span class='va'>ridership</span>, fill <span class='op'>=</span> <span class='va'>system</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-   <span class='fu'>geom_col</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
-   <span class='fu'>cmap_fill_highlight</span><span class='op'>(</span><span class='va'>transit_ridership</span><span class='op'>$</span><span class='va'>system</span>, <span class='st'>"metra"</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='va'>p</span> <span class='op'>&lt;-</span> <span class='fu'>ggplot</span><span class='op'>(</span>data <span class='op'>=</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>transit_ridership</span>, <span class='va'>year</span><span class='op'>==</span><span class='st'>"2019"</span><span class='op'>)</span>,
+            mapping <span class='op'>=</span> <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>system</span>, y <span class='op'>=</span> <span class='va'>ridership</span>, fill <span class='op'>=</span> <span class='va'>system</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_col</span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='co'># one value, default colors</span>
+<span class='va'>p</span> <span class='op'>+</span> <span class='fu'>cmap_fill_highlight</span><span class='op'>(</span>field <span class='op'>=</span> <span class='va'>transit_ridership</span><span class='op'>$</span><span class='va'>system</span>,
+                        value <span class='op'>=</span> <span class='st'>"metra"</span><span class='op'>)</span>
 </div><div class='img'><img src='cmap_fill_highlight-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># multiple values, default colors</span>
-<span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>transit_ridership</span>, <span class='va'>year</span><span class='op'>==</span><span class='st'>"2019"</span><span class='op'>)</span>,
-       <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>system</span>, y <span class='op'>=</span> <span class='va'>ridership</span>, fill <span class='op'>=</span> <span class='va'>system</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-   <span class='fu'>geom_col</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
-   <span class='fu'>cmap_fill_highlight</span><span class='op'>(</span><span class='va'>transit_ridership</span><span class='op'>$</span><span class='va'>system</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"metra"</span>, <span class='st'>"pace_ada"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>p</span> <span class='op'>+</span> <span class='fu'>cmap_fill_highlight</span><span class='op'>(</span>field <span class='op'>=</span> <span class='va'>transit_ridership</span><span class='op'>$</span><span class='va'>system</span>,
+                        value <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"metra"</span>, <span class='st'>"pace_ada"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='img'><img src='cmap_fill_highlight-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># multiple values, multiple colors</span>
-<span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>transit_ridership</span>, <span class='va'>year</span><span class='op'>==</span><span class='st'>"2019"</span><span class='op'>)</span>,
-       <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>system</span>, y <span class='op'>=</span> <span class='va'>ridership</span>, fill <span class='op'>=</span> <span class='va'>system</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-   <span class='fu'>geom_col</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
-   <span class='fu'>cmap_fill_highlight</span><span class='op'>(</span><span class='va'>transit_ridership</span><span class='op'>$</span><span class='va'>system</span>,
-   <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"metra"</span>, <span class='st'>"pace_ada"</span><span class='op'>)</span>,
-   <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"red"</span>, <span class='st'>"orange"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>p</span> <span class='op'>+</span> <span class='fu'>cmap_fill_highlight</span><span class='op'>(</span>
+     field <span class='op'>=</span> <span class='va'>transit_ridership</span><span class='op'>$</span><span class='va'>system</span>,
+     value <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"metra"</span>, <span class='st'>"pace_ada"</span><span class='op'>)</span>,
+     color_value <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"red"</span>, <span class='st'>"orange"</span><span class='op'>)</span>
+   <span class='op'>)</span>
 </div><div class='img'><img src='cmap_fill_highlight-3.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
