@@ -484,7 +484,7 @@ To make histograms even more interesting, split your data up by important catego
 
 Some smaller formatting choices to pay attention to:
 
-- `forcats::fct_recode()` changes the column labels to "Departure" and "Return" for clarity. `forcats::fct_rev()` reverses the order in which the factors appear on the graph. Character/text variables can be converted to factors by `factor()` or `forcats::as_factor()` (which use different rules to determine the factor order).
+- `dplyr::recode_factor()` changes the column labels to "Departure" and "Return" for clarity. `forcats::fct_rev()` reverses the order in which the factors appear on the graph. Character/text variables can be converted to factors by `factor()` or `forcats::as_factor()` (which use different rules to determine the factor order).
 
 - Similar to graphs above which needed special formatting on their axis labels, `ggplot2::scale_x_time()` is used to manage the range, breaks, and labels of the x-axis, specifically when that axis represents time. 
 
@@ -496,13 +496,18 @@ Some smaller formatting choices to pay attention to:
 ```{r histogram, message=FALSE, warning=FALSE}
 # Get & format example dataset from ABM validation report GitHub repository
 df <- read_csv("https://raw.githubusercontent.com/CMAP-REPOS/cmap_abm_report/master/data/csv37_tours_tod.csv") %>%
-  filter(subgroup %in% c("Model-Depart", "Model-Arrive")) %>% 
-  filter(cat %in% c("work", "school", "discretionary")) %>% 
+  filter(subgroup %in% c("Model-Depart", "Model-Arrive")) %>%
+  filter(cat != "all") %>%
   mutate(
-    purpose = factor(stringr::str_to_title(cat)),  # Title case
-    dep_arr = fct_rev(fct_recode(factor(subgroup), 
-                                 "Departure" = "Model-Depart", 
-                                 "Return" = "Model-Arrive"))
+    purpose = fct_rev(recode_factor(factor(cat),
+                                    `work` = "Work",
+                                    `school` = "School",
+                                    .default = "Other Purposes",
+                                    .ordered = TRUE)),
+    dep_arr = recode_factor(factor(subgroup),
+                            `Model-Depart` = "Departure",
+                            `Model-Arrive` = "Return",
+                            .ordered = TRUE)
   )
 
 # Create faceted histograms
@@ -510,11 +515,11 @@ p <- ggplot(data = df, mapping = aes(x = hours, y = value)) +
   
   # Add histogram bars
   geom_col(  # Or geom_histogram() if data is not already grouped
-    mapping = aes(fill = purpose)#dep_arr)  # Color bars by tour purpose
+    mapping = aes(fill = purpose)  # Color bars by tour purpose
   ) +
   
   # Facet horizontally by tour purpose
-  facet_grid(rows = vars(dep_arr))+#purpose)) +
+  facet_grid(rows = vars(dep_arr)) +
   
   # Apply CMAP theme and color palette
   theme_cmap(
@@ -524,7 +529,7 @@ p <- ggplot(data = df, mapping = aes(x = hours, y = value)) +
       hjust = 0.5  # Center facet labels at axis midpoint
     )
   ) +
-  cmap_fill_discrete("community") +
+  cmap_fill_discrete("governance", reverse = TRUE) +
   
   # Adjust axis scales/labels
   scale_y_continuous(labels = scales::label_comma()) +
@@ -532,13 +537,16 @@ p <- ggplot(data = df, mapping = aes(x = hours, y = value)) +
     limits = lubridate::hm(c("05:00", "22:00")),
     breaks = lubridate::hm(c("06:00", "09:00", "12:00", "15:00", "18:00", "21:00")),
     labels = c("6a", "9a", "12p", "3p", "6p", "9p")
-  )
+  ) +
+  
+  # Reverse legend order
+  guides(fill = guide_legend(reverse = TRUE))
   
 # Create  final plot
 finalize_plot(
   p,
-  title = "Modeled departure and return times for work, school and discretionary
-    tours in CMAP's Activity-Based Model",
+  title = "Modeled tour departure and return times by purpose in CMAP's
+    Activity-Based Model",
   caption = "Note: A tour is a chain of trips that begin at and return to the
     same location. Frequencies are given in half-hour intervals.
     <br><br>
