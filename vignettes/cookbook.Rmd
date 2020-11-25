@@ -529,7 +529,7 @@ p <- ggplot(data = df, mapping = aes(x = hours, y = value)) +
       hjust = 0.5  # Center facet labels at axis midpoint
     )
   ) +
-  cmap_fill_discrete("governance", reverse = TRUE) +
+  cmap_fill_discrete("friday", reverse = TRUE) +
   
   # Adjust axis scales/labels
   scale_y_continuous(labels = scales::label_comma()) +
