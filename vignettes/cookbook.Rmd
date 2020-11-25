@@ -476,21 +476,53 @@ finalize_plot(
 [Source](https://www.cmap.illinois.gov/2050/indicators/non-single-occupancy-modes)
 
 
-## Histogram
+## Histogram and faceted chart
 
-Intro text
+While statistics such as mean or median are useful for summarizing, they just scratch the surface of trends happening within a large, diverse dataset. Histograms are great for visualizing the distribution of a metric across a large sample. This particular example shows the distribution of trip beginnings and endings over the continuous variable of time. However, the continuous variable has already been made discrete by binning time in half-hour increments and counting the trips in each bin. In cases like this, `geom_col()` is the geom that makes the most sense. If your variable comes in a true continuous form, `geom_histogram()` or `geom_bar()` is appropriate, and allows flexibility for bin sizes.
+
+To make histograms even more interesting, split your data up by important categories and visualize them side-by-side to understand how distributions vary for different groups. `facet_grid()` is used here because comparisons are being made across the values of two discrete variables. If you want to split up your graph by only one variable, `facet_wrap()` will do. 
+
+Some smaller formatting choices to pay attention to:
+
+* `forcats::fct_recode` changed the column labels to "Departure" and "Return" for clarity. `forcats::fct_rev` switched the order in which the factors appear on the graph. Notice that these variables had to be turned into factors first.
+
+* Similar to graphs above which needed special formatting on their axis labels, `scale_x_time()` is used to manage the range, breaks, and labels of the x-axis, specifically when that axis represents time. 
+
+* `lubridate::hms()` is used to convert a string into a time object. Lubridate is a very useful package if you need to manage dates and times. Learn more about it [here](https://r4ds.had.co.nz/dates-and-times.html).
+
 
 #### Example code
 
-```{r histogram, message=FALSE}
+```{r histogram, message=FALSE, warning=FALSE}
+# prepare an example dataset
+df <- read_csv("https://raw.githubusercontent.com/CMAP-REPOS/cmap_abm_report/master/data/csv37_tours_tod.csv")
 
+df <- df %>% 
+  filter(subgroup=="Model-Depart" | subgroup=="Model-Arrive") %>% 
+  filter(cat=="work" | cat=="school") %>% 
+  mutate(subgroup = factor(subgroup),
+         subgroup = fct_recode(subgroup, 
+                               "Departure" = "Model-Depart", 
+                               "Return" = "Model-Arrive"),
+         subgroup = fct_rev(subgroup),
+         cat = fct_rev(factor(cat)))
+
+# create the plot object
+p <- ggplot(df) +
+  geom_col(aes(x=hours, y=value, fill=cat)) +
+  facet_grid(cat~subgroup,
+             scale = "free_y") +
+  cmap_fill_discrete("friday") +
+  theme_cmap(show.legend = FALSE) +
+  scale_x_time(limits = lubridate::hms(c("05:00:00","23:30:00")),
+               breaks = lubridate::hms(c("06:00:00", "09:00:00", "12:00:00", "15:00:00", "18:00:00", "21:00:00")),
+               labels = c("6a", "9a", "12p", "3p", "6p", "9p"))
+  
+# finalize the plot
+finalize_plot(p,
+  title = "Modeled departure and return times for work tours vs. school tours",
+  caption = "Note: A tour is a chain of trips that begin at and return to the same location. Frequencies are given in half-hour intervals. <br><br> Source: CMAP activity-based model, 2010 scenario")
 ```
-
-<!--#### Original graphic
-
-<img src="" width="100%" style="display: block; margin: auto;"/>
-
-[Source]()-->
 
 
 ## Donut chart (or pie chart)
@@ -556,23 +588,6 @@ finalize_plot(
 <img src="https://www.cmap.illinois.gov/documents/10180/1132711/PU20-0000+covid+climate_regional+emissions+by+sector.jpg" width="100%" style="display: block; margin: auto;"/>
 
 [Source](https://www.cmap.illinois.gov/updates/all/-/asset_publisher/UIMfSLnFfMB6/content/cmap-estimates-show-improved-regional-air-quality-due-to-recent-transportation-shifts)
-
-
-## Faceted chart
-
-Intro text
-
-#### Example code
-
-```{r facet, message=FALSE}
-
-```
-
-<!--#### Original graphic
-
-<img src="" width="100%" style="display: block; margin: auto;"/>
-
-[Source]()-->
 
 
 ## Race and ethnicity time series line graph
