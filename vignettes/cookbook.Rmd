@@ -532,7 +532,7 @@ p <- ggplot(data = df, mapping = aes(x = hours, y = value)) +
   theme_cmap(
     hline = 0,  # Add origin line at 0 for aesthetic reasons
     gridlines = "hv",  # Show horizontal and vertical gridlines
-    strip.text = element_text(
+    strip.text = element_text( # strip.text is an optional ... argument that can be added to theme_cmap()
       hjust = 0.5  # Center facet labels at axis midpoint
     )
   ) +
@@ -557,7 +557,7 @@ finalize_plot(
   caption = "Note: A tour is a chain of trips that begin at and return to the
     same location. Frequencies are given in half-hour intervals.
     <br><br>
-    Source: CMAP activity-based model, 2010 scenario."
+    Modeled source: CMAP activity-based model, 2010 scenario.<br><br>Observed source: Travel Tracker Survey, 2007-2008."
 )
 ```
 
