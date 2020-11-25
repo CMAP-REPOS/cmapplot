@@ -141,7 +141,7 @@ cmapplot_globals <- list(
     # Check for Whitney
     all_fonts <- sysfonts::font_files()
     whitney_fonts <- all_fonts[all_fonts$family %in% c("Whitney Medium", "Whitney Book", "Whitney Semibold") & all_fonts$face=="Regular", ]
-    cmapplot_globals$use_whitney = length(whitney_fonts$family) == 3
+    cmapplot_globals$use_whitney <<- length(whitney_fonts$family) >= 3
 
     # Use Whitney if available
     if (cmapplot_globals$use_whitney) {
