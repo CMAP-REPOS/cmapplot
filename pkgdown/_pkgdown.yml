@@ -30,12 +30,13 @@ reference:
   - customproto
 - title: Color Palettes and Gradients
 - contents:
-  - starts_with("cmap_fill_")
   - starts_with("viz_")
+  - starts_with("cmap_fill_")
 - title: Sample Datasets
 - contents:
   - cluster_jobchange
   - economy_basic
+  - peer_grp
   - grp_over_time
   - percentile_wages
   - pop_and_laborforce_by_age
@@ -48,5 +49,6 @@ articles:
   navbar: ~
   contents:
   - plots
+  - finalize
   - colors
   - cookbook

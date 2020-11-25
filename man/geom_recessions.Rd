@@ -41,7 +41,10 @@ CMAP design standards.}
 
 \item{text_nudge_x, text_nudge_y}{Numeric, the amount to shift the labels along
 each axis. Defaults to 0.2 and 0, respectively. Note that these use the x
-and y scales so will need to be adjusted depending on what is being graphed.}
+and y scales so will need to be adjusted depending on what is being graphed.
+`text_nudge_y` only works when `ymax` is not set to `+Inf`, which is the
+default. Consider setting `ymax` equal to the top of your graph or top
+gridline as an additional argument in `geom_recessions()`.}
 
 \item{show.legend}{Logical, whether to render the rectangles in the legend.
 Defaults to \code{FALSE}.}

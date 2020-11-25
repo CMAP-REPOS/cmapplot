@@ -19,35 +19,35 @@
 #'   found. Values need not be unique. Typically, pass the table column that
 #'   defines the color/fill aesthetic as 'table$field'
 #' @param value character string or vector, the name of group(s) to highlight
-#' @param color_value Specify the highlight color(s). Default is #009ccc (blue)
-#' @param color_other Specify non-highlighted color. Default is #9daab3 (gray)
+#' @param color_value Specify the highlight color(s). Default is #00b0f0 (blue)
+#' @param color_other Specify non-highlighted color. Default is #b0bdcf (gray)
 #'
 #' @examples
+#' p <- ggplot(data = dplyr::filter(transit_ridership, year=="2019"),
+#'             mapping = aes(x = system, y = ridership, fill = system)) +
+#'   geom_col()
+#'
 #' # one value, default colors
-#' ggplot(dplyr::filter(transit_ridership, year=="2019"),
-#'        aes(x = system, y = ridership, fill = system)) +
-#'    geom_col() +
-#'    cmap_fill_highlight(transit_ridership$system, "metra")
+#' p + cmap_fill_highlight(field = transit_ridership$system,
+#'                         value = "metra")
 #'
 #' # multiple values, default colors
-#' ggplot(dplyr::filter(transit_ridership, year=="2019"),
-#'        aes(x = system, y = ridership, fill = system)) +
-#'    geom_col() +
-#'    cmap_fill_highlight(transit_ridership$system, c("metra", "pace_ada"))
+#' p + cmap_fill_highlight(field = transit_ridership$system,
+#'                         value = c("metra", "pace_ada"))
 #'
 #' # multiple values, multiple colors
-#' ggplot(dplyr::filter(transit_ridership, year=="2019"),
-#'        aes(x = system, y = ridership, fill = system)) +
-#'    geom_col() +
-#'    cmap_fill_highlight(transit_ridership$system,
-#'    c("metra", "pace_ada"),
-#'    c("red", "orange"))
+#' p + cmap_fill_highlight(
+#'      field = transit_ridership$system,
+#'      value = c("metra", "pace_ada"),
+#'      color_value = c("red", "orange")
+#'    )
 #'
 #' @describeIn cmap_fill_highlight For fill aesthetic
 #' @export
-cmap_fill_highlight <- function(field, value,
-                                color_value = "#009ccc",
-                                color_other = "#9daab3") {
+cmap_fill_highlight <- function(field,
+                                value,
+                                color_value = "#00b0f0",
+                                color_other = "#b0bdcf") {
 
   palette <- make_highlight_palette(field, value, color_value, color_other)
 
@@ -57,9 +57,10 @@ cmap_fill_highlight <- function(field, value,
 
 #' @describeIn cmap_fill_highlight For color aesthetic
 #' @export
-cmap_color_highlight <- function(field, value,
-                                 color_value = "#009ccc",
-                                 color_other = "#9daab3") {
+cmap_color_highlight <- function(field,
+                                 value,
+                                 color_value = "#00b0f0",
+                                 color_other = "#b0bdcf") {
 
   palette <- make_highlight_palette(field, value, color_value, color_other)
 
@@ -83,14 +84,14 @@ cmap_colour_highlight <- cmap_color_highlight
 #' @param color_other hexcode of non-highlighted color
 #'
 #' @noRd
-make_highlight_palette <- function(field, value, color_value, color_other){
+make_highlight_palette <- function(field, value, color_value, color_other) {
 
   # check that value and color_value are the same length.
   # if color_value has a length of 1, it will be repeated
-  if(length(value) > 1){
-    if (length(color_value) == 1){
+  if (length(value) > 1) {
+    if (length(color_value) == 1) {
       color_value <- rep.int(color_value, length(value))
-    } else if(length(value) != length(color_value)){
+    } else if (length(value) != length(color_value)) {
       stop("Length of `value` and `color_value` must be equal.", .call = FALSE)
     }
   }
@@ -103,7 +104,7 @@ make_highlight_palette <- function(field, value, color_value, color_other){
   names(palette) <- levels(factor(field))
 
   # replace highlight value(s) with highlight color(s)
-  for(i in seq_along(value)){
+  for (i in seq_along(value)) {
     palette[[value[i]]] <- color_value[i]
   }
 

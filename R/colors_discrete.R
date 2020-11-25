@@ -1,23 +1,17 @@
 #' CMAP discrete color palettes
 #'
-#' A sample of comms-approved colors arranged into palettes
+#' A selection of discrete color palettes from the CMAP color palette.
 #'
 #' @examples
-#' viz_palette(cmap_palettes$mobility)
+#' # Get names of avialable discrete palettes.
+#' # (Call viz_palette("name_of_palette") to preview one.)
+#' names(cmap_palettes)
 #'
-#' ggplot(pop_and_laborforce_by_age, aes(x = variable, y = value, fill = age)) +
-#'    geom_col(position = position_stack(reverse = TRUE)) +
-#'    facet_wrap(~year) +
-#'    cmap_fill_discrete(palette = "community")
+#' # Run the following function to visualize *all* discrete palettes
+#' purrr::walk2(cmap_palettes, names(cmap_palettes), viz_palette)
 #'
 #' @export
 cmap_palettes <- list(
-
-    race = c(white    = "#72a6e5",
-             black    = "#8de572",
-             hispanic = "#cca600",
-             asian    = "#cc3000",
-             other    = "#8a9ea8"),
 
     prosperity = c("#662f00", "#e5d072", "#44008c", "#c8e572", "#c9a7ef"),
 
@@ -31,20 +25,27 @@ cmap_palettes <- list(
 
     legislation = c("#00becc", "#cc5f00", "#3f0e00", "#cca600", "#003f8c", "#67ac00"),
 
-    friday = c("#00093f", "#ac8c00", "#475c66", "#e5d072", "#b5c1c8", "#006b8c")
+    friday = c("#00093f", "#ac8c00", "#475c66", "#e5d072", "#b5c1c8", "#006b8c"),
+
+    race = c(white    = "#75a5d8",
+             black    = "#84c87e",
+             hispanic = "#d8ba39",
+             asian    = "#e77272",
+             other    = "#607b88")
 
 )
 
 
 #' Print palette for reference
 #'
-#' Directly from the \href{https://github.com/ropenscilabs/ochRe}{ochRe package}
-#'
 #' @param pal character, vector of (hexadecimal) colours representing a palette
 #' @param ttl character, title to be displayed (the name of the palette)
 #' @param num numeric, the number of colours to display
 #'
-#' @describeIn cmap_palettes function to vizualize a palette
+#' @describeIn cmap_palettes Display CMAP diverging palettes. Borrowed with
+#'   respect from the \href{https://github.com/ropenscilabs/ochRe}{ochRe
+#'   package}
+#'
 #' @export
 viz_palette <- function(pal, ttl = deparse(substitute(pal)), num = length(pal)) {
     if (num <= 0) {
@@ -52,7 +53,8 @@ viz_palette <- function(pal, ttl = deparse(substitute(pal)), num = length(pal)) 
     }
     pal_func <- grDevices::colorRampPalette(pal)
     graphics::image(seq_len(num), 1, as.matrix(seq_len(num)), col = pal_func(num),
-                    main = paste0(ttl, " (", length(pal), " colours in palette, ", num, " displayed)"),
+                    main = paste0(ttl, " (", length(pal), " colours in palette, ",
+                                  num, " displayed)"),
                     xlab = "", ylab = "", xaxt = "n", yaxt = "n",  bty = "n")
 }
 
@@ -74,7 +76,8 @@ cmap_pal_discrete <- function(palette = "prosperity", reverse = FALSE) {
 
 #' Apply discrete CMAP palettes to ggplot2 aesthetics
 #'
-#' Pick the function depending on the aesthetic of your ggplot object (fill or color)
+#' Pick the function depending on the aesthetic of your ggplot object (fill or
+#' color). See \code{link{cmap_palettes}} for a listing of available gradients.
 #'
 #' @param palette Choose from 'cmap_palettes' list
 #' @param reverse Logical; reverse color order?

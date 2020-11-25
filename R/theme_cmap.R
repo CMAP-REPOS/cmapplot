@@ -310,7 +310,7 @@ theme_cmap_base <- function(consts = cmapplot_globals$consts,
                                       margin = margin(t = consts$half_line)),
     plot.caption.position = "panel",
     plot.tag = element_blank(),
-    plot.margin = margin(3, 3 + consts$margin_panel_r, 3, 3, "bigpts"),
+    plot.margin = margin(3, consts$margin_panel_r, 3, 3, "bigpts"),
 
     complete = TRUE
   )

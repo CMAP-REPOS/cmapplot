@@ -29,7 +29,7 @@ This vignette summarizes the basic formatting that the cmapplot package can add 
 
 Let's start with a basic time series line graph, drawn using ggplot2's default theme (`theme_grey()`). We'll save this as `p` for later, but keep the actual data geom (in this case, `geom_line()`) separate due to how ggplot2 layers geoms.
 
-```{r initial}
+```{r initial, message = FALSE}
 # load tidyverse (which includes ggplot2) and cmapplot
 library(tidyverse)
 library(cmapplot)
@@ -37,11 +37,11 @@ library(cmapplot)
 # clean up dataset
 df <- transit_ridership %>% 
   filter(system != "pace_ada") %>% 
-  mutate(system = case_when(
-    system == "cta_bus" ~ "CTA bus",
-    system == "cta_rail" ~ "CTA rail",
-    system == "metra" ~ "Metra",
-    system == "pace" ~ "Pace"
+  mutate(system = recode_factor(system,
+    cta_bus = "CTA bus",
+    cta_rail = "CTA rail",
+    metra = "Metra",
+    pace = "Pace"
   ))
 
 # build plot
@@ -60,7 +60,7 @@ p + geom_line()
 
 To add basic CMAP design elements to the plot, add `theme_cmap()` like you would any other ggplot2 theme. 
 
-```{r basic}
+```{r basic, message = FALSE}
 p + geom_line() + theme_cmap()
 ```
 
@@ -72,7 +72,7 @@ For example, `theme_cmap()` can be used to to add a strong horizontal or vertica
 
 When using `hline` and/or `vline`, it is important to place `theme_cmap()` *before* the primary data geom. This is because the `hline` drawn by `theme_cmap()` is a geom, and ggplot2 layers geoms in the order they are added to the plot. This ordering allows the `CTA rail` line to be drawn on top of the `hline`.
 
-```{r mods1}
+```{r mods1, message = FALSE}
 p + theme_cmap(ylab = "Annual Ridership (Millions)",
                hline = 200, # may not be immediately visible
                legend.max.columns = 2) +
@@ -81,12 +81,16 @@ p + theme_cmap(ylab = "Annual Ridership (Millions)",
 
 ### Overriding plotting defaults
 
-The package contains a list of default values (`cmapplot_globals$consts`) that control various plotting constants. Most of these impact the function `finalize_plot()`, but a few impact `theme_cmap()`. For a complete description of these constants, see `?cmapplot_globals`.  These can be modified in the `overrides` argument:
+The package contains a list of default values (`cmapplot_globals$consts`) that control various plotting constants. Most of these impact the function `finalize_plot()`, but a few impact `theme_cmap()`. For a complete description of these constants, see `?cmapplot_globals`. 
 
-```{r overrides}
-p + theme_cmap(ylab = "Annual Ridership (Millions)",
-               hline = 200,
-               overrides = list(lwd_strongline = 3)) +
+The most important at this stage is `margin_panel_r`, which controls the distance between the right side of the plot and the right side of the plotting window. Depending on the length and location of your right-most x axis label, you may need to expand this value beyond it's default. These `consts` can be modified in the `overrides` argument:
+
+```{r overrides, message = FALSE}
+p + scale_x_continuous(labels = c("1980", "1990", "2000", "2010", "A very long label")) +
+  theme_cmap(ylab = "Annual Ridership (Millions)",
+             hline = 200,
+             overrides = list(margin_panel_r = 50, # the most likely override in theme_cmap()
+                              lwd_strongline = 3)) +
   geom_line()
 ```
 
@@ -94,7 +98,7 @@ p + theme_cmap(ylab = "Annual Ridership (Millions)",
 
 In addition, any ggplot2 theme element can also be modified directly in `theme_cmap()` by passing valid arguments from the `ggplot2::theme()` function. In the following example, the addition of `axis.ticks.x` and the establishment of an `axis.ticks.length.x` "turns on" the tick marks automatically turned off by `theme_cmap()`'s underlying theme. Note that here, some additional manipulation of the y-axis scale is necessary for the axis ticks to touch the lowest horizontal gridline.
 
-```{r mods2}
+```{r mods2, message = FALSE}
 p + scale_y_continuous(breaks = c(0, 200, 400), 
                        limits = c(-1, 575),
                        expand = c(0, 0)) + 
@@ -115,7 +119,7 @@ The function `geom_recessions()`, allows for the addition of rectangles (and tex
 
 `ggplot()` always draws geoms *on top* of base plot elements like gridlines. The default fill and alpha values for `geom_recessions()` are the most transparent way possible to achieve CMAP palette color `#002d49` when drawn on a white background — thus impacting the color of the gridlines as little as possible. 
 
-```{r recessions}
+```{r recessions, message = FALSE}
 q <- ggplot(data = df, 
             mapping = aes(x = year, y = ridership, color = system)) +
   geom_recessions(ymin = 0) +
@@ -131,7 +135,7 @@ The function `geom_text_lastonly()` allows the user to label only the final poin
 
 Due to ggplot2's underlying structure, `geom_text()` labels are clipped by the plot's default extent. Often, the right side of the plot will need to be expanded — or plot clipping turned off — for correct display of these labels. `?geom_text_lastonly` describes a number of methods to account for this.    
 
-```{r textlast}
+```{r textlast, message = FALSE}
 q <- q + geom_text_lastonly(
   mapping = aes(label = round(ridership, digits = 0)), 
   add_points = TRUE,
@@ -141,10 +145,9 @@ q <- q + geom_text_lastonly(
 q
 ```
 
-### Overriding ggplot2's default aesthetics
+### Applying CMAP default aesthetics
 
-Every geom has default aesthetics that cannot be modified by a ggplot2 theme (and therefore, cannot be modified by `theme_cmap()`). Notice, for example, that the text drawn in the plot via `geom_text_lastonly()` and `geom_recessions()` still appears in Arial (R's default font), although the legend and axis fonts appear in Calibri/Whitney. This is automatically corrected in `finalize_plot()`. However, if you'd like to see these impacts at this stage,
-you can override ggplot2's default aesthetics for line and text geoms with CMAP defaults via `apply_cmap_default_aes()`.
+Every ggplot2 "geom" has default aesthetics that cannot be modified by a ggplot2 theme (and therefore, cannot be modified by `theme_cmap()`). Notice, for example, that the text drawn in the plot via `geom_text_lastonly()` and `geom_recessions()` still appears in Arial (R's default font), although the legend and axis fonts appear in Calibri/Whitney. This is automatically corrected in `finalize_plot()`. However, if you'd like to see these impacts at this stage, you can override ggplot2's default aesthetics for line and text geoms with CMAP defaults via `apply_cmap_default_aes()`.
 
 ```{r aes}
 apply_cmap_default_aes()
@@ -159,7 +162,7 @@ It is important to note that this change is "sticky" for the duration of the ses
 
 In addition, `theme_cmap()` provides a debug mode in which it draws outlines around the rectangular elements in the plot. This can help the user understand what is being drawn and identify additional modifications that they might want to make via `overrides` or `ggplot2::theme()` arguments:
 
-```{r debug}
+```{r debug, message = FALSE}
 ggplot(data = df, 
             mapping = aes(x = year, y = ridership, color = system)) +
   geom_recessions(ymin = 0) +

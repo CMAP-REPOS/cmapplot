@@ -7,9 +7,13 @@
 \url{https://www.nber.org/cycles/NBER chronology.xlsx}
 }
 \usage{
-update_recessions(quietly = FALSE)
+update_recessions(url = NULL, quietly = FALSE)
 }
 \arguments{
+\item{url}{Char, the web location of the NBER machine-readable Excel file.
+The default, \code{NULL}, uses the most recently identified URL known to
+the package development team.}
+
 \item{quietly}{Logical, suppresses messages produced by
 \code{utils::download.file}.}
 }
