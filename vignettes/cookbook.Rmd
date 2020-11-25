@@ -525,7 +525,7 @@ p <- ggplot(data = df, mapping = aes(x = hours, y = value)) +
     mapping = aes(fill = purpose)  # Color bars by tour purpose
   ) +
   
-  # Facet horizontally by tour purpose
+  # Facet by departure/arrival and modeled/observed
   facet_grid(rows = vars(obs_mod), cols = vars(dep_arr)) +
   
   # Apply CMAP theme and color palette
