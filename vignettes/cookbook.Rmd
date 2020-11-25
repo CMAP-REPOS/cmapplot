@@ -499,7 +499,7 @@ df <- read_csv("https://raw.githubusercontent.com/CMAP-REPOS/cmap_abm_report/mas
   filter(subgroup %in% c("Model-Depart", "Model-Arrive")) %>% 
   filter(cat %in% c("work", "school", "discretionary")) %>% 
   mutate(
-    purpose = fct_rev(factor(stringr::str_to_title(cat))),  # Title case
+    purpose = factor(stringr::str_to_title(cat)),  # Title case
     dep_arr = fct_rev(fct_recode(factor(subgroup), 
                                  "Departure" = "Model-Depart", 
                                  "Return" = "Model-Arrive"))
@@ -510,11 +510,11 @@ p <- ggplot(data = df, mapping = aes(x = hours, y = value)) +
   
   # Add histogram bars
   geom_col(  # Or geom_histogram() if data is not already grouped
-    mapping = aes(fill = dep_arr)  # Color bars by tour purpose
+    mapping = aes(fill = purpose)#dep_arr)  # Color bars by tour purpose
   ) +
   
   # Facet horizontally by tour purpose
-  facet_grid(rows = vars(purpose)) +
+  facet_grid(rows = vars(dep_arr))+#purpose)) +
   
   # Apply CMAP theme and color palette
   theme_cmap(
@@ -524,7 +524,7 @@ p <- ggplot(data = df, mapping = aes(x = hours, y = value)) +
       hjust = 0.5  # Center facet labels at axis midpoint
     )
   ) +
-  cmap_fill_discrete("friday") +
+  cmap_fill_discrete("community") +
   
   # Adjust axis scales/labels
   scale_y_continuous(labels = scales::label_comma()) +
