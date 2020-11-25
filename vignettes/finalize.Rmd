@@ -104,8 +104,6 @@ finalize_plot(plot = p,
 
 Any of the attributes defined in `cmapplot_globals$consts` can be changed by passing a named list to the `overrides` arguments. For example, the chart below uses the `overrides` argument to modify the margin below the title (`margin_title_b`), the margin to the left of the title and the caption (`margin_title_l`), and the margin above the legend (`margin_legend_t`).
 
-You can read more about available options for customization in `?cmapplot_globals`.
-
 ```{r finalize2, message=FALSE}
 # A finalized plot with some formatting overrides
 finalize_plot(plot = p,
@@ -117,6 +115,13 @@ finalize_plot(plot = p,
                                margin_title_l = 10,
                                margin_legend_t = 15))
 ```
+
+#### More information on possible overrides
+
+The chart below includes a visual representation of many of the possible uses of `override`: 
+<img src="./../man/figures/margins.png" width="100%" style="display: block; margin: auto;"/>
+
+You can also read more about all the available options for customization in `?cmapplot_globals`.
 
 ### Adjusting positions with debug mode
 

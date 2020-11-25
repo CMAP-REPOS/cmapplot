@@ -81,12 +81,16 @@ p + theme_cmap(ylab = "Annual Ridership (Millions)",
 
 ### Overriding plotting defaults
 
-The package contains a list of default values (`cmapplot_globals$consts`) that control various plotting constants. Most of these impact the function `finalize_plot()`, but a few impact `theme_cmap()`. For a complete description of these constants, see `?cmapplot_globals`.  These can be modified in the `overrides` argument:
+The package contains a list of default values (`cmapplot_globals$consts`) that control various plotting constants. Most of these impact the function `finalize_plot()`, but a few impact `theme_cmap()`. For a complete description of these constants, see `?cmapplot_globals`. 
+
+The most important at this stage is `margin_panel_r`, which controls the distance between the right side of the plot and the right side of the plotting window. Depending on the length and location of your right-most x axis label, you may need to expand this value beyond it's default. These `consts` can be modified in the `overrides` argument:
 
 ```{r overrides, message = FALSE}
-p + theme_cmap(ylab = "Annual Ridership (Millions)",
-               hline = 200,
-               overrides = list(lwd_strongline = 3)) +
+p + scale_x_continuous(labels = c("1980", "1990", "2000", "2010", "A very long label")) +
+  theme_cmap(ylab = "Annual Ridership (Millions)",
+             hline = 200,
+             overrides = list(margin_panel_r = 50, # the most likely override in theme_cmap()
+                              lwd_strongline = 3)) +
   geom_line()
 ```
 
