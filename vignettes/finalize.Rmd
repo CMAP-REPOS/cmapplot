@@ -87,7 +87,7 @@ finalize_plot(plot = p,
               caption = "Source: Chicago Metropolitan Agency for Planning
                 analysis of Regional Transportation Authority data.",
               mode = c("png", "pdf"),
-              filename = "finalized_plot.png")
+              filename = "finalized_plot")
 ```
 
 <!-- The next code block IS evaluated to generate the graphic, but its source code is hidden because it does not demonstrate usage of the mode or filename parameters. -->
