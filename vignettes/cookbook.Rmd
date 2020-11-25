@@ -496,7 +496,6 @@ Some smaller formatting choices to pay attention to:
 ```{r histogram, message=FALSE, warning=FALSE}
 # Get & format example dataset from ABM validation report GitHub repository
 df <- read_csv("https://raw.githubusercontent.com/CMAP-REPOS/cmap_abm_report/master/data/csv37_tours_tod.csv") %>%
-  filter(subgroup %in% c("Model-Depart", "Model-Arrive")) %>%
   filter(cat != "all") %>%
   mutate(
     purpose = fct_rev(recode_factor(factor(cat),
@@ -506,7 +505,15 @@ df <- read_csv("https://raw.githubusercontent.com/CMAP-REPOS/cmap_abm_report/mas
                                     .ordered = TRUE)),
     dep_arr = recode_factor(factor(subgroup),
                             `Model-Depart` = "Departure",
+                            `Survey-Depart` = "Departure",
                             `Model-Arrive` = "Return",
+                            `Survey-Arrive` = "Return",
+                            .ordered = TRUE),
+    obs_mod = recode_factor(factor(subgroup),
+                            `Model-Depart` = "Modeled",
+                            `Model-Arrive` = "Modeled",
+                            `Survey-Depart` = "Observed",
+                            `Survey-Arrive` = "Observed",
                             .ordered = TRUE)
   )
 
@@ -519,7 +526,7 @@ p <- ggplot(data = df, mapping = aes(x = hours, y = value)) +
   ) +
   
   # Facet horizontally by tour purpose
-  facet_grid(rows = vars(dep_arr)) +
+  facet_grid(rows = vars(obs_mod), cols = vars(dep_arr)) +
   
   # Apply CMAP theme and color palette
   theme_cmap(
@@ -545,8 +552,8 @@ p <- ggplot(data = df, mapping = aes(x = hours, y = value)) +
 # Create  final plot
 finalize_plot(
   p,
-  title = "Modeled tour departure and return times by purpose in CMAP's
-    Activity-Based Model",
+  title = "Modeled vs. observed tour departure and return times by purpose in
+    CMAP's Activity-Based Model",
   caption = "Note: A tour is a chain of trips that begin at and return to the
     same location. Frequencies are given in half-hour intervals.
     <br><br>
