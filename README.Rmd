@@ -52,7 +52,7 @@ library(cmapplot)
 
 To install on macOS, users must install [XQuartz](https://www.xquartz.org) before cmapplot can be loaded. (This can be easily accomplished via the [Homebrew](https://brew.sh) package manager with the command `brew cask install xquartz`.)
 
-**A note about fonts**: The cmapplot package works best when installed on a Windows computer with the Whitney family of fonts installed (specifically the Book, Medium, and Semibold variants). If installed on a Windows computer *without* Whitney, the package will still work, but the fonts will default to Calibri. If installed on macOS or Linux, the fonts will default to Arial, *even if Whitney is installed.*
+**A note about fonts**: The cmapplot package works best when installed on a computer with the Whitney family of fonts installed (specifically the Book, Medium, and Semibold variants). If installed on a computer *without* Whitney, the package will still work, but the fonts will default to Calibri (on Windows) or Arial (on macOS/Linux).
 
 
 ## CMAP theme and colors
