@@ -29,7 +29,7 @@ This vignette is a showcase of cmapplot's full capabilities by replicating as cl
 
 Line graphs are useful for showing change over time, and are well-suited for combination with `geom_text_lastonly()` and `geom_recessions()` custom geoms. This particular plot also demonstrates the utility of a few other functions from the tidyverse that are quite useful when working with `ggplot2::ggplot()`:
 
-- `forcats::fct_reorder()` and `forcats::fct_reorder2()` are useful to automatically order of factors within `mapping`, which establishes legend order. (See also [the relevant R4DS chapter](https://r4ds.had.co.nz/factors.html#modifying-factor-order).)
+- `forcats::fct_reorder()` and `forcats::fct_reorder2()` are useful to automatically order of factors within `mapping`, which establishes legend order. (See also [the Factors chapter of *R for Data Science*](https://r4ds.had.co.nz/factors.html#modifying-factor-order).)
 
 - functions from the `scales` package, such as `scales::percent()` and `scales::label_percent()`, which reformat numbers into attractive formats.
 
@@ -81,9 +81,10 @@ p <- ggplot(
 
 # Create final plot
 finalize_plot(
-  p,
+  plot = p,
   title = "Cumulative growth in real gross regional product, 2001-19",
-  caption = "Note: Index year 2001.<br><br>
+  caption = "Note: Index year 2001.
+    <br><br>
     Source: Chicago Metropolitan Agency for Planning analysis of U.S. Bureau
     of Economic Analysis and Economic Modeling Specialists International data
     (Emsi 2020.4).",
@@ -148,17 +149,11 @@ p <- ggplot(data = df, mapping = aes(x = year, y = ridership, fill = system)) +
 
 # Create final plot
 finalize_plot(
-  p,
+  plot = p,
   title = "Annual unlinked passenger trips on Regional Transportation Authority
     systems over time, by service board (in millions).",
   caption = "Source: CMAP analysis of RTA data.")
 ```
-
-<!--#### Original graphic
-
-<img src="" width="100%" style="display: block; margin: auto;"/>
-
-[Source]()-->
 
 
 ## Scatterplot
@@ -226,12 +221,13 @@ p <- ggplot(data = df, mapping = aes(x = TOT_POP_DIFF, y = LF_POP_DIFF)) +
 
 # Create final plot
 finalize_plot(
-  p,
+  plot = p,
   title = "Changes in population, size of labor force, and labor force
     participation rate among prime working age residents (ages 25-54), Chicago
     and select Metropolitan Statistical Areas, 2006-10 to 2013-17",
   caption = "Size of bubble represents the absolute value of percentage point
-    change in labor force participation rate.<br><br>
+    change in labor force participation rate.
+    <br><br>
     Source: Chicago Metropolitan Agency for Planning analysis of American
     Community Survey data, five-year estimates, 2006-10 and 2013-17."
 )
@@ -307,7 +303,7 @@ p <- ggplot(data = df,
 
 # Create final plot
 finalize_plot(
-  p,
+  plot = p,
   title = "Median household income in select metropolitan statistical areas, 2016",
   caption = "Source: Chicago Metropolitan Agency for Planning analysis of U.S.
     Census Bureau data."
@@ -383,7 +379,7 @@ p <- ggplot(data = df,
 
 # Create final plot
 finalize_plot(
-  p,
+  plot = p,
   title = "Average self-response rates in Chicago region census tracts by
     majority race and ethnicity",
   caption = "Note: These figures are weighted averages based on tract-level
@@ -457,7 +453,7 @@ p <- ggplot(data = df, aes(x = YEAR, y = PCT_NONSOV, fill = MODE)) +
 
 # Create final plot
 finalize_plot(
-  p,
+  plot = p,
   title = "Percentage of trips to work via non-single occupancy vehicle
     (non-SOV) modes, 2009-2018",
   caption = "Source: CMAP analysis of American Community Survey (ACS) data
@@ -488,7 +484,7 @@ Some smaller formatting choices to pay attention to:
 
 - Similar to graphs above which needed special formatting on their axis labels, `ggplot2::scale_x_time()` is used to manage the range, breaks, and labels of the x-axis, specifically when that axis represents time. 
 
-- `lubridate::hm()` converts strings into time period objects. Lubridate is a very useful package if you need to manage dates and times. Learn more about it [here](https://r4ds.had.co.nz/dates-and-times.html).
+- `lubridate::hm()` converts strings into time period objects. Lubridate is a very useful package if you need to manage dates and times. Learn more about it in [*R for Data Science*](https://r4ds.had.co.nz/dates-and-times.html).
 
 
 #### Example code
@@ -532,7 +528,9 @@ p <- ggplot(data = df, mapping = aes(x = hours, y = value)) +
   theme_cmap(
     hline = 0,  # Add origin line at 0 for aesthetic reasons
     gridlines = "hv",  # Show horizontal and vertical gridlines
-    strip.text = element_text( # strip.text is an optional ... argument that can be added to theme_cmap()
+    
+    # Supply an optional "..." argument passed to ggplot2::theme()
+    strip.text = element_text(
       hjust = 0.5  # Center facet labels at axis midpoint
     )
   ) +
@@ -551,13 +549,15 @@ p <- ggplot(data = df, mapping = aes(x = hours, y = value)) +
   
 # Create  final plot
 finalize_plot(
-  p,
+  plot = p,
   title = "Modeled vs. observed tour departure and return times by purpose in
     CMAP's Activity-Based Model",
   caption = "Note: A tour is a chain of trips that begin at and return to the
     same location. Frequencies are given in half-hour intervals.
     <br><br>
-    Modeled source: CMAP activity-based model, 2010 scenario.<br><br>Observed source: Travel Tracker Survey, 2007-2008."
+    Modeled source: CMAP activity-based model, 2010 scenario.
+    <br><br>
+    Observed source: Travel Tracker Survey, 2007-2008."
 )
 ```
 
@@ -613,9 +613,8 @@ p <- df %>%
 
 # Create final plot
 finalize_plot(
-  p,
-  # use HTML tags to customize breaks in title, caption
-  title = "Regional emissions<br>by sector, 2015",
+  plot = p,
+  title = "Regional emissions by sector, 2015",
   caption = "Source: Chicago Metropolitan Agency for Planning.",
   caption_valign = "top")
 ```
@@ -677,12 +676,11 @@ p <- ggplot(data = df, mapping = aes(x = YEAR, y = MED_HH_INC, color = RACE_ETH)
 
 # Create final plot
 finalize_plot(
-  p,
+  plot = p,
   title = "Median household income by race and ethnicity, 2006-2019, in 2016
     inflation-adjusted dollars",
   caption = "Source: CMAP analysis of American Community Survey data, 1-year
-    estimates.",
-  caption_valign = "top"
+    estimates."
 )
 ```
 
