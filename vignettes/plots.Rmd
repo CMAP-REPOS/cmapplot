@@ -147,7 +147,7 @@ q
 
 ### Applying CMAP default aesthetics
 
-Every ggplot2 "geom" has default aesthetics that cannot be modified by a ggplot2 theme (and therefore, cannot be modified by `theme_cmap()`). Notice, for example, that the text drawn in the plot via `geom_text_lastonly()` and `geom_recessions()` still appears in Arial (R's default font), although the legend and axis fonts appear in Calibri/Whitney. This is automatically corrected in `finalize_plot()`. However, if you'd like to see these impacts at this stage, you can override ggplot2's default aesthetics for line and text geoms with CMAP defaults via `apply_cmap_default_aes()`.
+Every ggplot2 "geom" has default aesthetics that cannot be modified by a ggplot2 theme (and therefore, cannot be modified by `theme_cmap()`). Notice, for example, that the text drawn in the plot via `geom_text_lastonly()` and `geom_recessions()` still appears in Arial (R's default font), although the legend and axis fonts appear in Whitney. This is automatically corrected in `finalize_plot()`. However, if you'd like to see these impacts at this stage, you can override ggplot2's default aesthetics for line and text geoms with CMAP defaults via `apply_cmap_default_aes()`.
 
 ```{r aes}
 apply_cmap_default_aes()
