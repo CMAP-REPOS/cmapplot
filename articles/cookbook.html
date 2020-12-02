@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -112,7 +112,7 @@
 <a href="#line-graph" class="anchor"></a>Line graph</h2>
 <p>Line graphs are useful for showing change over time, and are well-suited for combination with <code><a href="../reference/geom_text_lastonly.html">geom_text_lastonly()</a></code> and <code><a href="../reference/geom_recessions.html">geom_recessions()</a></code> custom geoms. This particular plot also demonstrates the utility of a few other functions from the tidyverse that are quite useful when working with <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot2::ggplot()</a></code>:</p>
 <ul>
-<li><p><code><a href="https://forcats.tidyverse.org/reference/fct_reorder.html">forcats::fct_reorder()</a></code> and <code><a href="https://forcats.tidyverse.org/reference/fct_reorder.html">forcats::fct_reorder2()</a></code> are useful to automatically order of factors within <code>mapping</code>, which establishes legend order. (See also <a href="https://r4ds.had.co.nz/factors.html#modifying-factor-order">the relevant R4DS chapter</a>.)</p></li>
+<li><p><code><a href="https://forcats.tidyverse.org/reference/fct_reorder.html">forcats::fct_reorder()</a></code> and <code><a href="https://forcats.tidyverse.org/reference/fct_reorder.html">forcats::fct_reorder2()</a></code> are useful to automatically order of factors within <code>mapping</code>, which establishes legend order. (See also <a href="https://r4ds.had.co.nz/factors.html#modifying-factor-order">the Factors chapter of <em>R for Data Science</em></a>.)</p></li>
 <li><p>functions from the <code>scales</code> package, such as <code><a href="https://scales.r-lib.org//reference/label_percent.html">scales::percent()</a></code> and <code><a href="https://scales.r-lib.org//reference/label_percent.html">scales::label_percent()</a></code>, which reformat numbers into attractive formats.</p></li>
 <li><p>ggplot2 scale functions, such as <code><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">ggplot2::scale_x_continuous()</a></code>, which allow for control over the extent and breaks of each axis.</p></li>
 </ul>
@@ -163,9 +163,10 @@
 
 <span class="co"># Create final plot</span>
 <span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>
-  <span class="va">p</span>,
+  plot <span class="op">=</span> <span class="va">p</span>,
   title <span class="op">=</span> <span class="st">"Cumulative growth in real gross regional product, 2001-19"</span>,
-  caption <span class="op">=</span> <span class="st">"Note: Index year 2001.&lt;br&gt;&lt;br&gt;
+  caption <span class="op">=</span> <span class="st">"Note: Index year 2001.
+    &lt;br&gt;&lt;br&gt;
     Source: Chicago Metropolitan Agency for Planning analysis of U.S. Bureau
     of Economic Analysis and Economic Modeling Specialists International data
     (Emsi 2020.4)."</span>,
@@ -231,16 +232,11 @@
 
 <span class="co"># Create final plot</span>
 <span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>
-  <span class="va">p</span>,
+  plot <span class="op">=</span> <span class="va">p</span>,
   title <span class="op">=</span> <span class="st">"Annual unlinked passenger trips on Regional Transportation Authority
     systems over time, by service board (in millions)."</span>,
   caption <span class="op">=</span> <span class="st">"Source: CMAP analysis of RTA data."</span><span class="op">)</span></pre></div>
 <p><img src="cookbook_files/figure-html/area-1.png" width="100%" style="display: block; margin: auto;"></p>
-<!--#### Original graphic
-
-<img src="" width="100%" style="display: block; margin: auto;"/>
-
-[Source]()-->
 </div>
 </div>
 <div id="scatterplot" class="section level2">
@@ -309,12 +305,13 @@
 
 <span class="co"># Create final plot</span>
 <span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>
-  <span class="va">p</span>,
+  plot <span class="op">=</span> <span class="va">p</span>,
   title <span class="op">=</span> <span class="st">"Changes in population, size of labor force, and labor force
     participation rate among prime working age residents (ages 25-54), Chicago
     and select Metropolitan Statistical Areas, 2006-10 to 2013-17"</span>,
   caption <span class="op">=</span> <span class="st">"Size of bubble represents the absolute value of percentage point
-    change in labor force participation rate.&lt;br&gt;&lt;br&gt;
+    change in labor force participation rate.
+    &lt;br&gt;&lt;br&gt;
     Source: Chicago Metropolitan Agency for Planning analysis of American
     Community Survey data, five-year estimates, 2006-10 and 2013-17."</span>
 <span class="op">)</span></pre></div>
@@ -391,7 +388,7 @@
 
 <span class="co"># Create final plot</span>
 <span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>
-  <span class="va">p</span>,
+  plot <span class="op">=</span> <span class="va">p</span>,
   title <span class="op">=</span> <span class="st">"Median household income in select metropolitan statistical areas, 2016"</span>,
   caption <span class="op">=</span> <span class="st">"Source: Chicago Metropolitan Agency for Planning analysis of U.S.
     Census Bureau data."</span>
@@ -466,7 +463,7 @@
 
 <span class="co"># Create final plot</span>
 <span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>
-  <span class="va">p</span>,
+  plot <span class="op">=</span> <span class="va">p</span>,
   title <span class="op">=</span> <span class="st">"Average self-response rates in Chicago region census tracts by
     majority race and ethnicity"</span>,
   caption <span class="op">=</span> <span class="st">"Note: These figures are weighted averages based on tract-level
@@ -541,7 +538,7 @@
 
 <span class="co"># Create final plot</span>
 <span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>
-  <span class="va">p</span>,
+  plot <span class="op">=</span> <span class="va">p</span>,
   title <span class="op">=</span> <span class="st">"Percentage of trips to work via non-single occupancy vehicle
     (non-SOV) modes, 2009-2018"</span>,
   caption <span class="op">=</span> <span class="st">"Source: CMAP analysis of American Community Survey (ACS) data
@@ -569,7 +566,7 @@
 <ul>
 <li><p><code><a href="https://dplyr.tidyverse.org/reference/recode.html">dplyr::recode_factor()</a></code> changes the column labels to “Departure” and “Return” for clarity. <code><a href="https://forcats.tidyverse.org/reference/fct_rev.html">forcats::fct_rev()</a></code> reverses the order in which the factors appear on the graph. Character/text variables can be converted to factors by <code><a href="https://rdrr.io/r/base/factor.html">factor()</a></code> or <code><a href="https://forcats.tidyverse.org/reference/as_factor.html">forcats::as_factor()</a></code> (which use different rules to determine the factor order).</p></li>
 <li><p>Similar to graphs above which needed special formatting on their axis labels, <code><a href="https://ggplot2.tidyverse.org/reference/scale_date.html">ggplot2::scale_x_time()</a></code> is used to manage the range, breaks, and labels of the x-axis, specifically when that axis represents time.</p></li>
-<li><p><code><a href="http://lubridate.tidyverse.org/reference/hms.html">lubridate::hm()</a></code> converts strings into time period objects. Lubridate is a very useful package if you need to manage dates and times. Learn more about it <a href="https://r4ds.had.co.nz/dates-and-times.html">here</a>.</p></li>
+<li><p><code><a href="http://lubridate.tidyverse.org/reference/hms.html">lubridate::hm()</a></code> converts strings into time period objects. Lubridate is a very useful package if you need to manage dates and times. Learn more about it in <a href="https://r4ds.had.co.nz/dates-and-times.html"><em>R for Data Science</em></a>.</p></li>
 </ul>
 <div id="example-code-6" class="section level4">
 <h4 class="hasAnchor">
@@ -613,7 +610,9 @@
   <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>
     hline <span class="op">=</span> <span class="fl">0</span>,  <span class="co"># Add origin line at 0 for aesthetic reasons</span>
     gridlines <span class="op">=</span> <span class="st">"hv"</span>,  <span class="co"># Show horizontal and vertical gridlines</span>
-    strip.text <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span> <span class="co"># strip.text is an optional ... argument that can be added to theme_cmap()</span>
+    
+    <span class="co"># Supply an optional "..." argument passed to ggplot2::theme()</span>
+    strip.text <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>
       hjust <span class="op">=</span> <span class="fl">0.5</span>  <span class="co"># Center facet labels at axis midpoint</span>
     <span class="op">)</span>
   <span class="op">)</span> <span class="op">+</span>
@@ -632,13 +631,15 @@
   
 <span class="co"># Create  final plot</span>
 <span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>
-  <span class="va">p</span>,
+  plot <span class="op">=</span> <span class="va">p</span>,
   title <span class="op">=</span> <span class="st">"Modeled vs. observed tour departure and return times by purpose in
     CMAP's Activity-Based Model"</span>,
   caption <span class="op">=</span> <span class="st">"Note: A tour is a chain of trips that begin at and return to the
     same location. Frequencies are given in half-hour intervals.
     &lt;br&gt;&lt;br&gt;
-    Modeled source: CMAP activity-based model, 2010 scenario.&lt;br&gt;&lt;br&gt;Observed source: Travel Tracker Survey, 2007-2008."</span>
+    Modeled source: CMAP activity-based model, 2010 scenario.
+    &lt;br&gt;&lt;br&gt;
+    Observed source: Travel Tracker Survey, 2007-2008."</span>
 <span class="op">)</span></pre></div>
 <p><img src="cookbook_files/figure-html/histogram-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
@@ -695,9 +696,8 @@
 
 <span class="co"># Create final plot</span>
 <span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>
-  <span class="va">p</span>,
-  <span class="co"># use HTML tags to customize breaks in title, caption</span>
-  title <span class="op">=</span> <span class="st">"Regional emissions&lt;br&gt;by sector, 2015"</span>,
+  plot <span class="op">=</span> <span class="va">p</span>,
+  title <span class="op">=</span> <span class="st">"Regional emissions by sector, 2015"</span>,
   caption <span class="op">=</span> <span class="st">"Source: Chicago Metropolitan Agency for Planning."</span>,
   caption_valign <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span></pre></div>
 <p><img src="cookbook_files/figure-html/donut-1.png" width="100%" style="display: block; margin: auto;"></p>
@@ -760,12 +760,11 @@
 
 <span class="co"># Create final plot</span>
 <span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>
-  <span class="va">p</span>,
+  plot <span class="op">=</span> <span class="va">p</span>,
   title <span class="op">=</span> <span class="st">"Median household income by race and ethnicity, 2006-2019, in 2016
     inflation-adjusted dollars"</span>,
   caption <span class="op">=</span> <span class="st">"Source: CMAP analysis of American Community Survey data, 1-year
-    estimates."</span>,
-  caption_valign <span class="op">=</span> <span class="st">"top"</span>
+    estimates."</span>
 <span class="op">)</span></pre></div>
 <p><img src="cookbook_files/figure-html/racepalette-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>

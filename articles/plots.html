@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -225,7 +225,7 @@
 <div id="applying-cmap-default-aesthetics" class="section level3">
 <h3 class="hasAnchor">
 <a href="#applying-cmap-default-aesthetics" class="anchor"></a>Applying CMAP default aesthetics</h3>
-<p>Every ggplot2 “geom” has default aesthetics that cannot be modified by a ggplot2 theme (and therefore, cannot be modified by <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code>). Notice, for example, that the text drawn in the plot via <code><a href="../reference/geom_text_lastonly.html">geom_text_lastonly()</a></code> and <code><a href="../reference/geom_recessions.html">geom_recessions()</a></code> still appears in Arial (R’s default font), although the legend and axis fonts appear in Calibri/Whitney. This is automatically corrected in <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code>. However, if you’d like to see these impacts at this stage, you can override ggplot2’s default aesthetics for line and text geoms with CMAP defaults via <code><a href="../reference/cmap_default_aes.html">apply_cmap_default_aes()</a></code>.</p>
+<p>Every ggplot2 “geom” has default aesthetics that cannot be modified by a ggplot2 theme (and therefore, cannot be modified by <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code>). Notice, for example, that the text drawn in the plot via <code><a href="../reference/geom_text_lastonly.html">geom_text_lastonly()</a></code> and <code><a href="../reference/geom_recessions.html">geom_recessions()</a></code> still appears in Arial (R’s default font), although the legend and axis fonts appear in Whitney. This is automatically corrected in <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code>. However, if you’d like to see these impacts at this stage, you can override ggplot2’s default aesthetics for line and text geoms with CMAP defaults via <code><a href="../reference/cmap_default_aes.html">apply_cmap_default_aes()</a></code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit">
 <span class="fu"><a href="../reference/cmap_default_aes.html">apply_cmap_default_aes</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; Aesthetic defaults overridden in the current session for the following Geoms:</span>
