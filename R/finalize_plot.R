@@ -64,6 +64,7 @@
 #'@importFrom ggpubr get_legend
 #'@importFrom purrr compact
 #'@importFrom stringr str_replace
+#'@importFrom svglite svglite
 #'
 #'@examples
 #' \dontrun{
