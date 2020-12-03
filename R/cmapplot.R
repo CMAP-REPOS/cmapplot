@@ -88,9 +88,9 @@ cmapplot_globals <- list(
 
   ## Base typefaces -- modified later by .onLoad()
   font = list(
-    strong = list(family="Arial", face="bold"),
-    regular = list(family="Arial", face="plain"),
-    light = list(family="Arial", face="plain")
+    strong = list(family = "Arial", face = "bold"),
+    regular = list(family = "Arial", face = "plain"),
+    light = list(family = "Arial", face = "plain")
   ),
   use_whitney = FALSE,
 
@@ -134,14 +134,16 @@ cmapplot_globals <- list(
 )
 
 
-## Use Whitney or Calibri if on Windows -- *must* be done with .onLoad()
+## Update fonts based on system -- *must* be done with .onLoad()
 .onLoad <- function(...) {
-  if (.Platform$OS.type == "windows") {
 
-    # Check for Whitney
-    all_fonts <- sysfonts::font_files()
-    whitney_fonts <- all_fonts[all_fonts$family %in% c("Whitney Medium", "Whitney Book", "Whitney Semibold") & all_fonts$face=="Regular", ]
-    cmapplot_globals$use_whitney = length(whitney_fonts$family) == 3
+  # Check for Whitney
+  all_fonts <- sysfonts::font_files()
+  whitney_fonts <- all_fonts[all_fonts$family %in% c("Whitney Medium", "Whitney Book", "Whitney Semibold") & all_fonts$face=="Regular", ]
+  cmapplot_globals$use_whitney <<- length(whitney_fonts$family) >= 3
+
+  # Font handling for Windows users
+  if (.Platform$OS.type == "windows") {
 
     # Use Whitney if available
     if (cmapplot_globals$use_whitney) {
@@ -154,13 +156,13 @@ cmapplot_globals <- list(
 
       # Update font variables
       cmapplot_globals$font <<- list(
-        strong = list(family = "Whitney Semibold", face="plain"),
-        regular = list(family="Whitney Medium", face="plain"),
-        light = list(family="Whitney Book", face="plain")
+        strong = list(family = "Whitney Semibold", face = "plain"),
+        regular = list(family = "Whitney Medium", face = "plain"),
+        light = list(family = "Whitney Book", face = "plain")
       )
 
+    # Otherwise, use Calibri
     } else {
-      # Otherwise, use Calibri
       packageStartupMessage(
         "WARNING: Whitney is not installed on this PC, so CMAP theme will default to Calibri"
       )
@@ -172,23 +174,43 @@ cmapplot_globals <- list(
 
       # Update font variables
       cmapplot_globals$font <<- list(
-        strong = list(family="Calibri", face="bold"),
-        regular = list(family="Calibri", face="plain"),
-        light = list(family="Calibri Light", face="plain")
+        strong = list(family = "Calibri", face = "bold"),
+        regular = list(family = "Calibri", face = "plain"),
+        light = list(family = "Calibri Light", face = "plain")
       )
     }
 
+  # Font handling for macOS/Linux/Unix
   } else {
-    # If non-Windows machine, stick to Arial
-    packageStartupMessage(
-      "WARNING: CMAP theme will default to Arial on non-Windows platforms"
-    )
+
+    # Use Whitney if available
+    if (cmapplot_globals$use_whitney) {
+      # Add fonts to R
+      grDevices::X11Fonts(
+        `Whitney Medium` = grDevices::X11Font("-*-whitney-medium-%s-*-*-%d-*-*-*-*-*-*-*"),
+        `Whitney Book` = grDevices::X11Font("-*-whitney-book-%s-*-*-%d-*-*-*-*-*-*-*"),
+        `Whitney Semibold` = grDevices::X11Font("-*-whitney-semibold-%s-*-*-%d-*-*-*-*-*-*-*")
+      )
+
+      # Update font variables
+      cmapplot_globals$font <<- list(
+        strong = list(family = "Whitney Semibold", face = "plain"),
+        regular = list(family = "Whitney Medium", face = "plain"),
+        light = list(family = "Whitney Book", face = "plain")
+      )
+
+    # Otherwise, stick to Arial (set prior to .onLoad())
+    } else {
+      packageStartupMessage(
+        "WARNING: Whitney is not installed on this system, so CMAP theme will default to Arial"
+      )
+    }
   }
 
-  # load in CMAP preferred default.aes (can't be done until fonts are specified)
+  # Load CMAP preferred default.aes (can't be done until fonts are specified)
   cmapplot_globals$default_aes_cmap <<- init_cmap_default_aes()
 
-  # cache existing default.aes
+  # Cache existing default.aes
   cmapplot_globals$default_aes_cached <<- fetch_current_default_aes()
 }
 

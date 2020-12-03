@@ -20,6 +20,9 @@
 #'@param text_nudge_x,text_nudge_y Numeric, the amount to shift the labels along
 #'  each axis. Defaults to 0.2 and 0, respectively. Note that these use the x
 #'  and y scales so will need to be adjusted depending on what is being graphed.
+#'  `text_nudge_y` only works when `ymax` is not set to `+Inf`, which is the
+#'  default. Consider setting `ymax` equal to the top of your graph or top
+#'  gridline as an additional argument in `geom_recessions()`.
 #'@param show.legend Logical, whether to render the rectangles in the legend.
 #'  Defaults to \code{FALSE}.
 #'@param rect_aes,text_aes Named list, additional aesthetics to send to the
@@ -171,6 +174,8 @@ geom_recessions <- function(xformat = "numeric",
             xformat = xformat,
             label = label,
             y = ymax + text_nudge_y,
+            # Because ymax is Inf by default, adjustments to this setting
+            #  require manually setting `ymax` in the call to `geom_recessions`
             recess_table = recess_table,
             ...
           ),

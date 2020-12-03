@@ -9,22 +9,22 @@
 cmap_fill_highlight(
   field,
   value,
-  color_value = "#009ccc",
-  color_other = "#9daab3"
+  color_value = "#00b0f0",
+  color_other = "#b0bdcf"
 )
 
 cmap_color_highlight(
   field,
   value,
-  color_value = "#009ccc",
-  color_other = "#9daab3"
+  color_value = "#00b0f0",
+  color_other = "#b0bdcf"
 )
 
 cmap_colour_highlight(
   field,
   value,
-  color_value = "#009ccc",
-  color_other = "#9daab3"
+  color_value = "#00b0f0",
+  color_other = "#b0bdcf"
 )
 }
 \arguments{
@@ -34,9 +34,9 @@ defines the color/fill aesthetic as 'table$field'}
 
 \item{value}{character string or vector, the name of group(s) to highlight}
 
-\item{color_value}{Specify the highlight color(s). Default is #009ccc (blue)}
+\item{color_value}{Specify the highlight color(s). Default is #00b0f0 (blue)}
 
-\item{color_other}{Specify non-highlighted color. Default is #9daab3 (gray)}
+\item{color_other}{Specify non-highlighted color. Default is #b0bdcf (gray)}
 }
 \description{
 Pick the function depending on the aesthetic of your ggplot object (fill or

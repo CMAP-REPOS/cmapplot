@@ -29,11 +29,11 @@ This vignette is a showcase of cmapplot's full capabilities by replicating as cl
 
 Line graphs are useful for showing change over time, and are well-suited for combination with `geom_text_lastonly()` and `geom_recessions()` custom geoms. This particular plot also demonstrates the utility of a few other functions from the tidyverse that are quite useful when working with `ggplot2::ggplot()`:
 
-* `forcats::fct_reorder()` and `forcats::fct_reorder2()` are useful to automatically order of factors within `mapping`, which establishes legend order. (See also [the relevant R4DS chapter](https://r4ds.had.co.nz/factors.html#modifying-factor-order).)
+- `forcats::fct_reorder()` and `forcats::fct_reorder2()` are useful to automatically order of factors within `mapping`, which establishes legend order. (See also [the Factors chapter of *R for Data Science*](https://r4ds.had.co.nz/factors.html#modifying-factor-order).)
 
-* functions from the `scales` package, such as `scales::percent()` and `scales::label_percent()`, which reformat numbers into attractive formats.
+- functions from the `scales` package, such as `scales::percent()` and `scales::label_percent()`, which reformat numbers into attractive formats.
 
-* ggplot2 scale functions, such as `ggplot2::scale_x_continuous()`, which allow for control over the extent and breaks of each axis. 
+- ggplot2 scale functions, such as `ggplot2::scale_x_continuous()`, which allow for control over the extent and breaks of each axis. 
 
 #### Example code
 
@@ -81,9 +81,10 @@ p <- ggplot(
 
 # Create final plot
 finalize_plot(
-  p,
+  plot = p,
   title = "Cumulative growth in real gross regional product, 2001-19",
-  caption = "Note: Index year 2001.<br><br>
+  caption = "Note: Index year 2001.
+    <br><br>
     Source: Chicago Metropolitan Agency for Planning analysis of U.S. Bureau
     of Economic Analysis and Economic Modeling Specialists International data
     (Emsi 2020.4).",
@@ -102,12 +103,12 @@ finalize_plot(
 
 <img src="https://www.dropbox.com/s/xol70o61citlpjj/Cumulative_Growth-01.png?raw=1" width="100%" style="display: block; margin: auto;"/>
 
-<!--[Source]()-->
+[Source](https://www.cmap.illinois.gov/programs/regional-economic-indicators/trends#Real_Gross_Regional_Product_2017) (similar enough, although it hasn't been updated here in some time.)
 
 
 ## Area plot
 
-Area plots are useful for showing changes in composition over time. (See also: stacked bar charts.)
+Area plots are useful for showing changes in composition over time. (See also: [Stacked bar chart].)
 
 #### Example code
 
@@ -148,17 +149,11 @@ p <- ggplot(data = df, mapping = aes(x = year, y = ridership, fill = system)) +
 
 # Create final plot
 finalize_plot(
-  p,
+  plot = p,
   title = "Annual unlinked passenger trips on Regional Transportation Authority
     systems over time, by service board (in millions).",
   caption = "Source: CMAP analysis of RTA data.")
 ```
-
-<!--#### Original graphic
-
-<img src="" width="100%" style="display: block; margin: auto;"/>
-
-[Source]()-->
 
 
 ## Scatterplot
@@ -226,12 +221,13 @@ p <- ggplot(data = df, mapping = aes(x = TOT_POP_DIFF, y = LF_POP_DIFF)) +
 
 # Create final plot
 finalize_plot(
-  p,
+  plot = p,
   title = "Changes in population, size of labor force, and labor force
     participation rate among prime working age residents (ages 25-54), Chicago
     and select Metropolitan Statistical Areas, 2006-10 to 2013-17",
   caption = "Size of bubble represents the absolute value of percentage point
-    change in labor force participation rate.<br><br>
+    change in labor force participation rate.
+    <br><br>
     Source: Chicago Metropolitan Agency for Planning analysis of American
     Community Survey data, five-year estimates, 2006-10 and 2013-17."
 )
@@ -307,7 +303,7 @@ p <- ggplot(data = df,
 
 # Create final plot
 finalize_plot(
-  p,
+  plot = p,
   title = "Median household income in select metropolitan statistical areas, 2016",
   caption = "Source: Chicago Metropolitan Agency for Planning analysis of U.S.
     Census Bureau data."
@@ -345,8 +341,7 @@ df <- tibble(
 p <- ggplot(data = df,
             mapping = aes(
               x = reorder(RACE, -RESPONSE), # Order race by decreasing response rate
-              y = RESPONSE, fill = YEAR, 
-              label = LABEL # note that this label definition is implicitly referenced by `geom_text()` (below)
+              y = RESPONSE, fill = YEAR
             )) +
   
   # Add gap between bars in same cluster
@@ -358,7 +353,9 @@ p <- ggplot(data = df,
   
   # Add and format value labels for each bar on the graph
   geom_text(
-    mapping = aes(y = RESPONSE + .025),  # Shift upward to eliminate overlap
+    mapping = aes(
+      label = LABEL,
+      y = RESPONSE + .025),  # Shift upward to eliminate overlap
     position = position_dodge(width = 0.7),  # Match geom_col's width
     hjust = .5  # Center label (0 = left aligned, 1 = right aligned)
   ) +
@@ -382,7 +379,7 @@ p <- ggplot(data = df,
 
 # Create final plot
 finalize_plot(
-  p,
+  plot = p,
   title = "Average self-response rates in Chicago region census tracts by
     majority race and ethnicity",
   caption = "Note: These figures are weighted averages based on tract-level
@@ -456,7 +453,7 @@ p <- ggplot(data = df, aes(x = YEAR, y = PCT_NONSOV, fill = MODE)) +
 
 # Create final plot
 finalize_plot(
-  p,
+  plot = p,
   title = "Percentage of trips to work via non-single occupancy vehicle
     (non-SOV) modes, 2009-2018",
   caption = "Source: CMAP analysis of American Community Survey (ACS) data
@@ -475,21 +472,94 @@ finalize_plot(
 [Source](https://www.cmap.illinois.gov/2050/indicators/non-single-occupancy-modes)
 
 
-## Histogram
+## Faceted histograms
 
-Intro text
+While statistics such as mean or median are useful for summarizing, they just scratch the surface of trends happening within a large, diverse dataset. Histograms are great for visualizing the distribution of a metric across a large sample. This particular example shows the distribution of tour beginnings and endings over the continuous variable of time. However, the continuous variable has already been made discrete by binning time in half-hour increments and summing the tours in each bin. In cases like this, `geom_col()` is the geom that makes the most sense. If your variable comes in a true continuous form, `geom_histogram()` is appropriate, and allows flexibility for bin sizes. If your variable is discrete/categorical and has not been summarized, `geom_bar()` is the best choice.
+
+To make histograms even more interesting, split your data up by important categories and visualize them side-by-side to understand how distributions vary for different groups. `facet_grid()` is used here because comparisons are being made across the values of two discrete variables. If you want to split up your graph by only one variable, `facet_wrap()` will do. 
+
+Some smaller formatting choices to pay attention to:
+
+- `dplyr::recode_factor()` changes the column labels to "Departure" and "Return" for clarity. `forcats::fct_rev()` reverses the order in which the factors appear on the graph. Character/text variables can be converted to factors by `factor()` or `forcats::as_factor()` (which use different rules to determine the factor order).
+
+- Similar to graphs above which needed special formatting on their axis labels, `ggplot2::scale_x_time()` is used to manage the range, breaks, and labels of the x-axis, specifically when that axis represents time. 
+
+- `lubridate::hm()` converts strings into time period objects. Lubridate is a very useful package if you need to manage dates and times. Learn more about it in [*R for Data Science*](https://r4ds.had.co.nz/dates-and-times.html).
+
 
 #### Example code
 
-```{r histogram, message=FALSE}
+```{r histogram, message=FALSE, warning=FALSE}
+# Get & format example dataset from ABM validation report GitHub repository
+df <- read_csv("https://raw.githubusercontent.com/CMAP-REPOS/cmap_abm_report/master/data/csv37_tours_tod.csv") %>%
+  filter(cat != "all") %>%
+  mutate(
+    purpose = fct_rev(recode_factor(factor(cat),
+                                    `work` = "Work",
+                                    `school` = "School",
+                                    .default = "Other Purposes",
+                                    .ordered = TRUE)),
+    dep_arr = recode_factor(factor(subgroup),
+                            `Model-Depart` = "Departure",
+                            `Survey-Depart` = "Departure",
+                            `Model-Arrive` = "Return",
+                            `Survey-Arrive` = "Return",
+                            .ordered = TRUE),
+    obs_mod = recode_factor(factor(subgroup),
+                            `Model-Depart` = "Modeled",
+                            `Model-Arrive` = "Modeled",
+                            `Survey-Depart` = "Observed",
+                            `Survey-Arrive` = "Observed",
+                            .ordered = TRUE)
+  )
 
+# Create faceted histograms
+p <- ggplot(data = df, mapping = aes(x = hours, y = value)) +
+  
+  # Add histogram bars
+  geom_col(  # Or geom_histogram() if data is not already grouped
+    mapping = aes(fill = purpose)  # Color bars by tour purpose
+  ) +
+  
+  # Facet by departure/arrival and modeled/observed
+  facet_grid(rows = vars(obs_mod), cols = vars(dep_arr)) +
+  
+  # Apply CMAP theme and color palette
+  theme_cmap(
+    hline = 0,  # Add origin line at 0 for aesthetic reasons
+    gridlines = "hv",  # Show horizontal and vertical gridlines
+    
+    # Supply an optional "..." argument passed to ggplot2::theme()
+    strip.text = element_text(
+      hjust = 0.5  # Center facet labels at axis midpoint
+    )
+  ) +
+  cmap_fill_discrete("friday", reverse = TRUE) +
+  
+  # Adjust axis scales/labels
+  scale_y_continuous(labels = scales::label_comma()) +
+  scale_x_time(
+    limits = lubridate::hm(c("05:00", "22:00")),
+    breaks = lubridate::hm(c("06:00", "09:00", "12:00", "15:00", "18:00", "21:00")),
+    labels = c("6a", "9a", "12p", "3p", "6p", "9p")
+  ) +
+  
+  # Reverse legend order
+  guides(fill = guide_legend(reverse = TRUE))
+  
+# Create  final plot
+finalize_plot(
+  plot = p,
+  title = "Modeled vs. observed tour departure and return times by purpose in
+    CMAP's Activity-Based Model",
+  caption = "Note: A tour is a chain of trips that begin at and return to the
+    same location. Frequencies are given in half-hour intervals.
+    <br><br>
+    Modeled source: CMAP activity-based model, 2010 scenario.
+    <br><br>
+    Observed source: Travel Tracker Survey, 2007-2008."
+)
 ```
-
-<!--#### Original graphic
-
-<img src="" width="100%" style="display: block; margin: auto;"/>
-
-[Source]()-->
 
 
 ## Donut chart (or pie chart)
@@ -543,9 +613,8 @@ p <- df %>%
 
 # Create final plot
 finalize_plot(
-  p,
-  # use HTML tags to customize breaks in title, caption
-  title = "Regional emissions<br>by sector, 2015",
+  plot = p,
+  title = "Regional emissions by sector, 2015",
   caption = "Source: Chicago Metropolitan Agency for Planning.",
   caption_valign = "top")
 ```
@@ -555,23 +624,6 @@ finalize_plot(
 <img src="https://www.cmap.illinois.gov/documents/10180/1132711/PU20-0000+covid+climate_regional+emissions+by+sector.jpg" width="100%" style="display: block; margin: auto;"/>
 
 [Source](https://www.cmap.illinois.gov/updates/all/-/asset_publisher/UIMfSLnFfMB6/content/cmap-estimates-show-improved-regional-air-quality-due-to-recent-transportation-shifts)
-
-
-## Faceted chart
-
-Intro text
-
-#### Example code
-
-```{r facet, message=FALSE}
-
-```
-
-<!--#### Original graphic
-
-<img src="" width="100%" style="display: block; margin: auto;"/>
-
-[Source]()-->
 
 
 ## Race and ethnicity time series line graph
@@ -589,11 +641,11 @@ df <- read_csv("https://raw.githubusercontent.com/CMAP-REPOS/ONTO2050-indicators
                names_prefix = "MED_HH_INC_",
                values_to = "MED_HH_INC") %>%
   mutate(RACE_ETH = recode(RACE_ETH,
-                        "ALL" = "All",
-                        "ASIAN" = "Asian",
-                        "BLACK" = "Black",
-                        "HISPANIC" = "Hispanic",
-                        "WHITE" = "White (non-Hispanic)"))
+                           "ALL" = "All",
+                           "ASIAN" = "Asian",
+                           "BLACK" = "Black",
+                           "HISPANIC" = "Hispanic",
+                           "WHITE" = "White (non-Hispanic)"))
 
 
 # Create line graph with race/ethnicity palette
@@ -610,7 +662,7 @@ p <- ggplot(data = df, mapping = aes(x = YEAR, y = MED_HH_INC, color = RACE_ETH)
   # Manually set axis limits and format y-axis labels as dollars
   scale_x_continuous(limits = c(2005, 2020)) +
   scale_y_continuous(limits = c(0, 100000),
-                     n.breaks = 6,
+                     breaks = seq(from = 0, to = 100000, by = 10000),
                      labels = scales::label_dollar()) +
 
   # Apply CMAP theme and apply race/ethnicity palette
@@ -624,12 +676,11 @@ p <- ggplot(data = df, mapping = aes(x = YEAR, y = MED_HH_INC, color = RACE_ETH)
 
 # Create final plot
 finalize_plot(
-  p,
+  plot = p,
   title = "Median household income by race and ethnicity, 2006-2019, in 2016
     inflation-adjusted dollars",
   caption = "Source: CMAP analysis of American Community Survey data, 1-year
-    estimates.",
-  caption_valign = "top"
+    estimates."
 )
 ```
 
