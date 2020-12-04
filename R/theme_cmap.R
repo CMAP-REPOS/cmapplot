@@ -31,6 +31,12 @@
 #'@param axislines Char, the axis lines to be displayed on the chart. Acceptable
 #'  values are "x" (x axis only), "y" (y axis only), "xy" (both axes), and
 #'  "none" (neither, the default).
+#'@param axisticks Char, the axis ticks to be displayed on the chart. Acceptable
+#'  values are "x" (x axis only), "y" (y axis only), "xy" (both axes), and
+#'  "none" (neither, the default). Because \code{ggplot2} defaults to moderately
+#'  expanding the range of displayed data, this may need to be accompanied by a
+#'  call to \code{expand = c(0, 0)} within an appropriate \code{scale_*_*}
+#'  argument in order for ticks to appear to touch the outermost gridline(s).
 #'@param show.legend Bool, \code{TRUE} is the default. \code{FALSE} to hide the
 #'  legend.
 #'@param legend.max.columns Integer, the maximum number of columns in the
@@ -80,6 +86,7 @@ theme_cmap <- function(
   hline = NULL, vline = NULL,
   gridlines = c("h", "v", "hv", "none"),
   axislines = c("none", "x", "y", "xy"),
+  axisticks = c("none","x","y","xy"),
   show.legend = TRUE,
   legend.max.columns = NULL,
   debug = FALSE,
@@ -101,6 +108,7 @@ theme_cmap <- function(
   # Validate parameters, throw error if invalid
   gridlines <- match.arg(gridlines)
   axislines <- match.arg(axislines)
+  axisticks <- match.arg(axisticks)
 
   # create blank list of gg objects and theme attributes to return
   obj <- list()
@@ -175,6 +183,26 @@ theme_cmap <- function(
       axis.line.y = ggplot2::element_line(
         size = gg_lwd_convert(consts$lwd_gridline),
         color = cmapplot_globals$colors$blackish)
+    ))
+  }
+
+  # Introduce x axis ticks if specified
+  if (grepl("x", axisticks)) {
+    add_to_obj(ggplot2::theme(
+      axis.ticks.x = ggplot2::element_line(
+        size = gg_lwd_convert(consts$lwd_gridline),
+        color = cmapplot_globals$colors$blackish),
+      axis.ticks.length.x = unit(consts$length_ticks,"bigpts")
+    ))
+  }
+
+  # Introduce y axis ticks if specified
+  if (grepl("y", axisticks)) {
+    add_to_obj(ggplot2::theme(
+      axis.ticks.y = ggplot2::element_line(
+        size = gg_lwd_convert(consts$lwd_gridline),
+        color = cmapplot_globals$colors$blackish),
+      axis.ticks.length.y = unit(consts$length_ticks,"bigpts")
     ))
   }
 
