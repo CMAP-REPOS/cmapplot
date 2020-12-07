@@ -94,6 +94,8 @@ theme_cmap <- function(
   ...
 ) {
 
+  # Initialization --------------------------------------------------
+
   # Generate an explicit message to user if Whitney font family is not available
   if (!(cmapplot_globals$use_whitney)) {
     message("'Whitney' font family not found. Using a substitute...")
@@ -110,111 +112,135 @@ theme_cmap <- function(
   axislines <- match.arg(axislines)
   axisticks <- match.arg(axisticks)
 
-  # create blank list of gg objects and theme attributes to return
-  obj <- list()
-  attr <- list()
+  # Introduce elements based on args ---------------------------------
 
-  # create a helper function to more easily add items to the obj list
+  # create blank list of gg objects to be returned by this function
+  obj <- list()
+
+  # Create a helper function to more easily add items to the obj list
+  # This is just a shorthand for:
+  # obj <- append(obj, [item] )
   add_to_obj <- function(newitem){
     obj <<- append(get("obj", parent.frame()), list(newitem))
     NULL
   }
 
-  # introduce x label, if specified
+  # create a blank list of ggplot2theme elements to return in a
+  # theme call at the end of the function. Items in this list should
+  # be named with valid ggplot2::theme() argument names.
+  attr <- list()
+
+  # x label, if specified
   if(!is.null(xlab)){
-    attr[["axis.title.x"]] <- element_text(margin = margin(t = consts$half_line / 2), vjust = 1, inherit.blank = FALSE)
+    attr[["axis.title.x"]] <- ggplot2::element_text(
+      margin = ggplot2::margin(t = consts$half_line / 2),
+      vjust = 1,
+      inherit.blank = FALSE)
+
     add_to_obj(ggplot2::xlab(xlab))
   }
 
-  # introduce y label, if specified
+  # y label, if specified
   if(!is.null(ylab)){
-    attr[["axis.title.y"]] <- element_text(angle = 90, margin = margin(r = consts$half_line / 2), vjust = 1, inherit.blank = FALSE)
+    attr[["axis.title.y"]] <- ggplot2::element_text(
+      angle = 90,
+      margin = ggplot2::margin(r = consts$half_line / 2),
+      vjust = 1,
+      inherit.blank = FALSE)
+
     add_to_obj(ggplot2::ylab(ylab))
   }
 
-  # Add x origin line, if specified
+  # x origin line, if specified
   if(!is.null(hline)){
-    add_to_obj(ggplot2::geom_hline(yintercept = hline,
-                                   size = gg_lwd_convert(consts$lwd_strongline),
-                                   color = cmapplot_globals$colors$blackish))
+    add_to_obj(ggplot2::geom_hline(
+      yintercept = hline,
+      size = gg_lwd_convert(consts$lwd_strongline),
+      color = cmapplot_globals$colors$blackish))
   }
 
-  # Add y origin line, if specified
+  # y origin line, if specified
   if(!is.null(vline)){
-    add_to_obj(ggplot2::geom_vline(xintercept = vline,
-                                   size = gg_lwd_convert(consts$lwd_strongline),
-                                   color = cmapplot_globals$colors$blackish))
+    add_to_obj(ggplot2::geom_vline(
+      xintercept = vline,
+      size = gg_lwd_convert(consts$lwd_strongline),
+      color = cmapplot_globals$colors$blackish))
   }
 
-  # only edit legend columns if value is added
+  # set legend column max, if specified
   if (!is.null(legend.max.columns)){
-      # set maximum number of columns for legend based on either "fill" or "col" to reflect different geom structures
-      add_to_obj(ggplot2::guides(fill = guide_legend(ncol = legend.max.columns),
-                      col  = guide_legend(ncol = legend.max.columns)
-                      )
-                 )
+      # set for legend based on either "fill" or "col" to reflect different geom structures
+      add_to_obj(ggplot2::guides(
+        fill = guide_legend(ncol = legend.max.columns),
+        col  = guide_legend(ncol = legend.max.columns)))
   }
-
-  # add base theme to object list
-  add_to_obj(theme_cmap_base(consts = consts, debug = debug))
 
   # hide legend if specified
   if (!show.legend){
     attr[["legend.position"]] <- "none"
   }
 
-  # Introduce horizontal gridlines if specified
+  # horizontal gridlines, if specified
   if (grepl("h", gridlines)) {
     attr[["panel.grid.major.y"]] <- ggplot2::element_line(
       size = gg_lwd_convert(consts$lwd_gridline),
       color = cmapplot_globals$colors$blackish)
   }
 
-  # Introduce vertical gridlines if specified
+  # vertical gridlines, if specified
   if (grepl("v", gridlines)) {
     attr[["panel.grid.major.x"]] <- ggplot2::element_line(
       size = gg_lwd_convert(consts$lwd_gridline),
       color = cmapplot_globals$colors$blackish)
   }
 
-  # Introduce x axis line if specified
+  # x axis line, if specified
   if (grepl("x", axislines)) {
     attr[["axis.line.x"]] <- ggplot2::element_line(
       size = gg_lwd_convert(consts$lwd_gridline),
       color = cmapplot_globals$colors$blackish)
   }
 
-  # Introduce x axis line if specified
+  # y axis line, if specified
   if (grepl("y", axislines)) {
     attr[["axis.line.y"]] <- ggplot2::element_line(
       size = gg_lwd_convert(consts$lwd_gridline),
       color = cmapplot_globals$colors$blackish)
   }
 
-  # Introduce x axis ticks if specified
+  # x axis ticks, if specified
   if (grepl("x", axisticks)) {
     attr[["axis.ticks.x"]] <- ggplot2::element_line(
       size = gg_lwd_convert(consts$lwd_gridline),
       color = cmapplot_globals$colors$blackish)
+
     attr[["axis.ticks.length.x"]] <- unit(consts$length_ticks,"bigpts")
   }
 
-  # Introduce y axis ticks if specified
+  # y axis ticks, if specified
   if (grepl("y", axisticks)) {
     attr[["axis.ticks.y"]] <- ggplot2::element_line(
       size = gg_lwd_convert(consts$lwd_gridline),
       color = cmapplot_globals$colors$blackish)
+
     attr[["axis.ticks.length.y"]] <- unit(consts$length_ticks,"bigpts")
   }
 
-  # add these theme elements to the list (if any new attributes added)
+  # Construct theme elements -----------------------------------------
+
+  # add base theme to object list
+  add_to_obj(theme_cmap_base(consts = consts, debug = debug))
+
+  # add `attr` theme elements to the list in a new `ggplot2::theme()` object,
+  # so that they override `theme_cmap_base()` if needed
   if(length(attr) > 0) {
-  add_to_obj(list(do.call(theme, attr)))
+    add_to_obj(do.call(theme, attr))
   }
 
-  # add any extra args to theme attributes (if any additional arguments present)
+  # add extra theme arguments to a new `ggplot2::theme()` object,
+  # so that they override any previous theme arguments
   if(length(list(...)) > 0) {
-  add_to_obj(list(do.call(theme, list(...))))
+    add_to_obj(do.call(theme, list(...)))
   }
 
   # return final list

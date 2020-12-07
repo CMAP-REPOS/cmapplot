@@ -101,7 +101,7 @@ cmapplot_globals <- list(
     lwd_strongline = 1,
     lwd_plotline = 3,
     lwd_topline = 2,
-    length_ticks = 10,
+    length_ticks = 7,
     margin_topline_t = 5,
     margin_title_t = 5,
     margin_title_b = 5,
