@@ -114,15 +114,11 @@ theme_cmap <- function(
   obj <- list()
   attr <- list()
 
-
   # create a helper function to more easily add items to the obj list
   add_to_obj <- function(newitem){
     obj <<- append(get("obj", parent.frame()), list(newitem))
     NULL
   }
-
-  # add base theme to object list
-  add_to_obj(theme_cmap_base(consts = consts, debug = debug))
 
   # introduce x label, if specified
   if(!is.null(xlab)){
@@ -150,62 +146,6 @@ theme_cmap <- function(
                                    color = cmapplot_globals$colors$blackish))
   }
 
-  # Introduce horizontal gridlines if specified
-  if (grepl("h", gridlines)) {
-    add_to_obj(ggplot2::theme(
-      panel.grid.major.y = ggplot2::element_line(
-        size = gg_lwd_convert(consts$lwd_gridline),
-        color = cmapplot_globals$colors$blackish)
-    ))
-  }
-
-  # Introduce vertical gridlines if specified
-  if (grepl("v", gridlines)) {
-    add_to_obj(ggplot2::theme(
-      panel.grid.major.x = ggplot2::element_line(
-        size = gg_lwd_convert(consts$lwd_gridline),
-        color = cmapplot_globals$colors$blackish)
-    ))
-  }
-
-  # Introduce x axis line if specified
-  if (grepl("x", axislines)) {
-    add_to_obj(ggplot2::theme(
-      axis.line.x = ggplot2::element_line(
-        size = gg_lwd_convert(consts$lwd_gridline),
-        color = cmapplot_globals$colors$blackish)
-    ))
-  }
-
-  # Introduce y axis line if specified
-  if (grepl("y", axislines)) {
-    add_to_obj(ggplot2::theme(
-      axis.line.y = ggplot2::element_line(
-        size = gg_lwd_convert(consts$lwd_gridline),
-        color = cmapplot_globals$colors$blackish)
-    ))
-  }
-
-  # Introduce x axis ticks if specified
-  if (grepl("x", axisticks)) {
-    add_to_obj(ggplot2::theme(
-      axis.ticks.x = ggplot2::element_line(
-        size = gg_lwd_convert(consts$lwd_gridline),
-        color = cmapplot_globals$colors$blackish),
-      axis.ticks.length.x = unit(consts$length_ticks,"bigpts")
-    ))
-  }
-
-  # Introduce y axis ticks if specified
-  if (grepl("y", axisticks)) {
-    add_to_obj(ggplot2::theme(
-      axis.ticks.y = ggplot2::element_line(
-        size = gg_lwd_convert(consts$lwd_gridline),
-        color = cmapplot_globals$colors$blackish),
-      axis.ticks.length.y = unit(consts$length_ticks,"bigpts")
-    ))
-  }
-
   # only edit legend columns if value is added
   if (!is.null(legend.max.columns)){
       # set maximum number of columns for legend based on either "fill" or "col" to reflect different geom structures
@@ -215,17 +155,70 @@ theme_cmap <- function(
                  )
   }
 
+  # add base theme to object list
+  add_to_obj(theme_cmap_base(consts = consts, debug = debug))
+
   # hide legend if specified
   if (!show.legend){
     attr[["legend.position"]] <- "none"
   }
 
-  # add any extra args to theme attributes
-  attr <- append(attr, list(...))
+  # Introduce horizontal gridlines if specified
+  if (grepl("h", gridlines)) {
+    attr[["panel.grid.major.y"]] <- ggplot2::element_line(
+      size = gg_lwd_convert(consts$lwd_gridline),
+      color = cmapplot_globals$colors$blackish)
+  }
 
-  # construct final list to return
-  append(obj, list(do.call(theme, attr)))
+  # Introduce vertical gridlines if specified
+  if (grepl("v", gridlines)) {
+    attr[["panel.grid.major.x"]] <- ggplot2::element_line(
+      size = gg_lwd_convert(consts$lwd_gridline),
+      color = cmapplot_globals$colors$blackish)
+  }
 
+  # Introduce x axis line if specified
+  if (grepl("x", axislines)) {
+    attr[["axis.line.x"]] <- ggplot2::element_line(
+      size = gg_lwd_convert(consts$lwd_gridline),
+      color = cmapplot_globals$colors$blackish)
+  }
+
+  # Introduce x axis line if specified
+  if (grepl("y", axislines)) {
+    attr[["axis.line.y"]] <- ggplot2::element_line(
+      size = gg_lwd_convert(consts$lwd_gridline),
+      color = cmapplot_globals$colors$blackish)
+  }
+
+  # Introduce x axis ticks if specified
+  if (grepl("x", axisticks)) {
+    attr[["axis.ticks.x"]] <- ggplot2::element_line(
+      size = gg_lwd_convert(consts$lwd_gridline),
+      color = cmapplot_globals$colors$blackish)
+    attr[["axis.ticks.length.x"]] <- unit(consts$length_ticks,"bigpts")
+  }
+
+  # Introduce y axis ticks if specified
+  if (grepl("y", axisticks)) {
+    attr[["axis.ticks.y"]] <- ggplot2::element_line(
+      size = gg_lwd_convert(consts$lwd_gridline),
+      color = cmapplot_globals$colors$blackish)
+    attr[["axis.ticks.length.y"]] <- unit(consts$length_ticks,"bigpts")
+  }
+
+  # add these theme elements to the list (if any new attributes added)
+  if(length(attr) > 0) {
+  add_to_obj(list(do.call(theme, attr)))
+  }
+
+  # add any extra args to theme attributes (if any additional arguments present)
+  if(length(list(...)) > 0) {
+  add_to_obj(list(do.call(theme, list(...))))
+  }
+
+  # return final list
+  return(obj)
 }
 
 
