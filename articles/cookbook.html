@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -119,8 +119,8 @@
 <div id="example-code" class="section level4">
 <h4 class="hasAnchor">
 <a href="#example-code" class="anchor"></a>Example code</h4>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="co"># Get example dataset, and create a relative GRP field</span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Get example dataset, and create a relative GRP field</span>
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="va">peer_grp</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">area</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>indexed <span class="op">=</span> <span class="va">grp</span> <span class="op">/</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/nth.html">first</a></span><span class="op">(</span><span class="va">grp</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span>
@@ -178,7 +178,7 @@
     margin_plot_r <span class="op">=</span> <span class="fl">0</span>,  <span class="co"># Eliminate distance btwn plot and right side of image</span>
     margin_legend_b <span class="op">=</span> <span class="fl">25</span>  <span class="co"># Larger than usual gap between legend and plot</span>
   <span class="op">)</span>
-<span class="op">)</span></pre></div>
+<span class="op">)</span></code></pre></div>
 <p><img src="cookbook_files/figure-html/line-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div id="original-graphic" class="section level4">
@@ -195,8 +195,8 @@
 <div id="example-code-1" class="section level4">
 <h4 class="hasAnchor">
 <a href="#example-code-1" class="anchor"></a>Example code</h4>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="co"># Get &amp; format example dataset</span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Get &amp; format example dataset</span>
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">cmapplot</span><span class="fu">::</span><span class="va"><a href="../reference/transit_ridership.html">transit_ridership</a></span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">ridership</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># Remove entries with no ridership (in this case, </span>
                             <span class="co">#  values before PACE ADA is broken out in the data)</span>
@@ -235,7 +235,7 @@
   plot <span class="op">=</span> <span class="va">p</span>,
   title <span class="op">=</span> <span class="st">"Annual unlinked passenger trips on Regional Transportation Authority
     systems over time, by service board (in millions)."</span>,
-  caption <span class="op">=</span> <span class="st">"Source: CMAP analysis of RTA data."</span><span class="op">)</span></pre></div>
+  caption <span class="op">=</span> <span class="st">"Source: CMAP analysis of RTA data."</span><span class="op">)</span></code></pre></div>
 <p><img src="cookbook_files/figure-html/area-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 </div>
@@ -246,8 +246,8 @@
 <div id="example-code-2" class="section level4">
 <h4 class="hasAnchor">
 <a href="#example-code-2" class="anchor"></a>Example code</h4>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="co"># Create example dataset</span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Create example dataset</span>
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>
   REGION <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Boston"</span>, <span class="st">"Chicago"</span>, <span class="st">"Los Angeles"</span>, <span class="st">"New York"</span>, <span class="st">"Washington, D.C."</span><span class="op">)</span>,
   TOT_POP_DIFF <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">41695</span>, <span class="op">-</span><span class="fl">114387</span>, <span class="fl">110955</span>, <span class="fl">322308</span>, <span class="fl">198931</span><span class="op">)</span>,
@@ -314,7 +314,7 @@
     &lt;br&gt;&lt;br&gt;
     Source: Chicago Metropolitan Agency for Planning analysis of American
     Community Survey data, five-year estimates, 2006-10 and 2013-17."</span>
-<span class="op">)</span></pre></div>
+<span class="op">)</span></code></pre></div>
 <p><img src="cookbook_files/figure-html/scatter-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div id="original-graphic-1" class="section level4">
@@ -331,8 +331,8 @@
 <div id="example-code-3" class="section level4">
 <h4 class="hasAnchor">
 <a href="#example-code-3" class="anchor"></a>Example code</h4>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="co"># Create example dataset</span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Create example dataset</span>
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>
   REGION <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Boston"</span>, <span class="st">"Chicago"</span>, <span class="st">"Los Angeles"</span>, <span class="st">"New York"</span>, <span class="st">"Washington, D.C."</span><span class="op">)</span>,
   MED_HH_INC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">77809</span>, <span class="fl">63327</span>, <span class="fl">62216</span>, <span class="fl">69211</span>, <span class="fl">93804</span><span class="op">)</span>
@@ -392,7 +392,7 @@
   title <span class="op">=</span> <span class="st">"Median household income in select metropolitan statistical areas, 2016"</span>,
   caption <span class="op">=</span> <span class="st">"Source: Chicago Metropolitan Agency for Planning analysis of U.S.
     Census Bureau data."</span>
-<span class="op">)</span></pre></div>
+<span class="op">)</span></code></pre></div>
 <p><img src="cookbook_files/figure-html/highlightbar-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div id="original-graphic-2" class="section level4">
@@ -411,8 +411,8 @@
 <div id="example-code-4" class="section level4">
 <h4 class="hasAnchor">
 <a href="#example-code-4" class="anchor"></a>Example code</h4>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="co"># Create example dataset</span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Create example dataset</span>
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>
   RACE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"White"</span>, <span class="st">"White"</span>, <span class="st">"No majority"</span>, <span class="st">"No majority"</span>, <span class="st">"Asian"</span>, <span class="st">"Asian"</span>, <span class="st">"Hispanic"</span>, <span class="st">"Hispanic"</span>, <span class="st">"Black"</span>, <span class="st">"Black"</span><span class="op">)</span>,
   YEAR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"2010"</span>, <span class="st">"2020"</span>, <span class="st">"2010"</span>, <span class="st">"2020"</span>, <span class="st">"2010"</span>, <span class="st">"2020"</span>, <span class="st">"2010"</span>, <span class="st">"2020"</span>, <span class="st">"2010"</span>, <span class="st">"2020"</span><span class="op">)</span>,
@@ -479,7 +479,7 @@
     <span class="co">#  between sources and notes.</span>
   title_width <span class="op">=</span> <span class="fl">2.4</span>,  <span class="co"># Manually specify title width</span>
   overrides <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>margin_legend_b <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>  <span class="co"># Increase margin below legend</span>
-<span class="op">)</span></pre></div>
+<span class="op">)</span></code></pre></div>
 <p><img src="cookbook_files/figure-html/clusterbar-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div id="original-graphic-3" class="section level4">
@@ -496,8 +496,8 @@
 <div id="example-code-5" class="section level4">
 <h4 class="hasAnchor">
 <a href="#example-code-5" class="anchor"></a>Example code</h4>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="co"># Get &amp; format example dataset from ON TO 2050 indicators GitHub repository</span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Get &amp; format example dataset from ON TO 2050 indicators GitHub repository</span>
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">read_csv</span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/CMAP-REPOS/ONTO2050-indicators/master/non-single-occupancy-modes/non-single-occupancy-modes.csv"</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu">pivot_longer</span><span class="op">(</span>cols <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">starts_with</a></span><span class="op">(</span><span class="st">"PCT_NONSOV"</span><span class="op">)</span>,
@@ -547,7 +547,7 @@
     Note: The Kendall County portion of this data is based on ACS 5-year
     estimates, since 1-year estimates of mode share are not consistently
     available there due to its relatively small population."</span>
-<span class="op">)</span></pre></div>
+<span class="op">)</span></code></pre></div>
 <p><img src="cookbook_files/figure-html/stackbar-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div id="original-graphic-4" class="section level4">
@@ -571,8 +571,8 @@
 <div id="example-code-6" class="section level4">
 <h4 class="hasAnchor">
 <a href="#example-code-6" class="anchor"></a>Example code</h4>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="co"># Get &amp; format example dataset from ABM validation report GitHub repository</span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Get &amp; format example dataset from ABM validation report GitHub repository</span>
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">read_csv</span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/CMAP-REPOS/cmap_abm_report/master/data/csv37_tours_tod.csv"</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">cat</span> <span class="op">!=</span> <span class="st">"all"</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
@@ -640,7 +640,7 @@
     Modeled source: CMAP activity-based model, 2010 scenario.
     &lt;br&gt;&lt;br&gt;
     Observed source: Travel Tracker Survey, 2007-2008."</span>
-<span class="op">)</span></pre></div>
+<span class="op">)</span></code></pre></div>
 <p><img src="cookbook_files/figure-html/histogram-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 </div>
@@ -651,8 +651,8 @@
 <div id="example-code-7" class="section level4">
 <h4 class="hasAnchor">
 <a href="#example-code-7" class="anchor"></a>Example code</h4>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="co"># Create example dataset</span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Create example dataset</span>
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>
   SECTOR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Stationary energy"</span>, <span class="st">"Transportation"</span>, <span class="st">"Waste"</span><span class="op">)</span>,
   EMISSIONS <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">81.9</span>, <span class="fl">34.3</span>, <span class="fl">3.2</span><span class="op">)</span>
@@ -699,7 +699,7 @@
   plot <span class="op">=</span> <span class="va">p</span>,
   title <span class="op">=</span> <span class="st">"Regional emissions by sector, 2015"</span>,
   caption <span class="op">=</span> <span class="st">"Source: Chicago Metropolitan Agency for Planning."</span>,
-  caption_valign <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span></pre></div>
+  caption_valign <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span></code></pre></div>
 <p><img src="cookbook_files/figure-html/donut-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div id="original-graphic-5" class="section level4">
@@ -716,8 +716,8 @@
 <div id="example-code-8" class="section level4">
 <h4 class="hasAnchor">
 <a href="#example-code-8" class="anchor"></a>Example code</h4>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="co"># Get &amp; format example dataset from ON TO 2050 indicators GitHub repository</span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Get &amp; format example dataset from ON TO 2050 indicators GitHub repository</span>
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">read_csv</span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/CMAP-REPOS/ONTO2050-indicators/master/household-income-race-ethnicity/household-income-race-ethnicity.csv"</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu">pivot_longer</span><span class="op">(</span>cols <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">starts_with</a></span><span class="op">(</span><span class="st">"MED_HH_INC"</span><span class="op">)</span>,
@@ -765,7 +765,7 @@
     inflation-adjusted dollars"</span>,
   caption <span class="op">=</span> <span class="st">"Source: CMAP analysis of American Community Survey data, 1-year
     estimates."</span>
-<span class="op">)</span></pre></div>
+<span class="op">)</span></code></pre></div>
 <p><img src="cookbook_files/figure-html/racepalette-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div id="original-graphic-6" class="section level4">

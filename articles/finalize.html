@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -116,11 +116,11 @@
 <a href="#finalizing-a-plot" class="anchor"></a>Finalizing a plot</h3>
 <p>After creating a plot and applying <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code>, use <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code> to complete the implementation of CMAP design standards. You will probably want to set at least the <code>title</code> and <code>caption</code>, although the function will extract them from the ggplot if they were specified.</p>
 <p>As you are preparing the plot, you will likely want to view it within R. Do this by leaving leaving the default <code>mode = "plot"</code> to send the finished plot to the “Plots” tab within RStudio. Windows users may prefer <code>mode = "window"</code>, which draws the plot in a popup window. In both modes, the plot will show up “actual size” (depending on your screen’s resolution) surrounded by a grey canvas.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>plot <span class="op">=</span> <span class="va">p</span>,
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>plot <span class="op">=</span> <span class="va">p</span>,
               title <span class="op">=</span> <span class="st">"Annual unlinked passenger trips (in millions)."</span>,
               caption <span class="op">=</span> <span class="st">"Source: Chicago Metropolitan Agency for Planning
-                analysis of Regional Transportation Authority data."</span><span class="op">)</span></pre></div>
+                analysis of Regional Transportation Authority data."</span><span class="op">)</span></code></pre></div>
 <p><img src="finalize_files/figure-html/finalize1-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div id="exporting-a-plot" class="section level3">
@@ -134,14 +134,14 @@
 <li><p>If a file with the name specified already exists in the specified directory, it will not be overwritten unless the user sets <code>overwrite = TRUE</code>.</p></li>
 <li><p>When naming your exports, you do not need to include the extension (e.g., <code>"my_chart"</code>). <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code> will automatically add the appropriate extension to each of your exported files (e.g., <code>"my_chart.pdf"</code> and <code>"my_chart.png"</code>). This is especially recommended if you’re specifying multiple export modes in the same call.</p></li>
 </ul>
-<!-- The following code block is NOT evaluated, but its source code is displayed in order to demonstrate usage of the mode and filename parameters. --><div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="co"># Finalize and export plot to PNG and PDF</span>
+<!-- The following code block is NOT evaluated, but its source code is displayed in order to demonstrate usage of the mode and filename parameters. --><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Finalize and export plot to PNG and PDF</span>
 <span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>plot <span class="op">=</span> <span class="va">p</span>,
               title <span class="op">=</span> <span class="st">"Annual unlinked passenger trips (in millions)."</span>,
               caption <span class="op">=</span> <span class="st">"Source: Chicago Metropolitan Agency for Planning
                 analysis of Regional Transportation Authority data."</span>,
               mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"png"</span>, <span class="st">"pdf"</span><span class="op">)</span>,
-              filename <span class="op">=</span> <span class="st">"finalized_plot"</span><span class="op">)</span></pre></div>
+              filename <span class="op">=</span> <span class="st">"finalized_plot"</span><span class="op">)</span></code></pre></div>
 <!-- The next code block IS evaluated to generate the graphic, but its source code is hidden because it does not demonstrate usage of the mode or filename parameters. -->
 <p><img src="finalize_files/figure-html/finalize1a-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
@@ -154,33 +154,33 @@
 <h3 class="hasAnchor">
 <a href="#title-and-caption-formatting" class="anchor"></a>Title and caption formatting</h3>
 <p>The title and caption blocks take HTML formatting, so you can manually set line breaks and font formatting.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="co"># A finalized line graph, with text tweaks</span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># A finalized line graph, with text tweaks</span>
 <span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>plot <span class="op">=</span> <span class="va">p</span>,
               title <span class="op">=</span> <span class="st">"Annual &lt;br&gt; unlinked passenger trips &lt;br&gt; (in millions)."</span>,
               caption <span class="op">=</span> <span class="st">"Source: Chicago Metropolitan Agency for Planning
-                analysis of &lt;i&gt;Regional Transportation Authority&lt;/i&gt; data."</span><span class="op">)</span></pre></div>
+                analysis of &lt;i&gt;Regional Transportation Authority&lt;/i&gt; data."</span><span class="op">)</span></code></pre></div>
 <p><img src="finalize_files/figure-html/finalize1b-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div id="using-debug-mode-to-fine-tune-your-plot" class="section level3">
 <h3 class="hasAnchor">
 <a href="#using-debug-mode-to-fine-tune-your-plot" class="anchor"></a>Using debug mode to fine-tune your plot</h3>
 <p>Default values in <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code> attempt to reflect CMAP design standards, but users can also manually adjust various elements of the finalized plot. The easiest way to identify current positions and how they relate to other objects within the finalized plot object is to set <code>debug = TRUE</code>:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="co"># A debugged finalized plot</span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># A debugged finalized plot</span>
 <span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>plot <span class="op">=</span> <span class="va">p</span>,
               title <span class="op">=</span> <span class="st">"Annual unlinked passenger trips (in millions)."</span>,
               caption <span class="op">=</span> <span class="st">"Source: Chicago Metropolitan Agency for Planning
                 analysis of Regional Transportation Authority data."</span>,
-              debug <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></pre></div>
+              debug <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="finalize_files/figure-html/finalize3-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div id="top-level-position-adjustments" class="section level3">
 <h3 class="hasAnchor">
 <a href="#top-level-position-adjustments" class="anchor"></a>Top-level position adjustments</h3>
 <p>In addition to setting the plot’s <code>height</code> and <code>width</code>, <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code> has a number of top-level arguments that impact the final layout. With debug on, we can easily see the effects of various adjustments, such as changing the width of the title and caption (<code>title_width</code>), altering the vertical alignment of the caption (<code>caption_valign</code>), or keeping the legend alignment of the original plot (<code>legend_shift</code>). Note that with <code>legend_shift = FALSE</code>, <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code> does not separate the legend from the plot, as indicated by the debug boxes.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="co"># A debugged and modified finalized plot</span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># A debugged and modified finalized plot</span>
 <span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>plot <span class="op">=</span> <span class="va">p</span>,
               title <span class="op">=</span> <span class="st">"Annual unlinked passenger trips (in millions)."</span>,
               caption <span class="op">=</span> <span class="st">"Source: Chicago Metropolitan Agency for Planning
@@ -188,7 +188,7 @@
               title_width <span class="op">=</span> <span class="fl">1.8</span>,
               caption_valign <span class="op">=</span> <span class="st">"top"</span>,
               legend_shift <span class="op">=</span> <span class="cn">FALSE</span>,
-              debug <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></pre></div>
+              debug <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="finalize_files/figure-html/finalize4-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div id="overriding-plotting-constants" class="section level3">
@@ -196,8 +196,8 @@
 <a href="#overriding-plotting-constants" class="anchor"></a>Overriding plotting constants</h3>
 <p>Any of the attributes defined in <code>cmapplot_globals$consts</code> can be changed by passing a named list to the <code>overrides</code> arguments. For example, the chart below uses the <code>overrides</code> argument to modify the margin below the title (<code>margin_title_b</code>), the margin to the left of the title and the caption (<code>margin_title_l</code>), and the margin above the legend (<code>margin_legend_t</code>).</p>
 <p>The <a href="#many-many-margins">Many, many margins</a> section of this article describes most of these <code>consts</code> visually. To learn more about all possible overrides, see <code><a href="../reference/cmapplot_globals.html">?cmapplot_globals</a></code>.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="co"># A finalized plot with some formatting overrides</span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># A finalized plot with some formatting overrides</span>
 <span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>plot <span class="op">=</span> <span class="va">p</span>,
               title <span class="op">=</span> <span class="st">"Annual unlinked passenger trips (in millions)."</span>,
               caption <span class="op">=</span> <span class="st">"Source: Chicago Metropolitan Agency for Planning
@@ -206,7 +206,7 @@
               debug <span class="op">=</span> <span class="cn">TRUE</span>,
               overrides <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>margin_title_b <span class="op">=</span> <span class="fl">30</span>, 
                                margin_title_l <span class="op">=</span> <span class="fl">10</span>,
-                               margin_legend_t <span class="op">=</span> <span class="fl">15</span><span class="op">)</span><span class="op">)</span></pre></div>
+                               margin_legend_t <span class="op">=</span> <span class="fl">15</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="finalize_files/figure-html/finalize2-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div id="many-many-margins" class="section level3">

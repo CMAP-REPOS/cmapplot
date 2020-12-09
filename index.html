@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -121,12 +121,12 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>Run the following to install or update cmapplot:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="co">## Install current version from GitHub</span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Install current version from GitHub</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"CMAP-REPOS/cmapplot"</span>, build_vignettes<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="co">## Then load the package as you would any other</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://cmap-repos.github.io/cmapplot">cmapplot</a></span><span class="op">)</span></pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://cmap-repos.github.io/cmapplot">cmapplot</a></span><span class="op">)</span></code></pre></div>
 <p>To install on macOS, users must install <a href="https://www.xquartz.org">XQuartz</a> before cmapplot can be loaded. (This can be easily accomplished via the <a href="https://brew.sh">Homebrew</a> package manager with the command <code>brew cask install xquartz</code>.)</p>
 <p><strong>A note about fonts</strong>: The cmapplot package works best when installed on a computer with the Whitney family of fonts installed (specifically the Book, Medium, and Semibold variants). If installed on a computer <em>without</em> Whitney, the package will still work, but the fonts will default to Calibri (on Windows) or Arial (on macOS/Linux).</p>
 </div>
@@ -134,8 +134,8 @@
 <h2 class="hasAnchor">
 <a href="#cmap-theme-and-colors" class="anchor"></a>CMAP theme and colors</h2>
 <p>The function <code><a href="reference/theme_cmap.html">theme_cmap()</a></code> returns a complete ggplot2 theme that can be added to a ggplot code block (similar to <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">ggplot2::theme_minimal()</a></code> or <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">ggplot2::theme_bw()</a></code>). Additionally, <code><a href="reference/theme_cmap.html">theme_cmap()</a></code> accepts a variety of arguments to additionally customize the theme output. CMAP color functions apply colors from the CMAP color palette to the plot.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu">ggplot</span><span class="op">(</span>data <span class="op">=</span> <span class="va">pop_and_laborforce_by_age</span>, 
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span>data <span class="op">=</span> <span class="va">pop_and_laborforce_by_age</span>, 
        <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">value</span>,
            y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/interaction.html">interaction</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">variable</span>, sep <span class="op">=</span> <span class="st">" "</span><span class="op">)</span>,
            fill <span class="op">=</span> <span class="va">age</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
@@ -144,17 +144,17 @@
   <span class="fu"><a href="reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>xlab <span class="op">=</span> <span class="st">"Percent"</span>,
              gridlines <span class="op">=</span> <span class="st">"v"</span>,
              vline <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="reference/cmap_fill_discrete.html">cmap_fill_discrete</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"environment"</span><span class="op">)</span></pre></div>
+  <span class="fu"><a href="reference/cmap_fill_discrete.html">cmap_fill_discrete</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"environment"</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-theme-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div id="finalizing-the-plot" class="section level2">
 <h2 class="hasAnchor">
 <a href="#finalizing-the-plot" class="anchor"></a>Finalizing the plot</h2>
 <p>The function <code><a href="reference/finalize_plot.html">finalize_plot()</a></code> places a ggplot within a frame defined by CMAP design standards. It provides a variety of customization options via arguments, and allows for in-R viewing and/or exporting in various formats.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="fu"><a href="reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Regional population and labor force participation"</span>,
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Regional population and labor force participation"</span>,
               caption <span class="op">=</span> <span class="st">"Data from the American Community Survey"</span>,
-              width <span class="op">=</span> <span class="fl">7</span>, height <span class="op">=</span> <span class="fl">4.25</span><span class="op">)</span></pre></div>
+              width <span class="op">=</span> <span class="fl">7</span>, height <span class="op">=</span> <span class="fl">4.25</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-finalize-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div id="additional-reading" class="section level2">

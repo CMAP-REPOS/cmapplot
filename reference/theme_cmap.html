@@ -81,7 +81,7 @@ accordance with CMAP design standards." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -155,6 +155,7 @@ accordance with CMAP design standards.</p>
   vline <span class='op'>=</span> <span class='cn'>NULL</span>,
   gridlines <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"h"</span>, <span class='st'>"v"</span>, <span class='st'>"hv"</span>, <span class='st'>"none"</span><span class='op'>)</span>,
   axislines <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"none"</span>, <span class='st'>"x"</span>, <span class='st'>"y"</span>, <span class='st'>"xy"</span><span class='op'>)</span>,
+  axisticks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"none"</span>, <span class='st'>"x"</span>, <span class='st'>"y"</span>, <span class='st'>"xy"</span><span class='op'>)</span>,
   show.legend <span class='op'>=</span> <span class='cn'>TRUE</span>,
   legend.max.columns <span class='op'>=</span> <span class='cn'>NULL</span>,
   debug <span class='op'>=</span> <span class='cn'>FALSE</span>,
@@ -193,6 +194,15 @@ only), "hv" (both horizontal and vertical), and "none" (neither).</p></td>
       <td><p>Char, the axis lines to be displayed on the chart. Acceptable
 values are "x" (x axis only), "y" (y axis only), "xy" (both axes), and
 "none" (neither, the default).</p></td>
+    </tr>
+    <tr>
+      <th>axisticks</th>
+      <td><p>Char, the axis ticks to be displayed on the chart. Acceptable
+values are "x" (x axis only), "y" (y axis only), "xy" (both axes), and
+"none" (neither, the default). Because <code>ggplot2</code> defaults to moderately
+expanding the range of displayed data, this may need to be accompanied by a
+call to <code>expand = c(0, 0)</code> within an appropriate <code>scale_*_*</code>
+argument in order for ticks to appear to touch the outermost gridline(s).</p></td>
     </tr>
     <tr>
       <th>show.legend</th>
