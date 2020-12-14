@@ -43,6 +43,7 @@
 #'    \item \code{lwd_topline}: The width of the line above the plot and title. \strong{(F)}
 #'    \item \code{margin_topline_t}: The margin between the top edge of the
 #'    image and the top line. \strong{(F)}
+#'    \item \code{length_ticks}: The length of the axis ticks (if shown).\strong{(T)}
 #'    \item \code{margin_title_t}: The margin between the top line and the
 #'    title. \strong{(F)}
 #'    \item \code{margin_title_b}: The margin between the title and the caption. \strong{(F)}
@@ -100,6 +101,7 @@ cmapplot_globals <- list(
     lwd_strongline = 1,
     lwd_plotline = 3,
     lwd_topline = 2,
+    length_ticks = 7,
     margin_topline_t = 5,
     margin_title_t = 5,
     margin_title_b = 5,

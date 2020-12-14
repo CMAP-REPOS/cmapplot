@@ -11,6 +11,7 @@ theme_cmap(
   vline = NULL,
   gridlines = c("h", "v", "hv", "none"),
   axislines = c("none", "x", "y", "xy"),
+  axisticks = c("none", "x", "y", "xy"),
   show.legend = TRUE,
   legend.max.columns = NULL,
   debug = FALSE,
@@ -39,6 +40,13 @@ only), "hv" (both horizontal and vertical), and "none" (neither).}
 \item{axislines}{Char, the axis lines to be displayed on the chart. Acceptable
 values are "x" (x axis only), "y" (y axis only), "xy" (both axes), and
 "none" (neither, the default).}
+
+\item{axisticks}{Char, the axis ticks to be displayed on the chart. Acceptable
+values are "x" (x axis only), "y" (y axis only), "xy" (both axes), and
+"none" (neither, the default). Because \code{ggplot2} defaults to moderately
+expanding the range of displayed data, this may need to be accompanied by a
+call to \code{expand = c(0, 0)} within an appropriate \code{scale_*_*}
+argument in order for ticks to appear to touch the outermost gridline(s).}
 
 \item{show.legend}{Bool, \code{TRUE} is the default. \code{FALSE} to hide the
 legend.}

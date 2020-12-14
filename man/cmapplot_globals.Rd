@@ -36,6 +36,7 @@ and a list of constants which aid in drawing cmap-themed plots.
    \item \code{lwd_topline}: The width of the line above the plot and title. \strong{(F)}
    \item \code{margin_topline_t}: The margin between the top edge of the
    image and the top line. \strong{(F)}
+   \item \code{length_ticks}: The length of the axis ticks (if shown).\strong{(T)}
    \item \code{margin_title_t}: The margin between the top line and the
    title. \strong{(F)}
    \item \code{margin_title_b}: The margin between the title and the caption. \strong{(F)}

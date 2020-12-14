@@ -79,6 +79,17 @@ p + theme_cmap(ylab = "Annual Ridership (Millions)",
   geom_line()
 ```
 
+
+`theme_cmap()` also allows users to easily add tick marks on the x- and/or the y-axes, using the argument `axisticks`. Note that here, some additional manipulation of the y-axis scale is necessary for the axis ticks to touch the lowest horizontal gridline (this is to override `ggplot2`'s default behavior, which expands the scale slightly beyond the extent of the data for aesthetic reasons).
+```{r mods2, message = FALSE}
+p + scale_y_continuous(breaks = c(0, 200, 400), 
+                       limits = c(-1, 575),
+                       expand = c(0, 0)) + 
+  theme_cmap(ylab = "Annual Ridership (Millions)",
+             axisticks = "x") +
+  geom_line()
+```
+
 ### Overriding plotting defaults
 
 The package contains a list of default values (`cmapplot_globals$consts`) that control various plotting constants. Most of these impact the function `finalize_plot()`, but a few impact `theme_cmap()`. For a complete description of these constants, see `?cmapplot_globals`. 
@@ -96,15 +107,11 @@ p + scale_x_continuous(labels = c("1980", "1990", "2000", "2010", "A very long l
 
 ### Further theme modifications
 
-In addition, any ggplot2 theme element can also be modified directly in `theme_cmap()` by passing valid arguments from the `ggplot2::theme()` function. In the following example, the addition of `axis.ticks.x` and the establishment of an `axis.ticks.length.x` "turns on" the tick marks automatically turned off by `theme_cmap()`'s underlying theme. Note that here, some additional manipulation of the y-axis scale is necessary for the axis ticks to touch the lowest horizontal gridline.
+In addition, any ggplot2 theme element can also be modified directly in `theme_cmap()` by passing valid arguments from the `ggplot2::theme()` function. In the following example, the addition of `panel.grid.major.y = element_line(color = "light gray")` modifies the default color of a horizontal grid line, changing it from black to light gray.
 
-```{r mods2, message = FALSE}
-p + scale_y_continuous(breaks = c(0, 200, 400), 
-                       limits = c(-1, 575),
-                       expand = c(0, 0)) + 
-  theme_cmap(ylab = "Annual Ridership (Millions)",
-             axis.ticks.x = element_line(color = "red"),
-             axis.ticks.length.x = unit(10, "bigpts")) +
+```{r mods3, message = FALSE}
+p + theme_cmap(ylab = "Annual Ridership (Millions)",
+               panel.grid.major.y = element_line(color = "light gray")) +
   geom_line()
 ```
 
