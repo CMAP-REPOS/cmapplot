@@ -26,7 +26,7 @@ install.packages(c("devtools", "tidyverse"))
 
 ## Installing and loading cmapplot
 
-Once you have successfully downloaded and installed Rtools and the "devtools" and "tidyverse" packages, you are ready to install cmapplot. Run the following code to install cmapplot:
+Once you have successfully downloaded and installed Rtools and the "devtools" and "tidyverse" packages, you are ready to install cmapplot. Run the following code to install and load cmapplot:
 
 ```{r install-cmapplot, eval=FALSE}
 ## Install/update cmapplot from GitHub
