@@ -6,11 +6,11 @@
 \alias{cmap_colour_continuous}
 \title{Apply continuous CMAP palettes (gradients) to ggplot2 aesthetics}
 \usage{
-cmap_fill_continuous(palette = "seq_reds", reverse = FALSE, middle = 0)
+cmap_fill_continuous(palette = "seq_reds", reverse = FALSE, middle = 0, ...)
 
-cmap_color_continuous(palette = "seq_reds", reverse = FALSE, middle = 0)
+cmap_color_continuous(palette = "seq_reds", reverse = FALSE, middle = 0, ...)
 
-cmap_colour_continuous(palette = "seq_reds", reverse = FALSE, middle = 0)
+cmap_colour_continuous(palette = "seq_reds", reverse = FALSE, middle = 0, ...)
 }
 \arguments{
 \item{palette}{String; Choose from 'cmap_gradients' list}
@@ -19,6 +19,8 @@ cmap_colour_continuous(palette = "seq_reds", reverse = FALSE, middle = 0)
 
 \item{middle}{Numeric; Sets midpoint for diverging color palettes. Default =
 0.}
+
+\item{...}{Additional parameters passed on to the scale type}
 }
 \description{
 Pick the function depending on the aesthetic of your ggplot object (fill or
@@ -27,11 +29,11 @@ to 0). See \code{\link{cmap_gradients}} for a listing of available gradients.
 }
 \section{Functions}{
 \itemize{
-\item \code{cmap_fill_continuous}: For fill aesthetic
+\item \code{cmap_fill_continuous}: for fill aesthetic
 
-\item \code{cmap_color_continuous}: For color aesthetic
+\item \code{cmap_color_continuous}: for color aesthetic
 
-\item \code{cmap_colour_continuous}: For color aesthetic
+\item \code{cmap_colour_continuous}: for color aesthetic
 }}
 
 \examples{

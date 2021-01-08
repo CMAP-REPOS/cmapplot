@@ -128,6 +128,7 @@ mid_rescaler2 <- function(mid) {
 #' @param reverse Logical; Reverse color order?
 #' @param middle Numeric; Sets midpoint for diverging color palettes. Default =
 #'   0.
+#' @param ... Additional parameters passed on to the scale type
 #'
 #' @examples
 #' ggplot(dplyr::filter(grp_over_time, cluster=="Biopharmaceuticals"),
@@ -135,43 +136,49 @@ mid_rescaler2 <- function(mid) {
 #'     geom_line() +
 #'     cmap_color_continuous(palette = "seq_red_purple")
 #'
-#' @describeIn cmap_fill_continuous For fill aesthetic
+#' @describeIn cmap_fill_continuous for fill aesthetic
 #'
 #' @export
 cmap_fill_continuous <- function(palette = "seq_reds",
                                  reverse = FALSE,
-                                 middle = 0) {
+                                 middle = 0,
+                                 ...) {
     if (substr(palette,1,3) == "div") {
         ggplot2::scale_fill_gradientn(
             colours = cmap_pal_continuous(palette, reverse = reverse)(256),
-            rescaler = mid_rescaler2(middle)
+            rescaler = mid_rescaler2(middle),
+            ...
         )
     } else {
         ggplot2::scale_fill_gradientn(
-            colours = cmap_pal_continuous(palette, reverse = reverse)(256)
+            colours = cmap_pal_continuous(palette, reverse = reverse)(256),
+            ...
         )
     }
 }
 
 
-#' @describeIn cmap_fill_continuous For color aesthetic
+#' @describeIn cmap_fill_continuous for color aesthetic
 #'
 #' @export
 cmap_color_continuous <- function(palette = "seq_reds",
                                   reverse = FALSE,
-                                  middle = 0) {
+                                  middle = 0,
+                                  ...) {
     if (substr(palette,1,3) == "div") {
         ggplot2::scale_colour_gradientn(
             colours = cmap_pal_continuous(palette, reverse = reverse)(256),
-            rescaler = mid_rescaler2(middle)
+            rescaler = mid_rescaler2(middle),
+            ...
         )
     } else {
         ggplot2::scale_colour_gradientn(
-            colours = cmap_pal_continuous(palette, reverse = reverse)(256)
+            colours = cmap_pal_continuous(palette, reverse = reverse)(256),
+            ...
         )
     }
 }
 
-#' @describeIn cmap_fill_continuous For color aesthetic
+#' @describeIn cmap_fill_continuous for color aesthetic
 #' @export
 cmap_colour_continuous <- cmap_color_continuous
