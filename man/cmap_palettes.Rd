@@ -31,7 +31,7 @@ package}
 }}
 
 \examples{
-# Get names of avialable discrete palettes.
+# Get names of available discrete palettes.
 # (Call viz_palette("name_of_palette") to preview one.)
 names(cmap_palettes)
 

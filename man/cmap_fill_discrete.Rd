@@ -6,16 +6,18 @@
 \alias{cmap_colour_discrete}
 \title{Apply discrete CMAP palettes to ggplot2 aesthetics}
 \usage{
-cmap_fill_discrete(palette = "prosperity", reverse = FALSE)
+cmap_fill_discrete(palette = "prosperity", reverse = FALSE, ...)
 
-cmap_color_discrete(palette = "prosperity", reverse = FALSE)
+cmap_color_discrete(palette = "prosperity", reverse = FALSE, ...)
 
-cmap_colour_discrete(palette = "prosperity", reverse = FALSE)
+cmap_colour_discrete(palette = "prosperity", reverse = FALSE, ...)
 }
 \arguments{
 \item{palette}{Choose from 'cmap_palettes' list}
 
 \item{reverse}{Logical; reverse color order?}
+
+\item{...}{Additional parameters passed on to the scale type}
 }
 \description{
 Pick the function depending on the aesthetic of your ggplot object (fill or
