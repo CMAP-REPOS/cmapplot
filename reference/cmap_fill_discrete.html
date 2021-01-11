@@ -81,7 +81,7 @@ color). See link{cmap_palettes} for a listing of available gradients." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
       </span>
     </div>
 
@@ -151,11 +151,11 @@ color). See link{cmap_palettes} for a listing of available gradients." />
 color). See <code>link{cmap_palettes}</code> for a listing of available gradients.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>cmap_fill_discrete</span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"prosperity"</span>, reverse <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>cmap_fill_discrete</span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"prosperity"</span>, reverse <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>cmap_color_discrete</span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"prosperity"</span>, reverse <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='fu'>cmap_color_discrete</span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"prosperity"</span>, reverse <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>cmap_colour_discrete</span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"prosperity"</span>, reverse <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+<span class='fu'>cmap_colour_discrete</span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"prosperity"</span>, reverse <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -167,6 +167,10 @@ color). See <code>link{cmap_palettes}</code> for a listing of available gradient
     <tr>
       <th>reverse</th>
       <td><p>Logical; reverse color order?</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Additional parameters passed on to the scale type</p></td>
     </tr>
     </table>
 
