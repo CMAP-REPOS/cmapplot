@@ -35,6 +35,7 @@ jobs:
           find_command="find \"$repo_dir\" -name '*.[o,t]tf' -type f -print0"
           eval $find_command | xargs -0 -I %
           eval $find_command | xargs -0 -I % cp "%" "$font_dir/"
+          find "$font_dir" -name '*.[o,t]tf' -print0 | xargs -0 -I %
 
       - name: Query dependencies
         run: |
