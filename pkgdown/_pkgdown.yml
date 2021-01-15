@@ -48,6 +48,7 @@ articles:
 - title: Articles
   navbar: ~
   contents:
+  - installation
   - plots
   - finalize
   - colors

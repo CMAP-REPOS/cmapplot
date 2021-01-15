@@ -1,0 +1,46 @@
+---
+title: "Installing cmapplot on a CMAP computer"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Installing cmapplot on a CMAP computer}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+This vignette provides an overview of how to install cmapplot, with a specific focus on CMAP-issued computers. This guide presumes that the user does *not* have administrator privileges.
+
+
+## Prerequisites
+
+Your CMAP computer should already have both R and RStudio installed. If it does not, please submit an IT helpdesk request to install them. (While you can install RStudio on your own by [downloading](https://rstudio.com/products/rstudio/download/#download) the .zip -- *not* .exe -- version, installing R itself requires administrator privileges).
+
+Once you have working versions of R and RStudio on your computer, you will also need to download an additional utility called Rtools. You can download the installation file for Rtools [here](https://cran.rstudio.com/bin/windows/Rtools/). Because of IT restrictions, you will need to choose an installation folder that you have write access to. The Rtools installer defaults to **C:\\rtools40**, which is fine. However, if you do not want to install it there, you may create another folder in your own user sub-directory (e.g. **C:\\Users\\your_username\\rtools**).
+
+Finally, before you can install cmapplot, you will need to download and install the "devtools" and "tidyverse" packages. You can install them by running the following code in RStudio:
+
+```{r install-devtools, eval=FALSE}
+## Install devtools & tidyverse
+install.packages(c("devtools", "tidyverse"))
+```
+
+
+## Installing and loading cmapplot
+
+Once you have successfully downloaded and installed Rtools and the "devtools" and "tidyverse" packages, you are ready to install cmapplot. Run the following code to install and load cmapplot:
+
+```{r install-cmapplot, eval=FALSE}
+## Install/update cmapplot from GitHub
+devtools::install_github("CMAP-REPOS/cmapplot", build_vignettes=TRUE)
+
+## Load cmapplot
+library(cmapplot)
+```
+
+After completing these steps, your computer should be ready to use and export graphics using cmapplot. 
+
+
+## CMAP fonts
+
+CMAP's design standards require the usage of the Whitney typeface. Whitney is not freely available, but rather requires a license. On CMAP computers, which should already have the Whitney font family installed, cmapplot will use Whitney without any issues. If you receive a warning that Whitney is not installed when you load the package, please verify that the Whitney fonts (specifically, the Book, Medium and Semibold variants) are installed in **C:\\Windows\\Fonts**. If it is not, please submit an IT helpdesk request to get it installed. If Whitney *is* already installed and you are receiving the warning message, please reach out to a member of the cmapplot development team.
+
+Non-CMAP users will have to license Whitney on their own, or else use cmapplot with its fall-back fonts: Calibri (on Windows) or Arial (on macOS/Linux).
