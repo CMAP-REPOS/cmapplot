@@ -31,6 +31,7 @@ jobs:
         run: |
           repo_dir="$GITHUB_WORKSPACE/cmap-fonts"
           font_dir="$HOME/Library/Fonts"
+          mkdir -p $font_dir
           find_command="find \"$repo_dir\" -name '*.[o,t]tf' -type f -print0"
           eval $find_command | xargs -0 -I %
           eval $find_command | xargs -0 -I % cp "%" "$font_dir/"
