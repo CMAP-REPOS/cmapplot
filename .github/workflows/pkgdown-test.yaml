@@ -23,11 +23,11 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: CMAP-REPOS/cmap-fonts
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.CMAP_REPO_FULL_ACCESS }}
           path: cmap-fonts
 
       - name: Install CMAP fonts for R access
-        # https://gist.github.com/Kevin-Lee/328e9993d6b3ad250636023fb2c7827f
+        # Inspiration: https://gist.github.com/Kevin-Lee/328e9993d6b3ad250636023fb2c7827f
         run: |
           repo_dir="$GITHUB_WORKSPACE/cmap-fonts"
           font_dir="$HOME/Library/Fonts"
