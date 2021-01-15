@@ -56,6 +56,10 @@ jobs:
           install.packages("pkgdown")
         shell: Rscript {0}
 
+      - name: Check sysfonts::font_paths()
+        run: message(paste(sysfonts::font_paths(), collapse = "\n"))
+        shell: Rscript {0}
+
       - name: Install package
         run: R CMD INSTALL .
 
