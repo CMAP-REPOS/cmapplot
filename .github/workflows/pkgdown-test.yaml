@@ -2,10 +2,9 @@
 # Based on <https://github.com/r-lib/actions/blob/master/examples/pkgdown.yaml>.
 on:
   push:
-    #branches: master
-    branches: macos-whitney
+    branches: master
 
-name: pkgdown-test
+name: pkgdown
 
 jobs:
   pkgdown:
@@ -71,4 +70,4 @@ jobs:
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
-          Rscript -e 'pkgdown::deploy_to_branch(new_process = FALSE, clean = TRUE, branch="gh-pages-test")'
+          Rscript -e 'pkgdown::deploy_to_branch(new_process = FALSE, clean = TRUE, branch="gh-pages")'
