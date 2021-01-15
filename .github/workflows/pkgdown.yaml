@@ -1,5 +1,4 @@
 # Automatically rebuilds pkgdown website any time master branch is updated.
-# (May need to be disabled if there is no way for remote server to use Whitney.)
 # Based on <https://github.com/r-lib/actions/blob/master/examples/pkgdown.yaml>.
 on:
   push:
@@ -18,6 +17,24 @@ jobs:
       - uses: r-lib/actions/setup-r@master
 
       - uses: r-lib/actions/setup-pandoc@master
+
+      - name: Checkout CMAP fonts repo
+        uses: actions/checkout@v2
+        with:
+          repository: CMAP-REPOS/cmap-fonts
+          token: ${{ secrets.CMAP_REPO_FULL_ACCESS }}
+          path: cmap-fonts
+
+      - name: Install CMAP fonts for R access
+        # Inspiration: https://gist.github.com/Kevin-Lee/328e9993d6b3ad250636023fb2c7827f
+        run: |
+          repo_dir="$GITHUB_WORKSPACE/cmap-fonts"
+          font_dir="$HOME/Library/Fonts"
+          mkdir -p $font_dir
+          find_command="find \"$repo_dir\" -name '*.[o,t]tf' -type f -print0"
+          eval $find_command | xargs -0 -I %
+          eval $find_command | xargs -0 -I % cp "%" "$font_dir/"
+          find "$font_dir" -name '*.[o,t]tf' -print0 | xargs -0 -I %
 
       - name: Query dependencies
         run: |
@@ -39,6 +56,13 @@ jobs:
           install.packages("pkgdown")
         shell: Rscript {0}
 
+      - name: Check Whitney availability
+        run: |
+          message(paste(sysfonts::font_paths(), collapse = "\n"))
+          all_fonts <- sysfonts::font_files()
+          message(paste(all_fonts[all_fonts$family %in% c("Whitney Medium", "Whitney Book", "Whitney Semibold") & all_fonts$face=="Regular", "file"], collapse = "\n"))
+        shell: Rscript {0}
+
       - name: Install package
         run: R CMD INSTALL .
 
@@ -46,4 +70,4 @@ jobs:
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
-          Rscript -e 'pkgdown::deploy_to_branch(new_process = FALSE)'
+          Rscript -e 'pkgdown::deploy_to_branch(new_process = FALSE, clean = TRUE, branch="gh-pages")'
