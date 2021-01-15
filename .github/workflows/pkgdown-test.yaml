@@ -57,8 +57,11 @@ jobs:
           install.packages("pkgdown")
         shell: Rscript {0}
 
-      - name: Check sysfonts::font_paths()
-        run: message(paste(sysfonts::font_paths(), collapse = "\n"))
+      - name: Check Whitney availability
+        run: |
+          message(paste(sysfonts::font_paths(), collapse = "\n"))
+          all_fonts <- sysfonts::font_files()
+          message(paste(all_fonts[all_fonts$family %in% c("Whitney Medium", "Whitney Book", "Whitney Semibold") & all_fonts$face=="Regular", "file"], collapse = "\n"))
         shell: Rscript {0}
 
       - name: Install package
