@@ -49,7 +49,7 @@ article](https://cmap-repos.github.io/cmapplot/articles/installation.html).
 To install on macOS, users must install
 [XQuartz](https://www.xquartz.org) before cmapplot can be loaded. (This
 can be easily accomplished via the [Homebrew](https://brew.sh) package
-manager with the command `brew cask install xquartz`.)
+manager with the command `brew install --cask xquartz`.)
 
 **A note about fonts**: The cmapplot package works best when installed
 on a computer with the Whitney family of fonts installed (specifically
@@ -103,21 +103,21 @@ plot in R will require a decent familiarity with the grammar of
 [ggplot2](ggplot2.tidyverse.org/). Excellent resources in this category
 already exist:
 
-  - The [R graphics cookbook](https://r-graphics.org/) provides
+-   The [R graphics cookbook](https://r-graphics.org/) provides
     accessible examples of how to make almost [any
     type](https://r-graphics.org/recipe-miscgraph-vectorfield) of plot,
     as well as how to modify things like [limits,
     scales](https://r-graphics.org/recipe-axes-range), [coordinate
     systems](https://r-graphics.org/recipe-axes-polar), and
     [facets](https://r-graphics.org/recipe-facet-basic).
-  - The [ggplot2 book](https://ggplot2-book.org/) delves deeper into why
+-   The [ggplot2 book](https://ggplot2-book.org/) delves deeper into why
     and how ggplot2 works the way it does, also with distinct chapters
     on topics like
     [scales](https://ggplot2-book.org/scales-guides.html), [coordinate
     systems](https://ggplot2-book.org/coord.html),
     [facets](https://ggplot2-book.org/facet.html), etc.
-  - The [ggplot2](ggplot2.tidyverse.org/) website.
-  - The [R for Data Science (R4DS)](https://r4ds.had.co.nz/) book,
+-   The [ggplot2](ggplot2.tidyverse.org/) website.
+-   The [R for Data Science (R4DS)](https://r4ds.had.co.nz/) book,
     especially the [Graphics for
     Communication](https://r4ds.had.co.nz/graphics-for-communication.html)
     chapter.
