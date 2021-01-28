@@ -147,6 +147,13 @@ finalize_plot <- function(plot = NULL,
     message("`mode='window'` is not supported on non-Windows systems. Switching to `mode='plot'` instead.")
   }
 
+  # remove titles and/or captions if title_width is set to 0
+  if (title_width == 0 & (title != "" | caption != "")){
+    title <- ""
+    caption <- ""
+    message("Titles and captions are not supported when title_width = 0.")
+  }
+
   # check mode argument
   savetypes_raster <- c("png","tiff","jpeg","bmp")
   savetypes_vector <- c("svg","ps","pdf")
