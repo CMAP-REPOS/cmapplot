@@ -20,7 +20,9 @@
 #'  pixel dimensions of raster outputs. Default is 9.31 inches wide (670/72) and
 #'  5.56 inches tall (400/72), to match Comms specification for web graphics.
 #'@param title_width Numeric, the width in inches for the title. If unspecified,
-#'  use 25 percent of the total output width (per Comms guidance).
+#'  use 25 percent of the total output width (per Comms guidance). If set to 0,
+#'  the title column is eliminated, with the plot and (if present) the legend
+#'  taking up the entire specified width and height.
 #'@param caption_valign Char, align the caption text at the top or the bottom of
 #'  the available space between the title and bottom of image. This argument
 #'  accepts abbreviations, too: \code{c("bottom", "b", "top", "t")}.
