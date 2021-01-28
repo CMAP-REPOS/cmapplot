@@ -194,9 +194,10 @@ finalize_plot <- function(plot = NULL,
     )
   )
 
-  # If title/caption unspecified, try to extract from plot
+  # If title/caption unspecified, try to extract from plot, unless the title
+  # width is set to 0, in which case it will remain blank.
   input_title <- plot$labels$title
-  if (title == "") {
+  if (title == "" & title_width > 0) {
     if (!is.null(input_title)) {
       title <- input_title
     } else {
@@ -205,7 +206,7 @@ finalize_plot <- function(plot = NULL,
   }
 
   input_caption <- plot$labels$caption
-  if (caption == "" & !is.null(input_caption)) {
+  if (caption == "" & !is.null(input_caption) & title_width > 0) {
     caption <- input_caption
   }
 
