@@ -199,7 +199,8 @@ finalize_plot <- function(plot = NULL,
     list(
       plotbox_height = consts$height - consts$margin_topline_t -
                          consts$margin_legend_t - consts$margin_plot_b,
-      plotbox_width =  consts$width - consts$title_width - consts$margin_plot_r
+      plotbox_width =  consts$width - consts$title_width -
+                         consts$margin_plot_r - consts$margin_plot_l
     )
   )
 
@@ -454,7 +455,7 @@ construct_layout <- function(plot,
 
   vp.plotbox <- grid::viewport(
     name = "vp.plotbox",
-    x = consts$title_width,
+    x = consts$title_width + consts$margin_plot_l,
     y = consts$margin_plot_b,
     just = c(0,0),
     default.units = "bigpts",
@@ -496,9 +497,9 @@ construct_layout <- function(plot,
     # set dimensions
     width = consts$title_width,
     maxheight = consts$height - consts$margin_title_to_top - consts$margin_title_b,
-    # retract texbox size on left and right
+    # retract texbox size on left
     margin = grid::unit(c(0,                     # top
-                          consts$margin_title_r, # right
+                          0,                     # right
                           0,                     # bottom
                           consts$margin_title_l),# left
                         "bigpts"),
@@ -527,7 +528,7 @@ construct_layout <- function(plot,
     height = grid::unit(consts$height - consts$margin_title_to_top, "bigpts") - grid::grobHeight(grob_title),
     # retract texbox size on each side
     margin = grid::unit(c(consts$margin_title_b,  # top
-                          consts$margin_title_r,  # right
+                          0,                      # right
                           consts$margin_caption_b,# bottom
                           consts$margin_title_l), # left
                         "bigpts"),
