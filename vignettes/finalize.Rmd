@@ -143,6 +143,16 @@ finalize_plot(plot = p,
               debug = TRUE)
 ```
 
+#### Exporting a graph with no title or caption
+
+One special case of the top-level position adjustments is the elimination of the title and caption altogether. By setting the `title_width = 0`, you can export a graph with just the plot and legend elements.
+
+```{r finalize4a, message=FALSE}
+# A finalized line graph, with no title or caption
+finalize_plot(plot = p,
+              title_width = 0)
+```
+
 ### Overriding plotting constants
 
 Any of the attributes defined in `cmapplot_globals$consts` can be changed by passing a named list to the `overrides` arguments. For example, the chart below uses the `overrides` argument to modify the margin below the title (`margin_title_b`), the margin to the left of the title and the caption (`margin_title_l`), and the margin above the legend (`margin_legend_t`). 
