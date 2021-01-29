@@ -125,6 +125,7 @@ finalize_plot <- function(plot = NULL,
                           legend_shift = TRUE,
                           debug = FALSE,
                           use_cmap_aes = TRUE,
+                          layout_style = c("h","v"),
                           ...
                           ){
 
@@ -140,8 +141,14 @@ finalize_plot <- function(plot = NULL,
     title_width <- width / 4
   }
 
+  # Set title_width to 0 if using vertical layout
+  if (layout_style == "v") {
+    title_width <- 0
+  }
+
   # check args with default vectors
   caption_valign <- match.arg(caption_valign)
+  layout_style <- match.arg(layout_style)
 
   # remove any `window` mode specified if OS is not Windows
   if ("window" %in% mode & .Platform$OS.type != "windows"){
@@ -149,11 +156,11 @@ finalize_plot <- function(plot = NULL,
     message("`mode='window'` is not supported on non-Windows systems. Switching to `mode='plot'` instead.")
   }
 
-  # remove titles and/or captions if title_width is set to 0
-  if (title_width == 0 & (title != "" | caption != "")){
+  # remove titles and/or captions if title_width is set to 0 and layout is horizontal
+  if (title_width == 0 & layout_style == "h" & (title != "" | caption != "")){
     title <- ""
     caption <- ""
-    message("Titles and captions are not supported when title_width = 0.")
+    message("Titles and captions are not supported on horizontal layouts when title_width = 0.")
   }
 
   # check mode argument
@@ -236,6 +243,9 @@ finalize_plot <- function(plot = NULL,
                   overrides = overrides,
                   legend_shift = legend_shift,
                   debug = debug,
+                  layout_style = layout_style,
+                  title = title,
+                  caption = caption,
                   ...),
 
     # if any error occurs, reset geom defaults before halting.
@@ -261,6 +271,7 @@ finalize_plot <- function(plot = NULL,
                                  title = title,
                                  caption = caption,
                                  caption_valign = caption_valign,
+                                 layout_style = layout_style,
                                  debug = debug)
 
 
@@ -320,6 +331,9 @@ prepare_chart <- function(plot,
                          overrides,
                          legend_shift,
                          debug,
+                         title,
+                         caption,
+                         layout_style,
                          ...) {
 
   # preformat plot ---------------------------------------------
@@ -421,7 +435,40 @@ prepare_chart <- function(plot,
                                      valueOnly = TRUE)
 
   # calculate the height remaining for the plot
+  if (layout_style == "h") {
+
   plot_height <- consts$plotbox_height - legend_height - margin_legend_b
+
+  } else {
+    # generate title textbox to measure its height
+    title_height_object <- gridtext::textbox_grob(
+      text = title,
+      default.units = "bigpts",
+      maxwidth = consts$width,
+      gp = grid::gpar(fontsize=cmapplot_globals$fsize$L,
+                      fontfamily=cmapplot_globals$font$strong$family,
+                      fontface=cmapplot_globals$font$strong$face,
+                      lineheight=consts$leading_title)
+    )
+
+
+    title_height <- grid::convertUnit(grid::grobHeight(title_height_object),"bigpts",valueOnly = T)
+
+    # generate caption textbox to measure its height
+    caption_height_object <- gridtext::textbox_grob(
+      text = caption,
+      default.units = "bigpts",
+      maxwidth = consts$width,
+      gp = grid::gpar(fontsize=cmapplot_globals$fsize$L,
+                      fontfamily=cmapplot_globals$font$strong$family,
+                      fontface=cmapplot_globals$font$strong$face,
+                      lineheight=consts$leading_title)
+    )
+
+    caption_height <- grid::convertUnit(grid::grobHeight(caption_height_object),"bigpts",valueOnly = T)
+
+    plot_height <- consts$plotbox_height - legend_height - margin_legend_b - caption_height - title_height
+    }
 
   # Assemble a combined grob
   built <- gridExtra::arrangeGrob(
@@ -448,116 +495,237 @@ construct_layout <- function(plot,
                              title,
                              caption,
                              caption_valign,
+                             layout_style,
                              debug) {
 
-  # Build plotbox viewport --------------------------------------------------
-  # this is the area in which the plot should be drawn
+  # First set of code runs if we are using the horizontal layout (default)
+  if (layout_style == "h") {
 
-  vp.plotbox <- grid::viewport(
-    name = "vp.plotbox",
-    x = consts$title_width + consts$margin_plot_l,
-    y = consts$margin_plot_b,
-    just = c(0,0),
-    default.units = "bigpts",
-    height = consts$plotbox_height,
-    width = consts$plotbox_width,
-    clip = "on"
-  )
+    # Build plotbox viewport --------------------------------------------------
+    # this is the area in which the plot should be drawn
 
-  # Build necessary grobs -----------------------------------------------------
+    vp.plotbox <- grid::viewport(
+      name = "vp.plotbox",
+      x = consts$title_width + consts$margin_plot_l,
+      y = consts$margin_plot_b,
+      just = c(0,0),
+      default.units = "bigpts",
+      height = consts$plotbox_height,
+      width = consts$plotbox_width,
+      clip = "on"
+    )
 
-  # grob to fill behind output (ROOT vp)
-  grob_background <- grid::rectGrob(
-    name = "background",
-    gp = grid::gpar(fill = fill_bg,
-                    col = fill_bg)
-  )
+    # Build necessary grobs -----------------------------------------------------
 
-  #  top line (ROOT vp)
-  grob_topline <- grid::linesGrob(
-    name = "topline",
-    default.units = "bigpts",
-    x = c(0, consts$width),
-    y = consts$height - consts$margin_topline_t,
-    gp = grid::gpar(col = cmapplot_globals$colors$blackish,
-                    lineend = "butt",
-                    lwd = consts$lwd_topline / .lwd)
-  )
+    # grob to fill behind output (ROOT vp)
+    grob_background <- grid::rectGrob(
+      name = "background",
+      gp = grid::gpar(fill = fill_bg,
+                      col = fill_bg)
+    )
 
-  # title textbox (ROOT vp)
-  grob_title <- gridtext::textbox_grob(
-    name = "title",
-    text = title,
-    default.units = "bigpts",
-    # set location down from top left corner
-    x = 0,
-    y = consts$height - consts$margin_title_to_top,
-    hjust = 0,
-    vjust = 1,
-    # set dimensions
-    width = consts$title_width,
-    maxheight = consts$height - consts$margin_title_to_top - consts$margin_title_b,
-    # retract texbox size on left
-    margin = grid::unit(c(0,                     # top
-                          0,                     # right
-                          0,                     # bottom
-                          consts$margin_title_l),# left
-                        "bigpts"),
-    # set font aesthetic variables
-    gp = grid::gpar(fontsize=cmapplot_globals$fsize$L,
-                    fontfamily=cmapplot_globals$font$strong$family,
-                    fontface=cmapplot_globals$font$strong$face,
-                    lineheight=consts$leading_title,
-                    col=cmapplot_globals$colors$blackish),
-    box_gp = grid::gpar(col = ifelse(debug, "red", NA),
-                        fill = NA)
-  )
+    #  top line (ROOT vp)
+    grob_topline <- grid::linesGrob(
+      name = "topline",
+      default.units = "bigpts",
+      x = c(0, consts$width),
+      y = consts$height - consts$margin_topline_t,
+      gp = grid::gpar(col = cmapplot_globals$colors$blackish,
+                      lineend = "butt",
+                      lwd = consts$lwd_topline / .lwd)
+    )
 
-  # caption textbox (ROOT vp)
-  grob_caption <- gridtext::textbox_grob(
-    name = "caption",
-    text = caption,
-    default.units = "bigpts",
-    # set location
-    x = 0,
-    y = 0,
-    hjust = 0,
-    vjust = 0,
-    # set dimensions
-    width = consts$title_width,
-    height = grid::unit(consts$height - consts$margin_title_to_top, "bigpts") - grid::grobHeight(grob_title),
-    # retract texbox size on each side
-    margin = grid::unit(c(consts$margin_title_b,  # top
-                          0,                      # right
-                          consts$margin_caption_b,# bottom
-                          consts$margin_title_l), # left
-                        "bigpts"),
-    # set aesthetic variables
-    valign = ifelse(caption_valign == "top", 1, 0),
-    gp = grid::gpar(fontsize = cmapplot_globals$fsize$S,
-                    fontfamily = cmapplot_globals$font$light$family,
-                    fontface = cmapplot_globals$font$light$face,
-                    lineheight = consts$leading_caption,
-                    col = cmapplot_globals$colors$blackish),
-    box_gp = grid::gpar(col = ifelse(debug, "red", NA),
-                        fill = NA)
-  )
+    # title textbox (ROOT vp)
+    grob_title <- gridtext::textbox_grob(
+      name = "title",
+      text = title,
+      default.units = "bigpts",
+      # set location down from top left corner
+      x = 0,
+      y = consts$height - consts$margin_title_to_top,
+      hjust = 0,
+      vjust = 1,
+      # set dimensions
+      width = consts$title_width,
+      maxheight = consts$height - consts$margin_title_to_top,
+      # retract texbox size on left
+      margin = grid::unit(c(0,                     # top
+                            0,                     # right
+                            0,                     # bottom
+                            consts$margin_title_l),# left
+                          "bigpts"),
+      # set font aesthetic variables
+      gp = grid::gpar(fontsize=cmapplot_globals$fsize$L,
+                      fontfamily=cmapplot_globals$font$strong$family,
+                      fontface=cmapplot_globals$font$strong$face,
+                      lineheight=consts$leading_title,
+                      col=cmapplot_globals$colors$blackish),
+      box_gp = grid::gpar(col = ifelse(debug, "red", NA),
+                          fill = NA)
+    )
 
-  # ggplot as grob (vp.plotbox)
-  grob_plot <- grid::grobTree(
-    plot,
-    vp = vp.plotbox,
-    name = "plot"
-  )
+    # caption textbox (ROOT vp)
+    grob_caption <- gridtext::textbox_grob(
+      name = "caption",
+      text = caption,
+      default.units = "bigpts",
+      # set location
+      x = 0,
+      y = 0,
+      hjust = 0,
+      vjust = 0,
+      # set dimensions
+      width = consts$title_width,
+      height = grid::unit(consts$height - consts$margin_title_to_top
+                          - consts$margin_caption_t, "bigpts")
+                - grid::grobHeight(grob_title),
+      # retract texbox size on each side
+      margin = grid::unit(c(consts$margin_caption_t,# top
+                            0,                      # right
+                            consts$margin_caption_b,# bottom
+                            consts$margin_title_l), # left
+                          "bigpts"),
+      # set aesthetic variables
+      valign = ifelse(caption_valign == "top", 1, 0),
+      gp = grid::gpar(fontsize = cmapplot_globals$fsize$S,
+                      fontfamily = cmapplot_globals$font$light$family,
+                      fontface = cmapplot_globals$font$light$face,
+                      lineheight = consts$leading_caption,
+                      col = cmapplot_globals$colors$blackish),
+      box_gp = grid::gpar(col = ifelse(debug, "red", NA),
+                          fill = NA)
+    )
 
-  # Assemble final plot -----------------------------------------------------
+    # ggplot as grob (vp.plotbox)
+    grob_plot <- grid::grobTree(
+      plot,
+      vp = vp.plotbox,
+      name = "plot"
+    )
 
-  final_plot <- grid::grobTree(
-    grob_background, grob_topline, grob_title, grob_caption, grob_plot,
-    name = "final_plot"
-  )
+    # Assemble final plot -----------------------------------------------------
 
-  return(final_plot)
+    final_plot <- grid::grobTree(
+      grob_background, grob_topline, grob_title, grob_caption, grob_plot,
+      name = "final_plot"
+    )
+
+    return(final_plot)
+
+  # else, run the alternate, vertical layout function
+  } else {
+
+    # Build necessary grobs -----------------------------------------------------
+
+    # grob to fill behind output (ROOT vp)
+    grob_background <- grid::rectGrob(
+      name = "background",
+      gp = grid::gpar(fill = fill_bg,
+                      col = fill_bg)
+    )
+
+    # title textbox (ROOT vp)
+    grob_title <- gridtext::textbox_grob(
+      name = "title",
+      text = title,
+      default.units = "bigpts",
+      # set location down from top left corner
+      x = 0,
+      y = consts$height,
+      hjust = 0,
+      vjust = 1,
+      # set dimensions
+      maxwidth = consts$width,
+      maxheight = consts$height,
+      # retract texbox size on left
+      margin = grid::unit(c(consts$margin_title_t, # top
+                            0,                     # right
+                            0,                     # bottom
+                            consts$margin_title_l),# left
+                          "bigpts"),
+      # set font aesthetic variables
+      gp = grid::gpar(fontsize=cmapplot_globals$fsize$L,
+                      fontfamily=cmapplot_globals$font$strong$family,
+                      fontface=cmapplot_globals$font$strong$face,
+                      lineheight=consts$leading_title,
+                      col=cmapplot_globals$colors$blackish),
+      box_gp = grid::gpar(col = ifelse(debug, "red", NA),
+                          fill = NA)
+    )
+
+    title_height <- grid::convertUnit(grid::grobHeight(grob_title),"bigpts",valueOnly = T)
+
+    #  top line (ROOT vp)
+    grob_topline <- grid::linesGrob(
+      name = "topline",
+      default.units = "bigpts",
+      x = c(0, consts$width),
+      y = consts$height - consts$margin_topline_t - title_height,
+      gp = grid::gpar(col = cmapplot_globals$colors$blackish,
+                      lineend = "butt",
+                      lwd = consts$lwd_topline / .lwd)
+    )
+
+    # caption textbox (ROOT vp)
+    grob_caption <- gridtext::textbox_grob(
+      name = "caption",
+      text = caption,
+      default.units = "bigpts",
+      # set location
+      x = 0,
+      y = 0,
+      hjust = 0,
+      vjust = 0,
+      # set dimensions
+      maxwidth = consts$width,
+      maxheight = consts$height,
+      # retract texbox size on each side
+      margin = grid::unit(c(consts$margin_caption_t,# top
+                            consts$margin_caption_r,# right
+                            consts$margin_caption_b,# bottom
+                            consts$margin_title_l), # left
+                          "bigpts"),
+      # set aesthetic variables
+      gp = grid::gpar(fontsize = cmapplot_globals$fsize$S,
+                      fontfamily = cmapplot_globals$font$light$family,
+                      fontface = cmapplot_globals$font$light$face,
+                      lineheight = consts$leading_caption,
+                      col = cmapplot_globals$colors$blackish),
+      box_gp = grid::gpar(col = ifelse(debug, "red", NA),
+                          fill = NA)
+    )
+
+    caption_height <- grid::convertUnit(grid::grobHeight(grob_caption),"bigpts",valueOnly = T)
+    # Build plotbox viewport --------------------------------------------------
+    # this is the area in which the plot should be drawn
+
+    vp.plotbox <- grid::viewport(
+      name = "vp.plotbox",
+      x = consts$margin_plot_l,
+      y = consts$margin_plot_b + caption_height,
+      just = c(0,0),
+      default.units = "bigpts",
+      height = consts$plotbox_height - caption_height - title_height,
+      width = consts$plotbox_width,
+      clip = "on"
+    )
+
+    # ggplot as grob (vp.plotbox)
+    grob_plot <- grid::grobTree(
+      plot,
+      vp = vp.plotbox,
+      name = "plot"
+    )
+
+    # Assemble final plot -----------------------------------------------------
+
+    final_plot <- grid::grobTree(
+      grob_background, grob_topline, grob_title, grob_caption, grob_plot,
+      name = "final_plot"
+    )
+
+    return(final_plot)
+  }
 }
 
 
