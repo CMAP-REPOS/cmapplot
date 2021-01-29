@@ -149,13 +149,6 @@ finalize_plot <- function(plot = NULL,
     message("`mode='window'` is not supported on non-Windows systems. Switching to `mode='plot'` instead.")
   }
 
-  # remove titles and/or captions if title_width is set to 0
-  if (title_width == 0 & (title != "" | caption != "")){
-    title <- ""
-    caption <- ""
-    message("Titles and captions are not supported when title_width = 0.")
-  }
-
   # check mode argument
   savetypes_raster <- c("png","tiff","jpeg","bmp")
   savetypes_vector <- c("svg","ps","pdf")
@@ -204,10 +197,9 @@ finalize_plot <- function(plot = NULL,
     )
   )
 
-  # If title/caption unspecified, try to extract from plot, unless the title
-  # width is set to 0, in which case it will remain blank.
+  # If title/caption unspecified, try to extract from plot
   input_title <- plot$labels$title
-  if (title == "" & title_width > 0) {
+  if (title == "") {
     if (!is.null(input_title)) {
       title <- input_title
     } else {
@@ -216,8 +208,22 @@ finalize_plot <- function(plot = NULL,
   }
 
   input_caption <- plot$labels$caption
-  if (caption == "" & !is.null(input_caption) & title_width > 0) {
+  if (caption == "" & !is.null(input_caption)) {
     caption <- input_caption
+  }
+
+  # Remove title/caption when title_width = 0
+  if (title_width == 0 & title != "") {
+    title_final <- ""
+    message("Titles are not supported when title_width = 0.")
+  } else {
+    title_final <- title
+  }
+
+  if (title_width == 0 & caption != "") {
+    caption_final <- ""
+  } else {
+    caption_final <- caption
   }
 
 
@@ -232,14 +238,17 @@ finalize_plot <- function(plot = NULL,
   # Build full stack of legend, buffer, and plot, and debug rects as a grob
   plot <- tryCatch(
     prepare_chart(plot = plot,
+                  title = title,
+                  caption = caption,
                   consts = consts,
                   overrides = overrides,
                   legend_shift = legend_shift,
+                  title_width = title_width,
                   debug = debug,
                   ...),
 
     # if any error occurs, reset geom defaults before halting.
-    error = function(cond){
+    error = function(cond) {
       if (use_cmap_aes) {
         set_default_aes(geom_defaults)
       }
@@ -258,8 +267,8 @@ finalize_plot <- function(plot = NULL,
   final_plot <- construct_layout(plot = plot,
                                  consts = consts,
                                  fill_bg = fill_bg,
-                                 title = title,
-                                 caption = caption,
+                                 title = title_final,
+                                 caption = caption_final,
                                  caption_valign = caption_valign,
                                  debug = debug)
 
@@ -316,22 +325,35 @@ finalize_plot <- function(plot = NULL,
 #' Sub-fn to create plot grob, including legend-realignment
 #' @noRd
 prepare_chart <- function(plot,
-                         consts,
-                         overrides,
-                         legend_shift,
-                         debug,
-                         ...) {
+                          title,
+                          caption,
+                          consts,
+                          overrides,
+                          legend_shift,
+                          title_width,
+                          debug,
+                          ...) {
 
   # preformat plot ---------------------------------------------
 
   # the basics
-  plot <- plot + ggplot2::theme(
-    # remove any in-plot titles
-    plot.title = element_blank(),
-    plot.caption = element_blank(),
-    # apply any extra `ggplot2::theme()` args
-    ...
-  )
+  plot$labels$title <- title  # Embed supplied title in plot
+  plot$labels$caption <- caption  # Embed supplied caption in plot
+  if (title_width > 0 | caption == "") {
+    plot <- plot + ggplot2::theme(
+      plot.title = element_blank(),  # Remove in-plot title
+      plot.caption = element_blank(),  # Remove in-plot caption
+      # apply any extra `ggplot2::theme()` args
+      ...
+    )
+  } else {
+    plot <- plot + ggplot2::theme(
+      plot.title = element_blank(),  # Remove in-plot title
+      plot.caption = element_text(hjust = 0),  # Left-align in-plot caption
+      # apply any extra `ggplot2::theme()` args
+      ...
+    )
+  }
 
   # add debug rect around plot if in debug mode
   if (debug) {
