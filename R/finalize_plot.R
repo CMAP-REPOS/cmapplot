@@ -467,7 +467,8 @@ prepare_chart <- function(plot,
 
     caption_height <- grid::convertUnit(grid::grobHeight(caption_height_object),"bigpts",valueOnly = T)
 
-    plot_height <- consts$plotbox_height - legend_height - margin_legend_b - caption_height - title_height
+    plot_height <- consts$plotbox_height - legend_height - margin_legend_b - caption_height - title_height -
+      consts$margin_caption_t - consts$margin_caption_b
     }
 
   # Assemble a combined grob
