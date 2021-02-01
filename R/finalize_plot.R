@@ -53,6 +53,8 @@
 #'@param use_cmap_aes Bool, \code{TRUE}, the default, temporarily implements
 #'  CMAP default aesthetic settings for geoms (see
 #'  \code{\link{apply_cmap_default_aes}}) for the present plot.
+#'@param layout_style Char, align the outputted graphic either horizontally
+#'  (default) or vertically, using "h" or "v" respectively.
 #'@param ... pass additional arguments to ggplot2's \code{\link[ggplot2]{theme}}
 #'  function to override any elements of the default CMAP theme.
 #'
