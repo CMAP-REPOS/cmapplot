@@ -20,7 +20,9 @@
 #'  pixel dimensions of raster outputs. Default is 9.31 inches wide (670/72) and
 #'  5.56 inches tall (400/72), to match Comms specification for web graphics.
 #'@param title_width Numeric, the width in inches for the title. If unspecified,
-#'  use 25 percent of the total output width (per Comms guidance).
+#'  use 25 percent of the total output width (per Comms guidance). If set to 0,
+#'  the title column is eliminated, with the plot and (if present) the legend
+#'  taking up the entire specified width and height.
 #'@param caption_valign Char, align the caption text at the top or the bottom of
 #'  the available space between the title and bottom of image. This argument
 #'  accepts abbreviations, too: \code{c("bottom", "b", "top", "t")}.
@@ -147,6 +149,13 @@ finalize_plot <- function(plot = NULL,
     message("`mode='window'` is not supported on non-Windows systems. Switching to `mode='plot'` instead.")
   }
 
+  # remove titles and/or captions if title_width is set to 0
+  if (title_width == 0 & (title != "" | caption != "")){
+    title <- ""
+    caption <- ""
+    message("Titles and captions are not supported when title_width = 0.")
+  }
+
   # check mode argument
   savetypes_raster <- c("png","tiff","jpeg","bmp")
   savetypes_vector <- c("svg","ps","pdf")
@@ -190,13 +199,15 @@ finalize_plot <- function(plot = NULL,
     list(
       plotbox_height = consts$height - consts$margin_topline_t -
                          consts$margin_legend_t - consts$margin_plot_b,
-      plotbox_width =  consts$width - consts$title_width - consts$margin_plot_r
+      plotbox_width =  consts$width - consts$title_width -
+                         consts$margin_plot_r - consts$margin_plot_l
     )
   )
 
-  # If title/caption unspecified, try to extract from plot
+  # If title/caption unspecified, try to extract from plot, unless the title
+  # width is set to 0, in which case it will remain blank.
   input_title <- plot$labels$title
-  if (title == "") {
+  if (title == "" & title_width > 0) {
     if (!is.null(input_title)) {
       title <- input_title
     } else {
@@ -205,7 +216,7 @@ finalize_plot <- function(plot = NULL,
   }
 
   input_caption <- plot$labels$caption
-  if (caption == "" & !is.null(input_caption)) {
+  if (caption == "" & !is.null(input_caption) & title_width > 0) {
     caption <- input_caption
   }
 
@@ -444,7 +455,7 @@ construct_layout <- function(plot,
 
   vp.plotbox <- grid::viewport(
     name = "vp.plotbox",
-    x = consts$title_width,
+    x = consts$title_width + consts$margin_plot_l,
     y = consts$margin_plot_b,
     just = c(0,0),
     default.units = "bigpts",
@@ -486,9 +497,9 @@ construct_layout <- function(plot,
     # set dimensions
     width = consts$title_width,
     maxheight = consts$height - consts$margin_title_to_top - consts$margin_title_b,
-    # retract texbox size on left and right
+    # retract texbox size on left
     margin = grid::unit(c(0,                     # top
-                          consts$margin_title_r, # right
+                          0,                     # right
                           0,                     # bottom
                           consts$margin_title_l),# left
                         "bigpts"),
@@ -517,7 +528,7 @@ construct_layout <- function(plot,
     height = grid::unit(consts$height - consts$margin_title_to_top, "bigpts") - grid::grobHeight(grob_title),
     # retract texbox size on each side
     margin = grid::unit(c(consts$margin_title_b,  # top
-                          consts$margin_title_r,  # right
+                          0,                      # right
                           consts$margin_caption_b,# bottom
                           consts$margin_title_l), # left
                         "bigpts"),

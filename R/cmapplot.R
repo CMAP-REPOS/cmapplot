@@ -61,9 +61,8 @@
 #'    \item \code{margin_title_l}: The margin between the left edge of the image
 #'    and the title. This also applies to the caption. Deducted from
 #'    \code{title_width}. \strong{(F)}
-#'    \item \code{margin_title_r}: The margin between the right edge of the
-#'    image and the title. This also applies to the caption. Deducted from
-#'    \code{title_width}. \strong{(F)}
+#'    \item \code{margin_plot_l}: The margin between the left edge of the plot
+#'    and the title. This also applies to the caption. \strong{(F)}
 #'    \item \code{margin_plot_r}: The margin between the right edge of the plot
 #'    and the edge of the image. \strong{(F)}
 #'    \item \code{margin_panel_r}: Padding between the plot and its right-hand drawing
@@ -111,7 +110,7 @@ cmapplot_globals <- list(
     margin_legend_b = 10,
     margin_plot_b = 5,
     margin_title_l = 2,
-    margin_title_r = 10,
+    margin_plot_l = 10,
     margin_plot_r = 10,
     margin_panel_r = 10,
     leading_title = 1,
