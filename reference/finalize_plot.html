@@ -86,7 +86,7 @@ drivers." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
       </span>
     </div>
 
@@ -208,7 +208,9 @@ pixel dimensions of raster outputs. Default is 9.31 inches wide (670/72) and
     <tr>
       <th>title_width</th>
       <td><p>Numeric, the width in inches for the title. If unspecified,
-use 25 percent of the total output width (per Comms guidance).</p></td>
+use 25 percent of the total output width (per Comms guidance). If set to 0,
+the title column is eliminated, with the plot and (if present) the legend
+taking up the entire specified width and height.</p></td>
     </tr>
     <tr>
       <th>caption_valign</th>

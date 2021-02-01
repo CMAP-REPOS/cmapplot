@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
       </span>
     </div>
 
@@ -193,12 +193,22 @@
               debug <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="finalize_files/figure-html/finalize4-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
+<div id="exporting-a-graph-with-no-title-or-caption" class="section level3">
+<h3 class="hasAnchor">
+<a href="#exporting-a-graph-with-no-title-or-caption" class="anchor"></a>Exporting a graph with no title or caption</h3>
+<p>One special case of the top-level position adjustments is the elimination of the title and caption altogether. By setting <code>title_width = 0</code>, you can export a graph with just the plot and legend elements. Note that in this situation, the constant <code>margin_title_l</code> is no longer relevant. <code>margin_plot_l</code> is now the margin between the left side of the image and the beginning of the plot (See the next section for more details about these constants).</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># A finalized line graph, with no title or caption</span>
+<span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>plot <span class="op">=</span> <span class="va">p</span>,
+              title_width <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></code></pre></div>
+<p><img src="finalize_files/figure-html/finalize4a-1.png" width="100%" style="display: block; margin: auto;"></p>
+</div>
 <div id="overriding-plotting-constants" class="section level3">
 <h3 class="hasAnchor">
 <a href="#overriding-plotting-constants" class="anchor"></a>Overriding plotting constants</h3>
 <p>Any of the attributes defined in <code>cmapplot_globals$consts</code> can be changed by passing a named list to the <code>overrides</code> arguments. For example, the chart below uses the <code>overrides</code> argument to modify the margin below the title (<code>margin_title_b</code>), the margin to the left of the title and the caption (<code>margin_title_l</code>), and the margin above the legend (<code>margin_legend_t</code>).</p>
 <p>The <a href="#many-many-margins">Many, many margins</a> section of this article describes most of these <code>consts</code> visually. To learn more about all possible overrides, see <code><a href="../reference/cmapplot_globals.html">?cmapplot_globals</a></code>.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># A finalized plot with some formatting overrides</span>
 <span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>plot <span class="op">=</span> <span class="va">p</span>,
               title <span class="op">=</span> <span class="st">"Annual unlinked passenger trips (in millions)."</span>,
