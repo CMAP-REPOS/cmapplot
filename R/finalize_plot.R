@@ -148,7 +148,8 @@ finalize_plot <- function(plot = NULL,
 
   # check args with default vectors
   caption_valign <- match.arg(caption_valign)
-  layout_style <- match.arg(layout_style)
+  layout_style <- match.arg(arg = layout_style,
+                            choices = c("h","v"))
 
   # remove any `window` mode specified if OS is not Windows
   if ("window" %in% mode & .Platform$OS.type != "windows"){
