@@ -223,34 +223,13 @@ finalize_plot <- function(plot = NULL,
 
   # Prepare ggplot -------------------------------------------------------------
 
-  # cache then temporary override geom defaults
-  if (use_cmap_aes) {
-    geom_defaults <- fetch_current_default_aes()
-    set_default_aes(cmapplot_globals$default_aes_cmap)
-  }
-
-  # Build full stack of legend, buffer, and plot, and debug rects as a grob
-  plot <- tryCatch(
-    prepare_chart(plot = plot,
+  plot <- prepare_chart(plot = plot,
                   consts = consts,
                   overrides = overrides,
                   legend_shift = legend_shift,
                   debug = debug,
-                  ...),
-
-    # if any error occurs, reset geom defaults before halting.
-    error = function(cond){
-      if (use_cmap_aes) {
-        set_default_aes(geom_defaults)
-      }
-      stop("An error occurred in ggplot preparation", call. = FALSE)
-    }
-  )
-
-  # reset geom defaults
-  if (use_cmap_aes) {
-    set_default_aes(geom_defaults)
-  }
+                  use_cmap_aes = use_cmap_aes,
+                  ...)
 
 
   # Assemble final plot --------------------------------------------------------
@@ -320,7 +299,19 @@ prepare_chart <- function(plot,
                          overrides,
                          legend_shift,
                          debug,
+                         use_cmap_aes,
                          ...) {
+
+  # override geom defaults -------------------------------------
+
+  if (use_cmap_aes) {
+    # cache current defaults
+    geom_defaults <- fetch_current_default_aes()
+    # set cmap custom defaults
+    set_default_aes(cmapplot_globals$default_aes_cmap)
+    # when this function exits, whether or not due to error, reset geom defaults
+    on.exit(set_default_aes(geom_defaults))
+  }
 
   # preformat plot ---------------------------------------------
 
