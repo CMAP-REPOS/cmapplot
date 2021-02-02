@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
       </span>
     </div>
 
@@ -330,6 +330,7 @@
 <h2 class="hasAnchor">
 <a href="#highlighted-bar-chart" class="anchor"></a>Highlighted bar chart</h2>
 <p>The cmapplot package includes functionality for highlighting specified data using a distinct color. This is useful to compare Chicago against peer regions, for example.</p>
+<p>This plot also utilizes <code>geom_label</code>, an alternative to <code>geom_text</code> that draws a rectangle behind each label to help it stand out from gridlines where they overlap.</p>
 <div id="example-code-3" class="section level4">
 <h4 class="hasAnchor">
 <a href="#example-code-3" class="anchor"></a>Example code</h4>
@@ -345,23 +346,25 @@
 <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">ggplot</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>,
             mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span>
               x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span><span class="op">(</span><span class="va">REGION</span>, <span class="op">-</span><span class="va">MED_HH_INC</span><span class="op">)</span>, <span class="co"># Order race by decreasing income</span>
-              y <span class="op">=</span> <span class="va">MED_HH_INC</span>,
-              fill <span class="op">=</span> <span class="va">REGION</span>  <span class="co"># Fill must be set for a highlighted chart</span>
+              y <span class="op">=</span> <span class="va">MED_HH_INC</span>
             <span class="op">)</span><span class="op">)</span> <span class="op">+</span>
 
   <span class="co"># Add bars</span>
-  <span class="fu">geom_col</span><span class="op">(</span>width <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">geom_col</span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span>fill <span class="op">=</span> <span class="va">REGION</span><span class="op">)</span>,  <span class="co"># Fill must be set for a highlighted chart</span>
+           width <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span>
 
   <span class="co"># Add horizontal line at specified value</span>
   <span class="fu">geom_hline</span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">55322</span><span class="op">)</span> <span class="op">+</span>
 
-  <span class="co"># Label bars</span>
-  <span class="fu">geom_text</span><span class="op">(</span>
+  <span class="co"># Label bars. `geom_label` draws a rectangle behind the label, to prevent </span>
+  <span class="co"># overlap with gridlines</span>
+  <span class="fu">geom_label</span><span class="op">(</span>
     mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span>
-      y <span class="op">=</span> <span class="va">MED_HH_INC</span> <span class="op">+</span> <span class="fl">2500</span>,  <span class="co"># Offset by trial &amp; error</span>
+      y <span class="op">=</span> <span class="va">MED_HH_INC</span> <span class="op">+</span> <span class="fl">2600</span>,  <span class="co"># Offset by trial &amp; error</span>
       label <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org//reference/label_dollar.html">label_dollar</a></span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="va">MED_HH_INC</span><span class="op">)</span>  <span class="co"># Format labels as dollars</span>
     <span class="op">)</span>,
-    hjust <span class="op">=</span> <span class="fl">.5</span>  <span class="co"># Center label (0 = left aligned, 1 = right aligned)</span>
+    hjust <span class="op">=</span> <span class="fl">.5</span>,  <span class="co"># Center label (0 = left aligned, 1 = right aligned)</span>
+    label.size <span class="op">=</span> <span class="fl">0</span> <span class="co"># necessary to not draw a line around the label box</span>
   <span class="op">)</span> <span class="op">+</span>
 
   <span class="co"># Annotate the horizontal line</span>
