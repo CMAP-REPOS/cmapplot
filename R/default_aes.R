@@ -8,6 +8,12 @@
 #' @noRd
 init_cmap_default_aes <- function () {
   defaults <- list(
+    Label = list(
+      family = cmapplot_globals$font$strong$family,
+      fontface = ifelse(cmapplot_globals$font$strong$face == "bold", 2, 1),
+      size = cmapplot_globals$fsize$M/ggplot2::.pt, # pt-to-mm conversion
+      colour = cmapplot_globals$colors$blackish
+    ),
     Line = list(
       size = gg_lwd_convert(cmapplot_globals$consts$lwd_plotline)
     ),
@@ -54,7 +60,7 @@ init_cmap_default_aes <- function () {
 #' possible. The geoms impacted are stored in
 #' \code{cmapplot_globals$geoms_to_change}.
 #'
-#' These functions are employed implictly within \code{\link{finalize_plot}} to
+#' These functions are employed implicitly within \code{\link{finalize_plot}} to
 #' apply preferred aesthetic defaults to final outputs. They are only necessary
 #' to use explicitly if you would like plots to use these defaults
 #' pre-\code{finalize}.
