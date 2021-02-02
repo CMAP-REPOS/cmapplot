@@ -193,17 +193,6 @@ finalize_plot <- function(plot = NULL,
     )
   )
 
-  # calculate the size of the plot box
-  consts <- append(
-    consts,
-    list(
-      plotbox_height = consts$height - consts$margin_topline_t -
-                         consts$margin_legend_t - consts$margin_plot_b,
-      plotbox_width =  consts$width - consts$title_width -
-                         consts$margin_plot_r - consts$margin_plot_l
-    )
-  )
-
   # If title/caption unspecified, try to extract from plot, unless the title
   # width is set to 0, in which case it will remain blank.
   input_title <- plot$labels$title
@@ -255,10 +244,8 @@ finalize_plot <- function(plot = NULL,
     width = consts$title_width,
     maxheight = consts$height - consts$margin_title_to_top - consts$margin_title_b,
     # retract texbox size on left
-    margin = grid::unit(c(0,                     # top
-                          0,                     # right
-                          0,                     # bottom
-                          consts$margin_title_l),# left
+    margin = grid::unit(c(0, 0, 0, # top, right, bottom
+                          consts$margin_title_l), # left
                         "bigpts"),
     # set font aesthetic variables
     gp = grid::gpar(fontsize=cmapplot_globals$fsize$L,
@@ -300,16 +287,53 @@ finalize_plot <- function(plot = NULL,
                         fill = NA)
   )
 
+  # bottom caption textbox
+  grob_caption_bottom <- gridtext::textbox_grob(
+    name = "caption_bottom",
+    text = caption,
+    default.units = "bigpts",
+    # set location
+    x = consts$title_width,
+    y = 0,
+    hjust = 0,
+    vjust = 0,
+    # set dimensions
+    width = consts$width - consts$title_width,
+    # retract texbox size on each side
+    margin = grid::unit(c(consts$margin_plot_b,  # top
+                          consts$margin_plot_r,   # right
+                          consts$margin_caption_b,# bottom
+                          consts$margin_plot_l),  # left
+                        "bigpts"),
+    # set aesthetic variables
+    valign = 0,
+    gp = grid::gpar(fontsize = cmapplot_globals$fsize$S,
+                    fontfamily = cmapplot_globals$font$light$family,
+                    fontface = cmapplot_globals$font$light$face,
+                    lineheight = consts$leading_caption,
+                    col = cmapplot_globals$colors$blackish),
+    box_gp = grid::gpar(col = ifelse(debug, "red", NA),
+                        fill = NA)
+  )
+
+  # calculate the height of the plot box
+  plotbox_height = grid::unit(
+    consts$height - consts$margin_topline_t -
+    consts$margin_legend_t,
+    "bigpts") -
+    grid::grobHeight(grob_caption_bottom)
+
   # Build plotbox viewport
 
   vp.plotbox <- grid::viewport(
     name = "vp.plotbox",
     x = consts$title_width + consts$margin_plot_l,
-    y = consts$margin_plot_b,
+    y = grid::grobHeight(grob_caption_bottom),
     just = c(0,0),
     default.units = "bigpts",
-    height = consts$plotbox_height,
-    width = consts$plotbox_width,
+    height = plotbox_height,
+    width = consts$width - consts$title_width -
+      consts$margin_plot_r - consts$margin_plot_l,
     clip = "on"
   )
 
@@ -318,6 +342,7 @@ finalize_plot <- function(plot = NULL,
     # use subfn to prepare ggplot for final plotting
     prepare_chart(plot = plot,
                   consts = consts,
+                  plotbox_height = plotbox_height,
                   overrides = overrides,
                   legend_shift = legend_shift,
                   debug = debug,
@@ -330,10 +355,9 @@ finalize_plot <- function(plot = NULL,
   # Assemble final plot -----------------------------------------------------
 
   final_plot <- grid::grobTree(
-    grob_background, grob_topline, grob_title, grob_caption, grob_plot,
+    grob_background, grob_topline, grob_title, grob_caption, grob_plot, grob_caption_bottom,
     name = "final_plot"
   )
-
 
   # Output the figure based on mode selected -----------------------------------
 
@@ -388,6 +412,7 @@ finalize_plot <- function(plot = NULL,
 #' @noRd
 prepare_chart <- function(plot,
                          consts,
+                         plotbox_height,
                          overrides,
                          legend_shift,
                          debug,
@@ -504,7 +529,8 @@ prepare_chart <- function(plot,
                                      valueOnly = TRUE)
 
   # calculate the height remaining for the plot
-  plot_height <- consts$plotbox_height - legend_height - margin_legend_b
+  plot_height <- plotbox_height -
+    grid::unit(legend_height - margin_legend_b, "bigpts")
 
   # Assemble a combined grob
   built <- gridExtra::arrangeGrob(
@@ -512,10 +538,9 @@ prepare_chart <- function(plot,
     grid::rectGrob(gp = grid::gpar(col = NA, fill = NA)),
     ggplotGrob(plot + ggplot2::theme(legend.position = "none")),
     nrow = 3,
-    heights = grid::unit(c(legend_height,
-                           margin_legend_b,
-                           plot_height),
-                         "bigpts")
+    heights = grid::unit.c(grid::unit(legend_height, "bigpts"),
+                           grid::unit(margin_legend_b, "bigpts"),
+                           plot_height)
   )
 
   # return the combined grob
