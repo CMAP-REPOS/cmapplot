@@ -1,6 +1,6 @@
 Package: cmapplot
 Title: CMAP Themes and Color Palettes
-Version: 1.0.3
+Version: 1.0.4
 Authors@R: c(
     person("Matthew", "Stern",
            role = c("aut", "cre"),

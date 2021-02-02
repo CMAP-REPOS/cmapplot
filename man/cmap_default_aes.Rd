@@ -22,7 +22,7 @@ possible. The geoms impacted are stored in
 \code{cmapplot_globals$geoms_to_change}.
 }
 \details{
-These functions are employed implictly within \code{\link{finalize_plot}} to
+These functions are employed implicitly within \code{\link{finalize_plot}} to
 apply preferred aesthetic defaults to final outputs. They are only necessary
 to use explicitly if you would like plots to use these defaults
 pre-\code{finalize}.
