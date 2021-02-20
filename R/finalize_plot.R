@@ -233,108 +233,112 @@ finalize_plot <- function(plot = NULL,
                     lwd = consts$lwd_topline / .lwd)
   )
 
-  # title textbox
-  grobs$title <- gridtext::textbox_grob(
-    name = "title",
-    text = title,
-    default.units = "bigpts",
-    # set location down from top left corner
-    x = 0,
-    y = consts$height - consts$margin_title_to_top,
-    hjust = 0,
-    vjust = 1,
-    # set dimensions
-    width = consts$title_width,
-    maxheight = consts$height - consts$margin_title_to_top - consts$margin_title_b,
-    # retract texbox size on left
-    margin = grid::unit(c(0, 0, 0, # top, right, bottom
-                          consts$margin_title_l), # left
-                        "bigpts"),
-    # set font aesthetic variables
-    gp = grid::gpar(fontsize=cmapplot_globals$fsize$L,
-                    fontfamily=cmapplot_globals$font$strong$family,
-                    fontface=cmapplot_globals$font$strong$face,
-                    lineheight=consts$leading_title,
-                    col=cmapplot_globals$colors$blackish),
-    box_gp = grid::gpar(col = ifelse(debug, "red", NA),
-                        fill = NA)
-  )
+  # in traditional (horizontal) mode, create title and left-side caption boxes
+  if(!vert_mode){
+    # title textbox
+    grobs$title <- gridtext::textbox_grob(
+      name = "title",
+      text = title,
+      default.units = "bigpts",
+      # set location down from top left corner
+      x = 0,
+      y = consts$height - consts$margin_title_to_top,
+      hjust = 0,
+      vjust = 1,
+      # set dimensions
+      width = consts$title_width,
+      maxheight = consts$height - consts$margin_title_to_top - consts$margin_title_b,
+      # retract texbox size on left
+      margin = grid::unit(c(0, 0, 0, # top, right, bottom
+                            consts$margin_title_l), # left
+                          "bigpts"),
+      # set font aesthetic variables
+      gp = grid::gpar(fontsize=cmapplot_globals$fsize$L,
+                      fontfamily=cmapplot_globals$font$strong$family,
+                      fontface=cmapplot_globals$font$strong$face,
+                      lineheight=consts$leading_title,
+                      col=cmapplot_globals$colors$blackish),
+      box_gp = grid::gpar(col = ifelse(debug, "red", NA),
+                          fill = NA)
+    )
 
-  # caption textbox
-  grobs$caption <- gridtext::textbox_grob(
-    name = "caption",
-    text = ifelse(vert_mode, "", caption),
-    default.units = "bigpts",
-    # set location
-    x = 0,
-    y = 0,
-    hjust = 0,
-    vjust = 0,
-    # set dimensions
-    width = consts$title_width,
-    height = grid::unit(consts$height - consts$margin_title_to_top, "bigpts") - grid::grobHeight(grobs$title),
-    # retract texbox size on each side
-    margin = grid::unit(c(consts$margin_title_b,  # top
-                          0,                      # right
-                          consts$margin_caption_b,# bottom
-                          consts$margin_title_l), # left
-                        "bigpts"),
-    # set aesthetic variables
-    valign = ifelse(caption_valign == "top", 1, 0),
-    gp = grid::gpar(fontsize = cmapplot_globals$fsize$S,
-                    fontfamily = cmapplot_globals$font$light$family,
-                    fontface = cmapplot_globals$font$light$face,
-                    lineheight = consts$leading_caption,
-                    col = cmapplot_globals$colors$blackish),
-    box_gp = grid::gpar(col = ifelse(debug, "red", NA),
-                        fill = NA)
-  )
+    # caption textbox
+    grobs$caption <- gridtext::textbox_grob(
+      name = "caption",
+      text = caption,
+      default.units = "bigpts",
+      # set location
+      x = 0,
+      y = 0,
+      hjust = 0,
+      vjust = 0,
+      # set dimensions
+      width = consts$title_width,
+      height = grid::unit(consts$height - consts$margin_title_to_top, "bigpts") - grid::grobHeight(grobs$title),
+      # retract texbox size on each side
+      margin = grid::unit(c(consts$margin_title_b,  # top
+                            0,                      # right
+                            consts$margin_caption_b,# bottom
+                            consts$margin_title_l), # left
+                          "bigpts"),
+      # set aesthetic variables
+      valign = ifelse(caption_valign == "top", 1, 0),
+      gp = grid::gpar(fontsize = cmapplot_globals$fsize$S,
+                      fontfamily = cmapplot_globals$font$light$family,
+                      fontface = cmapplot_globals$font$light$face,
+                      lineheight = consts$leading_caption,
+                      col = cmapplot_globals$colors$blackish),
+      box_gp = grid::gpar(col = ifelse(debug, "red", NA),
+                          fill = NA)
+    )
+  }
 
-  # bottom caption textbox
-  grobs$caption_bottom <- gridtext::textbox_grob(
-    name = "caption_bottom",
-    text = ifelse(vert_mode, caption, ""),
-    default.units = "bigpts",
-    # set location
-    x = consts$title_width,
-    y = 0,
-    hjust = 0,
-    vjust = 0,
-    # set dimensions
-    width = consts$width - consts$title_width,
-    # retract texbox size on each side
-    margin = grid::unit(c(0,                      # top
-                          consts$margin_plot_r,   # right
-                          consts$margin_caption_b,# bottom
-                          consts$margin_plot_l),  # left
-                        "bigpts"),
-    # set aesthetic variables
-    valign = 0,
-    gp = grid::gpar(fontsize = cmapplot_globals$fsize$S,
-                    fontfamily = cmapplot_globals$font$light$family,
-                    fontface = cmapplot_globals$font$light$face,
-                    lineheight = consts$leading_caption,
-                    col = cmapplot_globals$colors$blackish),
-    box_gp = grid::gpar(col = ifelse(debug, "red", NA),
-                        fill = NA)
-  )
+  # in vertical mode, and if caption exists, create bottom caption box (but no title)
+  if(vert_mode & caption != "") {
+    grobs$caption_bottom <- gridtext::textbox_grob(
+      name = "caption_bottom",
+      text = caption,
+      default.units = "bigpts",
+      # set location
+      x = consts$title_width,
+      y = 0,
+      hjust = 0,
+      vjust = 0,
+      # set dimensions
+      width = consts$width - consts$title_width,
+      # retract texbox size on each side
+      margin = grid::unit(c(0,                      # top
+                            consts$margin_plot_r,   # right
+                            consts$margin_caption_b,# bottom
+                            consts$margin_plot_l),  # left
+                          "bigpts"),
+      # set aesthetic variables
+      valign = 0,
+      gp = grid::gpar(fontsize = cmapplot_globals$fsize$S,
+                      fontfamily = cmapplot_globals$font$light$family,
+                      fontface = cmapplot_globals$font$light$face,
+                      lineheight = consts$leading_caption,
+                      col = cmapplot_globals$colors$blackish),
+      box_gp = grid::gpar(col = ifelse(debug, "red", NA),
+                          fill = NA)
+    )
+  }
 
   # calculate the height of the plotbox (area for legend and plot)
-  # (don't add to consts because this is a unit, and consts are unitless)
   plotbox_height <- grid::unit(
     consts$height -
       consts$margin_topline_t -
       consts$margin_legend_t -
       consts$margin_plot_b,
     "bigpts") -
-    grid::grobHeight(grobs$caption_bottom)
+    safe_grobHeight(grobs$caption_bottom)
 
 
   # Build plotbox viewport
   vp.plotbox <- grid::viewport(
     name = "vp.plotbox",
     x = consts$title_width + consts$margin_plot_l,
-    y = grid::grobHeight(grobs$caption_bottom) + grid::unit(consts$margin_plot_b, "bigpts"),
+    y = safe_grobHeight(grobs$caption_bottom) + grid::unit(consts$margin_plot_b, "bigpts"),
     just = c(0,0),
     default.units = "bigpts",
     height = plotbox_height,
@@ -641,4 +645,17 @@ save_plot <- function(final_plot,
     }
   )
 
+}
+
+
+#' Sub-fn to safely intepret grobHeight
+#'
+#' This returns 0 bigpts if the value passed in is null.
+#'
+#' @noRd
+safe_grobHeight <- function(grob){
+  if(is.null(grob)){
+    return(unit(0, "bigpts"))
+  }
+  return(grid::grobHeight(grob))
 }
