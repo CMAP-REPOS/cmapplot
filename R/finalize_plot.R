@@ -21,8 +21,8 @@
 #'  5.56 inches tall (400/72), to match Comms specification for web graphics.
 #'@param title_width Numeric, the width in inches for the title. If unspecified,
 #'  use 25 percent of the total output width (per Comms guidance). If set to 0,
-#'  the title column is eliminated, with the plot and (if present) the legend
-#'  taking up the entire specified width and height.
+#'  the title column is eliminated and the caption, if present, is moved to below
+#'  the plot.
 #'@param caption_valign Char, align the caption text at the top or the bottom of
 #'  the available space between the title and bottom of image. This argument
 #'  accepts abbreviations, too: \code{c("bottom", "b", "top", "t")}.
@@ -140,6 +140,10 @@ finalize_plot <- function(plot = NULL,
     title_width <- width / 4
   }
 
+  # create boolean for alternative "vertical" mode with no title and a bottom caption.
+  # Enable if title_width is set to 0
+  vert_mode <- ifelse(title_width == 0, TRUE, FALSE)
+
   # check args with default vectors
   caption_valign <- match.arg(caption_valign)
 
@@ -147,15 +151,6 @@ finalize_plot <- function(plot = NULL,
   if ("window" %in% mode & .Platform$OS.type != "windows"){
     mode <- stringr::str_replace(mode, "^window$", "plot")
     message("`mode='window'` is not supported on non-Windows systems. Switching to `mode='plot'` instead.")
-  }
-
-  # create boolean for alternative "vertical" mode with no title and a bottom caption.
-  vert_mode <- FALSE
-
-  # remove titles and enable bottom caption if title_width is set to 0
-  if (title_width == 0){
-    title <- ""
-    vert_mode <- TRUE
   }
 
   # check mode argument
@@ -195,10 +190,9 @@ finalize_plot <- function(plot = NULL,
     )
   )
 
-  # If title/caption unspecified, try to extract from plot, unless the title
-  # width is set to 0, in which case it will remain blank.
+  # If title/caption unspecified, try to extract from plot
   input_title <- plot$labels$title
-  if (title == "" & title_width > 0) {
+  if (title == "") {
     if (!is.null(input_title)) {
       title <- input_title
     } else {
@@ -207,7 +201,7 @@ finalize_plot <- function(plot = NULL,
   }
 
   input_caption <- plot$labels$caption
-  if (caption == "" & !is.null(input_caption) & title_width > 0) {
+  if (caption == "" & !is.null(input_caption)) {
     caption <- input_caption
   }
 
@@ -248,9 +242,10 @@ finalize_plot <- function(plot = NULL,
       vjust = 1,
       # set dimensions
       width = consts$title_width,
-      maxheight = consts$height - consts$margin_title_to_top - consts$margin_title_b,
+      maxheight = consts$height - consts$margin_title_to_top,
       # retract texbox size on left
-      margin = grid::unit(c(0, 0, 0, # top, right, bottom
+      margin = grid::unit(c(0, 0, # top, right
+                            consts$margin_title_b, # bottom
                             consts$margin_title_l), # left
                           "bigpts"),
       # set font aesthetic variables
@@ -277,8 +272,7 @@ finalize_plot <- function(plot = NULL,
       width = consts$title_width,
       height = consts$height - consts$margin_title_to_top - safe_grobHeight(grobs$title),
       # retract texbox size on each side
-      margin = grid::unit(c(consts$margin_title_b,  # top
-                            0,                      # right
+      margin = grid::unit(c(0, 0,  # top, right
                             consts$margin_caption_b,# bottom
                             consts$margin_title_l), # left
                           "bigpts"),
@@ -359,6 +353,8 @@ finalize_plot <- function(plot = NULL,
 
   # Assemble final plot -----------------------------------------------------
 
+  # this do.call combines the list of grobs with the `name` argument and passes
+  # that list on to the grobTree function.
   final_plot <- do.call(grobTree, c(grobs, name = "final_plot"))
 
   # Output the figure based on mode selected -----------------------------------

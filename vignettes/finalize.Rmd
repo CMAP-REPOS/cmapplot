@@ -143,13 +143,17 @@ finalize_plot(plot = p,
               debug = TRUE)
 ```
 
-### Exporting a graph with no title or caption
+### Exporting a graph with no title
 
-One special case of the top-level position adjustments is the elimination of the title and caption altogether. By setting `title_width = 0`, you can export a graph with just the plot and legend elements. Note that in this situation, the constant `margin_title_l` is no longer relevant. `margin_plot_l` is now the margin between the left side of the image and the beginning of the plot (See the next section for more details about these constants).
+One special case of the top-level position adjustments is the elimination of the title and caption altogether. By setting `title_width = 0`, you can export a graph without the left title-caption column. If a caption is specified, it is moved below the plot element. 
+
+Note that in this situation, the constant `margin_title_l` is no longer relevant. `margin_plot_l` is now the margin between the left side of the image and the beginning of the plot (See the next section for more details about these constants).
 
 ```{r finalize4a, message=FALSE}
 # A finalized line graph, with no title or caption
 finalize_plot(plot = p,
+              caption = "Source: Chicago Metropolitan Agency for Planning
+                analysis of Regional Transportation Authority data.",
               title_width = 0)
 ```
 
