@@ -235,6 +235,7 @@ finalize_plot <- function(plot = NULL,
 
   # in traditional (horizontal) mode, create title and left-side caption boxes
   if(!vert_mode){
+
     # title textbox
     grobs$title <- gridtext::textbox_grob(
       name = "title",
@@ -274,7 +275,7 @@ finalize_plot <- function(plot = NULL,
       vjust = 0,
       # set dimensions
       width = consts$title_width,
-      height = grid::unit(consts$height - consts$margin_title_to_top, "bigpts") - grid::grobHeight(grobs$title),
+      height = consts$height - consts$margin_title_to_top - safe_grobHeight(grobs$title),
       # retract texbox size on each side
       margin = grid::unit(c(consts$margin_title_b,  # top
                             0,                      # right
@@ -325,23 +326,19 @@ finalize_plot <- function(plot = NULL,
   }
 
   # calculate the height of the plotbox (area for legend and plot)
-  plotbox_height <- grid::unit(
-    consts$height -
-      consts$margin_topline_t -
-      consts$margin_legend_t -
-      consts$margin_plot_b,
-    "bigpts") -
-    safe_grobHeight(grobs$caption_bottom)
+  consts$plotbox_height <- consts$height - consts$margin_topline_t -
+                           consts$margin_legend_t - consts$margin_plot_b -
+                           safe_grobHeight(grobs$caption_bottom)
 
 
   # Build plotbox viewport
   vp.plotbox <- grid::viewport(
     name = "vp.plotbox",
     x = consts$title_width + consts$margin_plot_l,
-    y = safe_grobHeight(grobs$caption_bottom) + grid::unit(consts$margin_plot_b, "bigpts"),
+    y = safe_grobHeight(grobs$caption_bottom) + consts$margin_plot_b,
     just = c(0,0),
     default.units = "bigpts",
-    height = plotbox_height,
+    height = consts$plotbox_height,
     width = consts$width - consts$title_width - consts$margin_plot_r - consts$margin_plot_l,
     clip = "on"
   )
@@ -351,7 +348,6 @@ finalize_plot <- function(plot = NULL,
     # use subfn to prepare ggplot for final plotting
     prepare_chart(plot = plot,
                   consts = consts,
-                  plotbox_height = plotbox_height,
                   overrides = overrides,
                   legend_shift = legend_shift,
                   debug = debug,
@@ -418,7 +414,6 @@ finalize_plot <- function(plot = NULL,
 #' @noRd
 prepare_chart <- function(plot,
                          consts,
-                         plotbox_height,
                          overrides,
                          legend_shift,
                          debug,
@@ -535,8 +530,7 @@ prepare_chart <- function(plot,
                                      valueOnly = TRUE)
 
   # calculate the height remaining for the plot
-  plot_height <- plotbox_height -
-    grid::unit(legend_height - margin_legend_b, "bigpts")
+  plot_height <- consts$plotbox_height - legend_height - margin_legend_b
 
   # Assemble a combined grob
   built <- gridExtra::arrangeGrob(
@@ -544,9 +538,10 @@ prepare_chart <- function(plot,
     grid::rectGrob(gp = grid::gpar(col = NA, fill = NA)),
     ggplotGrob(plot + ggplot2::theme(legend.position = "none")),
     nrow = 3,
-    heights = grid::unit.c(grid::unit(legend_height, "bigpts"),
-                           grid::unit(margin_legend_b, "bigpts"),
-                           plot_height)
+    heights = grid::unit(c(legend_height,
+                           margin_legend_b,
+                           plot_height),
+                         "bigpts")
   )
 
   # return the combined grob
@@ -650,12 +645,19 @@ save_plot <- function(final_plot,
 
 #' Sub-fn to safely intepret grobHeight
 #'
-#' This returns 0 bigpts if the value passed in is null.
+#' This returns the height of Grob in any real unit.
+#' If the value passed in is null, it returns 0.
 #'
 #' @noRd
-safe_grobHeight <- function(grob){
+safe_grobHeight <- function(grob, unitTo = "bigpts", valueOnly = TRUE){
+
   if(is.null(grob)){
-    return(unit(0, "bigpts"))
+    if(valueOnly){
+      return(0)
+    } else {
+      return(unit(0, unitTo))
+    }
   }
-  return(grid::grobHeight(grob))
+
+  return(grid::convertHeight(grid::grobHeight(grob), unitTo, valueOnly))
 }
