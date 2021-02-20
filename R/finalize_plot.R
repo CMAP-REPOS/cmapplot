@@ -149,11 +149,13 @@ finalize_plot <- function(plot = NULL,
     message("`mode='window'` is not supported on non-Windows systems. Switching to `mode='plot'` instead.")
   }
 
-  # remove titles and/or captions if title_width is set to 0
-  if (title_width == 0 & (title != "" | caption != "")){
+  # create boolean for alternative "vertical" mode with no title and a bottom caption.
+  vert_mode <- FALSE
+
+  # remove titles and enable bottom caption if title_width is set to 0
+  if (title_width == 0){
     title <- ""
-    caption <- ""
-    message("Titles and captions are not supported when title_width = 0.")
+    vert_mode <- TRUE
   }
 
   # check mode argument
@@ -211,16 +213,17 @@ finalize_plot <- function(plot = NULL,
 
 
   # Build necessary grobs -----------------------------------------------------
+  grobs <- list()
 
   # grob to fill behind output
-  grob_background <- grid::rectGrob(
+  grobs$background <- grid::rectGrob(
     name = "background",
     gp = grid::gpar(fill = fill_bg,
                     col = fill_bg)
   )
 
   #  top line
-  grob_topline <- grid::linesGrob(
+  grobs$topline <- grid::linesGrob(
     name = "topline",
     default.units = "bigpts",
     x = c(0, consts$width),
@@ -231,7 +234,7 @@ finalize_plot <- function(plot = NULL,
   )
 
   # title textbox
-  grob_title <- gridtext::textbox_grob(
+  grobs$title <- gridtext::textbox_grob(
     name = "title",
     text = title,
     default.units = "bigpts",
@@ -258,9 +261,9 @@ finalize_plot <- function(plot = NULL,
   )
 
   # caption textbox
-  grob_caption <- gridtext::textbox_grob(
+  grobs$caption <- gridtext::textbox_grob(
     name = "caption",
-    text = caption,
+    text = ifelse(vert_mode, "", caption),
     default.units = "bigpts",
     # set location
     x = 0,
@@ -269,7 +272,7 @@ finalize_plot <- function(plot = NULL,
     vjust = 0,
     # set dimensions
     width = consts$title_width,
-    height = grid::unit(consts$height - consts$margin_title_to_top, "bigpts") - grid::grobHeight(grob_title),
+    height = grid::unit(consts$height - consts$margin_title_to_top, "bigpts") - grid::grobHeight(grobs$title),
     # retract texbox size on each side
     margin = grid::unit(c(consts$margin_title_b,  # top
                           0,                      # right
@@ -288,9 +291,9 @@ finalize_plot <- function(plot = NULL,
   )
 
   # bottom caption textbox
-  grob_caption_bottom <- gridtext::textbox_grob(
+  grobs$caption_bottom <- gridtext::textbox_grob(
     name = "caption_bottom",
-    text = caption,
+    text = ifelse(vert_mode, caption, ""),
     default.units = "bigpts",
     # set location
     x = consts$title_width,
@@ -300,7 +303,7 @@ finalize_plot <- function(plot = NULL,
     # set dimensions
     width = consts$width - consts$title_width,
     # retract texbox size on each side
-    margin = grid::unit(c(consts$margin_plot_b,  # top
+    margin = grid::unit(c(0,                      # top
                           consts$margin_plot_r,   # right
                           consts$margin_caption_b,# bottom
                           consts$margin_plot_l),  # left
@@ -316,29 +319,31 @@ finalize_plot <- function(plot = NULL,
                         fill = NA)
   )
 
-  # calculate the height of the plot box
-  plotbox_height = grid::unit(
-    consts$height - consts$margin_topline_t -
-    consts$margin_legend_t,
+  # calculate the height of the plotbox (area for legend and plot)
+  # (don't add to consts because this is a unit, and consts are unitless)
+  plotbox_height <- grid::unit(
+    consts$height -
+      consts$margin_topline_t -
+      consts$margin_legend_t -
+      consts$margin_plot_b,
     "bigpts") -
-    grid::grobHeight(grob_caption_bottom)
+    grid::grobHeight(grobs$caption_bottom)
+
 
   # Build plotbox viewport
-
   vp.plotbox <- grid::viewport(
     name = "vp.plotbox",
     x = consts$title_width + consts$margin_plot_l,
-    y = grid::grobHeight(grob_caption_bottom),
+    y = grid::grobHeight(grobs$caption_bottom) + grid::unit(consts$margin_plot_b, "bigpts"),
     just = c(0,0),
     default.units = "bigpts",
     height = plotbox_height,
-    width = consts$width - consts$title_width -
-      consts$margin_plot_r - consts$margin_plot_l,
+    width = consts$width - consts$title_width - consts$margin_plot_r - consts$margin_plot_l,
     clip = "on"
   )
 
   # ggplot as grob (drawn into vp.plotbox)
-  grob_plot <- grid::grobTree(
+  grobs$plot <- grid::grobTree(
     # use subfn to prepare ggplot for final plotting
     prepare_chart(plot = plot,
                   consts = consts,
@@ -354,10 +359,7 @@ finalize_plot <- function(plot = NULL,
 
   # Assemble final plot -----------------------------------------------------
 
-  final_plot <- grid::grobTree(
-    grob_background, grob_topline, grob_title, grob_caption, grob_plot, grob_caption_bottom,
-    name = "final_plot"
-  )
+  final_plot <- do.call(grobTree, c(grobs, name = "final_plot"))
 
   # Output the figure based on mode selected -----------------------------------
 
