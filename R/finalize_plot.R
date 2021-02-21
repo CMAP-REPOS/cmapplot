@@ -351,17 +351,17 @@ finalize_plot <- function(plot = NULL,
     name = "plot"
   )
 
-  # Assemble final plot -----------------------------------------------------
+  # Assemble finished graphic -----------------------------------------------------
 
   # this do.call combines the list of grobs with the `name` argument and passes
   # that list on to the grobTree function.
-  final_plot <- do.call(grobTree, c(grobs, name = "final_plot"))
+  finished_graphic <- do.call(grobTree, c(grobs, name = "finished_graphic"))
 
   # Output the figure based on mode selected -----------------------------------
 
   # first, do in-R drawing
   for (this_mode in generics::intersect(mode, savetypes_print)) {
-    draw_plot(final_plot = final_plot,
+    draw_plot(finished_graphic = finished_graphic,
               width = width,
               height = height,
               fill_canvas = fill_canvas,
@@ -377,7 +377,7 @@ finalize_plot <- function(plot = NULL,
                     height = height)
 
     # export the plot
-    save_plot(final_plot = final_plot,
+    save_plot(finished_graphic = finished_graphic,
               mode = this_mode,
               arglist = arglist,
               overwrite = overwrite)
@@ -395,14 +395,14 @@ finalize_plot <- function(plot = NULL,
                     res = ppi)
 
     # export the plot
-    save_plot(final_plot = final_plot,
+    save_plot(finished_graphic = finished_graphic,
               mode = this_mode,
               arglist = arglist,
               overwrite = overwrite)
   }
 
   # finally, return plot as grob
-  invisible(final_plot)
+  invisible(finished_graphic)
 }
 
 
@@ -547,7 +547,7 @@ prepare_chart <- function(plot,
 
 #' Sub-fn to draw plot within R
 #' @noRd
-draw_plot <- function(final_plot,
+draw_plot <- function(finished_graphic,
                       width,
                       height,
                       fill_canvas,
@@ -565,7 +565,7 @@ draw_plot <- function(final_plot,
                                   col = fill_canvas)
   )
 
-  # create and enter a viewport for drawing the final_plot.
+  # create and enter a viewport for drawing the finished_graphic.
   # this creates a drawing space in the center of the active device
   # that is the user-specified dimensions.
   grid::pushViewport(
@@ -578,7 +578,7 @@ draw_plot <- function(final_plot,
   )
 
   # draw plot, exit centerframe
-  grid::grid.draw(final_plot)
+  grid::grid.draw(finished_graphic)
   grid::popViewport()
 
   # in window mode, reset device to default without closing window
@@ -591,7 +591,7 @@ draw_plot <- function(final_plot,
 #' Sub-fn to save plot using various device functions
 #' @importFrom stringr str_trunc
 #' @noRd
-save_plot <- function(final_plot,
+save_plot <- function(finished_graphic,
                       mode,
                       arglist,
                       overwrite){
@@ -621,7 +621,7 @@ save_plot <- function(final_plot,
     {
       # open the device, draw the plot, close the device
       suppressWarnings(do.call(mode, arglist))
-      grid::grid.draw(final_plot)
+      grid::grid.draw(finished_graphic)
       dev.off()
 
       # notify
