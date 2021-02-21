@@ -21,11 +21,12 @@
 #'  5.56 inches tall (400/72), to match Comms specification for web graphics.
 #'@param title_width Numeric, the width in inches for the title. If unspecified,
 #'  use 25 percent of the total output width (per Comms guidance). If set to 0,
-#'  the title column is eliminated and the caption, if present, is moved to below
-#'  the plot.
-#'@param caption_valign Char, align the caption text at the top or the bottom of
-#'  the available space between the title and bottom of image. This argument
-#'  accepts abbreviations, too: \code{c("bottom", "b", "top", "t")}.
+#'  the title column is eliminated and the caption, if present, is moved to
+#'  below the plot.
+#'@param caption_align Numeric, alignment of the caption text. When the caption
+#'  is in the title column (when \code{title_width > 0}), 0 (the default) aligns
+#'  text to bottom; 1 aligns top. When the caption is located below the plot, 0
+#'  aligns left and 1 aligns right. 0.5 aligns center.
 #'@param mode Vector, the action(s) to be taken with the plot. View in R with
 #'  \code{plot}, the default, or \code{window} (\code{window} only works on
 #'  computers running Windows). Save using any of the following: \code{png},
@@ -53,12 +54,14 @@
 #'@param use_cmap_aes Bool, \code{TRUE}, the default, temporarily implements
 #'  CMAP default aesthetic settings for geoms (see
 #'  \code{\link{apply_cmap_default_aes}}) for the present plot.
-#'@param ... pass additional arguments to ggplot2's \code{\link[ggplot2]{theme}}
-#'  function to override any elements of the default CMAP theme.
+#'@param caption_valign This is deprecated as of cmapplot 1.1.0 and will be
+#'  removed in future releases. Replace with \code{caption_align} argument.
+#'@param ... Pass additional arguments to ggplot2's \code{\link[ggplot2]{theme}}
+#'  function to override any elements of the plot's theme when drawing.
 #'
-#'@return This function invisibly returns the final plot as a gTree object. If
-#'  stored (e.g. \code{g <- finalize_plot(...)}), the gTree can be drawn later
-#'  with \code{grid} (e.g. \code{grid::grid.draw(g)}).
+#'@return This function invisibly returns the finished graphic as a gTree
+#'  object. If stored (e.g. \code{g <- finalize_plot(...)}), the gTree can be
+#'  drawn later with \code{grid} (e.g. \code{grid::grid.draw(g)}).
 #'
 #'@importFrom utils modifyList
 #'@importFrom generics intersect
@@ -114,7 +117,7 @@ finalize_plot <- function(plot = NULL,
                           width = 670/72, # comms spec: 670px @ 72ppi
                           height = 400/72, # comms spec: 400px @ 72ppi
                           title_width = NULL, # if unspecified, default to width/4
-                          caption_valign = c("bottom", "top"),
+                          caption_align = 0,
                           mode = c("plot"),
                           filename = NULL,
                           overwrite = FALSE,
@@ -125,6 +128,7 @@ finalize_plot <- function(plot = NULL,
                           legend_shift = TRUE,
                           debug = FALSE,
                           use_cmap_aes = TRUE,
+                          caption_valign,
                           ...
                           ){
 
@@ -144,8 +148,14 @@ finalize_plot <- function(plot = NULL,
   # Enable if title_width is set to 0
   vert_mode <- ifelse(title_width == 0, TRUE, FALSE)
 
-  # check args with default vectors
-  caption_valign <- match.arg(caption_valign)
+  # check deprecated variable `caption_valign`
+  if (!missing(caption_valign)) {
+    message("The argument `caption_valign` is deprecated and will be removed in a future release. \nPlease update your code to use `caption_align`.")
+    caption_valign <- match.arg(caption_valign, c("bottom", "top"))
+    if (caption_valign == "top" & !vert_mode) {
+      caption_align <- 1
+    }
+  }
 
   # remove any `window` mode specified if OS is not Windows
   if ("window" %in% mode & .Platform$OS.type != "windows"){
@@ -277,7 +287,7 @@ finalize_plot <- function(plot = NULL,
                             consts$margin_title_l), # left
                           "bigpts"),
       # set aesthetic variables
-      valign = ifelse(caption_valign == "top", 1, 0),
+      valign = caption_align,
       gp = grid::gpar(fontsize = cmapplot_globals$fsize$S,
                       fontfamily = cmapplot_globals$font$light$family,
                       fontface = cmapplot_globals$font$light$face,
@@ -308,7 +318,7 @@ finalize_plot <- function(plot = NULL,
                             consts$margin_plot_l),  # left
                           "bigpts"),
       # set aesthetic variables
-      valign = 0,
+      halign = caption_align,
       gp = grid::gpar(fontsize = cmapplot_globals$fsize$S,
                       fontfamily = cmapplot_globals$font$light$family,
                       fontface = cmapplot_globals$font$light$face,
