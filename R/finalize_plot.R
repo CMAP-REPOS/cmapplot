@@ -337,16 +337,16 @@ finalize_plot <- function(plot = NULL,
     clip = "on"
   )
 
-  # ggplot as grob (drawn into vp.plotbox)
+  # plot as grob (drawn into vp.plotbox)
   grobs$plot <- grid::grobTree(
-    # use subfn to prepare ggplot for final plotting
-    prepare_chart(plot = plot,
-                  consts = consts,
-                  overrides = overrides,
-                  legend_shift = legend_shift,
-                  debug = debug,
-                  use_cmap_aes = use_cmap_aes,
-                  ...),
+    # use subfn to prepare plot for final plotting
+    prepare_plot(plot = plot,
+                 consts = consts,
+                 overrides = overrides,
+                 legend_shift = legend_shift,
+                 debug = debug,
+                 use_cmap_aes = use_cmap_aes,
+                 ...),
     vp = vp.plotbox,
     name = "plot"
   )
@@ -408,7 +408,7 @@ finalize_plot <- function(plot = NULL,
 
 #' Sub-fn to create plot grob, including legend-realignment
 #' @noRd
-prepare_chart <- function(plot,
+prepare_plot <- function(plot,
                          consts,
                          overrides,
                          legend_shift,
