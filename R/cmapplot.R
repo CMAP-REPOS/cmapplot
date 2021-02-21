@@ -119,6 +119,7 @@ cmapplot_globals <- list(
 
   # list of geoms whose aesthetics will be customized
   geoms_that_change = c(
+    "Label",
     "Line",
     "Text",
     "TextLast",
