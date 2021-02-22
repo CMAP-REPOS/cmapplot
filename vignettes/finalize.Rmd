@@ -48,12 +48,12 @@ p <- ggplot(data = df,
 
 In this vignette we will use the final version of the line chart developed in `vignette("plots")` to describe standard use of the `finalize_plot()` function. That plot is referenced in the following examples as `p`. The function has numerous additional customization options built in, accepting 16 (or more) arguments. Refer to the object documentation, `?finalize_plot`, for detailed information on all arguments.
 
+
 ## Basic implementation
 
 ### Finalizing a plot
 
-After creating a plot and applying `theme_cmap()`, use `finalize_plot()` to complete the implementation of
-CMAP design standards. You will probably want to set at least the `title` and `caption`, although the function will extract them from the ggplot if they were specified. 
+After creating a plot and applying `theme_cmap()`, use `finalize_plot()` to complete the implementation of CMAP design standards. You will probably want to set at least the `title` and `caption`, although the function will extract them from the ggplot if they were specified. 
 
 As you are preparing the plot, you will likely want to view it within R. Do this by leaving leaving the default `mode = "plot"` to send the finished plot to the "Plots" tab within RStudio. Windows users may prefer `mode = "window"`, which draws the plot in a popup window. In both modes, the plot will show up "actual size" (depending on your screen's resolution) surrounded by a grey canvas.
 
@@ -78,7 +78,6 @@ Some additional notes:
 
 - When naming your exports, you do not need to include the extension (e.g., `"my_chart"`). `finalize_plot()` will automatically add the appropriate extension to each of your exported files (e.g., `"my_chart.pdf"` and `"my_chart.png"`). This is especially recommended if you're specifying multiple export modes in the same call.
 
-
 <!-- The following code block is NOT evaluated, but its source code is displayed in order to demonstrate usage of the mode and filename parameters. -->
 ```{r finalize2-forshow, eval=FALSE, echo=TRUE}
 # Finalize and export plot to PNG and PDF
@@ -97,6 +96,7 @@ finalize_plot(plot = p,
               caption = "Source: Chicago Metropolitan Agency for Planning
                 analysis of Regional Transportation Authority data.")
 ```
+
 
 ## Advanced customization
 
@@ -159,7 +159,7 @@ finalize_plot(plot = p,
 
 ### Overriding plotting constants
 
-Any of the attributes defined in `cmapplot_globals$consts` can be changed by passing a named list to the `overrides` arguments. For example, the chart below uses the `overrides` argument to modify the margin below the title (`margin_title_b`), the margin to the left of the title and the caption (`margin_title_l`), and the margin above the legend (`margin_legend_t`). 
+Any of the attributes defined in `cmapplot_globals$consts` can be changed by passing a named list to the `overrides` arguments. For example, the chart below uses the `overrides` argument to modify the margin below the title (`margin_title_b`), the margin to the left of the title and the caption (`margin_title_l`), and the margin above the legend (`margin_legend_t`).
 
 The [Many, many margins] section of this article describes most of these `consts` visually. To learn more about all possible overrides, see `?cmapplot_globals`.
 
