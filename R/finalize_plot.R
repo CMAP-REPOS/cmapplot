@@ -139,33 +139,52 @@ finalize_plot <- function(plot = NULL,
     plot <- ggplot2::last_plot()
   }
 
-  # Set title_width to 25% of total width if unspecified
+  # Set title_width to 25% of total width if unspecified.
+  # Also force values to be between 0 and width/2.
   if (is.null(title_width)) {
     title_width <- width / 4
+  } else if (title_width < 0) {
+    message("`title_width` cannot be negative. Using 0 instead.")
+    title_width <- 0
+  } else if (title_width > width / 2) {
+    message("`title_width` exceeds 50% of `width`. Using `width/2` instead.")
+    title_width <- width / 2
   }
 
-  # create boolean for alternative "vertical" mode with no title and a bottom caption.
-  # Enable if title_width is set to 0
-  vert_mode <- ifelse(title_width == 0, TRUE, FALSE)
+  # Create boolean for alternative "vertical" mode with no title and a bottom
+  # caption, used when title_width is 0.
+  vert_mode <- ifelse(title_width > 0, FALSE, TRUE)
 
-  # check deprecated variable `caption_valign`
+  # Check deprecated variable `caption_valign`
   if (!missing(caption_valign)) {
-    message("The argument `caption_valign` is deprecated and will be removed in a future release. \nPlease update your code to use `caption_align`.")
+    warning(paste(
+      "The argument `caption_valign` is deprecated and will be removed in a future release.",
+      "Please update your code to use `caption_align` (with a value between 0-1) instead.",
+      sep = "\n  "))
     caption_valign <- match.arg(caption_valign, c("bottom", "top"))
     if (caption_valign == "top" & !vert_mode) {
       caption_align <- 1
     }
   }
 
-  # remove any `window` mode specified if OS is not Windows
+  # Force caption_align to be between 0-1
+  if (caption_align < 0) {
+    message("`caption_align` must be between 0-1. Using 0 instead.")
+    caption_align <- 0
+  } else if (caption_align > 1) {
+    message("`caption_align` must be between 0-1. Using 1 instead.")
+    caption_align <- 1
+  }
+
+  # Remove any `window` mode specified if OS is not Windows
   if ("window" %in% mode & .Platform$OS.type != "windows"){
     mode <- stringr::str_replace(mode, "^window$", "plot")
     message("`mode='window'` is not supported on non-Windows systems. Switching to `mode='plot'` instead.")
   }
 
-  # check mode argument
-  savetypes_raster <- c("png","tiff","jpeg","bmp")
-  savetypes_vector <- c("svg","ps","pdf")
+  # Check mode argument
+  savetypes_raster <- c("png", "tiff", "jpeg", "bmp")
+  savetypes_vector <- c("svg", "ps", "pdf")
   savetypes_print <- c("plot", "window")
 
   mode <- match.arg(arg = unique(mode),
@@ -175,21 +194,21 @@ finalize_plot <- function(plot = NULL,
                     several.ok = TRUE)
 
 
-  # if any save modes specified, check for filename
+  # If any save modes specified, check for filename
   if (length(generics::intersect(mode, c(savetypes_raster, savetypes_vector))) > 0) {
     if (is.null(filename)) { stop("You must specify a filename if saving", call. = FALSE) }
   }
 
-  # if function will be drawing to the default plotting device (the plot window),
+  # If function will be drawing to the default plotting device (the plot window),
   # trigger a new page in that window now. This is needed to prevent the creation
   # of an unnecessary blank plot by other `grid` functions in cases where the
   # default device is not already active.
   if ("plot" %in% mode) { grid::grid.newpage() }
 
-  # create list of plot constants, from globals unless overridden by user
+  # Create list of plot constants, from globals unless overridden by user
   consts <- utils::modifyList(cmapplot_globals$consts, overrides)
 
-  # add various arguments to constants, with conversions where necessary
+  # Add various arguments to constants, with conversions where necessary
   consts <- append(
     consts,
     list(
