@@ -129,7 +129,7 @@ finalize_plot(plot = p,
 
 ### Top-level position adjustments
 
-In addition to setting the plot's `height` and `width`, `finalize_plot()` has a number of top-level arguments that impact the final layout. With debug on, we can easily see the effects of various adjustments, such as changing the width of the title and caption (`title_width`), altering the vertical alignment of the caption (`caption_valign`), or keeping the legend alignment of the original plot (`legend_shift`). Note that with `legend_shift = FALSE`, `finalize_plot()` does not separate the legend from the plot, as indicated by the debug boxes. 
+In addition to setting the plot's `height` and `width`, `finalize_plot()` has a number of top-level arguments that impact the final layout. With debug on, we can easily see the effects of various adjustments, such as changing the width of the title and caption (`title_width`), altering the alignment of the caption (`caption_align`), or keeping the legend alignment of the original plot (`legend_shift`). Note that with `legend_shift = FALSE`, `finalize_plot()` does not separate the legend from the plot, as indicated by the debug boxes. 
 
 ```{r finalize5, message=FALSE}
 # A debugged and modified finalized plot
@@ -138,7 +138,7 @@ finalize_plot(plot = p,
               caption = "Source: Chicago Metropolitan Agency for Planning
                 analysis of Regional Transportation Authority data.",
               title_width = 1.8,
-              caption_valign = "top",
+              caption_align = 1,
               legend_shift = FALSE,
               debug = TRUE)
 ```
@@ -169,7 +169,7 @@ finalize_plot(plot = p,
               title = "Annual unlinked passenger trips (in millions).",
               caption = "Source: Chicago Metropolitan Agency for Planning
                 analysis of Regional Transportation Authority data.",
-              caption_valign = "top",
+              caption_align = 1,
               debug = TRUE,
               overrides = list(margin_title_b = 30, 
                                margin_title_l = 10,
