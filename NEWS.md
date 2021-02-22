@@ -11,7 +11,6 @@ Under-the-hood changes to `finalize_plot()` are documented in PR #111, specifica
 
 ### Backward compatibility notes
 Users who have written code with previous versions of cmapplot should note these known compatibility issues:
-
 * In `finalize_plot()`, the argument `caption_valign` has been deprecated and will now issue a message alert (but will still work, for now). Please update your code to ues the new argument `caption_align`. 
 
 
@@ -24,7 +23,7 @@ PR #110 | February 3, 2020
 # cmapplot 1.0.3
 PR #107 | February 2, 2020
 
-* modified `finalize_plot()` to accept `title_width = 0` without causing a fuss. This is a short-term fix, with more improvements coming.
+* Modified `finalize_plot()` to accept `title_width = 0` without causing a fuss. This is a short-term fix, with more improvements coming.
 * In `cmapplot_globals$consts`, eliminated `margin_title_r`, which created space between the title/caption and plotbox inside the title column. Replaced it  with `margin_plot_l`, which creates the same buffer but does so in the plot column, not the title column. This was necessary to keep an active left-hand margin in situations where `title_width = 0`.
 
 ### Backward compatibility notes
@@ -46,9 +45,8 @@ PR #100 | December 9, 2020
 * Improvement of tickmark handling via addition of `axisticks`  argument in `theme_cmap()` and new `length_ticks` default value in `cmapplot_globals$consts`
 * Substantial backend simplification of how `theme_cmap()` generates theme objects (not of substantial significance to users)
 
+
 # cmapplot 1.0.0
 December 1, 2020
 
 * initial package release 
-
-
