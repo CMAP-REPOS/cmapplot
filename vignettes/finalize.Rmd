@@ -80,7 +80,7 @@ Some additional notes:
 
 
 <!-- The following code block is NOT evaluated, but its source code is displayed in order to demonstrate usage of the mode and filename parameters. -->
-```{r finalize1a-forshow, eval=FALSE, echo=TRUE}
+```{r finalize2-forshow, eval=FALSE, echo=TRUE}
 # Finalize and export plot to PNG and PDF
 finalize_plot(plot = p,
               title = "Annual unlinked passenger trips (in millions).",
@@ -91,7 +91,7 @@ finalize_plot(plot = p,
 ```
 
 <!-- The next code block IS evaluated to generate the graphic, but its source code is hidden because it does not demonstrate usage of the mode or filename parameters. -->
-```{r finalize1a, eval=TRUE, echo=FALSE, message=FALSE}
+```{r finalize2, eval=TRUE, echo=FALSE, message=FALSE}
 finalize_plot(plot = p,
               title = "Annual unlinked passenger trips (in millions).",
               caption = "Source: Chicago Metropolitan Agency for Planning
@@ -106,7 +106,7 @@ While `finalize_plot()` can be run successfully with very few arguments, the fun
 
 The title and caption blocks take HTML formatting, so you can manually set line breaks and font formatting.
 
-```{r finalize1b, message=FALSE}
+```{r finalize3, message=FALSE}
 # A finalized line graph, with text tweaks
 finalize_plot(plot = p,
               title = "Annual <br> unlinked passenger trips <br> (in millions).",
@@ -118,7 +118,7 @@ finalize_plot(plot = p,
 
 Default values in `finalize_plot()` attempt to reflect CMAP design standards, but users can also manually adjust various elements of the finalized plot. The easiest way to identify current positions and how they relate to other objects within the finalized plot object is to set `debug = TRUE`:
 
-```{r finalize3, message=FALSE}
+```{r finalize4, message=FALSE}
 # A debugged finalized plot
 finalize_plot(plot = p,
               title = "Annual unlinked passenger trips (in millions).",
@@ -131,7 +131,7 @@ finalize_plot(plot = p,
 
 In addition to setting the plot's `height` and `width`, `finalize_plot()` has a number of top-level arguments that impact the final layout. With debug on, we can easily see the effects of various adjustments, such as changing the width of the title and caption (`title_width`), altering the vertical alignment of the caption (`caption_valign`), or keeping the legend alignment of the original plot (`legend_shift`). Note that with `legend_shift = FALSE`, `finalize_plot()` does not separate the legend from the plot, as indicated by the debug boxes. 
 
-```{r finalize4, message=FALSE}
+```{r finalize5, message=FALSE}
 # A debugged and modified finalized plot
 finalize_plot(plot = p,
               title = "Annual unlinked passenger trips (in millions).",
@@ -145,11 +145,11 @@ finalize_plot(plot = p,
 
 ### Exporting a graph with no title
 
-One special case of the top-level position adjustments is the elimination of the title and caption altogether. By setting `title_width = 0`, you can export a graph without the left title-caption column. If a caption is specified, it is moved below the plot element. 
+One special case of the top-level position adjustments is the elimination of the title and caption altogether. This is generally preferred when creating graphics to embed in a Word/PDF report (as opposed to a web page or presentation slide). By setting `title_width = 0`, you can export a graph without the left title-caption column. If a caption is specified, it is moved below the plot element.
 
-Note that in this situation, the constant `margin_title_l` is no longer relevant. `margin_plot_l` is now the margin between the left side of the image and the beginning of the plot (See the next section for more details about these constants).
+Note that in this situation, the constant `margin_title_l` is no longer relevant; `margin_plot_l` is now the margin between the left side of the image and the beginning of the plot. (See the next section for more details about these constants.)
 
-```{r finalize4a, message=FALSE}
+```{r finalize6, message=FALSE}
 # A finalized line graph, with no title or caption
 finalize_plot(plot = p,
               caption = "Source: Chicago Metropolitan Agency for Planning
@@ -163,7 +163,7 @@ Any of the attributes defined in `cmapplot_globals$consts` can be changed by pas
 
 The [Many, many margins] section of this article describes most of these `consts` visually. To learn more about all possible overrides, see `?cmapplot_globals`.
 
-```{r finalize2, message=FALSE}
+```{r finalize7, message=FALSE}
 # A finalized plot with some formatting overrides
 finalize_plot(plot = p,
               title = "Annual unlinked passenger trips (in millions).",
