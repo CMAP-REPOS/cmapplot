@@ -1,8 +1,3 @@
-# cmapplot 1.1.1
-February 22, 2020
-
-* Creates `NEWS.md` file and adds to pkgdown website.  
-
 # cmapplot 1.1.0
 February 22, 2020
 
@@ -11,8 +6,9 @@ This update primarily makes many changes to `finalize_plot()` to enable printing
 
 * setting `title_width = 0` now has the effect of eliminating the title and shifting the caption from the title column to directly below the plot
 * There is a new argument, `caption_align`, which takes numeric range 0 to 1. `0`, the default, aligns the caption bottom or left (in title-column and below-plot captions, respectively). `1` aligns the caption top or right. `0.5` centers. The argument `caption_valign` has been deprecated.
+* Separately, this version also creates this `NEWS.md` file for the pkgdown website.  
 
-Under-the-hood changes are documented in PR #111, specifically [here](https://github.com/CMAP-REPOS/cmapplot/pull/111#issuecomment-782779446). 
+Under-the-hood changes to `finalize_plot()` are documented in PR #111, specifically [here](https://github.com/CMAP-REPOS/cmapplot/pull/111#issuecomment-782779446). 
 
 ## Backward compatibility notes
 Users who have written code with previous versions of cmapplot should note these known compatibility issues:
