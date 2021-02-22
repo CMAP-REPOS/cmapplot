@@ -1,5 +1,5 @@
 # cmapplot 1.1.0
-February 22, 2020
+PR #111 | February 22, 2020
 
 This update primarily makes many changes to `finalize_plot()` to enable printing plots without the left-hand "title column" -- the area that contains the title and the caption. Most but not all changes are under the hood and should not impact the user. Those that will impact the user include:
 
@@ -15,16 +15,17 @@ Users who have written code with previous versions of cmapplot should note these
 * In `finalize_plot()`, the argument `caption_valign` has been deprecated and will now issue a message alert (but will still work, for now). Please update your code to ues the new argument `caption_align`. 
 
 
+# cmapplot 1.0.4
+PR #110 | February 3, 2020
+
+* The ggplot2 geom `geom_label` is now added to the list of geoms for which text aesthetics are automatically updated to CMAP style (ie to Whitney fonts). Previously, only `geom_text` and the custom `geom_text_last` were available in CMAP style. 
+
+
 # cmapplot 1.0.3
-February 2, 2020
+PR #107 | February 2, 2020
 
-* Improvement of tickmark handling via addition of `axisticks`  argument in `theme_cmap()` (#100)
-* Substantial backend simplification of how `theme_cmap()` generates theme objects (not of substantial significance to users) (#100)
-* Fixed bug where custom color functions (e.g. `cmap_fill_continuous()` etc) did not allow for passing other arguments on to ggplot2's `scale` functions (#102 #103)
-* modified `finalize_plot()` to accept `title_width = 0` without causing a fuss. This is a short-term fix, with more improvements coming. (#107)
-* In `cmapplot_globals$consts`, eliminated `margin_title_r`, which created space between the title/caption and plotbox inside the title column. Replaced it  with `margin_plot_l`, which creates the same buffer but does so in the plot column, not the title column. This was necessary to keep an active lefthand margin in situations where `title_width = 0`. (#107)
-
-(This list does not include documentation changes.)
+* modified `finalize_plot()` to accept `title_width = 0` without causing a fuss. This is a short-term fix, with more improvements coming.
+* In `cmapplot_globals$consts`, eliminated `margin_title_r`, which created space between the title/caption and plotbox inside the title column. Replaced it  with `margin_plot_l`, which creates the same buffer but does so in the plot column, not the title column. This was necessary to keep an active left-hand margin in situations where `title_width = 0`.
 
 ### Backward compatibility notes
 Users who have written code with previous versions of cmapplot should note these known compatibility issues:
@@ -32,6 +33,18 @@ Users who have written code with previous versions of cmapplot should note these
 * Titles and captions will be a bit wider (the width of the title and caption grobs are no longer modified by `margin_title_r`)
 * Plots will be a bit narrower (the width of the plotbox is now modified by `margin_plot_l`)
 
+
+# cmapplot 1.0.2
+PR #103 | January 11, 2021
+
+* Fixed bug where custom color functions (e.g. `cmap_fill_continuous()` etc) did not allow for passing other arguments on to ggplot2's `scale` functions (see issue #102)
+
+
+# cmapplot 1.0.1
+PR #100 | December 9, 2020
+
+* Improvement of tickmark handling via addition of `axisticks`  argument in `theme_cmap()` and new `length_ticks` default value in `cmapplot_globals$consts`
+* Substantial backend simplification of how `theme_cmap()` generates theme objects (not of substantial significance to users)
 
 # cmapplot 1.0.0
 December 1, 2020
