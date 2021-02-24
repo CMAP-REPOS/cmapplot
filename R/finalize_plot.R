@@ -199,10 +199,10 @@ finalize_plot <- function(plot = NULL,
     if (is.null(filename)) { stop("You must specify a filename if saving", call. = FALSE) }
   }
 
-  # If function will be drawing to the default plotting device (the plot window),
-  # trigger a new page in that window now. This is needed to prevent the creation
-  # of an unnecessary blank plot by other `grid` functions in cases where the
-  # default device is not already active.
+  # If function will be drawing to the default plotting device (the plot
+  # window), trigger a new page in that window now. This is needed to prevent
+  # the creation of an unnecessary blank plot by other `grid` functions in cases
+  # where the default device is not already active.
   if ("plot" %in% mode) { grid::grid.newpage() }
 
   # Create list of plot constants, from globals unless overridden by user
