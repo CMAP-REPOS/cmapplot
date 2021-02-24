@@ -11,7 +11,7 @@ finalize_plot(
   width = 670/72,
   height = 400/72,
   title_width = NULL,
-  caption_valign = c("bottom", "top"),
+  caption_align = 0,
   mode = c("plot"),
   filename = NULL,
   overwrite = FALSE,
@@ -22,6 +22,7 @@ finalize_plot(
   legend_shift = TRUE,
   debug = FALSE,
   use_cmap_aes = TRUE,
+  caption_valign,
   ...
 )
 }
@@ -42,12 +43,13 @@ pixel dimensions of raster outputs. Default is 9.31 inches wide (670/72) and
 
 \item{title_width}{Numeric, the width in inches for the title. If unspecified,
 use 25 percent of the total output width (per Comms guidance). If set to 0,
-the title column is eliminated, with the plot and (if present) the legend
-taking up the entire specified width and height.}
+the title column is eliminated and the caption, if present, is moved to
+below the plot.}
 
-\item{caption_valign}{Char, align the caption text at the top or the bottom of
-the available space between the title and bottom of image. This argument
-accepts abbreviations, too: \code{c("bottom", "b", "top", "t")}.}
+\item{caption_align}{Numeric, alignment of the caption text. When the caption
+is in the title column (when \code{title_width > 0}), 0 (the default) aligns
+text to bottom; 1 aligns top. When the caption is located below the plot, 0
+aligns left and 1 aligns right. 0.5 aligns center.}
 
 \item{mode}{Vector, the action(s) to be taken with the plot. View in R with
 \code{plot}, the default, or \code{window} (\code{window} only works on
@@ -85,13 +87,16 @@ plot. Defaults to \code{FALSE}.}
 CMAP default aesthetic settings for geoms (see
 \code{\link{apply_cmap_default_aes}}) for the present plot.}
 
-\item{...}{pass additional arguments to ggplot2's \code{\link[ggplot2]{theme}}
-function to override any elements of the default CMAP theme.}
+\item{caption_valign}{This is deprecated as of cmapplot 1.1.0 and will be
+removed in future releases. Replace with \code{caption_align} argument.}
+
+\item{...}{Pass additional arguments to ggplot2's \code{\link[ggplot2]{theme}}
+function to override any elements of the plot's theme when drawing.}
 }
 \value{
-This function invisibly returns the final plot as a gTree object. If
- stored (e.g. \code{g <- finalize_plot(...)}), the gTree can be drawn later
- with \code{grid} (e.g. \code{grid::grid.draw(g)}).
+This function invisibly returns the finished graphic as a gTree
+ object. If stored (e.g. \code{g <- finalize_plot(...)}), the gTree can be
+ drawn later with \code{grid} (e.g. \code{grid::grid.draw(g)}).
 }
 \description{
 Place a ggplot into a frame defined by CMAP design standards. It will align
