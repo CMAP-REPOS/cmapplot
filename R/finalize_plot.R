@@ -238,14 +238,14 @@ finalize_plot <- function(plot = NULL,
   # Build necessary grobs -----------------------------------------------------
   grobs <- list()
 
-  # Grob to fill behind output
+  # grob to fill behind output
   grobs$background <- grid::rectGrob(
     name = "background",
     gp = grid::gpar(fill = fill_bg,
                     col = fill_bg)
   )
 
-  # Top line
+  #  top line
   grobs$topline <- grid::linesGrob(
     name = "topline",
     default.units = "bigpts",
@@ -256,28 +256,28 @@ finalize_plot <- function(plot = NULL,
                     lwd = consts$lwd_topline / .lwd)
   )
 
-  # In traditional (horizontal) mode, create title and left-side caption boxes
+  # in traditional (horizontal) mode, create title and left-side caption boxes
   if(!vert_mode){
 
-    # Title textbox
+    # title textbox
     grobs$title <- gridtext::textbox_grob(
       name = "title",
       text = title,
       default.units = "bigpts",
-      # Set location down from top left corner
+      # set location down from top left corner
       x = 0,
       y = consts$height - consts$margin_title_to_top,
       hjust = 0,
       vjust = 1,
-      # Set dimensions
+      # set dimensions
       width = consts$title_width,
       maxheight = consts$height - consts$margin_title_to_top,
-      # Retract texbox size on left
+      # retract texbox size on left
       margin = grid::unit(c(0, 0, # top, right
                             consts$margin_title_b, # bottom
                             consts$margin_title_l), # left
                           "bigpts"),
-      # Set font aesthetic variables
+      # set font aesthetic variables
       gp = grid::gpar(fontsize=cmapplot_globals$fsize$L,
                       fontfamily=cmapplot_globals$font$strong$family,
                       fontface=cmapplot_globals$font$strong$face,
@@ -287,25 +287,25 @@ finalize_plot <- function(plot = NULL,
                           fill = NA)
     )
 
-    # Caption textbox
+    # caption textbox
     grobs$caption <- gridtext::textbox_grob(
       name = "caption",
       text = caption,
       default.units = "bigpts",
-      # Set location
+      # set location
       x = 0,
       y = 0,
       hjust = 0,
       vjust = 0,
-      # Set dimensions
+      # set dimensions
       width = consts$title_width,
       height = consts$height - consts$margin_title_to_top - safe_grobHeight(grobs$title),
-      # Retract texbox size on each side
+      # retract texbox size on each side
       margin = grid::unit(c(0, 0,  # top, right
                             consts$margin_caption_b,# bottom
                             consts$margin_title_l), # left
                           "bigpts"),
-      # Set aesthetic variables
+      # set aesthetic variables
       valign = caption_align,
       gp = grid::gpar(fontsize = cmapplot_globals$fsize$S,
                       fontfamily = cmapplot_globals$font$light$family,
@@ -317,27 +317,26 @@ finalize_plot <- function(plot = NULL,
     )
   }
 
-  # In vertical mode, and if caption exists, create bottom caption box (but no
-  # title)
+  # in vertical mode, and if caption exists, create bottom caption box (but no title)
   if(vert_mode & caption != "") {
     grobs$caption_bottom <- gridtext::textbox_grob(
       name = "caption_bottom",
       text = caption,
       default.units = "bigpts",
-      # Set location
+      # set location
       x = consts$title_width,
       y = 0,
       hjust = 0,
       vjust = 0,
-      # Set dimensions
+      # set dimensions
       width = consts$width - consts$title_width,
-      # Retract texbox size on each side
+      # retract texbox size on each side
       margin = grid::unit(c(0,                      # top
                             consts$margin_plot_r,   # right
                             consts$margin_caption_b,# bottom
                             consts$margin_plot_l),  # left
                           "bigpts"),
-      # Set aesthetic variables
+      # set aesthetic variables
       halign = caption_align,
       gp = grid::gpar(fontsize = cmapplot_globals$fsize$S,
                       fontfamily = cmapplot_globals$font$light$family,
@@ -349,7 +348,7 @@ finalize_plot <- function(plot = NULL,
     )
   }
 
-  # Calculate the height of the plotbox (area for legend and plot)
+  # calculate the height of the plotbox (area for legend and plot)
   consts$plotbox_height <- consts$height - consts$margin_topline_t -
                            consts$margin_legend_t - consts$margin_plot_b -
                            safe_grobHeight(grobs$caption_bottom)
@@ -367,9 +366,9 @@ finalize_plot <- function(plot = NULL,
     clip = "on"
   )
 
-  # Plot as grob (drawn into vp.plotbox)
+  # plot as grob (drawn into vp.plotbox)
   grobs$plot <- grid::grobTree(
-    # Use sub-fn to prepare plot for final plotting
+    # use subfn to prepare plot for final plotting
     prepare_plot(plot = plot,
                  consts = consts,
                  overrides = overrides,
@@ -383,13 +382,13 @@ finalize_plot <- function(plot = NULL,
 
   # Assemble finished graphic -----------------------------------------------------
 
-  # This do.call combines the list of grobs with the `name` argument and passes
+  # this do.call combines the list of grobs with the `name` argument and passes
   # that list on to the grobTree function.
   finished_graphic <- do.call(grobTree, c(grobs, name = "finished_graphic"))
 
   # Output the figure based on mode selected -----------------------------------
 
-  # First, do in-R drawing
+  # first, do in-R drawing
   for (this_mode in generics::intersect(mode, savetypes_print)) {
     draw_plot(finished_graphic = finished_graphic,
               width = width,
@@ -398,25 +397,25 @@ finalize_plot <- function(plot = NULL,
               mode = this_mode)
   }
 
-  # Second, export vectors
+  # second, export vectors
   for (this_mode in generics::intersect(mode, savetypes_vector)) {
 
-    # Construct arglist for drawing device
+    # construct arglist for drawing device
     arglist <- list(filename = filename,
                     width = width,
                     height = height)
 
-    # Export the plot
+    # export the plot
     save_plot(finished_graphic = finished_graphic,
               mode = this_mode,
               arglist = arglist,
               overwrite = overwrite)
   }
 
-  # Third, export rasters
+  # third, export rasters
   for (this_mode in generics::intersect(mode, savetypes_raster)) {
 
-    # Construct arglist for drawing device
+    # construct arglist for drawing device
     arglist <- list(filename = filename,
                     type = "cairo",
                     width = width,
@@ -424,14 +423,14 @@ finalize_plot <- function(plot = NULL,
                     units = "in",
                     res = ppi)
 
-    # Export the plot
+    # export the plot
     save_plot(finished_graphic = finished_graphic,
               mode = this_mode,
               arglist = arglist,
               overwrite = overwrite)
   }
 
-  # Finally, return plot as grob
+  # finally, return plot as grob
   invisible(finished_graphic)
 }
 
@@ -446,7 +445,7 @@ prepare_plot <- function(plot,
                          use_cmap_aes,
                          ...) {
 
-  # Override geom defaults -------------------------------------
+  # override geom defaults -------------------------------------
 
   if (use_cmap_aes) {
     # cache current defaults
@@ -457,25 +456,25 @@ prepare_plot <- function(plot,
     on.exit(set_default_aes(geom_defaults))
   }
 
-  # Preformat plot ---------------------------------------------
+  # preformat plot ---------------------------------------------
 
-  # The basics
+  # the basics
   plot <- plot + ggplot2::theme(
-    # Remove any in-plot titles
+    # remove any in-plot titles
     plot.title = element_blank(),
     plot.caption = element_blank(),
-    # Apply any extra `ggplot2::theme()` args
+    # apply any extra `ggplot2::theme()` args
     ...
   )
 
-  # Add debug rect around plot if in debug mode
+  # add debug rect around plot if in debug mode
   if (debug) {
     plot <- plot + ggplot2::theme(
       plot.background = element_rect(color = "red")
     )
   }
 
-  # Return plot as grob if no legend shift ---------------------
+  # return plot as grob if no legend shift ---------------------
 
   if (!legend_shift | is.null(ggpubr::get_legend(plot))) {
     return(ggplotGrob(plot))
@@ -483,7 +482,7 @@ prepare_plot <- function(plot,
 
   # Shift legend -----------------------------------------------
 
-  # Add debug rects around legend if in debug mode
+  # add debug rects around legend if in debug mode
   if (debug) {
     plot <- plot + ggplot2::theme(
       legend.background = element_rect(color = "red"),
@@ -524,7 +523,7 @@ prepare_plot <- function(plot,
   # Extract the legend
   legend <- ggpubr::get_legend(plot)
 
-  # Count the total number of "heights" in the legend (5 is standard for one
+  # count the total number of "heights" in the legend (5 is standard for one
   # legend, with each additional legend adding two additional height elements to
   # the total). Use this to determine the number of legends in the plot.
 
@@ -535,18 +534,18 @@ prepare_plot <- function(plot,
   # interior margins. These are the 4th legend height element and every second
   # one beyond that, up to the 4th-to-last legend height element.
 
-  # Determine if multilegend plot
+  # determine if multilegend plot
   if (number_of_legends > 1) {
-    # If multilegend plot, establish loop to change margins
+    # if multilegend plot, establish loop to change margins
     for (i in 1:(number_of_legends-1)) {
-      # E.g., for a 2-legend item, this modifies element 4
+      # e.g., for a 2-legend item, this modifies element 4
       margin_index <- 2*(i+1)
-      # Apply correct legend spacing
+      # apply correct legend spacing
       legend$heights[[margin_index]] <- grid::unit(margin_legend_i,"bigpts")
     }
   }
 
-  # Extract height of legend object within ggplot plot. For plots with only one
+  # extract height of legend object within ggplot plot. For plots with only one
   # legend, this returns the 3rd element, which is the height of the legend
   # component. For plots with two or more, it returns the sum of the heights of
   # every element from the third element to the third-to-last element, which
@@ -555,7 +554,7 @@ prepare_plot <- function(plot,
                                      "bigpts",
                                      valueOnly = TRUE)
 
-  # Calculate the height remaining for the plot
+  # calculate the height remaining for the plot
   plot_height <- consts$plotbox_height - legend_height - margin_legend_b
 
   # Assemble a combined grob
@@ -570,7 +569,7 @@ prepare_plot <- function(plot,
                          "bigpts")
   )
 
-  # Return the combined grob
+  # return the combined grob
   return(built)
 }
 
@@ -583,19 +582,19 @@ draw_plot <- function(finished_graphic,
                       fill_canvas,
                       mode){
 
-  # In window mode, open new drawing device
+  # in window mode, open new drawing device
   if (mode == "window") {
     grDevices::dev.new(width = width * 1.02,
                        height = height * 1.02,
                        noRStudioGD = TRUE)
   }
 
-  # Draw blank canvas
+  # draw blank canvas
   grid::grid.rect(gp = grid::gpar(fill = fill_canvas,
                                   col = fill_canvas)
   )
 
-  # Create and enter a viewport for drawing the finished_graphic.
+  # create and enter a viewport for drawing the finished_graphic.
   # this creates a drawing space in the center of the active device
   # that is the user-specified dimensions.
   grid::pushViewport(
@@ -607,11 +606,11 @@ draw_plot <- function(finished_graphic,
     )
   )
 
-  # Draw plot, exit centerframe
+  # draw plot, exit centerframe
   grid::grid.draw(finished_graphic)
   grid::popViewport()
 
-  # In window mode, reset device to default without closing window
+  # in window mode, reset device to default without closing window
   if (mode == "window") {
     grDevices::dev.next()
   }
@@ -628,19 +627,19 @@ save_plot <- function(finished_graphic,
 
   # Prepare some things -----------------------------------------------
 
-  # If filename does not contain correct extension, add it
+  # if filename does not contain correct extension, add it
   if (!(grepl(paste0("\\.", mode, "$"), arglist$filename))) {
     arglist$filename <- paste0(arglist$filename, ".", mode)
   }
 
-  # Construct pretty filename for messages
+  # construct pretty filename for messages
   fname <- stringr::str_trunc(arglist$filename, 50, "left")
 
 
-  # Add required cairo prefix to function name for pdf and ps (see `?cairo`)
+  # add required cairo prefix to function name for pdf and ps (see `?cairo`)
   mode <- ifelse (mode == "pdf" | mode == "ps", paste0("cairo_" , mode), mode)
 
-  # If file exists and overwrite == FALSE, do not write
+  # if file exists and overwrite == FALSE, do not write
   if (file.exists(arglist$filename) & !overwrite) {
     message(paste0(fname, ": SKIPPED (try `overwrite = TRUE`?)"))
     return()
@@ -649,15 +648,15 @@ save_plot <- function(finished_graphic,
   # Write to device -----------------------------------------------
   tryCatch(
     {
-      # Open the device, draw the plot, close the device
+      # open the device, draw the plot, close the device
       suppressWarnings(do.call(mode, arglist))
       grid::grid.draw(finished_graphic)
       dev.off()
 
-      # Notify
+      # notify
       message(paste0(fname, ": Export successful"))
 
-      # Return nothing
+      # return nothing
       NULL
     },
     error = function(cond) {
