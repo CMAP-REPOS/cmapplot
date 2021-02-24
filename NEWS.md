@@ -1,5 +1,5 @@
 # cmapplot 1.1.0
-PR #111 | February 22, 2020
+PR #111 | February 24, 2020
 
 This update primarily makes many changes to `finalize_plot()` to enable printing plots without the left-hand "title column" -- the area that contains the title and the caption. Most but not all changes are under the hood and should not impact the user. Those that will impact the user include:
 
