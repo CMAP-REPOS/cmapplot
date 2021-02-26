@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -76,6 +76,9 @@
       <a href="../articles/cookbook.html">A cookbook for cmapplot</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -704,7 +707,9 @@
   plot <span class="op">=</span> <span class="va">p</span>,
   title <span class="op">=</span> <span class="st">"Regional emissions by sector, 2015"</span>,
   caption <span class="op">=</span> <span class="st">"Source: Chicago Metropolitan Agency for Planning."</span>,
-  caption_valign <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span></code></pre></div>
+  caption_valign <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span>
+<span class="co">#&gt; Warning in finalize_plot(plot = p, title = "Regional emissions by sector, 2015", : The argument `caption_valign` is deprecated and will be removed in a future release.</span>
+<span class="co">#&gt;   Please update your code to use `caption_align` (with a value between 0-1) instead.</span></code></pre></div>
 <p><img src="cookbook_files/figure-html/donut-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div id="original-graphic-5" class="section level4">

@@ -86,7 +86,7 @@ drivers." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -124,6 +124,9 @@ drivers." />
       <a href="../articles/cookbook.html">A cookbook for cmapplot</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -168,7 +171,7 @@ drivers.</p>
   width <span class='op'>=</span> <span class='fl'>670</span><span class='op'>/</span><span class='fl'>72</span>,
   height <span class='op'>=</span> <span class='fl'>400</span><span class='op'>/</span><span class='fl'>72</span>,
   title_width <span class='op'>=</span> <span class='cn'>NULL</span>,
-  caption_valign <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"bottom"</span>, <span class='st'>"top"</span><span class='op'>)</span>,
+  caption_align <span class='op'>=</span> <span class='fl'>0</span>,
   mode <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"plot"</span><span class='op'>)</span>,
   filename <span class='op'>=</span> <span class='cn'>NULL</span>,
   overwrite <span class='op'>=</span> <span class='cn'>FALSE</span>,
@@ -179,6 +182,7 @@ drivers.</p>
   legend_shift <span class='op'>=</span> <span class='cn'>TRUE</span>,
   debug <span class='op'>=</span> <span class='cn'>FALSE</span>,
   use_cmap_aes <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  <span class='va'>caption_valign</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -209,14 +213,15 @@ pixel dimensions of raster outputs. Default is 9.31 inches wide (670/72) and
       <th>title_width</th>
       <td><p>Numeric, the width in inches for the title. If unspecified,
 use 25 percent of the total output width (per Comms guidance). If set to 0,
-the title column is eliminated, with the plot and (if present) the legend
-taking up the entire specified width and height.</p></td>
+the title column is eliminated and the caption, if present, is moved to
+below the plot.</p></td>
     </tr>
     <tr>
-      <th>caption_valign</th>
-      <td><p>Char, align the caption text at the top or the bottom of
-the available space between the title and bottom of image. This argument
-accepts abbreviations, too: <code><a href='https://rdrr.io/r/base/c.html'>c("bottom", "b", "top", "t")</a></code>.</p></td>
+      <th>caption_align</th>
+      <td><p>Numeric, alignment of the caption text. When the caption
+is in the title column (when <code>title_width &gt; 0</code>), 0 (the default) aligns
+text to bottom; 1 aligns top. When the caption is located below the plot, 0
+aligns left and 1 aligns right. 0.5 aligns center.</p></td>
     </tr>
     <tr>
       <th>mode</th>
@@ -273,17 +278,22 @@ CMAP default aesthetic settings for geoms (see
 <code><a href='cmap_default_aes.html'>apply_cmap_default_aes</a></code>) for the present plot.</p></td>
     </tr>
     <tr>
+      <th>caption_valign</th>
+      <td><p>This is deprecated as of cmapplot 1.1.0 and will be
+removed in future releases. Replace with <code>caption_align</code> argument.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
-      <td><p>pass additional arguments to ggplot2's <code><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></code>
-function to override any elements of the default CMAP theme.</p></td>
+      <td><p>Pass additional arguments to ggplot2's <code><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></code>
+function to override any elements of the plot's theme when drawing.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>This function invisibly returns the final plot as a gTree object. If
- stored (e.g. <code>g &lt;- finalize_plot(...)</code>), the gTree can be drawn later
- with <code>grid</code> (e.g. <code><a href='https://rdrr.io/r/grid/grid.draw.html'>grid::grid.draw(g)</a></code>).</p>
+    <p>This function invisibly returns the finished graphic as a gTree
+ object. If stored (e.g. <code>g &lt;- finalize_plot(...)</code>), the gTree can be
+ drawn later with <code>grid</code> (e.g. <code><a href='https://rdrr.io/r/grid/grid.draw.html'>grid::grid.draw(g)</a></code>).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
