@@ -21,8 +21,12 @@
 #'  5.56 inches tall (400/72), to match Comms specification for web graphics.
 #'@param title_width Numeric, the width in inches for the title. If unspecified,
 #'  use 25 percent of the total output width (per Comms guidance). If set to 0,
-#'  the title column is eliminated and the caption, if present, is moved to
-#'  below the plot.
+#'  the title is moved above the topline and the caption, if present, is moved
+#'  to below the plot.
+#'@param no_title Bool, set to \code{TRUE} if you do not want to include a
+#'  title in your outputted graphic. If set to \code{FALSE} (the default) and
+#'  \code{title} is left blank, your plot will output with title text \code{
+#'  "This plot needs a title"}.
 #'@param caption_align Numeric, alignment of the caption text. When the caption
 #'  is in the title column (when \code{title_width > 0}), 0 (the default) aligns
 #'  text to bottom; 1 aligns top. When the caption is located below the plot, 0
@@ -117,6 +121,7 @@ finalize_plot <- function(plot = NULL,
                           width = 670/72, # comms spec: 670px @ 72ppi
                           height = 400/72, # comms spec: 400px @ 72ppi
                           title_width = NULL, # if unspecified, default to width/4
+                          no_title = FALSE,
                           caption_align = 0,
                           mode = c("plot"),
                           filename = NULL,
@@ -214,14 +219,14 @@ finalize_plot <- function(plot = NULL,
     list(
       height = grid::convertUnit(unit(height, "in"), "bigpts", valueOnly = TRUE),
       width = grid::convertUnit(unit(width, "in"), "bigpts", valueOnly = TRUE),
-      title_width = grid::convertUnit(unit(title_width, "in"), "bigpts", valueOnly = TRUE),
-      margin_title_to_top = consts$margin_topline_t + consts$margin_title_t
+      title_width = grid::convertUnit(unit(title_width, "in"), "bigpts", valueOnly = TRUE)
     )
   )
 
-  # If title/caption unspecified, try to extract from plot
+  # If title/caption unspecified, try to extract from plot (unless the user has
+  # specified that there should not be a title using 'no_title = TRUE')
   input_title <- plot$labels$title
-  if (title == "") {
+  if (title == "" & !no_title) {
     if (!is.null(input_title)) {
       title <- input_title
     } else {
@@ -229,11 +234,23 @@ finalize_plot <- function(plot = NULL,
     }
   }
 
+  if (title != "" & no_title) {
+    title <- ""
+    message("Title was set to \"\" because 'no_title='TRUE''.")
+  }
+
   input_caption <- plot$labels$caption
   if (caption == "" & !is.null(input_caption)) {
     caption <- input_caption
   }
 
+  # If both the title and the caption are blank, but 'title_width' is nonzero,
+  # alert the user that they should set 'title_width=0' to remove unnecessary
+  # white space.
+
+  if (title == "" & caption == "" & title_width > 0) {
+    message("You can remove the unused white space to the left of your plot by setting 'title_Width=0'.")
+  }
 
   # Build necessary grobs -----------------------------------------------------
   grobs <- list()
@@ -243,17 +260,6 @@ finalize_plot <- function(plot = NULL,
     name = "background",
     gp = grid::gpar(fill = fill_bg,
                     col = fill_bg)
-  )
-
-  # Top line
-  grobs$topline <- grid::linesGrob(
-    name = "topline",
-    default.units = "bigpts",
-    x = c(0, consts$width),
-    y = consts$height - consts$margin_topline_t,
-    gp = grid::gpar(col = cmapplot_globals$colors$blackish,
-                    lineend = "butt",
-                    lwd = consts$lwd_topline / .lwd)
   )
 
   # In traditional (horizontal) mode, create title and left-side caption boxes
@@ -266,12 +272,12 @@ finalize_plot <- function(plot = NULL,
       default.units = "bigpts",
       # Set location down from top left corner
       x = 0,
-      y = consts$height - consts$margin_title_to_top,
+      y = consts$height - consts$margin_title_t - consts$margin_topline_t,
       hjust = 0,
       vjust = 1,
       # Set dimensions
       width = consts$title_width,
-      maxheight = consts$height - consts$margin_title_to_top,
+      maxheight = consts$height - consts$margin_title_t - consts$margin_topline_t,
       # Retract texbox size on left
       margin = grid::unit(c(0, 0, # top, right
                             consts$margin_title_b, # bottom
@@ -299,7 +305,8 @@ finalize_plot <- function(plot = NULL,
       vjust = 0,
       # Set dimensions
       width = consts$title_width,
-      height = consts$height - consts$margin_title_to_top - safe_grobHeight(grobs$title),
+      height = consts$height - consts$margin_title_t - consts$margin_topline_t -
+               safe_grobHeight(grobs$title),
       # Retract texbox size on each side
       margin = grid::unit(c(0, 0,  # top, right
                             consts$margin_caption_b,# bottom
@@ -317,9 +324,42 @@ finalize_plot <- function(plot = NULL,
     )
   }
 
-  # In vertical mode, and if caption exists, create bottom caption box (but no
-  # title)
-  if(vert_mode & caption != "") {
+  # In vertical mode, and if caption and/or title exist, create them
+  if(vert_mode) {
+
+    if (title != "") {
+    # Title textbox
+    grobs$title_top <- gridtext::textbox_grob(
+      name = "title_top",
+      text = title,
+      default.units = "bigpts",
+      # Set location down from top left corner
+      x = 0,
+      y = consts$height,
+      hjust = 0,
+      vjust = 1,
+      # Set dimensions
+      maxwidth = consts$width,
+      maxheight = consts$height/2,
+      # Retract texbox size on left
+      margin = grid::unit(c(consts$margin_title_t,  # top
+                            0,                      # right
+                            consts$margin_title_b,  # bottom
+                            consts$margin_title_l), # left
+                          "bigpts"),
+      # Set font aesthetic variables
+      gp = grid::gpar(fontsize=cmapplot_globals$fsize$L,
+                      fontfamily=cmapplot_globals$font$strong$family,
+                      fontface=cmapplot_globals$font$strong$face,
+                      lineheight=consts$leading_title,
+                      col=cmapplot_globals$colors$blackish),
+      box_gp = grid::gpar(col = ifelse(debug, "red", NA),
+                          fill = NA)
+    )
+
+  }
+
+    if (caption != "") {
     grobs$caption_bottom <- gridtext::textbox_grob(
       name = "caption_bottom",
       text = caption,
@@ -347,12 +387,24 @@ finalize_plot <- function(plot = NULL,
       box_gp = grid::gpar(col = ifelse(debug, "red", NA),
                           fill = NA)
     )
+    }
   }
 
+  # Top line
+  grobs$topline <- grid::linesGrob(
+    name = "topline",
+    default.units = "bigpts",
+    x = c(0, consts$width),
+    y = consts$height - consts$margin_topline_t - safe_grobHeight(grobs$title_top),
+    gp = grid::gpar(col = cmapplot_globals$colors$blackish,
+                    lineend = "butt",
+                    lwd = consts$lwd_topline / .lwd)
+  )
   # Calculate the height of the plotbox (area for legend and plot)
   consts$plotbox_height <- consts$height - consts$margin_topline_t -
                            consts$margin_legend_t - consts$margin_plot_b -
-                           safe_grobHeight(grobs$caption_bottom)
+                           safe_grobHeight(grobs$caption_bottom) -
+                           safe_grobHeight(grobs$title_top)
 
 
   # Build plotbox viewport

@@ -11,6 +11,7 @@ finalize_plot(
   width = 670/72,
   height = 400/72,
   title_width = NULL,
+  no_title = FALSE,
   caption_align = 0,
   mode = c("plot"),
   filename = NULL,
@@ -43,8 +44,13 @@ pixel dimensions of raster outputs. Default is 9.31 inches wide (670/72) and
 
 \item{title_width}{Numeric, the width in inches for the title. If unspecified,
 use 25 percent of the total output width (per Comms guidance). If set to 0,
-the title column is eliminated and the caption, if present, is moved to
-below the plot.}
+the title is moved above the topline and the caption, if present, is moved
+to below the plot.}
+
+\item{no_title}{Bool, set to \code{TRUE} if you do not want to include a
+title in your outputted graphic. If set to \code{FALSE} (the default) and
+\code{title} is left blank, your plot will output with title text \code{
+"This plot needs a title"}.}
 
 \item{caption_align}{Numeric, alignment of the caption text. When the caption
 is in the title column (when \code{title_width > 0}), 0 (the default) aligns
