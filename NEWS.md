@@ -1,3 +1,18 @@
+# cmapplot 1.1.1
+PR #115 | March 5, 2021
+
+This update builds on the vertical layout functionality implemented in update 1.1.0.
+
+* There is a new argument, `inherit`, that allows the user to specify whether cmapplot should attempt to inherit titles and/or captions from the underlying ggplot object.
+* The argument `title_width` has been renamed `sidebar_width` to better reflect its function.
+* Setting `sidebar_width = 0` now has the effect of shifting the title above the topline (rather than removing it altogether). If the user does not want a title on the vertical layout graphic, this can be achieved by leaving `title = ""`, the default, and (if relevant) specifying that `finalize_plot()` should not attempt to inherit a title from the underlying ggplot object.
+* The value `margin_title_l` has been replaced with `margin_sidebar_l`, which only affects horizontal layout graphics. The margin for titles and captions in the vertical layout is based on `margin_plot_l`.
+
+### Backward compatibility notes
+* In `finalize_plot()`, the argument `title_width` has been deprecated and will now issue a message alert (but will still work, for now). Please update your code to ues the new argument `sidebar_width`.
+* Any overrides using the deprecated value `margin_title_l` will no longer have any affect. Use `margin_sidebar_l` instead.
+
+
 # cmapplot 1.1.0
 PR #111 | February 24, 2020
 
@@ -12,7 +27,6 @@ Under-the-hood changes to `finalize_plot()` are documented in PR #111, specifica
 ### Backward compatibility notes
 Users who have written code with previous versions of cmapplot should note these known compatibility issues:
 * In `finalize_plot()`, the argument `caption_valign` has been deprecated and will now issue a message alert (but will still work, for now). Please update your code to ues the new argument `caption_align`.
-
 
 # cmapplot 1.0.4
 PR #110 | February 3, 2020
