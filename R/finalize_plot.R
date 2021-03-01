@@ -344,7 +344,7 @@ finalize_plot <- function(plot = NULL,
       # Retract texbox size on left
       margin = grid::unit(c(consts$margin_title_t,  # top
                             consts$margin_plot_r,   # right
-                            consts$margin_title_b,  # bottom
+                            0,                      # bottom
                             consts$margin_title_l), # left
                           "bigpts"),
       # Set font aesthetic variables
