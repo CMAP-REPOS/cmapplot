@@ -271,6 +271,7 @@ finalize_plot <- function(plot = NULL,
   # white space.
 
   if (title == "" & caption == "" & sidebar_width > 0) {
+    message("If it is unwanted, you can remove the unused white space to the left of your plot by setting `sidebar_width=0`. \nYou can increase the margins to the left of the plot by adjusting `margin_plot_l` using the `overrides` argument.")
   }
 
   # Build necessary grobs -----------------------------------------------------
@@ -302,7 +303,7 @@ finalize_plot <- function(plot = NULL,
       # Retract texbox size on left
       margin = grid::unit(c(0, 0, # top, right
                             consts$margin_title_b, # bottom
-                            consts$margin_title_l), # left
+                            consts$margin_sidebar_l), # left
                           "bigpts"),
       # Set font aesthetic variables
       gp = grid::gpar(fontsize=cmapplot_globals$fsize$L,
@@ -331,7 +332,7 @@ finalize_plot <- function(plot = NULL,
       # Retract texbox size on each side
       margin = grid::unit(c(0, 0,  # top, right
                             consts$margin_caption_b,# bottom
-                            consts$margin_title_l), # left
+                            consts$margin_sidebar_l), # left
                           "bigpts"),
       # Set aesthetic variables
       valign = caption_align,
@@ -366,7 +367,7 @@ finalize_plot <- function(plot = NULL,
       margin = grid::unit(c(consts$margin_title_t,  # top
                             consts$margin_plot_r,   # right
                             0,                      # bottom
-                            consts$margin_title_l), # left
+                            consts$margin_plot_l), # left
                           "bigpts"),
       # Set font aesthetic variables
       gp = grid::gpar(fontsize=cmapplot_globals$fsize$L,
