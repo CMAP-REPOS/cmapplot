@@ -11,7 +11,6 @@ finalize_plot(
   width = 670/72,
   height = 400/72,
   sidebar_width = NULL,
-  no_title = FALSE,
   caption_align = 0,
   mode = c("plot"),
   filename = NULL,
@@ -20,6 +19,7 @@ finalize_plot(
   fill_bg = "white",
   fill_canvas = "gray90",
   overrides = list(),
+  inherit = c("tc", "t", "c", "none"),
   legend_shift = TRUE,
   debug = FALSE,
   use_cmap_aes = TRUE,
@@ -47,11 +47,6 @@ pixel dimensions of raster outputs. Default is 9.31 inches wide (670/72) and
 unspecified, use 25 percent of the total output width (per Comms guidance).
 If set to 0, the title, if present, is moved above the topline and the
 caption, if present, is moved to below the plot.}
-
-\item{no_title}{Bool, set to \code{TRUE} if you do not want to include a
-title in your outputted graphic. If set to \code{FALSE} (the default) and
-\code{title} is left blank, your plot will output with title text \code{
-"This plot needs a title"}.}
 
 \item{caption_align}{Numeric, alignment of the caption text. When the caption
 is in the title column (when \code{sidebar_width > 0}), 0 (the default)
@@ -82,6 +77,14 @@ respectively.}
 \item{overrides}{Named list, overrides the default drawing attributes defined
 in \code{cmapplot_globals$consts} which are drawn by
 \code{\link{finalize_plot}}. Units are in bigpts (1/72 of an inch).}
+
+\item{inherit}{Char, a string of characters that represent which elements of
+the underlying ggplot object the function should attempt to inherit if
+unspecified. If left as default, the function will attempt to replace blanks
+titles and/or captions with those from the underlying plot object.
+Acceptable values are "t" (inherit title only), "c" (inherit caption only),
+"tc" (the default, inherit both title and caption), and "none" (inherit
+nothing).}
 
 \item{legend_shift}{Bool, \code{TRUE}, the default, attempts to align the
 legend all the way left (on top of the y axis labels) per CMAP design

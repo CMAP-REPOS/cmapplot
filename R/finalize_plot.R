@@ -23,10 +23,6 @@
 #'  unspecified, use 25 percent of the total output width (per Comms guidance).
 #'  If set to 0, the title, if present, is moved above the topline and the
 #'  caption, if present, is moved to below the plot.
-#'@param no_title Bool, set to \code{TRUE} if you do not want to include a
-#'  title in your outputted graphic. If set to \code{FALSE} (the default) and
-#'  \code{title} is left blank, your plot will output with title text \code{
-#'  "This plot needs a title"}.
 #'@param caption_align Numeric, alignment of the caption text. When the caption
 #'  is in the title column (when \code{sidebar_width > 0}), 0 (the default)
 #'  aligns text to bottom; 1 aligns top. When the caption is located below the
@@ -50,6 +46,13 @@
 #'@param overrides Named list, overrides the default drawing attributes defined
 #'  in \code{cmapplot_globals$consts} which are drawn by
 #'  \code{\link{finalize_plot}}. Units are in bigpts (1/72 of an inch).
+#'@param inherit Char, a string of characters that represent which elements of
+#'  the underlying ggplot object the function should attempt to inherit if
+#'  unspecified. If left as default, the function will attempt to replace blanks
+#'  titles and/or captions with those from the underlying plot object.
+#'  Acceptable values are "t" (inherit title only), "c" (inherit caption only),
+#'  "tc" (the default, inherit both title and caption), and "none" (inherit
+#'  nothing).
 #'@param legend_shift Bool, \code{TRUE}, the default, attempts to align the
 #'  legend all the way left (on top of the y axis labels) per CMAP design
 #'  standards. \code{FALSE} maintains the alignment used in the original plot.
@@ -123,7 +126,6 @@ finalize_plot <- function(plot = NULL,
                           width = 670/72, # comms spec: 670px @ 72ppi
                           height = 400/72, # comms spec: 400px @ 72ppi
                           sidebar_width = NULL, # if unspecified, default to width/4
-                          no_title = FALSE,
                           caption_align = 0,
                           mode = c("plot"),
                           filename = NULL,
@@ -132,6 +134,7 @@ finalize_plot <- function(plot = NULL,
                           fill_bg = "white",
                           fill_canvas = "gray90",
                           overrides = list(),
+                          inherit = c("tc","t","c","none"),
                           legend_shift = TRUE,
                           debug = FALSE,
                           use_cmap_aes = TRUE,
@@ -236,24 +239,30 @@ finalize_plot <- function(plot = NULL,
     )
   )
 
+  # Validate inheritance parameter, throw error if invalid
+  inherit <- match.arg(inherit)
+
+  # Create flags for caption and title inheritance
+  inherit_t <- TRUE
+  inherit_c <- TRUE
+
+  if (!grepl("t",inherit)) {
+    inherit_t <- FALSE
+  }
+
+  if (!grepl("c",inherit)) {
+    inherit_c <- FALSE
+  }
+
+
   # If title/caption unspecified, try to extract from plot (unless the user has
-  # specified that there should not be a title using 'no_title = TRUE')
+  # specified that this should not be inherited using the `inherit` argument)
   input_title <- plot$labels$title
-  if (title == "" & !no_title) {
-    if (!is.null(input_title)) {
-      title <- input_title
-    } else {
-      title <- "This plot needs a title"
-    }
+  if (title == "" & !is.null(input_title) & inherit_t) {
+    title <- input_title
   }
-
-  if (title != "" & no_title) {
-    title <- ""
-    message("Title was set to \"\" because 'no_title='TRUE''.")
-  }
-
   input_caption <- plot$labels$caption
-  if (caption == "" & !is.null(input_caption)) {
+  if (caption == "" & !is.null(input_caption) & inherit_c) {
     caption <- input_caption
   }
 
@@ -262,7 +271,6 @@ finalize_plot <- function(plot = NULL,
   # white space.
 
   if (title == "" & caption == "" & sidebar_width > 0) {
-    message("You can remove the unused white space to the left of your plot by setting 'sidebar_width=0'.")
   }
 
   # Build necessary grobs -----------------------------------------------------
@@ -281,7 +289,7 @@ finalize_plot <- function(plot = NULL,
     # Title textbox
     grobs$title <- gridtext::textbox_grob(
       name = "title",
-      text = title,
+      text = ifelse(title != "", title, "This plot needs a title"),
       default.units = "bigpts",
       # Set location down from top left corner
       x = 0,
