@@ -343,7 +343,7 @@ finalize_plot <- function(plot = NULL,
       maxheight = consts$height/2,
       # Retract texbox size on left
       margin = grid::unit(c(consts$margin_title_t,  # top
-                            0,                      # right
+                            consts$margin_plot_r,   # right
                             consts$margin_title_b,  # bottom
                             consts$margin_title_l), # left
                           "bigpts"),
