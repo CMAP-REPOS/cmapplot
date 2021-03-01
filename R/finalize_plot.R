@@ -19,18 +19,18 @@
 #'  the title. Units in inches, which interacts with \code{ppi} to define the
 #'  pixel dimensions of raster outputs. Default is 9.31 inches wide (670/72) and
 #'  5.56 inches tall (400/72), to match Comms specification for web graphics.
-#'@param title_width Numeric, the width in inches for the title. If unspecified,
-#'  use 25 percent of the total output width (per Comms guidance). If set to 0,
-#'  the title is moved above the topline and the caption, if present, is moved
-#'  to below the plot.
+#'@param sidebar_width Numeric, the width in inches for the sidebar. If
+#'  unspecified, use 25 percent of the total output width (per Comms guidance).
+#'  If set to 0, the title, if present, is moved above the topline and the
+#'  caption, if present, is moved to below the plot.
 #'@param no_title Bool, set to \code{TRUE} if you do not want to include a
 #'  title in your outputted graphic. If set to \code{FALSE} (the default) and
 #'  \code{title} is left blank, your plot will output with title text \code{
 #'  "This plot needs a title"}.
 #'@param caption_align Numeric, alignment of the caption text. When the caption
-#'  is in the title column (when \code{title_width > 0}), 0 (the default) aligns
-#'  text to bottom; 1 aligns top. When the caption is located below the plot, 0
-#'  aligns left and 1 aligns right. 0.5 aligns center.
+#'  is in the title column (when \code{sidebar_width > 0}), 0 (the default)
+#'  aligns text to bottom; 1 aligns top. When the caption is located below the
+#'  plot, 0 aligns left and 1 aligns right. 0.5 aligns center.
 #'@param mode Vector, the action(s) to be taken with the plot. View in R with
 #'  \code{plot}, the default, or \code{window} (\code{window} only works on
 #'  computers running Windows). Save using any of the following: \code{png},
@@ -60,6 +60,8 @@
 #'  \code{\link{apply_cmap_default_aes}}) for the present plot.
 #'@param caption_valign This is deprecated as of cmapplot 1.1.0 and will be
 #'  removed in future releases. Replace with \code{caption_align} argument.
+#'@param title_width This is deprecated as of cmapplot 1.1.1 and will be
+#'  removed in future releases. Replace with \code{sidebar_width} argument.
 #'@param ... Pass additional arguments to ggplot2's \code{\link[ggplot2]{theme}}
 #'  function to override any elements of the plot's theme when drawing.
 #'
@@ -120,7 +122,7 @@ finalize_plot <- function(plot = NULL,
                           caption = "",
                           width = 670/72, # comms spec: 670px @ 72ppi
                           height = 400/72, # comms spec: 400px @ 72ppi
-                          title_width = NULL, # if unspecified, default to width/4
+                          sidebar_width = NULL, # if unspecified, default to width/4
                           no_title = FALSE,
                           caption_align = 0,
                           mode = c("plot"),
@@ -134,6 +136,7 @@ finalize_plot <- function(plot = NULL,
                           debug = FALSE,
                           use_cmap_aes = TRUE,
                           caption_valign,
+                          title_width,
                           ...
                           ){
 
@@ -144,21 +147,31 @@ finalize_plot <- function(plot = NULL,
     plot <- ggplot2::last_plot()
   }
 
+
+  # Check deprecated variable `title_width`
+  if (!missing(title_width)) {
+    warning(paste(
+      "The argument `title_width` is deprecated and will be removed in a future release.",
+      "Please update your code to use `sidebar_width` instead.",
+      sep = "\n  "))
+    sidebar_width <- title_width
+    }
+
   # Set title_width to 25% of total width if unspecified.
   # Also force values to be between 0 and width/2.
-  if (is.null(title_width)) {
-    title_width <- width / 4
-  } else if (title_width < 0) {
-    message("`title_width` cannot be negative. Using 0 instead.")
-    title_width <- 0
-  } else if (title_width > width / 2) {
-    message("`title_width` exceeds 50% of `width`. Using `width/2` instead.")
-    title_width <- width / 2
+  if (is.null(sidebar_width)) {
+    sidebar_width <- width / 4
+  } else if (sidebar_width < 0) {
+    message("`sidebar_width` cannot be negative. Using 0 instead.")
+    sidebar_width <- 0
+  } else if (sidebar_width > width / 2) {
+    message("`sidebar_width` exceeds 50% of `width`. Using `width/2` instead.")
+    sidebar_width <- width / 2
   }
 
   # Create boolean for alternative "vertical" mode with no title and a bottom
-  # caption, used when title_width is 0.
-  vert_mode <- ifelse(title_width > 0, FALSE, TRUE)
+  # caption, used when sidebar_width is 0.
+  vert_mode <- ifelse(sidebar_width > 0, FALSE, TRUE)
 
   # Check deprecated variable `caption_valign`
   if (!missing(caption_valign)) {
@@ -219,7 +232,7 @@ finalize_plot <- function(plot = NULL,
     list(
       height = grid::convertUnit(unit(height, "in"), "bigpts", valueOnly = TRUE),
       width = grid::convertUnit(unit(width, "in"), "bigpts", valueOnly = TRUE),
-      title_width = grid::convertUnit(unit(title_width, "in"), "bigpts", valueOnly = TRUE)
+      sidebar_width = grid::convertUnit(unit(sidebar_width, "in"), "bigpts", valueOnly = TRUE)
     )
   )
 
@@ -244,12 +257,12 @@ finalize_plot <- function(plot = NULL,
     caption <- input_caption
   }
 
-  # If both the title and the caption are blank, but 'title_width' is nonzero,
-  # alert the user that they should set 'title_width=0' to remove unnecessary
+  # If both the title and the caption are blank, but 'sidebar_width' is nonzero,
+  # alert the user that they should set 'sidebar_width=0' to remove unnecessary
   # white space.
 
-  if (title == "" & caption == "" & title_width > 0) {
-    message("You can remove the unused white space to the left of your plot by setting 'title_Width=0'.")
+  if (title == "" & caption == "" & sidebar_width > 0) {
+    message("You can remove the unused white space to the left of your plot by setting 'sidebar_width=0'.")
   }
 
   # Build necessary grobs -----------------------------------------------------
@@ -276,7 +289,7 @@ finalize_plot <- function(plot = NULL,
       hjust = 0,
       vjust = 1,
       # Set dimensions
-      width = consts$title_width,
+      width = consts$sidebar_width,
       maxheight = consts$height - consts$margin_title_t - consts$margin_topline_t,
       # Retract texbox size on left
       margin = grid::unit(c(0, 0, # top, right
@@ -304,7 +317,7 @@ finalize_plot <- function(plot = NULL,
       hjust = 0,
       vjust = 0,
       # Set dimensions
-      width = consts$title_width,
+      width = consts$sidebar_width,
       height = consts$height - consts$margin_title_t - consts$margin_topline_t -
                safe_grobHeight(grobs$title),
       # Retract texbox size on each side
@@ -365,12 +378,12 @@ finalize_plot <- function(plot = NULL,
       text = caption,
       default.units = "bigpts",
       # Set location
-      x = consts$title_width,
+      x = consts$sidebar_width,
       y = 0,
       hjust = 0,
       vjust = 0,
       # Set dimensions
-      width = consts$width - consts$title_width,
+      width = consts$width - consts$sidebar_width,
       # Retract texbox size on each side
       margin = grid::unit(c(0,                      # top
                             consts$margin_plot_r,   # right
@@ -410,12 +423,12 @@ finalize_plot <- function(plot = NULL,
   # Build plotbox viewport
   vp.plotbox <- grid::viewport(
     name = "vp.plotbox",
-    x = consts$title_width + consts$margin_plot_l,
+    x = consts$sidebar_width + consts$margin_plot_l,
     y = safe_grobHeight(grobs$caption_bottom) + consts$margin_plot_b,
     just = c(0,0),
     default.units = "bigpts",
     height = consts$plotbox_height,
-    width = consts$width - consts$title_width - consts$margin_plot_r - consts$margin_plot_l,
+    width = consts$width - consts$sidebar_width - consts$margin_plot_r - consts$margin_plot_l,
     clip = "on"
   )
 

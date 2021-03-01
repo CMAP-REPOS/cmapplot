@@ -10,7 +10,7 @@ finalize_plot(
   caption = "",
   width = 670/72,
   height = 400/72,
-  title_width = NULL,
+  sidebar_width = NULL,
   no_title = FALSE,
   caption_align = 0,
   mode = c("plot"),
@@ -24,6 +24,7 @@ finalize_plot(
   debug = FALSE,
   use_cmap_aes = TRUE,
   caption_valign,
+  title_width,
   ...
 )
 }
@@ -42,10 +43,10 @@ the title. Units in inches, which interacts with \code{ppi} to define the
 pixel dimensions of raster outputs. Default is 9.31 inches wide (670/72) and
 5.56 inches tall (400/72), to match Comms specification for web graphics.}
 
-\item{title_width}{Numeric, the width in inches for the title. If unspecified,
-use 25 percent of the total output width (per Comms guidance). If set to 0,
-the title is moved above the topline and the caption, if present, is moved
-to below the plot.}
+\item{sidebar_width}{Numeric, the width in inches for the sidebar. If
+unspecified, use 25 percent of the total output width (per Comms guidance).
+If set to 0, the title, if present, is moved above the topline and the
+caption, if present, is moved to below the plot.}
 
 \item{no_title}{Bool, set to \code{TRUE} if you do not want to include a
 title in your outputted graphic. If set to \code{FALSE} (the default) and
@@ -53,9 +54,9 @@ title in your outputted graphic. If set to \code{FALSE} (the default) and
 "This plot needs a title"}.}
 
 \item{caption_align}{Numeric, alignment of the caption text. When the caption
-is in the title column (when \code{title_width > 0}), 0 (the default) aligns
-text to bottom; 1 aligns top. When the caption is located below the plot, 0
-aligns left and 1 aligns right. 0.5 aligns center.}
+is in the title column (when \code{sidebar_width > 0}), 0 (the default)
+aligns text to bottom; 1 aligns top. When the caption is located below the
+plot, 0 aligns left and 1 aligns right. 0.5 aligns center.}
 
 \item{mode}{Vector, the action(s) to be taken with the plot. View in R with
 \code{plot}, the default, or \code{window} (\code{window} only works on
@@ -95,6 +96,9 @@ CMAP default aesthetic settings for geoms (see
 
 \item{caption_valign}{This is deprecated as of cmapplot 1.1.0 and will be
 removed in future releases. Replace with \code{caption_align} argument.}
+
+\item{title_width}{This is deprecated as of cmapplot 1.1.1 and will be
+removed in future releases. Replace with \code{sidebar_width} argument.}
 
 \item{...}{Pass additional arguments to ggplot2's \code{\link[ggplot2]{theme}}
 function to override any elements of the plot's theme when drawing.}
