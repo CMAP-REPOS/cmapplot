@@ -403,36 +403,35 @@ finalize_plot <- function(plot = NULL,
                     lineend = "butt",
                     lwd = consts$lwd_topline / .lwd)
   )
+
   # Calculate the height of the plotbox (area for legend and plot)
   consts$plotbox_height <- consts$height - consts$margin_topline_t -
                            consts$margin_legend_t - consts$margin_plot_b -
                            safe_grobHeight(grobs$caption_bottom) -
                            safe_grobHeight(grobs$title_top)
 
-
-  # Build plotbox viewport
-  vp.plotbox <- grid::viewport(
-    name = "vp.plotbox",
-    x = consts$sidebar_width + consts$margin_plot_l,
-    y = safe_grobHeight(grobs$caption_bottom) + consts$margin_plot_b,
-    just = c(0,0),
-    default.units = "bigpts",
-    height = consts$plotbox_height,
-    width = consts$width - consts$sidebar_width - consts$margin_plot_r - consts$margin_plot_l,
-    clip = "on"
-  )
-
-  # Plot as grob (drawn into vp.plotbox)
+  # Plot as grob
   grobs$plot <- grid::grobTree(
     # Use sub-fn to prepare plot for final plotting
-    prepare_plot(plot = plot,
-                 consts = consts,
-                 overrides = overrides,
-                 legend_shift = legend_shift,
-                 debug = debug,
-                 use_cmap_aes = use_cmap_aes,
-                 ...),
-    vp = vp.plotbox,
+    prepare_plot(
+      plot = plot,
+      consts = consts,
+      overrides = overrides,
+      legend_shift = legend_shift,
+      debug = debug,
+      use_cmap_aes = use_cmap_aes,
+      ...),
+    # draw it into plotbox viewport
+    vp = grid::viewport(
+      name = "vp.plotbox",
+      x = consts$sidebar_width + consts$margin_plot_l,
+      y = safe_grobHeight(grobs$caption_bottom) + consts$margin_plot_b,
+      just = c(0,0),
+      default.units = "bigpts",
+      height = consts$plotbox_height,
+      width = consts$width - consts$sidebar_width - consts$margin_plot_r - consts$margin_plot_l,
+      clip = "on"
+      ),
     name = "plot"
   )
 
