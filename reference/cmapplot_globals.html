@@ -47,9 +47,9 @@
 
 
 <meta property="og:title" content="cmapplot global variables — cmapplot_globals" />
-<meta property="og:description" content="Expose a list of predefined variables for use by the cmapplot package and its
-users. List includes commonly used colors, font and font size specifications,
-and a list of constants which aid in drawing cmap-themed plots." />
+<meta property="og:description" content="A list of predefined variables for use by the cmapplot package and its users.
+It includes commonly used colors, font and font size specifications, and a
+list of constants which aid in drawing cmap-themed plots." />
 <meta property="og:image" content="https://cmap-repos.github.io/cmapplot/logo.png" />
 
 
@@ -151,9 +151,9 @@ and a list of constants which aid in drawing cmap-themed plots." />
     </div>
 
     <div class="ref-description">
-    <p>Expose a list of predefined variables for use by the cmapplot package and its
-users. List includes commonly used colors, font and font size specifications,
-and a list of constants which aid in drawing cmap-themed plots.</p>
+    <p>A list of predefined variables for use by the cmapplot package and its users.
+It includes commonly used colors, font and font size specifications, and a
+list of constants which aid in drawing cmap-themed plots.</p>
     </div>
 
     <pre class="usage"><span class='va'>cmapplot_globals</span></pre>
@@ -164,51 +164,61 @@ and a list of constants which aid in drawing cmap-themed plots.</p>
     <p>An object of class <code>list</code> of length 8.</p>
     <h2 class="hasAnchor" id="plot-constants"><a class="anchor" href="#plot-constants"></a>Plot Constants</h2>
 
-    <p><code>cmapplot_globals$consts</code> contains a list of
- default constants that set certain plot aesthetics. Units of all plot
- constants are "bigpts": 1/72 of an inch. Most plot constants are invoked
- (and can be overridden) in <code><a href='finalize_plot.html'>finalize_plot</a></code>: these are marked
+    <p>The only portion of these global variables of
+ interest to the user is <code>cmapplot_globals$consts</code>, a list of default
+ constants that set certain plot aesthetics. Units of all plot constants are
+ "bigpts": 1/72 of an inch. Most plot constants are invoked (and can be
+ overridden) in <code><a href='finalize_plot.html'>finalize_plot</a></code>: these are marked below with an
  <strong>F</strong>. Some are used/can be overridden in <code><a href='theme_cmap.html'>theme_cmap</a></code>:
  these are marked with <strong>T</strong>.</p>
 <p></p><ul>
-<li><p><code>lwd_strongline</code>: This stronger-width line is drawn vertically or
-   horizontally with the <code>hline, vline</code> args of <code><a href='theme_cmap.html'>theme_cmap()</a></code>. <strong>(T)</strong></p></li>
-<li><p><code>lwd_gridline</code>: This thinner-width line is drawn vertically or
-   horizontally with the <code>gridlines, axislines</code> args of <code><a href='theme_cmap.html'>theme_cmap()</a></code>. <strong>(T)</strong></p></li>
-<li><p><code>lwd_plotline</code>: The width of any lines drawn by geoms in the plot
-   (e.g. <code>geom_line</code>) but not explicitly sized by the geom's aesthetic. Implemented
-   by <code>finalize_plot</code> or by <code>apply_cmap_default_aes</code> but not overridable in
-   either context. (Modify by setting the size explicitly in the geom, but see
-   <code>gg_lwd_convert</code> first.)</p></li>
-<li><p><code>lwd_topline</code>: The width of the line above the plot and title. <strong>(F)</strong></p></li>
-<li><p><code>margin_topline_t</code>: The margin between the top edge of the
-   image and the top line. <strong>(F)</strong></p></li>
-<li><p><code>length_ticks</code>: The length of the axis ticks (if shown).<strong>(T)</strong></p></li>
-<li><p><code>margin_title_t</code>: The margin between the top line and the
-   title. <strong>(F)</strong></p></li>
-<li><p><code>margin_title_b</code>: The margin between the title and the caption. <strong>(F)</strong></p></li>
-<li><p><code>margin_caption_b</code>: The margin between the bottom of the <strong>(F)</strong>
-   caption and the bottom edge of the image.</p></li>
-<li><p><code>margin_legend_t</code>: The margin between the top line and the
-   plot box (i.e., the top of the legend). <strong>(F)</strong></p></li>
-<li><p><code>margin_legend_i</code>: The margin between legends (this only
-   applies in plots with two or more legends and does not affect legend
-   spacing on plots with single legends that have multiple rows). <strong>(T, F)</strong></p></li>
-<li><p><code>margin_legend_b</code>: The margin between the bottom of the legend
-   and the rest of the plot. <strong>(T, F)</strong></p></li>
-<li><p><code>margin_plot_b</code>: The margin between the bottom of the plot and
-   the bottom edge of the image. <strong>(F)</strong></p></li>
-<li><p><code>margin_title_l</code>: The margin between the left edge of the image
-   and the title. This also applies to the caption. Deducted from
-   <code>title_width</code>. <strong>(F)</strong></p></li>
-<li><p><code>margin_plot_l</code>: The margin between the left edge of the plot
-   and the title. This also applies to the caption. <strong>(F)</strong></p></li>
+<li><p><code>lwd_strongline</code>: This stronger-width line is drawn
+ vertically or horizontally with the <code>hline, vline</code> args of
+ <code><a href='theme_cmap.html'>theme_cmap()</a></code>. <strong>(T)</strong></p></li>
+<li><p><code>lwd_gridline</code>: This
+ thinner-width line is drawn vertically or horizontally with the
+ <code>gridlines, axislines</code> args of <code><a href='theme_cmap.html'>theme_cmap()</a></code>. <strong>(T)</strong></p></li>
+<li><p><code>lwd_plotline</code>: The width of any lines drawn by geoms in the plot (e.g.
+ <code>geom_line</code>) but not explicitly sized by the geom's aesthetic.
+ Implemented by <code>finalize_plot</code> or by <code>apply_cmap_default_aes</code> but
+ not overridable in either context. (Modify by setting the size explicitly in
+ the geom, but see <code>gg_lwd_convert</code> first.)</p></li>
+<li><p><code>lwd_topline</code>:
+ The width of the line above the plot. <strong>(F)</strong></p></li>
+<li><p><code>length_ticks</code>: The length of the axis ticks (if shown). <strong>(T)</strong></p></li>
+<li><p><code>margin_topline_t</code>: The margin between the top edge of the image
+ and the top line. <strong>(F)</strong></p></li>
+<li><p><code>margin_title_t</code>: The margin
+ between the top line and the title. <strong>(F)</strong></p></li>
+<li><p><code>margin_title_b</code>: The margin between the title and the caption when
+ both are drawn in the sidebar. <strong>(F)</strong></p></li>
+<li><p><code>margin_caption_b</code>:
+ The margin between the bottom of the caption and the bottom edge of the
+ image. <strong>(F)</strong></p></li>
+<li><p><code>margin_legend_t</code>: The margin between the top
+ line and the plot box (i.e., the top of the legend). <strong>(F)</strong></p></li>
+<li><p><code>margin_legend_i</code>: The margin between legends (this only applies in
+ plots with two or more legends and does not affect legend spacing on plots
+ with single legends that have multiple rows). <strong>(T, F)</strong></p></li>
+<li><p><code>margin_legend_b</code>: The margin between the bottom of the legend and the
+ rest of the plot. <strong>(T, F)</strong></p></li>
+<li><p><code>margin_plot_b</code>: The margin
+ between the bottom of the plot and the bottom edge of the image (or top of
+ caption). <strong>(F)</strong></p></li>
+<li><p><code>margin_sidebar_l</code>: The margin between the
+ left edge of the image and the title and caption, when the sidebar exists.
+ Deducted from <code>title_width</code>. <strong>(F)</strong></p></li>
+<li><p><code>margin_plot_l</code>:
+ The margin between the left edge of the plot and the sodebar. <strong>(F)</strong></p></li>
 <li><p><code>margin_plot_r</code>: The margin between the right edge of the plot
-   and the edge of the image. <strong>(F)</strong></p></li>
-<li><p><code>margin_panel_r</code>: Padding between the plot and its right-hand drawing
-   extent. Override this based on space needed for x axis labels. <strong>(T)</strong></p></li>
-<li><p><code>leading_title</code>: Text leading for Title text. <strong>(F)</strong></p></li>
-<li><p><code>leading_caption</code>: Text leading for Caption text. <strong>(F)</strong></p></li>
+ and the edge of the image. <strong>(F)</strong></p></li>
+<li><p><code>margin_panel_r</code>: Padding
+ between the plot and its right-hand drawing extent. Override this based on
+ space needed for x axis labels. <strong>(T)</strong></p></li>
+<li><p><code>leading_title</code>:
+ Text leading for Title text. <strong>(F)</strong></p></li>
+<li><p><code>leading_caption</code>: Text
+ leading for Caption text. <strong>(F)</strong></p></li>
 </ul>
 
 

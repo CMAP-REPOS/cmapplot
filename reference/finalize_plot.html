@@ -170,7 +170,7 @@ drivers.</p>
   caption <span class='op'>=</span> <span class='st'>""</span>,
   width <span class='op'>=</span> <span class='fl'>670</span><span class='op'>/</span><span class='fl'>72</span>,
   height <span class='op'>=</span> <span class='fl'>400</span><span class='op'>/</span><span class='fl'>72</span>,
-  title_width <span class='op'>=</span> <span class='cn'>NULL</span>,
+  sidebar_width <span class='op'>=</span> <span class='cn'>NULL</span>,
   caption_align <span class='op'>=</span> <span class='fl'>0</span>,
   mode <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"plot"</span><span class='op'>)</span>,
   filename <span class='op'>=</span> <span class='cn'>NULL</span>,
@@ -179,10 +179,12 @@ drivers.</p>
   fill_bg <span class='op'>=</span> <span class='st'>"white"</span>,
   fill_canvas <span class='op'>=</span> <span class='st'>"gray90"</span>,
   overrides <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  inherit <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"tc"</span>, <span class='st'>"t"</span>, <span class='st'>"c"</span>, <span class='st'>"none"</span><span class='op'>)</span>,
   legend_shift <span class='op'>=</span> <span class='cn'>TRUE</span>,
   debug <span class='op'>=</span> <span class='cn'>FALSE</span>,
   use_cmap_aes <span class='op'>=</span> <span class='cn'>TRUE</span>,
   <span class='va'>caption_valign</span>,
+  <span class='va'>title_width</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -210,18 +212,18 @@ pixel dimensions of raster outputs. Default is 9.31 inches wide (670/72) and
 5.56 inches tall (400/72), to match Comms specification for web graphics.</p></td>
     </tr>
     <tr>
-      <th>title_width</th>
-      <td><p>Numeric, the width in inches for the title. If unspecified,
-use 25 percent of the total output width (per Comms guidance). If set to 0,
-the title column is eliminated and the caption, if present, is moved to
-below the plot.</p></td>
+      <th>sidebar_width</th>
+      <td><p>Numeric, the width in inches for the sidebar. If
+unspecified, use 25 percent of the total output width (per Comms guidance).
+If set to 0, the title, if present, is moved above the topline and the
+caption, if present, is moved to below the plot.</p></td>
     </tr>
     <tr>
       <th>caption_align</th>
       <td><p>Numeric, alignment of the caption text. When the caption
-is in the title column (when <code>title_width &gt; 0</code>), 0 (the default) aligns
-text to bottom; 1 aligns top. When the caption is located below the plot, 0
-aligns left and 1 aligns right. 0.5 aligns center.</p></td>
+is in the title column (when <code>sidebar_width &gt; 0</code>), 0 (the default)
+aligns text to bottom; 1 aligns top. When the caption is located below the
+plot, 0 aligns left and 1 aligns right. 0.5 aligns center.</p></td>
     </tr>
     <tr>
       <th>mode</th>
@@ -261,6 +263,16 @@ in <code>cmapplot_globals$consts</code> which are drawn by
 <code>finalize_plot</code>. Units are in bigpts (1/72 of an inch).</p></td>
     </tr>
     <tr>
+      <th>inherit</th>
+      <td><p>Char, a string of characters that represent which elements of
+the underlying ggplot object the function should attempt to inherit if not
+specified in this function. If left as default, the function will attempt to
+replace blank titles and captions with those from the underlying plot
+object. Acceptable values are "t" (inherit title only), "c" (inherit caption
+only), "tc" (the default, inherit both title and caption), and "none"
+(inherit nothing).</p></td>
+    </tr>
+    <tr>
       <th>legend_shift</th>
       <td><p>Bool, <code>TRUE</code>, the default, attempts to align the
 legend all the way left (on top of the y axis labels) per CMAP design
@@ -281,6 +293,11 @@ CMAP default aesthetic settings for geoms (see
       <th>caption_valign</th>
       <td><p>This is deprecated as of cmapplot 1.1.0 and will be
 removed in future releases. Replace with <code>caption_align</code> argument.</p></td>
+    </tr>
+    <tr>
+      <th>title_width</th>
+      <td><p>This is deprecated as of cmapplot 1.1.1 and will be removed
+in future releases. Replace with <code>sidebar_width</code> argument.</p></td>
     </tr>
     <tr>
       <th>...</th>
