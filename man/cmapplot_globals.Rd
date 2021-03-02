@@ -11,58 +11,55 @@ An object of class \code{list} of length 8.
 cmapplot_globals
 }
 \description{
-Expose a list of predefined variables for use by the cmapplot package and its
-users. List includes commonly used colors, font and font size specifications,
-and a list of constants which aid in drawing cmap-themed plots.
+A list of predefined variables for use by the cmapplot package and its users.
+It includes commonly used colors, font and font size specifications, and a
+list of constants which aid in drawing cmap-themed plots.
 }
 \section{Plot Constants}{
- \code{cmapplot_globals$consts} contains a list of
- default constants that set certain plot aesthetics. Units of all plot
- constants are "bigpts": 1/72 of an inch. Most plot constants are invoked
- (and can be overridden) in \code{\link{finalize_plot}}: these are marked
+ The only portion of these global variables of
+ interest to the user is \code{cmapplot_globals$consts}, a list of default
+ constants that set certain plot aesthetics. Units of all plot constants are
+ "bigpts": 1/72 of an inch. Most plot constants are invoked (and can be
+ overridden) in \code{\link{finalize_plot}}: these are marked below with an
  \strong{F}. Some are used/can be overridden in \code{\link{theme_cmap}}:
  these are marked with \strong{T}.
 
- \itemize{
-   \item \code{lwd_strongline}: This stronger-width line is drawn vertically or
-   horizontally with the \code{hline, vline} args of \code{theme_cmap()}. \strong{(T)}
-   \item \code{lwd_gridline}: This thinner-width line is drawn vertically or
-   horizontally with the \code{gridlines, axislines} args of \code{theme_cmap()}. \strong{(T)}
-   \item \code{lwd_plotline}: The width of any lines drawn by geoms in the plot
-   (e.g. \code{geom_line}) but not explicitly sized by the geom's aesthetic. Implemented
-   by \code{finalize_plot} or by \code{apply_cmap_default_aes} but not overridable in
-   either context. (Modify by setting the size explicitly in the geom, but see
-   \code{gg_lwd_convert} first.)
-   \item \code{lwd_topline}: The width of the line above the plot and title. \strong{(F)}
-   \item \code{margin_topline_t}: The margin between the top edge of the
-   image and the top line. \strong{(F)}
-   \item \code{length_ticks}: The length of the axis ticks (if shown).\strong{(T)}
-   \item \code{margin_title_t}: The margin between the top line and the
-   title. \strong{(F)}
-   \item \code{margin_title_b}: The margin between the title and the caption. \strong{(F)}
-   \item \code{margin_caption_b}: The margin between the bottom of the \strong{(F)}
-   caption and the bottom edge of the image.
-   \item \code{margin_legend_t}: The margin between the top line and the
-   plot box (i.e., the top of the legend). \strong{(F)}
-   \item \code{margin_legend_i}: The margin between legends (this only
-   applies in plots with two or more legends and does not affect legend
-   spacing on plots with single legends that have multiple rows). \strong{(T, F)}
-   \item \code{margin_legend_b}: The margin between the bottom of the legend
-   and the rest of the plot. \strong{(T, F)}
-   \item \code{margin_plot_b}: The margin between the bottom of the plot and
-   the bottom edge of the image. \strong{(F)}
-   \item \code{margin_title_l}: The margin between the left edge of the image
-   and the title. This also applies to the caption. Deducted from
-   \code{title_width}. \strong{(F)}
-   \item \code{margin_plot_l}: The margin between the left edge of the plot
-   and the title. This also applies to the caption. \strong{(F)}
-   \item \code{margin_plot_r}: The margin between the right edge of the plot
-   and the edge of the image. \strong{(F)}
-   \item \code{margin_panel_r}: Padding between the plot and its right-hand drawing
-   extent. Override this based on space needed for x axis labels. \strong{(T)}
-   \item \code{leading_title}: Text leading for Title text. \strong{(F)}
-   \item \code{leading_caption}: Text leading for Caption text. \strong{(F)}
- }
+ \itemize{ \item \code{lwd_strongline}: This stronger-width line is drawn
+ vertically or horizontally with the \code{hline, vline} args of
+ \code{theme_cmap()}. \strong{(T)} \item \code{lwd_gridline}: This
+ thinner-width line is drawn vertically or horizontally with the
+ \code{gridlines, axislines} args of \code{theme_cmap()}. \strong{(T)} \item
+ \code{lwd_plotline}: The width of any lines drawn by geoms in the plot (e.g.
+ \code{geom_line}) but not explicitly sized by the geom's aesthetic.
+ Implemented by \code{finalize_plot} or by \code{apply_cmap_default_aes} but
+ not overridable in either context. (Modify by setting the size explicitly in
+ the geom, but see \code{gg_lwd_convert} first.) \item \code{lwd_topline}:
+ The width of the line above the plot. \strong{(F)} \item
+ \code{length_ticks}: The length of the axis ticks (if shown). \strong{(T)}
+ \item \code{margin_topline_t}: The margin between the top edge of the image
+ and the top line. \strong{(F)} \item \code{margin_title_t}: The margin
+ between the top line and the title. \strong{(F)} \item
+ \code{margin_title_b}: The margin between the title and the caption when
+ both are drawn in the sidebar. \strong{(F)} \item \code{margin_caption_b}:
+ The margin between the bottom of the caption and the bottom edge of the
+ image. \strong{(F)} \item \code{margin_legend_t}: The margin between the top
+ line and the plot box (i.e., the top of the legend). \strong{(F)} \item
+ \code{margin_legend_i}: The margin between legends (this only applies in
+ plots with two or more legends and does not affect legend spacing on plots
+ with single legends that have multiple rows). \strong{(T, F)} \item
+ \code{margin_legend_b}: The margin between the bottom of the legend and the
+ rest of the plot. \strong{(T, F)} \item \code{margin_plot_b}: The margin
+ between the bottom of the plot and the bottom edge of the image (or top of
+ caption). \strong{(F)} \item \code{margin_sidebar_l}: The margin between the
+ left edge of the image and the title and caption, when the sidebar exists.
+ Deducted from \code{title_width}. \strong{(F)} \item \code{margin_plot_l}:
+ The margin between the left edge of the plot and the sodebar. \strong{(F)}
+ \item \code{margin_plot_r}: The margin between the right edge of the plot
+ and the edge of the image. \strong{(F)} \item \code{margin_panel_r}: Padding
+ between the plot and its right-hand drawing extent. Override this based on
+ space needed for x axis labels. \strong{(T)} \item \code{leading_title}:
+ Text leading for Title text. \strong{(F)} \item \code{leading_caption}: Text
+ leading for Caption text. \strong{(F)} }
 }
 
 \keyword{datasets}

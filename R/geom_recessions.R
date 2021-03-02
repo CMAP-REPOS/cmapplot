@@ -441,7 +441,7 @@ update_recessions <- function(url = NULL, quietly = FALSE){
   }
 
   if (is_null(url)) {
-    url <- "https://www.nber.org/cycles/NBER%20chronology_062020.xlsx"
+    url <- "https://www.nber.org/sites/default/files/2021-01/NBER%20chronology_062020.xlsx"
   }
 
   # locally bind variable names

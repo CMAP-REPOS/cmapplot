@@ -10,7 +10,7 @@ finalize_plot(
   caption = "",
   width = 670/72,
   height = 400/72,
-  title_width = NULL,
+  sidebar_width = NULL,
   caption_align = 0,
   mode = c("plot"),
   filename = NULL,
@@ -19,10 +19,12 @@ finalize_plot(
   fill_bg = "white",
   fill_canvas = "gray90",
   overrides = list(),
+  inherit = c("tc", "t", "c", "none"),
   legend_shift = TRUE,
   debug = FALSE,
   use_cmap_aes = TRUE,
   caption_valign,
+  title_width,
   ...
 )
 }
@@ -41,15 +43,15 @@ the title. Units in inches, which interacts with \code{ppi} to define the
 pixel dimensions of raster outputs. Default is 9.31 inches wide (670/72) and
 5.56 inches tall (400/72), to match Comms specification for web graphics.}
 
-\item{title_width}{Numeric, the width in inches for the title. If unspecified,
-use 25 percent of the total output width (per Comms guidance). If set to 0,
-the title column is eliminated and the caption, if present, is moved to
-below the plot.}
+\item{sidebar_width}{Numeric, the width in inches for the sidebar. If
+unspecified, use 25 percent of the total output width (per Comms guidance).
+If set to 0, the title, if present, is moved above the topline and the
+caption, if present, is moved to below the plot.}
 
 \item{caption_align}{Numeric, alignment of the caption text. When the caption
-is in the title column (when \code{title_width > 0}), 0 (the default) aligns
-text to bottom; 1 aligns top. When the caption is located below the plot, 0
-aligns left and 1 aligns right. 0.5 aligns center.}
+is in the title column (when \code{sidebar_width > 0}), 0 (the default)
+aligns text to bottom; 1 aligns top. When the caption is located below the
+plot, 0 aligns left and 1 aligns right. 0.5 aligns center.}
 
 \item{mode}{Vector, the action(s) to be taken with the plot. View in R with
 \code{plot}, the default, or \code{window} (\code{window} only works on
@@ -76,6 +78,14 @@ respectively.}
 in \code{cmapplot_globals$consts} which are drawn by
 \code{\link{finalize_plot}}. Units are in bigpts (1/72 of an inch).}
 
+\item{inherit}{Char, a string of characters that represent which elements of
+the underlying ggplot object the function should attempt to inherit if not
+specified in this function. If left as default, the function will attempt to
+replace blank titles and captions with those from the underlying plot
+object. Acceptable values are "t" (inherit title only), "c" (inherit caption
+only), "tc" (the default, inherit both title and caption), and "none"
+(inherit nothing).}
+
 \item{legend_shift}{Bool, \code{TRUE}, the default, attempts to align the
 legend all the way left (on top of the y axis labels) per CMAP design
 standards. \code{FALSE} maintains the alignment used in the original plot.}
@@ -89,6 +99,9 @@ CMAP default aesthetic settings for geoms (see
 
 \item{caption_valign}{This is deprecated as of cmapplot 1.1.0 and will be
 removed in future releases. Replace with \code{caption_align} argument.}
+
+\item{title_width}{This is deprecated as of cmapplot 1.1.1 and will be removed
+in future releases. Replace with \code{sidebar_width} argument.}
 
 \item{...}{Pass additional arguments to ggplot2's \code{\link[ggplot2]{theme}}
 function to override any elements of the plot's theme when drawing.}

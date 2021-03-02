@@ -59,9 +59,9 @@ As you are preparing the plot, you will likely want to view it within R. Do this
 
 ```{r finalize1, fig.width=11, out.width="100%"}
 finalize_plot(plot = p,
-              title = "Annual unlinked passenger trips (in millions).",
+              title = "Annual unlinked passenger trips (in millions)",
               caption = "Source: Chicago Metropolitan Agency for Planning
-                analysis of Regional Transportation Authority data.")
+                analysis of Regional Transportation Authority data")
 ```
 
 ### Exporting a plot
@@ -76,15 +76,15 @@ Some additional notes:
 
 - If a file with the name specified already exists in the specified directory, it will not be overwritten unless the user sets `overwrite = TRUE`.
 
-- When naming your exports, you do not need to include the extension (e.g., `"my_chart"`). `finalize_plot()` will automatically add the appropriate extension to each of your exported files (e.g., `"my_chart.pdf"` and `"my_chart.png"`). This is especially recommended if you're specifying multiple export modes in the same call.
+- When naming your exports, you may but do not need to include the extension (e.g., `filename = "my_chart"`). The function will automatically add the appropriate extension to each of your exported files (e.g., `"my_chart.pdf"`, `"my_chart.png"`). Leaving off the extension is recommended if you're specifying multiple export modes in the same call.
 
 <!-- The following code block is NOT evaluated, but its source code is displayed in order to demonstrate usage of the mode and filename parameters. -->
 ```{r finalize2-forshow, eval=FALSE, echo=TRUE}
 # Finalize and export plot to PNG and PDF
 finalize_plot(plot = p,
-              title = "Annual unlinked passenger trips (in millions).",
+              title = "Annual unlinked passenger trips (in millions)",
               caption = "Source: Chicago Metropolitan Agency for Planning
-                analysis of Regional Transportation Authority data.",
+                analysis of Regional Transportation Authority data",
               mode = c("png", "pdf"),
               filename = "finalized_plot")
 ```
@@ -92,93 +92,112 @@ finalize_plot(plot = p,
 <!-- The next code block IS evaluated to generate the graphic, but its source code is hidden because it does not demonstrate usage of the mode or filename parameters. -->
 ```{r finalize2, eval=TRUE, echo=FALSE, message=FALSE}
 finalize_plot(plot = p,
-              title = "Annual unlinked passenger trips (in millions).",
+              title = "Annual unlinked passenger trips (in millions)",
               caption = "Source: Chicago Metropolitan Agency for Planning
-                analysis of Regional Transportation Authority data.")
+                analysis of Regional Transportation Authority data")
 ```
 
 
-## Advanced customization
+## Basic customization
 
 While `finalize_plot()` can be run successfully with very few arguments, the function allows many further customizations, a number of which are described here.
 
-### Title and caption formatting
+### Top-level position adjustments
 
-The title and caption blocks take HTML formatting, so you can manually set line breaks and font formatting.
+In addition to setting the plot's `height` and `width`, `finalize_plot()` has a number of top-level arguments that impact the final layout. For example, you can change the width of the sidebar, alter caption alignment, or change the graphic's background color. Changing the background color can be helpful if you know that the graphic will eventually be placed on an inked page.
 
 ```{r finalize3, message=FALSE}
+# A modified finalized plot
+finalize_plot(plot = p,
+              title = "Annual unlinked passenger trips (in millions)",
+              caption = "Source: Chicago Metropolitan Agency for Planning
+                analysis of Regional Transportation Authority data",
+              sidebar_width = 1.8,
+              caption_align = 1,
+              fill_bg = "cornsilk")
+```
+
+### Finalizing a plot with no sidebar
+
+One special case of a top-level position adjustment is removing the sidebar altogether by setting `sidebar_width = 0`. This is generally preferred when creating graphics to embed in a Word/PDF report (as opposed to a web page or presentation slide). Titles and captions, if specified, are moved to above and below the plot element, respectively. Note that this has an impact on what margins are drawn where. See the section [Many, many margins] for more on this.
+
+```{r finalize4, message=FALSE}
+# A finalized line graph, with no sidebar
+finalize_plot(plot = p,
+              title = "Annual unlinked passenger trips (in millions)",
+              caption = "Source: Chicago Metropolitan Agency for Planning
+                analysis of Regional Transportation Authority data",
+              sidebar_width = 0)
+```
+
+### Title and caption formatting
+
+The title and caption blocks take HTML formatting tags, which you can use to manually set line breaks and apply other font formatting.
+
+```{r finalize5, message=FALSE}
 # A finalized line graph, with text tweaks
 finalize_plot(plot = p,
-              title = "Annual <br> unlinked passenger trips <br> (in millions).",
+              title = "Annual <br> unlinked passenger trips <br> (in millions)",
               caption = "Source: Chicago Metropolitan Agency for Planning
-                analysis of <i>Regional Transportation Authority</i> data.")
+                analysis of <i>Regional Transportation Authority</i> data")
 ```
+
+## Advanced customization 
 
 ### Using debug mode to fine-tune your plot
 
-Default values in `finalize_plot()` attempt to reflect CMAP design standards, but users can also manually adjust various elements of the finalized plot. The easiest way to identify current positions and how they relate to other objects within the finalized plot object is to set `debug = TRUE`:
-
-```{r finalize4, message=FALSE}
-# A debugged finalized plot
-finalize_plot(plot = p,
-              title = "Annual unlinked passenger trips (in millions).",
-              caption = "Source: Chicago Metropolitan Agency for Planning
-                analysis of Regional Transportation Authority data.",
-              debug = TRUE)
-```
-
-### Top-level position adjustments
-
-In addition to setting the plot's `height` and `width`, `finalize_plot()` has a number of top-level arguments that impact the final layout. With debug on, we can easily see the effects of various adjustments, such as changing the width of the title and caption (`title_width`), altering the alignment of the caption (`caption_align`), or keeping the legend alignment of the original plot (`legend_shift`). Note that with `legend_shift = FALSE`, `finalize_plot()` does not separate the legend from the plot, as indicated by the debug boxes. 
-
-```{r finalize5, message=FALSE}
-# A debugged and modified finalized plot
-finalize_plot(plot = p,
-              title = "Annual unlinked passenger trips (in millions).",
-              caption = "Source: Chicago Metropolitan Agency for Planning
-                analysis of Regional Transportation Authority data.",
-              title_width = 1.8,
-              caption_align = 1,
-              legend_shift = FALSE,
-              debug = TRUE)
-```
-
-### Exporting a graph with no title
-
-One special case of the top-level position adjustments is the elimination of the title and caption altogether. This is generally preferred when creating graphics to embed in a Word/PDF report (as opposed to a web page or presentation slide). By setting `title_width = 0`, you can export a graph without the left title-caption column. If a caption is specified, it is moved below the plot element.
-
-Note that in this situation, the constant `margin_title_l` is no longer relevant; `margin_plot_l` is now the margin between the left side of the image and the beginning of the plot. (See the next section for more details about these constants.)
+`finalize_plot()` has a built-in visual debugging tool that helps the user identify the positions of various elements of the finished graphic and how they relate to one another. Setting `debug = TRUE` will draw outlines around every rectangular "grob" in the graphic:
 
 ```{r finalize6, message=FALSE}
-# A finalized line graph, with no title or caption
+# A debugged finalized plot
 finalize_plot(plot = p,
+              title = "Annual unlinked passenger trips (in millions)",
               caption = "Source: Chicago Metropolitan Agency for Planning
-                analysis of Regional Transportation Authority data.",
-              title_width = 0)
+                analysis of Regional Transportation Authority data",
+              debug = TRUE)
 ```
 
 ### Overriding plotting constants
 
-Any of the attributes defined in `cmapplot_globals$consts` can be changed by passing a named list to the `overrides` arguments. For example, the chart below uses the `overrides` argument to modify the margin below the title (`margin_title_b`), the margin to the left of the title and the caption (`margin_title_l`), and the margin above the legend (`margin_legend_t`).
+Default values in `finalize_plot()` attempt to reflect CMAP design standards using constants defined in `cmapplot_globals$consts`. Users can manually adjust these constants by passing a named list to the `overrides` argument. For example, the chart below uses `overrides` to modify the margin below the title (`margin_title_b`), the margin to the left of the sidebar (`margin_sidebar_l`), and the margin above the legend (`margin_legend_t`).
 
 The [Many, many margins] section of this article describes most of these `consts` visually. To learn more about all possible overrides, see `?cmapplot_globals`.
 
 ```{r finalize7, message=FALSE}
 # A finalized plot with some formatting overrides
 finalize_plot(plot = p,
-              title = "Annual unlinked passenger trips (in millions).",
+              title = "Annual unlinked passenger trips (in millions)",
               caption = "Source: Chicago Metropolitan Agency for Planning
-                analysis of Regional Transportation Authority data.",
-              caption_align = 1,
+                analysis of Regional Transportation Authority data",
               debug = TRUE,
               overrides = list(margin_title_b = 30, 
-                               margin_title_l = 10,
+                               margin_sidebar_l = 10,
                                margin_legend_t = 15))
+```
+
+### Unshifting the legend
+
+By default, `finalize_plot()` will attempt to extract legend from the ggplot and draw it separately. This allows for justifying the legend to the left edge of the plotting area (`ggplot2` only allows the legend to left-justify to the y axis). If this attempted shift is unwanted or results in an error, the legend alignment of the original plot can be kept by setting `legend_shift = FALSE`. Note that in this situation, the debug boxes indicate that `finalize_plot()` has not separated the legend from the plot.
+
+```{r finalize8, message=FALSE}
+# A finalized plot with an un-modified legend
+finalize_plot(plot = p,
+              title = "Annual unlinked passenger trips (in millions)",
+              caption = "Source: Chicago Metropolitan Agency for Planning
+                analysis of Regional Transportation Authority data",
+              debug = TRUE,
+              legend_shift = FALSE)
 ```
 
 ### Many, many margins
 
-The chart below includes a visual representation of many of the possible uses of `override`: 
-<img src="./../man/figures/margins.png" width="100%" style="display: block; margin: auto;"/>
+There is a fairly long list of possible margins that can be customized using the `overrides` argument of `finalize_plot()`. You can read more about the available options for customization in `?cmapplot_globals`.
 
-You can also read more about all the available options for customization in `?cmapplot_globals`.
+Here, the margins are visualized as they impact a finalized plot that has a sidebar:
+
+<img src="./../man/figures/margins1.png" width="100%" style="display: block; margin: auto;"/>
+
+Here, the same margins are visualized as they impact a finalized plot with no sidebar:
+
+<img src="./../man/figures/margins2.png" width="100%" style="display: block; margin: auto;"/>
+
