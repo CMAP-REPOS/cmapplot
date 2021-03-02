@@ -24,10 +24,6 @@ reference:
   - starts_with("geom_")
   - cmap_default_aes
   - integer_breaks
-  - gg_lwd_convert
-  - update_recessions
-  - cmapplot_globals
-  - customproto
 - title: Color Palettes and Gradients
 - contents:
   - starts_with("viz_")
@@ -43,6 +39,12 @@ reference:
   - traded_emp_by_race
   - transit_ridership
   - vehicle_ownership
+- title: Lesser used objects
+- contents:
+  - cmapplot_globals
+  - gg_lwd_convert
+  - update_recessions
+  - customproto
 
 articles:
 - title: Articles

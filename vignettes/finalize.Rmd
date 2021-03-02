@@ -99,7 +99,7 @@ finalize_plot(plot = p,
 ```
 
 
-## Customization
+## Basic customization
 
 While `finalize_plot()` can be run successfully with very few arguments, the function allows many further customizations, a number of which are described here.
 
@@ -143,7 +143,7 @@ finalize_plot(plot = p,
                 analysis of <i>Regional Transportation Authority</i> data")
 ```
 
-# Advanced customization 
+## Advanced customization 
 
 ### Using debug mode to fine-tune your plot
 
