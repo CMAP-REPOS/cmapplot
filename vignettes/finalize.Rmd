@@ -19,8 +19,7 @@ knitr::opts_chunk$set(
 )
 
 library(tidyverse)
-#library(cmapplot)
-devtools::load_all()
+library(cmapplot)
 
 # clean up dataset
 df <- transit_ridership %>% 
