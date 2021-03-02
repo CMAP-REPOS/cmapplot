@@ -1,25 +1,14 @@
-# cmapplot 1.1.1
-PR #115 | March 5, 2021
+# cmapplot 1.1.0
+PR #111 | February 24, 2021
+PR #115 | March 2, 2021
 
-This update builds on the vertical layout functionality implemented in update 1.1.0.
+This pair of updates primarily makes many changes to `finalize_plot()` to enable printing plots without the left-hand "sidebar" -- the area that contains the title and the caption. Most but not all changes are under the hood and should not impact the user. Those that will impact the user include:
 
 * There is a new argument, `inherit`, that allows the user to specify whether cmapplot should attempt to inherit titles and/or captions from the underlying ggplot object.
 * The argument `title_width` has been renamed `sidebar_width` to better reflect its function.
-* Setting `sidebar_width = 0` now has the effect of shifting the title above the topline (rather than removing it altogether). If the user does not want a title on the vertical layout graphic, this can be achieved by leaving `title = ""`, the default, and (if relevant) specifying that `finalize_plot()` should not attempt to inherit a title from the underlying ggplot object.
-* The value `margin_title_l` has been replaced with `margin_sidebar_l`, which only affects horizontal layout graphics. The margin for titles and captions in the vertical layout is based on `margin_plot_l`.
-
-### Backward compatibility notes
-* In `finalize_plot()`, the argument `title_width` has been deprecated and will now issue a message alert (but will still work, for now). Please update your code to ues the new argument `sidebar_width`.
-* Any overrides using the deprecated value `margin_title_l` will no longer have any affect. Use `margin_sidebar_l` instead.
-
-
-# cmapplot 1.1.0
-PR #111 | February 24, 2020
-
-This update primarily makes many changes to `finalize_plot()` to enable printing plots without the left-hand "title column" -- the area that contains the title and the caption. Most but not all changes are under the hood and should not impact the user. Those that will impact the user include:
-
-* Setting `title_width = 0` now has the effect of eliminating the title and shifting the caption from the title column to directly below the plot.
+* Setting `sidebar_width = 0` now has the effect of shifting the title above the topline and shifting the caption from the title column to directly below the plot. If the user does not want a title on the vertical layout graphic, this can be achieved by leaving `title = ""`, the default, and (if relevant) specifying that `finalize_plot()` should not attempt to inherit a title from the underlying ggplot object.
 * There is a new argument, `caption_align`, which takes numeric range 0 to 1. `0`, the default, aligns the caption bottom or left (in title-column and below-plot captions, respectively). `1` aligns the caption top or right. `0.5` centers. The argument `caption_valign` has been deprecated.
+* The value `margin_title_l` has been replaced with `margin_sidebar_l`, which only affects horizontal layout graphics. The margin for titles and captions in the vertical layout is based on `margin_plot_l`.
 * Separately, this version also creates this `NEWS.md` file for the pkgdown website.
 
 Under-the-hood changes to `finalize_plot()` are documented in PR #111, specifically [here](https://github.com/CMAP-REPOS/cmapplot/pull/111#issuecomment-782779446). 
@@ -27,15 +16,18 @@ Under-the-hood changes to `finalize_plot()` are documented in PR #111, specifica
 ### Backward compatibility notes
 Users who have written code with previous versions of cmapplot should note these known compatibility issues:
 * In `finalize_plot()`, the argument `caption_valign` has been deprecated and will now issue a message alert (but will still work, for now). Please update your code to ues the new argument `caption_align`.
+* In `finalize_plot()`, the argument `title_width` has been deprecated and will now issue a message alert (but will still work, for now). Please update your code to ues the new argument `sidebar_width`.
+* Any overrides using the deprecated value `margin_title_l` will no longer have any affect. Use `margin_sidebar_l` instead.
+
 
 # cmapplot 1.0.4
-PR #110 | February 3, 2020
+PR #110 | February 3, 2021
 
 * The ggplot2 geom `geom_label` is now added to the list of geoms for which text aesthetics are automatically updated to CMAP style (ie to Whitney fonts). Previously, only `geom_text` and the custom `geom_text_last` were available in CMAP style. 
 
 
 # cmapplot 1.0.3
-PR #107 | February 2, 2020
+PR #107 | February 2, 2021
 
 * Modified `finalize_plot()` to accept `title_width = 0` without causing a fuss. This is a short-term fix, with more improvements coming.
 * In `cmapplot_globals$consts`, eliminated `margin_title_r`, which created space between the title/caption and plotbox inside the title column. Replaced it  with `margin_plot_l`, which creates the same buffer but does so in the plot column, not the title column. This was necessary to keep an active left-hand margin in situations where `title_width = 0`.
