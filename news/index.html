@@ -149,7 +149,8 @@
     <div id="cmapplot-110" class="section level1">
 <h1 class="page-header" data-toc-text="1.1.0">
 <a href="#cmapplot-110" class="anchor"></a>cmapplot 1.1.0</h1>
-<p>PR <a href='https://github.com/CMAP-REPOS/cmapplot/issues/111'>#111</a> | February 24, 2021 PR <a href='https://github.com/CMAP-REPOS/cmapplot/issues/115'>#115</a> | March 2, 2021</p>
+<p>PR <a href='https://github.com/CMAP-REPOS/cmapplot/issues/111'>#111</a> | February 24, 2021</p>
+<p>PR <a href='https://github.com/CMAP-REPOS/cmapplot/issues/115'>#115</a> | March 2, 2021</p>
 <p>This pair of updates primarily makes many changes to <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code> to enable printing plots without the left-hand “sidebar” – the area that contains the title and the caption. Most but not all changes are under the hood and should not impact the user. Those that will impact the user include:</p>
 <ul>
 <li>There is a new argument, <code>inherit</code>, that allows the user to specify whether cmapplot should attempt to inherit titles and/or captions from the underlying ggplot object.</li>
@@ -165,8 +166,8 @@
 <a href="#backward-compatibility-notes" class="anchor"></a>Backward compatibility notes</h3>
 <p>Users who have written code with previous versions of cmapplot should note these known compatibility issues:</p>
 <ul>
-<li>In <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code>, the argument <code>caption_valign</code> has been deprecated and will now issue a message alert (but will still work, for now). Please update your code to ues the new argument <code>caption_align</code>.</li>
-<li>In <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code>, the argument <code>title_width</code> has been deprecated and will now issue a message alert (but will still work, for now). Please update your code to ues the new argument <code>sidebar_width</code>.</li>
+<li>In <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code>, the argument <code>caption_valign</code> has been deprecated and will now issue a message alert (but will still work, for now). Please update your code to use the new argument <code>caption_align</code>.</li>
+<li>In <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code>, the argument <code>title_width</code> has been deprecated and will now issue a message alert (but will still work, for now). Please update your code to use the new argument <code>sidebar_width</code>.</li>
 <li>Any overrides using the deprecated value <code>margin_title_l</code> will no longer have any affect. Use <code>margin_sidebar_l</code> instead.</li>
 </ul>
 </div>
