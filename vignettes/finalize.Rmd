@@ -192,7 +192,13 @@ finalize_plot(plot = p,
 
 ### Many, many margins
 
-The chart below includes a visual representation of many of the possible uses of `override`: 
-<img src="./../man/figures/margins.png" width="100%" style="display: block; margin: auto;"/>
+There is a fairly long list of possible margins that can be customized using the `override` argument of `finalize_plot()`. You can read more about the available options for customization in `?cmapplot_globals`.
 
-You can also read more about all the available options for customization in `?cmapplot_globals`.
+Here, the margins are visualized as they impact a finalized plot that has a sidebar:
+
+<img src="./../man/figures/margins1.png" width="100%" style="display: block; margin: auto;"/>
+
+Here, the same margins are visualized as they impact a finalized plot with no sidebar:
+
+<img src="./../man/figures/margins2.png" width="100%" style="display: block; margin: auto;"/>
+
