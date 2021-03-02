@@ -117,7 +117,7 @@ finalize_plot(plot = p,
               fill_bg = "cornsilk")
 ```
 
-### Finalizing a plot with no title
+### Finalizing a plot with no sidebar
 
 One special case of a top-level position adjustment is removing the sidebar altogether by setting `sidebar_width = 0`. This is generally preferred when creating graphics to embed in a Word/PDF report (as opposed to a web page or presentation slide). Titles and captions, if specified, are moved to above and below the plot element, respectively. Note that this has an impact on what margins are drawn where. See the section [Many, many margins] for more on this.
 
