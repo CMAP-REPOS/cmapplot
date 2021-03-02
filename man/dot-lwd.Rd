@@ -16,9 +16,9 @@ gg_lwd_convert(value, unit = "bigpts")
 \arguments{
 \item{value}{Numeric, the value to be converted.}
 
-\item{unit}{Char, the unit of the value to be converted. Can be any
-of the units accepted by \code{grid::unit()}, including "bigpts", "pt",
-"mm", and "in". Default is \code{bigpts}.}
+\item{unit}{Char, the unit of the value to be converted. Can be any of the
+units accepted by \code{grid::unit()}, including "bigpts", "pt", "mm", and
+"in". Default is \code{bigpts}.}
 }
 \description{
 The factor \code{.lwd} is used to calculate correct output sizes for line
@@ -42,7 +42,8 @@ font sizes outside the plot area: e.g. axis titles, etc.
 }
 \section{Functions}{
 \itemize{
-\item \code{gg_lwd_convert}: Function to convert from any unit directly to
+\item \code{gg_lwd_convert}: Function to convert from any unit directly to ggplot2's
+preferred millimeters.
 }}
 
 \examples{

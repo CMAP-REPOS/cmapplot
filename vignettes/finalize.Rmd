@@ -120,7 +120,7 @@ finalize_plot(plot = p,
 
 ### Finalizing a plot with no title
 
-One special case of a top-level position adjustment is removing the sidebar altogether by setting `sidebar_width = 0`. This is generally preferred when creating graphics to embed in a Word/PDF report (as opposed to a web page or presentation slide). Titles and captions, if specified, are moved to above and below the plot element, respectively.
+One special case of a top-level position adjustment is removing the sidebar altogether by setting `sidebar_width = 0`. This is generally preferred when creating graphics to embed in a Word/PDF report (as opposed to a web page or presentation slide). Titles and captions, if specified, are moved to above and below the plot element, respectively. Note that this has an impact on what margins are drawn where. See the section [Many, many margins] for more on this.
 
 ```{r finalize4, message=FALSE}
 # A finalized line graph, with no sidebar
@@ -192,7 +192,7 @@ finalize_plot(plot = p,
 
 ### Many, many margins
 
-There is a fairly long list of possible margins that can be customized using the `override` argument of `finalize_plot()`. You can read more about the available options for customization in `?cmapplot_globals`.
+There is a fairly long list of possible margins that can be customized using the `overrides` argument of `finalize_plot()`. You can read more about the available options for customization in `?cmapplot_globals`.
 
 Here, the margins are visualized as they impact a finalized plot that has a sidebar:
 
