@@ -1,5 +1,6 @@
 # cmapplot 1.1.0
 PR #111 | February 24, 2021
+
 PR #115 | March 2, 2021
 
 This pair of updates primarily makes many changes to `finalize_plot()` to enable printing plots without the left-hand "sidebar" -- the area that contains the title and the caption. Most but not all changes are under the hood and should not impact the user. Those that will impact the user include:
@@ -15,8 +16,8 @@ Under-the-hood changes to `finalize_plot()` are documented in PR #111, specifica
 
 ### Backward compatibility notes
 Users who have written code with previous versions of cmapplot should note these known compatibility issues:
-* In `finalize_plot()`, the argument `caption_valign` has been deprecated and will now issue a message alert (but will still work, for now). Please update your code to ues the new argument `caption_align`.
-* In `finalize_plot()`, the argument `title_width` has been deprecated and will now issue a message alert (but will still work, for now). Please update your code to ues the new argument `sidebar_width`.
+* In `finalize_plot()`, the argument `caption_valign` has been deprecated and will now issue a message alert (but will still work, for now). Please update your code to use the new argument `caption_align`.
+* In `finalize_plot()`, the argument `title_width` has been deprecated and will now issue a message alert (but will still work, for now). Please update your code to use the new argument `sidebar_width`.
 * Any overrides using the deprecated value `margin_title_l` will no longer have any affect. Use `margin_sidebar_l` instead.
 
 
