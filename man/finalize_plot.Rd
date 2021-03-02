@@ -79,12 +79,12 @@ in \code{cmapplot_globals$consts} which are drawn by
 \code{\link{finalize_plot}}. Units are in bigpts (1/72 of an inch).}
 
 \item{inherit}{Char, a string of characters that represent which elements of
-the underlying ggplot object the function should attempt to inherit if
-unspecified. If left as default, the function will attempt to replace blanks
-titles and/or captions with those from the underlying plot object.
-Acceptable values are "t" (inherit title only), "c" (inherit caption only),
-"tc" (the default, inherit both title and caption), and "none" (inherit
-nothing).}
+the underlying ggplot object the function should attempt to inherit if not
+specified in this function. If left as default, the function will attempt to
+replace blank titles and captions with those from the underlying plot
+object. Acceptable values are "t" (inherit title only), "c" (inherit caption
+only), "tc" (the default, inherit both title and caption), and "none"
+(inherit nothing).}
 
 \item{legend_shift}{Bool, \code{TRUE}, the default, attempts to align the
 legend all the way left (on top of the y axis labels) per CMAP design
@@ -100,8 +100,8 @@ CMAP default aesthetic settings for geoms (see
 \item{caption_valign}{This is deprecated as of cmapplot 1.1.0 and will be
 removed in future releases. Replace with \code{caption_align} argument.}
 
-\item{title_width}{This is deprecated as of cmapplot 1.1.1 and will be
-removed in future releases. Replace with \code{sidebar_width} argument.}
+\item{title_width}{This is deprecated as of cmapplot 1.1.1 and will be removed
+in future releases. Replace with \code{sidebar_width} argument.}
 
 \item{...}{Pass additional arguments to ggplot2's \code{\link[ggplot2]{theme}}
 function to override any elements of the plot's theme when drawing.}

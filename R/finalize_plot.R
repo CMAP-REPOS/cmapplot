@@ -47,12 +47,12 @@
 #'  in \code{cmapplot_globals$consts} which are drawn by
 #'  \code{\link{finalize_plot}}. Units are in bigpts (1/72 of an inch).
 #'@param inherit Char, a string of characters that represent which elements of
-#'  the underlying ggplot object the function should attempt to inherit if
-#'  unspecified. If left as default, the function will attempt to replace blanks
-#'  titles and/or captions with those from the underlying plot object.
-#'  Acceptable values are "t" (inherit title only), "c" (inherit caption only),
-#'  "tc" (the default, inherit both title and caption), and "none" (inherit
-#'  nothing).
+#'  the underlying ggplot object the function should attempt to inherit if not
+#'  specified in this function. If left as default, the function will attempt to
+#'  replace blank titles and captions with those from the underlying plot
+#'  object. Acceptable values are "t" (inherit title only), "c" (inherit caption
+#'  only), "tc" (the default, inherit both title and caption), and "none"
+#'  (inherit nothing).
 #'@param legend_shift Bool, \code{TRUE}, the default, attempts to align the
 #'  legend all the way left (on top of the y axis labels) per CMAP design
 #'  standards. \code{FALSE} maintains the alignment used in the original plot.
@@ -63,8 +63,8 @@
 #'  \code{\link{apply_cmap_default_aes}}) for the present plot.
 #'@param caption_valign This is deprecated as of cmapplot 1.1.0 and will be
 #'  removed in future releases. Replace with \code{caption_align} argument.
-#'@param title_width This is deprecated as of cmapplot 1.1.1 and will be
-#'  removed in future releases. Replace with \code{sidebar_width} argument.
+#'@param title_width This is deprecated as of cmapplot 1.1.1 and will be removed
+#'  in future releases. Replace with \code{sidebar_width} argument.
 #'@param ... Pass additional arguments to ggplot2's \code{\link[ggplot2]{theme}}
 #'  function to override any elements of the plot's theme when drawing.
 #'
@@ -174,7 +174,7 @@ finalize_plot <- function(plot = NULL,
 
   # Create boolean for alternative "vertical" mode with no title and a bottom
   # caption, used when sidebar_width is 0.
-  vert_mode <- ifelse(sidebar_width > 0, FALSE, TRUE)
+  sidebar_mode <- ifelse(sidebar_width > 0, TRUE, FALSE)
 
   # Check deprecated variable `caption_valign`
   if (!missing(caption_valign)) {
@@ -182,8 +182,7 @@ finalize_plot <- function(plot = NULL,
       "The argument `caption_valign` is deprecated and will be removed in a future release.",
       "Please update your code to use `caption_align` (with a value between 0-1) instead.",
       sep = "\n  "))
-    caption_valign <- match.arg(caption_valign, c("bottom", "top"))
-    if (caption_valign == "top" & !vert_mode) {
+    if (caption_valign == "top" & sidebar_mode) {
       caption_align <- 1
     }
   }
@@ -243,16 +242,8 @@ finalize_plot <- function(plot = NULL,
   inherit <- match.arg(inherit)
 
   # Create flags for caption and title inheritance
-  inherit_t <- TRUE
-  inherit_c <- TRUE
-
-  if (!grepl("t",inherit)) {
-    inherit_t <- FALSE
-  }
-
-  if (!grepl("c",inherit)) {
-    inherit_c <- FALSE
-  }
+  inherit_t <- ifelse(grepl("t", inherit), TRUE, FALSE)
+  inherit_c <- ifelse(grepl("c", inherit), TRUE, FALSE)
 
 
   # If title/caption unspecified, try to extract from plot (unless the user has
@@ -266,14 +257,6 @@ finalize_plot <- function(plot = NULL,
     caption <- input_caption
   }
 
-  # If both the title and the caption are blank, but 'sidebar_width' is nonzero,
-  # alert the user that they should set 'sidebar_width=0' to remove unnecessary
-  # white space.
-
-  if (title == "" & caption == "" & sidebar_width > 0) {
-    message("If it is unwanted, you can remove the unused white space to the left of your plot by setting `sidebar_width=0`. \nYou can increase the margins to the left of the plot by adjusting `margin_plot_l` using the `overrides` argument.")
-  }
-
   # Build necessary grobs -----------------------------------------------------
   grobs <- list()
 
@@ -284,12 +267,12 @@ finalize_plot <- function(plot = NULL,
                     col = fill_bg)
   )
 
-  # In traditional (horizontal) mode, create title and left-side caption boxes
-  if(!vert_mode){
+  # In sidebar mode, create title and left-side caption boxes
+  if(sidebar_mode){
 
     # Title textbox
-    grobs$title <- gridtext::textbox_grob(
-      name = "title",
+    grobs$title_sidebar <- gridtext::textbox_grob(
+      name = "title_sidebar",
       text = ifelse(title != "", title, "This plot needs a title"),
       default.units = "bigpts",
       # Set location down from top left corner
@@ -316,8 +299,8 @@ finalize_plot <- function(plot = NULL,
     )
 
     # Caption textbox
-    grobs$caption <- gridtext::textbox_grob(
-      name = "caption",
+    grobs$caption_sidebar <- gridtext::textbox_grob(
+      name = "caption_sidebar",
       text = caption,
       default.units = "bigpts",
       # Set location
@@ -328,7 +311,7 @@ finalize_plot <- function(plot = NULL,
       # Set dimensions
       width = consts$sidebar_width,
       height = consts$height - consts$margin_title_t - consts$margin_topline_t -
-               safe_grobHeight(grobs$title),
+               safe_grobHeight(grobs$title_sidebar),
       # Retract texbox size on each side
       margin = grid::unit(c(0, 0,  # top, right
                             consts$margin_caption_b,# bottom
@@ -344,10 +327,8 @@ finalize_plot <- function(plot = NULL,
       box_gp = grid::gpar(col = ifelse(debug, "red", NA),
                           fill = NA)
     )
-  }
-
-  # In vertical mode, and if caption and/or title exist, create them
-  if(vert_mode) {
+  } else {
+    # In vertical mode, create title and caption if they exist
 
     if (title != "") {
     # Title textbox
@@ -361,7 +342,7 @@ finalize_plot <- function(plot = NULL,
       hjust = 0,
       vjust = 1,
       # Set dimensions
-      maxwidth = consts$width,
+      width = consts$width,
       maxheight = consts$height/2,
       # Retract texbox size on left
       margin = grid::unit(c(consts$margin_title_t,  # top
