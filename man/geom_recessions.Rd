@@ -17,6 +17,7 @@ geom_recessions(
   rect_aes = NULL,
   text_aes = NULL,
   update_recessions = FALSE,
+  show_ongoing = TRUE,
   ...
 )
 }
@@ -54,11 +55,17 @@ rectangle and text geoms, respectively.}
 
 \item{update_recessions}{Logical or data frame. \code{FALSE}, the default,
 relies on the package's built in recessions table. \code{TRUE} calls the
-function \code{update_recessions}, which attempts to fetch the
-current recessions table from the NBER website. A custom data table of
-recessions can also be passed to this argument, but it must be structured
-identically to the six-column data table described in the the documentation
-file for the function \code{update_recessions}.}
+function \code{update_recessions}, which attempts to fetch the current
+recessions table from the NBER website. A custom data table of recessions
+can also be passed to this argument, but it must be structured identically
+to the seven-column data table described in the the documentation file for
+the function \code{update_recessions}.}
+
+\item{show_ongoing}{Logical. \code{TRUE}, the default, will display an ongoing
+recession that does not yet have a defined end date. If an ongoing recession
+exists, it will be displayed as extending through the maximum extent of the
+graph's data (up to 2200). \code{FALSE} will remove the ongoing recession
+from the graph.}
 
 \item{...}{additional aesthetics to send to BOTH the rectangle and text geoms.}
 }
@@ -150,10 +157,8 @@ ggplot(df, mapping = aes(x = year_date, y = value)) +
 
 }
 \seealso{
-\itemize{
-  \item \url{https://ggplot2-book.org/extensions.html}
-  \item \url{https://github.com/brodieG/ggbg/blob/development/inst/doc/extensions.html#stat-compute}
-  \item \url{https://rpubs.com/hadley/97970}
-  \item \url{https://ggplot2.tidyverse.org/articles/extending-ggplot2.html}
-}
+\itemize{ \item \url{https://ggplot2-book.org/extensions.html} \item
+ \url{https://github.com/brodieG/ggbg/blob/development/inst/doc/extensions.html#stat-compute}
+  \item \url{https://rpubs.com/hadley/97970} \item
+ \url{https://ggplot2.tidyverse.org/articles/extending-ggplot2.html} }
 }

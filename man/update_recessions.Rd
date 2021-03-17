@@ -4,7 +4,7 @@
 \alias{update_recessions}
 \title{Update recessions table}
 \source{
-\url{https://www.nber.org/cycles/NBER chronology.xlsx}
+\url{https://www.nber.org/data/cycles 'cycle dates pasted.csv'}
 }
 \usage{
 update_recessions(url = NULL, quietly = FALSE)
@@ -21,7 +21,7 @@ the package development team.}
 A tibble with the following variables: \itemize{ \item
   \code{start_char, end_char}: Chr. Easily readable labels for the beginning
   and end of the recession \item \code{start_num, end_num}: Double. Dates
-  expressed as years, with decimels referring to months. (e.g. April = 4/12 =
+  expressed as years, with decimals referring to months. (e.g. April = 4/12 =
   .333) \item \code{start_date, end_date}: Date. Dates expressed in R
   datetime format, using the first day of the specified month. }
 }

@@ -29,11 +29,16 @@
 #'  rectangle and text geoms, respectively.
 #'@param update_recessions Logical or data frame. \code{FALSE}, the default,
 #'  relies on the package's built in recessions table. \code{TRUE} calls the
-#'  function \code{update_recessions}, which attempts to fetch the
-#'  current recessions table from the NBER website. A custom data table of
-#'  recessions can also be passed to this argument, but it must be structured
-#'  identically to the six-column data table described in the the documentation
-#'  file for the function \code{update_recessions}.
+#'  function \code{update_recessions}, which attempts to fetch the current
+#'  recessions table from the NBER website. A custom data table of recessions
+#'  can also be passed to this argument, but it must be structured identically
+#'  to the seven-column data table described in the the documentation file for
+#'  the function \code{update_recessions}.
+#'@param show_ongoing Logical. \code{TRUE}, the default, will display an ongoing
+#'  recession that does not yet have a defined end date. If an ongoing recession
+#'  exists, it will be displayed as extending through the maximum extent of the
+#'  graph's data (up to 2200). \code{FALSE} will remove the ongoing recession
+#'  from the graph.
 #'@param ... additional aesthetics to send to BOTH the rectangle and text geoms.
 #'
 #'@section Important notes: If \code{show.legend = TRUE} you must place any
@@ -57,6 +62,10 @@
 #'  \code{rect_aes = list(alpha = 0.5)}. Color and alpha were calculated using
 #'  the hints found here:
 #'  \url{https://stackoverflow.com/questions/6672374/convert-rgb-to-rgba-over-white}.
+#'
+#'
+#'
+#'
 #'
 #'@section Under the hood: This function calls two custom geoms, constructed
 #'  with ggproto. The custom GeomRecessions and GeomRecessionsText are modified
@@ -111,13 +120,12 @@
 #'   scale_x_date() +
 #'   theme_minimal()
 #'
-#'@seealso
-#' \itemize{
-#'   \item \url{https://ggplot2-book.org/extensions.html}
-#'   \item \url{https://github.com/brodieG/ggbg/blob/development/inst/doc/extensions.html#stat-compute}
-#'   \item \url{https://rpubs.com/hadley/97970}
-#'   \item \url{https://ggplot2.tidyverse.org/articles/extending-ggplot2.html}
-#' }
+#'@importFrom utils read.csv
+#'
+#'@seealso \itemize{ \item \url{https://ggplot2-book.org/extensions.html} \item
+#'  \url{https://github.com/brodieG/ggbg/blob/development/inst/doc/extensions.html#stat-compute}
+#'   \item \url{https://rpubs.com/hadley/97970} \item
+#'  \url{https://ggplot2.tidyverse.org/articles/extending-ggplot2.html} }
 #'
 #'@export
 geom_recessions <- function(xformat = "numeric",
@@ -132,11 +140,19 @@ geom_recessions <- function(xformat = "numeric",
                             rect_aes = NULL,
                             text_aes = NULL,
                             update_recessions = FALSE,
+                            show_ongoing = TRUE,
                             ...) {
+
+  # Local binding for ongoing
+  ongoing <- NULL
+
+  # Generate recessions table, filtering out ongoing recessions if specified
+  recessions_for_plot <- build_recessions(update_recessions)
+  if (!show_ongoing) {recessions_for_plot <- recessions_for_plot %>% filter(ongoing == F)}
 
   # build recessions table for use in function, but hide it in a list
   # because of ggplot's requirement that parameters be of length 1
-  recess_table <- list(build_recessions(update_recessions))
+  recess_table <- list(recessions_for_plot)
 
   # return a series of gg objects to ggplot
   list(
@@ -196,25 +212,32 @@ geom_recessions <- function(xformat = "numeric",
 # internal function used to define recessions table for use
 build_recessions <- function(update_recessions){
   if(is.logical(update_recessions)){
+    # if TRUE
     if(update_recessions){
       message("Trying to update recessions...")
-      return(
-        tryCatch(
-          suppressWarnings(update_recessions(quietly = TRUE)),
-          error = function(cond){
-            message("Could not update recessions. Using built-in recessions table...")
-            return(recessions)
-          })
-        )
+      updated_recessions <- suppressWarnings(update_recessions(quietly = TRUE))
+
+      # If updated_recessions is returned as NA, its length is 1. In that case,
+      # use default table.
+      if (length(updated_recessions) == 1) {
+        message("Could not update recessions. Using built-in recessions table...")
+        return(recessions)
+      }
+
+      message("Successfully fetched from NBER")
+      return(updated_recessions)
+      # if FALSE
     } else {
       return(recessions)
     }
+  # if DATAFRAME
   }else if(is.data.frame(update_recessions)){
     # confirm that table has correct structure
     if(!identical(update_recessions[NA,][1,], recessions[NA,][1,])){
       message("Recession table may not have correct format (See `?update_recessions`). Attempting anyway...")
     }
     return(update_recessions)
+  # OTHERWISE
   }else{
     message("`update_recessions` must be TRUE, FALSE, or a data table. Using built-in recessions table...")
     return(recessions)
@@ -416,11 +439,11 @@ GeomRecessionsText <- ggproto(
 #' @return A tibble with the following variables: \itemize{ \item
 #'   \code{start_char, end_char}: Chr. Easily readable labels for the beginning
 #'   and end of the recession \item \code{start_num, end_num}: Double. Dates
-#'   expressed as years, with decimels referring to months. (e.g. April = 4/12 =
+#'   expressed as years, with decimals referring to months. (e.g. April = 4/12 =
 #'   .333) \item \code{start_date, end_date}: Date. Dates expressed in R
 #'   datetime format, using the first day of the specified month. }
 #'
-#' @source \url{https://www.nber.org/cycles/NBER chronology.xlsx}
+#' @source \url{https://www.nber.org/data/cycles 'cycle dates pasted.csv'}
 #'
 #' @examples
 #' recessions <- update_recessions()
@@ -435,41 +458,63 @@ GeomRecessionsText <- ggproto(
 #'@export
 update_recessions <- function(url = NULL, quietly = FALSE){
 
-  pkgs <- c("RCurl", "readxl", "tibble", "lubridate")
+  pkgs <- c("RCurl", "tibble", "lubridate")
   if(FALSE %in% lapply(pkgs, requireNamespace, quietly = TRUE)){
     stop(paste("This function requires the following packages:", paste(pkgs, collapse = ", ")), call. = FALSE)
   }
 
+  # best known URL for machine readable NBER file
   if (is_null(url)) {
-    url <- "https://www.nber.org/sites/default/files/2021-01/NBER%20chronology_062020.xlsx"
+    url <- "http://data.nber.org/data/cycles/cycle%20dates%20pasted.csv"
   }
 
   # locally bind variable names
-  start_char <- end_char <- start_date <- end_date <- NULL
+  start_char <- end_char <- start_date <- end_date <- ongoing <- index <- NULL
 
-  temp.file <- paste(tempfile(),".xlsx",sep = "")
-  utils::download.file(url, temp.file, mode = "wb", quiet = quietly)
+  return(
+    tryCatch({
+      temp.file <- paste0(tempfile(),".csv")
+      utils::download.file(url, temp.file, mode = "wb", quiet = quietly)
 
-  recessions <- readxl::read_excel(temp.file, skip = 2) %>%
-    # drop end matter
-    dplyr::slice(1:(n()-7)) %>%
-    # drop first row trough
-    dplyr::slice(-1) %>%
-    tibble::as_tibble() %>%
-    # rename character values
-    dplyr::rename(start_char = 1, end_char = 2) %>%
-    dplyr::mutate(
-      # convert character dates to R date
-      start_date = as.Date(stringr::str_replace(start_char, " ", " 1, "), format = "%B %d, %Y"),
-      end_date = as.Date(stringr::str_replace(end_char, " ", " 1, "), format = "%B %d, %Y"),
-      # convert R dates to numeric dates
-      start_num = lubridate::decimal_date(start_date),
-      end_num = lubridate::decimal_date(end_date)
-    ) %>%
-    dplyr::select(-3:-8)
+      recessions <- read.csv(temp.file) %>%
+        # drop first row trough
+        dplyr::slice(-1) %>%
+        tibble::as_tibble() %>%
+        # rename character values
+        dplyr::rename(start_char = 1, end_char = 2) %>%
+        dplyr::mutate(
+          # convert character dates to R date
+          start_date = as.Date(start_char),
+          end_date = as.Date(end_char)) %>%
+        dplyr::arrange(start_date) %>%
+        # Add a row number for identifying the last recession
+        mutate(index = row_number()) %>%
+        # Flag unfinished recessions
+        mutate(ongoing = case_when(
+          is.na(end_date) & index == max(.$index) ~ T,
+          TRUE ~ F
+        )) %>%
+        # If there is an ongoing recession in the last row, add January 2200 for
+        # graphing purposes
+        mutate(end_date = case_when(
+          ongoing ~ as.Date("2200-01-01"),
+          TRUE ~ end_date)) %>%
+        mutate(
+          # convert R dates to numeric dates
+          start_num = lubridate::decimal_date(start_date),
+          end_num = lubridate::decimal_date(end_date)) %>%
+        # eliminate index
+        select(-index)
 
-  message("Successfully fetched from NBER")
+      if (!quietly) {message("Successfully fetched from NBER")}
 
-  return(recessions)
+      # Return recessions
+      recessions
+    },
+    error = function(cond){
+      if (!quietly) message("WARMING: Fetch or processing failed. `NULL` returned.")
+      return(NA)
+    }
+    )
+  )
 }
-
