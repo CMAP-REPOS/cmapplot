@@ -217,9 +217,8 @@ build_recessions <- function(update_recessions){
       message("Trying to update recessions...")
       updated_recessions <- suppressWarnings(update_recessions(quietly = TRUE))
 
-      # If updated_recessions is returned as NA, its length is 1. In that case,
-      # use default table.
-      if (length(updated_recessions) == 1) {
+      # If updated_recessions is returned as NULL, use the default table
+      if (is.null(updated_recessions)) {
         message("Could not update recessions. Using built-in recessions table...")
         return(recessions)
       }
@@ -422,28 +421,29 @@ GeomRecessionsText <- ggproto(
 )
 
 
-#' Update recessions table
+#'Update recessions table
 #'
-#' The \code{cmapplot} package contains an internal dataset of all recessions in
-#' American history as recorded by the National Bureau of Economic Research
-#' (NBER). However, users may need to replace the built-in data, such as in the
-#' event of new recessions and/or changes to the NBER consensus on recession
-#' dates. This function fetches and reformats this data from the NBER website.
+#'The \code{cmapplot} package contains an internal dataset of all recessions in
+#'American history as recorded by the National Bureau of Economic Research
+#'(NBER). However, users may need to replace the built-in data, such as in the
+#'event of new recessions and/or changes to the NBER consensus on recession
+#'dates. This function fetches and interprets this data from the NBER website.
 #'
-#' @param url Char, the web location of the NBER machine-readable Excel file.
-#'   The default, \code{NULL}, uses the most recently identified URL known to
-#'   the package development team.
-#' @param quietly Logical, suppresses messages produced by
-#'   \code{utils::download.file}.
+#'@param url Char, the web location of the NBER machine-readable CSV file. The
+#'  default, \code{NULL}, uses the most recently identified URL known to the
+#'  package development team, which appears to be the most stable location for
+#'  updates over time.
+#'@param quietly Logical, suppresses messages produced by
+#'  \code{utils::download.file}.
 #'
-#' @return A tibble with the following variables: \itemize{ \item
-#'   \code{start_char, end_char}: Chr. Easily readable labels for the beginning
-#'   and end of the recession \item \code{start_num, end_num}: Double. Dates
-#'   expressed as years, with decimals referring to months. (e.g. April = 4/12 =
-#'   .333) \item \code{start_date, end_date}: Date. Dates expressed in R
-#'   datetime format, using the first day of the specified month. }
+#'@return A tibble with the following variables: \itemize{ \item
+#'  \code{start_char, end_char}: Chr. Easily readable labels for the beginning
+#'  and end of the recession \item \code{start_num, end_num}: Double. Dates
+#'  expressed as years, with decimals referring to months. (e.g. April = 4/12 =
+#'  .333) \item \code{start_date, end_date}: Date. Dates expressed in R datetime
+#'  format, using the first day of the specified month. }
 #'
-#' @source \url{https://www.nber.org/data/cycles 'cycle dates pasted.csv'}
+#'@source \url{https://www.nber.org/data/cycles 'cycle dates pasted.csv'}
 #'
 #' @examples
 #' recessions <- update_recessions()
@@ -512,8 +512,8 @@ update_recessions <- function(url = NULL, quietly = FALSE){
       recessions
     },
     error = function(cond){
-      if (!quietly) message("WARMING: Fetch or processing failed. `NULL` returned.")
-      return(NA)
+      if (!quietly) message("WARNING: Fetch or processing failed. `NULL` returned.")
+      return(NULL)
     }
     )
   )
