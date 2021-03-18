@@ -32,7 +32,7 @@
 #'  function \code{update_recessions}, which attempts to fetch the current
 #'  recessions table from the NBER website. A custom data table of recessions
 #'  can also be passed to this argument, but it must be structured identically
-#'  to the seven-column data table described in the the documentation file for
+#'  to the five-column data table described in the the documentation file for
 #'  the function \code{update_recessions}.
 #'@param show_ongoing Logical. \code{TRUE}, the default, will display an ongoing
 #'  recession that does not yet have a defined end date. If an ongoing recession
@@ -444,10 +444,9 @@ GeomRecessionsText <- ggproto(
 #'
 #'@return A tibble with the following variables: \itemize{ \item
 #'  \code{start_char, end_char}: Chr. Easily readable labels for the beginning
-#'  and end of the recession \item \code{start_num, end_num}: Double. Dates
-#'  expressed as years, with decimals referring to months. (e.g. April = 4/12 =
-#'  .333) \item \code{start_date, end_date}: Date. Dates expressed in R datetime
-#'  format, using the first day of the specified month. }
+#'  and end of the recession. \item \code{start_date, end_date}: Date. Dates
+#'  expressed in R datetime format, using the first day of the specified month.
+#'  }
 #'
 #'@source \url{https://www.nber.org/data/cycles 'cycle dates pasted.csv'}
 #'
@@ -493,6 +492,11 @@ update_recessions <- function(url = NULL, quietly = FALSE){
           start_date = as.Date(start_char),
           end_date = as.Date(end_char)) %>%
         dplyr::arrange(start_date) %>%
+        # Convert character columns to 'Month Year' format
+        mutate(
+          start_char = format(start_date, "%b %Y"),
+          end_char = format(end_date, "%b %Y")
+        ) %>%
         # Add a row number for identifying the last recession
         mutate(index = row_number()) %>%
         # Flag unfinished recessions
@@ -502,9 +506,15 @@ update_recessions <- function(url = NULL, quietly = FALSE){
         )) %>%
         # If there is an ongoing recession in the last row, add January 2200 for
         # graphing purposes
-        mutate(end_date = case_when(
-          ongoing ~ as.Date("2200-01-01"),
-          TRUE ~ end_date)) %>%
+        mutate(
+          end_date = case_when(
+            ongoing ~ as.Date("2200-01-01"),
+            TRUE ~ end_date),
+          # Flag that recession as "Ongoing" in this case
+          end_char = case_when(
+            ongoing ~ "Ongoing",
+            TRUE ~ end_char
+          )) %>%
         # eliminate index
         select(-index)
 

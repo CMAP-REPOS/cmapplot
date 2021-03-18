@@ -21,10 +21,9 @@ updates over time.}
 \value{
 A tibble with the following variables: \itemize{ \item
  \code{start_char, end_char}: Chr. Easily readable labels for the beginning
- and end of the recession \item \code{start_num, end_num}: Double. Dates
- expressed as years, with decimals referring to months. (e.g. April = 4/12 =
- .333) \item \code{start_date, end_date}: Date. Dates expressed in R datetime
- format, using the first day of the specified month. }
+ and end of the recession. \item \code{start_date, end_date}: Date. Dates
+ expressed in R datetime format, using the first day of the specified month.
+ }
 }
 \description{
 The \code{cmapplot} package contains an internal dataset of all recessions in

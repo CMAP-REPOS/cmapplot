@@ -58,7 +58,7 @@ relies on the package's built in recessions table. \code{TRUE} calls the
 function \code{update_recessions}, which attempts to fetch the current
 recessions table from the NBER website. A custom data table of recessions
 can also be passed to this argument, but it must be structured identically
-to the seven-column data table described in the the documentation file for
+to the five-column data table described in the the documentation file for
 the function \code{update_recessions}.}
 
 \item{show_ongoing}{Logical. \code{TRUE}, the default, will display an ongoing
