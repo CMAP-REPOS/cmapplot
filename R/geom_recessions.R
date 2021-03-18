@@ -252,6 +252,12 @@ filter_recessions <- function(min, max, xformat, recess_table){
   # unwrap recess_table from list
   recess_table <- recess_table[[1]]
 
+  # Add numeric version of dates
+  recess_table <- recess_table %>%
+    mutate(
+      start_num = lubridate::decimal_date(start_date),
+      end_num = lubridate::decimal_date(end_date))
+
   # filter recessions correctly, based on xformat
   if (xformat == "numeric") {
     recessions <- dplyr::rename(recess_table, end = end_num, start = start_num)
@@ -499,10 +505,6 @@ update_recessions <- function(url = NULL, quietly = FALSE){
         mutate(end_date = case_when(
           ongoing ~ as.Date("2200-01-01"),
           TRUE ~ end_date)) %>%
-        mutate(
-          # convert R dates to numeric dates
-          start_num = lubridate::decimal_date(start_date),
-          end_num = lubridate::decimal_date(end_date)) %>%
         # eliminate index
         select(-index)
 
