@@ -4,7 +4,7 @@
 \alias{update_recessions}
 \title{Update recessions table}
 \source{
-\url{https://www.nber.org/data/cycles 'cycle dates pasted.csv'}
+\url{https://www.nber.org/data/cycles/cycle dates pasted.csv}
 }
 \usage{
 update_recessions(url = NULL, quietly = FALSE)
@@ -19,18 +19,20 @@ updates over time.}
 \code{utils::download.file}.}
 }
 \value{
-A tibble with the following variables: \itemize{ \item
+A data frame with the following variables: \itemize{ \item
  \code{start_char, end_char}: Chr. Easily readable labels for the beginning
  and end of the recession. \item \code{start_date, end_date}: Date. Dates
  expressed in R datetime format, using the first day of the specified month.
- }
+ \item \code{ongoing}: Logical. Whether or not the recession is ongoing as of
+ the latest available NBER data. }
 }
 \description{
-The \code{cmapplot} package contains an internal dataset of all recessions in
-American history as recorded by the National Bureau of Economic Research
-(NBER). However, users may need to replace the built-in data, such as in the
-event of new recessions and/or changes to the NBER consensus on recession
-dates. This function fetches and interprets this data from the NBER website.
+The cmapplot package contains an internal dataset \code{recessions} of all
+recessions in American history as recorded by the National Bureau of Economic
+Research (NBER). However, users may need to replace the built-in data, such as
+in the event of new recessions and/or changes to the NBER consensus on
+recession dates. This function fetches and interprets this data from the NBER
+website.
 }
 \examples{
 recessions <- update_recessions()
@@ -39,7 +41,7 @@ recessions <- update_recessions()
 # package by running the following code:
 \dontrun{
   recessions <- update_recessions()
-  usethis::use_data(recessions, internal = TRUE)
+  usethis::use_data(recessions, internal = TRUE, overwrite = TRUE)
 }
 
 }

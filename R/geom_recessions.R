@@ -429,11 +429,12 @@ GeomRecessionsText <- ggproto(
 
 #'Update recessions table
 #'
-#'The \code{cmapplot} package contains an internal dataset of all recessions in
-#'American history as recorded by the National Bureau of Economic Research
-#'(NBER). However, users may need to replace the built-in data, such as in the
-#'event of new recessions and/or changes to the NBER consensus on recession
-#'dates. This function fetches and interprets this data from the NBER website.
+#'The cmapplot package contains an internal dataset \code{recessions} of all
+#'recessions in American history as recorded by the National Bureau of Economic
+#'Research (NBER). However, users may need to replace the built-in data, such as
+#'in the event of new recessions and/or changes to the NBER consensus on
+#'recession dates. This function fetches and interprets this data from the NBER
+#'website.
 #'
 #'@param url Char, the web location of the NBER machine-readable CSV file. The
 #'  default, \code{NULL}, uses the most recently identified URL known to the
@@ -442,13 +443,14 @@ GeomRecessionsText <- ggproto(
 #'@param quietly Logical, suppresses messages produced by
 #'  \code{utils::download.file}.
 #'
-#'@return A tibble with the following variables: \itemize{ \item
+#'@return A data frame with the following variables: \itemize{ \item
 #'  \code{start_char, end_char}: Chr. Easily readable labels for the beginning
 #'  and end of the recession. \item \code{start_date, end_date}: Date. Dates
 #'  expressed in R datetime format, using the first day of the specified month.
-#'  }
+#'  \item \code{ongoing}: Logical. Whether or not the recession is ongoing as of
+#'  the latest available NBER data. }
 #'
-#'@source \url{https://www.nber.org/data/cycles 'cycle dates pasted.csv'}
+#'@source \url{https://www.nber.org/data/cycles/cycle dates pasted.csv}
 #'
 #' @examples
 #' recessions <- update_recessions()
@@ -457,19 +459,14 @@ GeomRecessionsText <- ggproto(
 #' # package by running the following code:
 #' \dontrun{
 #'   recessions <- update_recessions()
-#'   usethis::use_data(recessions, internal = TRUE)
+#'   usethis::use_data(recessions, internal = TRUE, overwrite = TRUE)
 #' }
 #'
 #'@export
 update_recessions <- function(url = NULL, quietly = FALSE){
 
-  pkgs <- c("tibble", "lubridate")
-  if(FALSE %in% lapply(pkgs, requireNamespace, quietly = TRUE)){
-    stop(paste("This function requires the following packages:", paste(pkgs, collapse = ", ")), call. = FALSE)
-  }
-
-  # best known URL for machine readable NBER file
-  if (is_null(url)) {
+  # Use default URL if user does not override
+  if (is_null(url) | missing(url)) {
     url <- "http://data.nber.org/data/cycles/cycle%20dates%20pasted.csv"
   }
 
@@ -477,43 +474,38 @@ update_recessions <- function(url = NULL, quietly = FALSE){
   start_char <- end_char <- start_date <- end_date <- ongoing <- index <- NULL
 
   return(
+    # attempt to download and format recessions table
     tryCatch({
       recessions <- read.csv(url) %>%
         # drop first row trough
         dplyr::slice(-1) %>%
-        tibble::as_tibble() %>%
-        # rename character values
-        dplyr::rename(start_char = 1, end_char = 2) %>%
-        # convert character dates to R date
+        # convert peaks and troughs...
         dplyr::mutate(
-          start_date = as.Date(start_char),
-          end_date = as.Date(end_char)) %>%
-        dplyr::arrange(start_date) %>%
-        # Convert character columns to 'Month Year' format
-        mutate(
+          # ...to R dates
+          start_date = as.Date(peak),
+          end_date = as.Date(trough),
+          # ... and clean char strings
           start_char = format(start_date, "%b %Y"),
-          end_char = format(end_date, "%b %Y")
-        ) %>%
-        # Add a row number for identifying the last recession
+          end_char = format(end_date, "%b %Y")) %>%
+        # confirm ascending and create row number
+        dplyr::arrange(start_date) %>%
         mutate(index = row_number()) %>%
-        # Flag unfinished recessions
-        mutate(ongoing = case_when(
-          is.na(end_date) & index == max(.$index) ~ T,
-          TRUE ~ F
-        )) %>%
-        # If there is an ongoing recession in the last row, add January 2200 for
-        # graphing purposes
         mutate(
+          # Flag unfinished recessions
+          ongoing = case_when(
+            is.na(end_date) & index == max(.$index) ~ T,
+            TRUE ~ F),
+          # set ongoing recession to arbitrary future date
           end_date = case_when(
             ongoing ~ as.Date("2200-01-01"),
             TRUE ~ end_date),
-          # Flag that recession as "Ongoing" in this case
+          # mark ongoing recession in char field
           end_char = case_when(
             ongoing ~ "Ongoing",
-            TRUE ~ end_char
-          )) %>%
-        # eliminate index
-        select(-index)
+            TRUE ~ end_char)
+          ) %>%
+        # clean up
+        select(start_char, end_char, start_date, end_date, ongoing)
 
       if (!quietly) {message("Successfully fetched from NBER")}
 
