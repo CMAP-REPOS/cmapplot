@@ -55,7 +55,6 @@ Suggests:
     knitr,
     lubridate,
     readxl,
-    RCurl,
     rmarkdown,
     testthat,
     tibble,

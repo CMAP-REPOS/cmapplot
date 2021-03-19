@@ -143,16 +143,9 @@ geom_recessions <- function(xformat = "numeric",
                             show_ongoing = TRUE,
                             ...) {
 
-  # Local binding for ongoing
-  ongoing <- NULL
-
-  # Generate recessions table, filtering out ongoing recessions if specified
-  recessions_for_plot <- build_recessions(update_recessions)
-  if (!show_ongoing) {recessions_for_plot <- recessions_for_plot %>% filter(ongoing == F)}
-
   # build recessions table for use in function, but hide it in a list
   # because of ggplot's requirement that parameters be of length 1
-  recess_table <- list(recessions_for_plot)
+  recess_table <- list(build_recessions(update_recessions))
 
   # return a series of gg objects to ggplot
   list(
@@ -171,6 +164,7 @@ geom_recessions <- function(xformat = "numeric",
           ymin = ymin,
           ymax = ymax,
           recess_table = recess_table,
+          show_ongoing = show_ongoing,
           ...
         ),
         rect_aes
@@ -193,6 +187,7 @@ geom_recessions <- function(xformat = "numeric",
             # Because ymax is Inf by default, adjustments to this setting
             #  require manually setting `ymax` in the call to `geom_recessions`
             recess_table = recess_table,
+            show_ongoing = show_ongoing,
             ...
           ),
           text_aes
@@ -238,16 +233,16 @@ build_recessions <- function(update_recessions){
     return(update_recessions)
   # OTHERWISE
   }else{
-    message("`update_recessions` must be TRUE, FALSE, or a data table. Using built-in recessions table...")
+    message("`update_recessions` must be TRUE, FALSE, or a data frame. Using built-in recessions table...")
     return(recessions)
   }
 }
 
 
 # Internal function designed to filter the built-in recessions table
-filter_recessions <- function(min, max, xformat, recess_table){
+filter_recessions <- function(min, max, xformat, show_ongoing, recess_table){
   # Bind local variables to function
-  end_num <- start_num <- end_date <- start_date <- end <- start <- NULL
+  end_num <- start_num <- end_date <- start_date <- end <- start <- ongoing <- NULL
 
   # unwrap recess_table from list
   recess_table <- recess_table[[1]]
@@ -258,7 +253,11 @@ filter_recessions <- function(min, max, xformat, recess_table){
       start_num = lubridate::decimal_date(start_date),
       end_num = lubridate::decimal_date(end_date))
 
-  # filter recessions correctly, based on xformat
+
+  # Filtering out ongoing recessions if specified
+  if (!show_ongoing) {recess_table <- dplyr::filter(recess_table, ongoing == F)}
+
+  # set up recessions table correctly, based on xformat
   if (xformat == "numeric") {
     recessions <- dplyr::rename(recess_table, end = end_num, start = start_num)
   } else if (xformat == "date") {
@@ -293,12 +292,15 @@ GeomRecessions <- ggproto(
   "GeomRecessions", Geom,
   default_aes = aes(colour = NA, alpha = 0.11, size = 0.5, linetype = 1, na.rm = TRUE),
 
-  required_aes = c("xformat", "ymin", "ymax", "recess_table" ,"fill"),
+  required_aes = c("xformat", "ymin", "ymax", "show_ongoing", "recess_table" ,"fill"),
 
   # replace `data` with `recessions`, filtered by `data`
   setup_data = function(data, params) {
     #filter recessions based on date parameters from `data` and return it. This overwrites `data`.
-    data <- filter_recessions(min = min(data$x), max = max(data$x), xformat = params$xformat, recess_table = params$recess_table)
+    data <- filter_recessions(min = min(data$x), max = max(data$x),
+                              xformat = params$xformat,
+                              show_ongoing = params$show_ongoing,
+                              recess_table = params$recess_table)
 
     # set up data for GeomRect
     data <- dplyr::transmute(
@@ -365,7 +367,7 @@ GeomRecessions <- ggproto(
 GeomRecessionsText <- ggproto(
   "GeomRecessionsText", Geom,
 
-  required_aes = c("xformat", "label", "recess_table", "y"),
+  required_aes = c("xformat", "label",  "show_ongoing", "recess_table", "y"),
 
   default_aes = aes(
     colour = "black", size = 3.88, alpha = NA, family = "", fontface = 1, lineheight = 1.2,
@@ -377,7 +379,10 @@ GeomRecessionsText <- ggproto(
   # replace `data` with `recessions`, filtered by `data`
   setup_data = function(data, params) {
     #filter recessions based on date parameters from `data` and return it. This overwrites `data`.
-    data <- filter_recessions(min = min(data$x), max = max(data$x), xformat = params$xformat, recess_table = params$recess_table)
+    data <- filter_recessions(min = min(data$x), max = max(data$x),
+                              xformat = params$xformat,
+                              show_ongoing = params$show_ongoing,
+                              recess_table = params$recess_table)
 
     # set up data for GeomRect
     data <- dplyr::transmute(
@@ -471,7 +476,7 @@ update_recessions <- function(url = NULL, quietly = FALSE){
   }
 
   # locally bind variable names
-  start_char <- end_char <- start_date <- end_date <- ongoing <- index <- NULL
+  start_char <- end_char <- start_date <- end_date <- ongoing <- index <- peak <- trough <- NULL
 
   return(
     # attempt to download and format recessions table
