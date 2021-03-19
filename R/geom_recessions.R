@@ -238,6 +238,7 @@ build_recessions <- function(update_recessions){
   }
 }
 
+#' @importFrom lubridate decimal_date
 
 # Internal function designed to filter the built-in recessions table
 filter_recessions <- function(min, max, xformat, show_ongoing, recess_table){
@@ -247,24 +248,23 @@ filter_recessions <- function(min, max, xformat, show_ongoing, recess_table){
   # unwrap recess_table from list
   recess_table <- recess_table[[1]]
 
-  # Add numeric version of dates
-  recess_table <- recess_table %>%
-    mutate(
-      start_num = lubridate::decimal_date(start_date),
-      end_num = lubridate::decimal_date(end_date))
-
-
   # Filtering out ongoing recessions if specified
   if (!show_ongoing) {recess_table <- dplyr::filter(recess_table, ongoing == F)}
 
-  # set up recessions table correctly, based on xformat
-  if (xformat == "numeric") {
-    recessions <- dplyr::rename(recess_table, end = end_num, start = start_num)
-  } else if (xformat == "date") {
-    recessions <- dplyr::rename(recess_table, end = end_date, start = start_date)
+  # use xformat to create correct "start" and "end" vars...
+  if (xformat == "date") {
+    # ... by renaming existing date fields (for date axis)
+    recessions <- dplyr::rename(recess_table, start = start_date, end = end_date)
   } else {
-    warning("geom_recessions currently only supports x axes in the numeric and date formats. Using numeric")
-    recessions <- dplyr::rename(recess_table, end = end_num, start = start_num)
+    # ... or by creating decimal dates (for numeric axis)
+    if (xformat != "numeric") {
+      warning("geom_recessions currently only supports x axes in the numeric and date formats. Using numeric.")
+    }
+    recessions <- dplyr::mutate(
+      recess_table,
+      start = lubridate::decimal_date(start_date),
+      end = lubridate::decimal_date(end_date)
+      )
   }
 
   # Remove recessions outside of range
