@@ -463,7 +463,7 @@ GeomRecessionsText <- ggproto(
 #'@export
 update_recessions <- function(url = NULL, quietly = FALSE){
 
-  pkgs <- c("RCurl", "tibble", "lubridate")
+  pkgs <- c("tibble", "lubridate")
   if(FALSE %in% lapply(pkgs, requireNamespace, quietly = TRUE)){
     stop(paste("This function requires the following packages:", paste(pkgs, collapse = ", ")), call. = FALSE)
   }
@@ -478,17 +478,14 @@ update_recessions <- function(url = NULL, quietly = FALSE){
 
   return(
     tryCatch({
-      temp.file <- paste0(tempfile(),".csv")
-      utils::download.file(url, temp.file, mode = "wb", quiet = quietly)
-
-      recessions <- read.csv(temp.file) %>%
+      recessions <- read.csv(url) %>%
         # drop first row trough
         dplyr::slice(-1) %>%
         tibble::as_tibble() %>%
         # rename character values
         dplyr::rename(start_char = 1, end_char = 2) %>%
+        # convert character dates to R date
         dplyr::mutate(
-          # convert character dates to R date
           start_date = as.Date(start_char),
           end_date = as.Date(end_char)) %>%
         dplyr::arrange(start_date) %>%
