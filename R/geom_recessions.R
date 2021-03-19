@@ -63,10 +63,6 @@
 #'  the hints found here:
 #'  \url{https://stackoverflow.com/questions/6672374/convert-rgb-to-rgba-over-white}.
 #'
-#'
-#'
-#'
-#'
 #'@section Under the hood: This function calls two custom geoms, constructed
 #'  with ggproto. The custom GeomRecessions and GeomRecessionsText are modified
 #'  versions of GeomRect and GeomText, respectively. The only variations to each
