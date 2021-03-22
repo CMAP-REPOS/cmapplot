@@ -45,6 +45,7 @@ Imports:
     grid,
     gridExtra,
     gridtext,
+    lubridate,
     magrittr,
     purrr,
     rlang,
@@ -53,9 +54,6 @@ Imports:
     sysfonts
 Suggests:
     knitr,
-    lubridate,
-    readxl,
-    RCurl,
     rmarkdown,
     testthat,
     tibble,
