@@ -1,43 +1,9 @@
 #'Axis handling helper functions
 #'
-#'This file includes two helper functions that improve axis handling.
+#'This file includes helper functions that improve axis handling.
 #'
 #'@importFrom stringr str_length
 
-
-#'A function factory for getting integer x- and y-axis values.
-#'
-#'This function can be supplied as the value for the \code{breaks} argument in
-#'the \code{scale_*_continuous} ggplot elements. It forces labels to be
-#'displayed as integers with even spacing between them, which is particularly
-#'important for time series with years on the X or Y axis. The code was
-#'developed by Joshua Cook.
-#'
-#'@source \url{https://joshuacook.netlify.app/post/integer-values-ggplot-axis/}
-#'
-#'@param n Integer, the desired number of breaks on the axis.
-#'@param ... Pass additional arguments to the base \code{pretty()} function.
-#'
-#' @examples
-#' # Standard implementation
-#' ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
-#'   geom_line() +
-#'   scale_x_continuous(breaks = integer_breaks())
-#'
-#' # Adjusted to add a total of 11 intervals
-#' ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
-#'   geom_line() +
-#'   scale_x_continuous(breaks = integer_breaks(n = 11))
-#'
-#'@export
-integer_breaks <- function(n = 5, ...) {
-  fxn <- function(x) {
-    breaks <- floor(pretty(x, n, ...))
-    names(breaks) <- attr(breaks, "labels")
-    breaks
-  }
-  return(fxn)
-}
 
 #'A function for abbreviating year labels in time series graphs
 #'
