@@ -54,12 +54,14 @@ Defaults to \code{FALSE}.}
 rectangle and text geoms, respectively.}
 
 \item{update_recessions}{Logical or data frame. \code{FALSE}, the default,
-relies on the package's built in recessions table. \code{TRUE} calls the
-function \code{update_recessions}, which attempts to fetch the current
-recessions table from the NBER website. A custom data table of recessions
-can also be passed to this argument, but it must be structured identically
-to the five-column data table described in the the documentation file for
-the function \code{update_recessions}.}
+relies on the package's built in recessions table, which was last updated in
+March 2021 and is loaded into the \code{sysdata.R} file located in the
+\code{R} directory. \code{TRUE} calls the function
+\code{update_recessions}, which attempts to fetch the current recessions
+table from the NBER website. A custom data table of recessions can also be
+passed to this argument, but it must be structured identically to the
+five-column data table described in the the documentation file for the
+function \code{update_recessions}.}
 
 \item{show_ongoing}{Logical. \code{TRUE}, the default, will display an ongoing
 recession that does not yet have a defined end date. If an ongoing recession
