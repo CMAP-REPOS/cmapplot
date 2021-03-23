@@ -126,6 +126,8 @@ The function `geom_recessions()`, allows for the addition of rectangles (and tex
 
 `ggplot()` always draws geoms *on top* of base plot elements like gridlines. The default fill and alpha values for `geom_recessions()` are the most transparent way possible to achieve CMAP palette color `#002d49` when drawn on a white background — thus impacting the color of the gridlines as little as possible. 
 
+Unless otherwise specified, this function relies on the National Bureau of Economic Research's definitions of recessions (see the `geom_recessions()` for more details on how to update that data or replace it with your own). If the NBER has announced the beginning of a recession but not yet declared its end (as is the case in March 2021), the function will default to displaying this ongoing recession from its beginning through the end of the visualized data. If this is not desired (for example, if the visualization is of a projection far into the future), users can remove this ongoing recession by setting `show_ongoing = FALSE`.
+
 ```{r recessions, message = FALSE}
 q <- ggplot(data = df, 
             mapping = aes(x = year, y = ridership, color = system)) +
