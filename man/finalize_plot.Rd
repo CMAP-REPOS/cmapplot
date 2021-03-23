@@ -137,7 +137,7 @@ finalize_plot(econ_plot,
                mode = "window",
                height = 6,
                width = 8,
-               title_width = 2.5,
+               sidebar_width = 2.5,
                overrides = list(margin_plot_r = 30))
 
 transit_plot <- transit_ridership \%>\%
