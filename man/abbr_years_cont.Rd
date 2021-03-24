@@ -39,10 +39,23 @@ to '08), but not abbreviating any specified breaks.
 \examples{
 \dontrun{
 # Default implementation - this will abbreviate all labels except the first
-ggplot(transit_ridership \%>\% filter(year >= 2000),
+# for both continuous and date scales, using their respective abbreviation
+# function.
+
+df2 <- dplyr::mutate(transit_ridership,year2 = as.Date(lubridate::date_decimal(year)))
+
+df2 <- dplyr::mutate(transit_ridership,year2 = as.Date(lubridate::date_decimal(year)))
+df1 <- filter(df2,year >= 2000)
+
+ggplot(df1,
        aes(x = year, y = ridership, color = system)) +
   geom_line() +
   scale_x_continuous(labels = abbr_years_cont)
+
+ggplot(df1,
+       aes(x = year2, y = ridership, color = system)) +
+  geom_line() +
+  scale_x_date(labels = abbr_years_date)
 
 # If customizations are desired, the function should be input using the format
 # displayed below: \code{function(i) abbr_years_cont(i,full_by_pos = *,
@@ -51,18 +64,18 @@ ggplot(transit_ridership \%>\% filter(year >= 2000),
 # This example shows the use of \code{full_by_year} to maintain full labels on
 # the first entry (the default) and add a full label to the year 2000, the first
 # of the 21st century.
-ggplot(transit_ridership,
-       aes(x = year, y = ridership, color = system)) +
+ggplot(df2,
+       aes(x = year2, y = ridership, color = system)) +
   geom_line() +
-  scale_x_continuous(labels = function(i) abbr_years_cont(i,full_by_year = c(2000)))
+  scale_x_date(labels = function(i) abbr_years_date(i,full_by_year = c(2000)))
 
 # You can also remove the default maintenance of the first label and only
 # specify specific years.
-ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
+ggplot(df2,
+       aes(x = year, y = ridership, color = system)) +
   geom_line() +
-  scale_x_continuous(breaks = scales::breaks_pretty(5),
-                     labels = function(i) abbr_years_cont(i,full_by_pos = NULL,
-                                                          full_by_year = c(2018))
-  )
+  scale_x_continuous(labels = function(i) abbr_years_cont(i,full_by_pos = NULL,
+                                                          full_by_year = c(1990,2020)))
 }
+
 }
