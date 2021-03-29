@@ -28,12 +28,14 @@
 #'@param rect_aes,text_aes Named list, additional aesthetics to send to the
 #'  rectangle and text geoms, respectively.
 #'@param update_recessions Logical or data frame. \code{FALSE}, the default,
-#'  relies on the package's built in recessions table. \code{TRUE} calls the
-#'  function \code{update_recessions}, which attempts to fetch the current
-#'  recessions table from the NBER website. A custom data table of recessions
-#'  can also be passed to this argument, but it must be structured identically
-#'  to the five-column data table described in the the documentation file for
-#'  the function \code{update_recessions}.
+#'  relies on the package's built in recessions table, which was last updated in
+#'  March 2021 and is loaded into the \code{sysdata.R} file located in the
+#'  \code{R} directory. \code{TRUE} calls the function
+#'  \code{update_recessions}, which attempts to fetch the current recessions
+#'  table from the NBER website. A custom data table of recessions can also be
+#'  passed to this argument, but it must be structured identically to the
+#'  five-column data table described in the the documentation file for the
+#'  function \code{update_recessions}.
 #'@param show_ongoing Logical. \code{TRUE}, the default, will display an ongoing
 #'  recession that does not yet have a defined end date. If an ongoing recession
 #'  exists, it will be displayed as extending through the maximum extent of the
@@ -62,6 +64,7 @@
 #'  \code{rect_aes = list(alpha = 0.5)}. Color and alpha were calculated using
 #'  the hints found here:
 #'  \url{https://stackoverflow.com/questions/6672374/convert-rgb-to-rgba-over-white}.
+#'
 #'
 #'@section Under the hood: This function calls two custom geoms, constructed
 #'  with ggproto. The custom GeomRecessions and GeomRecessionsText are modified
