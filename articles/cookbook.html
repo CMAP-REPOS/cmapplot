@@ -118,7 +118,7 @@
 <p>Line graphs are useful for showing change over time, and are well-suited for combination with <code><a href="../reference/geom_text_lastonly.html">geom_text_lastonly()</a></code> and <code><a href="../reference/geom_recessions.html">geom_recessions()</a></code> custom geoms. This particular plot also demonstrates the utility of a few other functions from the tidyverse that are quite useful when working with <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot2::ggplot()</a></code>:</p>
 <ul>
 <li><p><code><a href="https://forcats.tidyverse.org/reference/fct_reorder.html">forcats::fct_reorder()</a></code> and <code><a href="https://forcats.tidyverse.org/reference/fct_reorder.html">forcats::fct_reorder2()</a></code> are useful to automatically order of factors within <code>mapping</code>, which establishes legend order. (See also <a href="https://r4ds.had.co.nz/factors.html#modifying-factor-order">the Factors chapter of <em>R for Data Science</em></a>.)</p></li>
-<li><p>functions from the <code>scales</code> package, such as <code><a href="https://scales.r-lib.org//reference/label_percent.html">scales::percent()</a></code> and <code><a href="https://scales.r-lib.org//reference/label_percent.html">scales::label_percent()</a></code>, which reformat numbers into attractive formats.</p></li>
+<li><p>functions from the <code>scales</code> package, such as <code><a href="https://scales.r-lib.org/reference/label_percent.html">scales::percent()</a></code> and <code><a href="https://scales.r-lib.org/reference/label_percent.html">scales::label_percent()</a></code>, which reformat numbers into attractive formats.</p></li>
 <li><p>ggplot2 scale functions, such as <code><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">ggplot2::scale_x_continuous()</a></code>, which allow for control over the extent and breaks of each axis.</p></li>
 </ul>
 <div id="example-code" class="section level4">
@@ -138,7 +138,7 @@
     x <span class="op">=</span> <span class="va">year</span>,
     y <span class="op">=</span> <span class="va">indexed</span>,
     color <span class="op">=</span> <span class="fu">fct_reorder2</span><span class="op">(</span><span class="va">area</span>, <span class="va">year</span>, <span class="va">indexed</span><span class="op">)</span>,  <span class="co"># Order legend by last `indexed` value in last `year`</span>
-    label <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org//reference/label_percent.html">percent</a></span><span class="op">(</span><span class="va">indexed</span>, accuracy <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>  <span class="co"># Format labels as percents with no decimals</span>
+    label <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_percent.html">percent</a></span><span class="op">(</span><span class="va">indexed</span>, accuracy <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>  <span class="co"># Format labels as percents with no decimals</span>
   <span class="op">)</span>
 <span class="op">)</span> <span class="op">+</span>
   
@@ -149,7 +149,7 @@
   
   <span class="co"># Establish an attractive Y scale</span>
   <span class="fu">scale_y_continuous</span><span class="op">(</span>
-    labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org//reference/label_percent.html">label_percent</a></span><span class="op">(</span>accuracy <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,
+    labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_percent.html">label_percent</a></span><span class="op">(</span>accuracy <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,
     expand <span class="op">=</span> <span class="fu">expansion</span><span class="op">(</span>add <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>  <span class="co"># No padding beyond specified limits</span>
   <span class="op">)</span> <span class="op">+</span>
   
@@ -295,11 +295,11 @@
          color <span class="op">=</span> <span class="fu">guide_legend</span><span class="op">(</span>override.aes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># Increase legend point size</span>
 
   <span class="co"># Adjust gridlines and their labels</span>
-  <span class="fu">scale_x_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org//reference/label_number.html">label_comma</a></span><span class="op">(</span><span class="op">)</span>,  <span class="co"># Format x-axis numbers with commas</span>
+  <span class="fu">scale_x_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_number.html">label_comma</a></span><span class="op">(</span><span class="op">)</span>,  <span class="co"># Format x-axis numbers with commas</span>
                      limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">200000</span>, <span class="fl">400000</span><span class="op">)</span>,     <span class="co"># Set x-axis limits</span>
                      n.breaks <span class="op">=</span> <span class="fl">7</span>,                    <span class="co"># Set number of gridlines on x-axis</span>
                      expand <span class="op">=</span> <span class="fu">expansion</span><span class="op">(</span>mult <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># No padding beyond specified limits</span>
-  <span class="fu">scale_y_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org//reference/label_number.html">label_comma</a></span><span class="op">(</span><span class="op">)</span>,  <span class="co"># Format y-axis numbers with commas</span>
+  <span class="fu">scale_y_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_number.html">label_comma</a></span><span class="op">(</span><span class="op">)</span>,  <span class="co"># Format y-axis numbers with commas</span>
                      limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">200000</span>, <span class="fl">400000</span><span class="op">)</span>,     <span class="co"># Set y-axis limits</span>
                      n.breaks <span class="op">=</span> <span class="fl">7</span>,                    <span class="co"># Set number of gridlines on y-axis</span>
                      expand <span class="op">=</span> <span class="fu">expansion</span><span class="op">(</span>mult <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># No padding beyond specified limits</span>
@@ -366,7 +366,7 @@
   <span class="fu">geom_label</span><span class="op">(</span>
     mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span>
       y <span class="op">=</span> <span class="va">MED_HH_INC</span> <span class="op">+</span> <span class="fl">2600</span>,  <span class="co"># Offset by trial &amp; error</span>
-      label <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org//reference/label_dollar.html">label_dollar</a></span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="va">MED_HH_INC</span><span class="op">)</span>  <span class="co"># Format labels as dollars</span>
+      label <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_dollar.html">label_dollar</a></span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="va">MED_HH_INC</span><span class="op">)</span>  <span class="co"># Format labels as dollars</span>
     <span class="op">)</span>,
     hjust <span class="op">=</span> <span class="fl">.5</span>,  <span class="co"># Center label (0 = left aligned, 1 = right aligned)</span>
     label.size <span class="op">=</span> <span class="fl">0</span> <span class="co"># necessary to not draw a line around the label box</span>
@@ -381,10 +381,10 @@
   <span class="op">)</span> <span class="op">+</span>
 
   <span class="co"># Wrap long labels along the x-axis</span>
-  <span class="fu">scale_x_discrete</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org//reference/label_wrap.html">label_wrap</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">scale_x_discrete</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_wrap.html">label_wrap</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
 
   <span class="co"># Format y-axis numbers as percentages, and set axis limits</span>
-  <span class="fu">scale_y_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org//reference/label_dollar.html">label_dollar</a></span><span class="op">(</span><span class="op">)</span>,
+  <span class="fu">scale_y_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_dollar.html">label_dollar</a></span><span class="op">(</span><span class="op">)</span>,
                      limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100000</span><span class="op">)</span>,
                      breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">0</span>, to <span class="op">=</span> <span class="fl">100000</span>, by <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
 
@@ -464,7 +464,7 @@
   <span class="op">)</span> <span class="op">+</span>
   
   <span class="co"># Format y-axis numbers as percentages</span>
-  <span class="fu">scale_y_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org//reference/label_percent.html">label_percent</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">scale_y_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_percent.html">label_percent</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   
   <span class="co"># Apply CMAP theme and color palette</span>
   <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
@@ -536,7 +536,7 @@
   <span class="fu">geom_col</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
 
   <span class="co"># Format y-axis numbers as percentages, and set axis limits</span>
-  <span class="fu">scale_y_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org//reference/label_percent.html">label_percent</a></span><span class="op">(</span>accuracy <span class="op">=</span> <span class="fl">1</span>, scale <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,
+  <span class="fu">scale_y_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_percent.html">label_percent</a></span><span class="op">(</span>accuracy <span class="op">=</span> <span class="fl">1</span>, scale <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,
                      limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">35</span><span class="op">)</span>,
                      breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">0</span>, to <span class="op">=</span> <span class="fl">35</span>, by <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
 
@@ -631,7 +631,7 @@
   <span class="fu"><a href="../reference/cmap_fill_discrete.html">cmap_fill_discrete</a></span><span class="op">(</span><span class="st">"friday"</span>, reverse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span>
   
   <span class="co"># Adjust axis scales/labels</span>
-  <span class="fu">scale_y_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org//reference/label_number.html">label_comma</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">scale_y_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_number.html">label_comma</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">scale_x_time</span><span class="op">(</span>
     limits <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="http://lubridate.tidyverse.org/reference/hms.html">hm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"05:00"</span>, <span class="st">"22:00"</span><span class="op">)</span><span class="op">)</span>,
     breaks <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="http://lubridate.tidyverse.org/reference/hms.html">hm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"06:00"</span>, <span class="st">"09:00"</span>, <span class="st">"12:00"</span>, <span class="st">"15:00"</span>, <span class="st">"18:00"</span>, <span class="st">"21:00"</span><span class="op">)</span><span class="op">)</span>,
@@ -751,7 +751,7 @@
 
   <span class="co"># Add lines and label final value with dollar formatting</span>
   <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/geom_text_lastonly.html">geom_text_lastonly</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span>label <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org//reference/label_dollar.html">label_dollar</a></span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="va">MED_HH_INC</span><span class="op">)</span><span class="op">)</span>,
+  <span class="fu"><a href="../reference/geom_text_lastonly.html">geom_text_lastonly</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span>label <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_dollar.html">label_dollar</a></span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="va">MED_HH_INC</span><span class="op">)</span><span class="op">)</span>,
                      add_points <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span>
 
   <span class="co"># Don't clip labels</span>
@@ -761,7 +761,7 @@
   <span class="fu">scale_x_continuous</span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2005</span>, <span class="fl">2020</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">scale_y_continuous</span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100000</span><span class="op">)</span>,
                      breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">0</span>, to <span class="op">=</span> <span class="fl">100000</span>, by <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span>,
-                     labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org//reference/label_dollar.html">label_dollar</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+                     labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_dollar.html">label_dollar</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
 
   <span class="co"># Apply CMAP theme and apply race/ethnicity palette</span>
   <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
