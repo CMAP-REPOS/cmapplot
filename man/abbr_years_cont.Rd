@@ -5,17 +5,11 @@
 \alias{abbr_years_date}
 \title{Axis handling helper functions}
 \usage{
-abbr_years_cont(breaks, full_by_pos = c(1), full_by_year = NULL)
+abbr_years_cont(full_by_pos = c(1), full_by_year = NULL)
 
-abbr_years_date(breaks, full_by_pos = c(1), full_by_year = NULL)
+abbr_years_date(full_by_pos = c(1), full_by_year = NULL)
 }
 \arguments{
-\item{breaks}{Vector, the input break values to be abbreviated. This will be
-automatically supplied to the function by setting \code{labels =
-abbr_years_cont} or \code{labels = abbr_years_date} inside the
-\code{scale_*_continuous} argument (for \code{abbr_years_cont()} or inside
-the \code{scale_*_date} argument (for \code{abbr_years_date}).}
-
 \item{full_by_pos}{Vector of integers, the position of breaks that should not
 be abbreviated. This defaults to \code{c(1)}, which retains the original
 first label and abbreviates subsequent ones. If all breaks should be
@@ -27,7 +21,10 @@ abbreviated. Defaults to NULL.}
 \description{
 `abbr_years_cont()` and `abbr_years_date()` are helper functions that allow
 users to abbreviate year labels to their two-digit representation (e.g., 2008
-to '08), but not abbreviating any specified breaks.
+to '08), but not abbreviating any specified breaks. They do so by creating a
+new function that takes the breaks supplied by \code{ggplot} as their only
+argument. These functions were modeled after the syntax and approach of the
+labeling functions in the \code{scales::label_*} family.
 }
 \section{Functions}{
 \itemize{
@@ -40,42 +37,38 @@ to '08), but not abbreviating any specified breaks.
 \dontrun{
 # Default implementation - this will abbreviate all labels except the first
 # for both continuous and date scales, using their respective abbreviation
-# function.
+# function. Note the syntax - this function actually produces another
+# function, and so you must include the opening and closing parentheses
+# following the function's name (i.e., \code{abbr_years_cont()}).
 
-df2 <- dplyr::mutate(transit_ridership,year2 = as.Date(lubridate::date_decimal(year)))
-
-df2 <- dplyr::mutate(transit_ridership,year2 = as.Date(lubridate::date_decimal(year)))
+df2 <- dplyr::mutate(transit_ridership,year2 = as.Date(paste0(year,"-01-01")))
 df1 <- filter(df2,year >= 2000)
 
 ggplot(df1,
        aes(x = year, y = ridership, color = system)) +
   geom_line() +
-  scale_x_continuous(labels = abbr_years_cont)
+  scale_x_continuous(labels = abbr_years_cont())
 
 ggplot(df1,
        aes(x = year2, y = ridership, color = system)) +
   geom_line() +
-  scale_x_date(labels = abbr_years_date)
+  scale_x_date(labels = abbr_years_date())
 
-# If customizations are desired, the function should be input using the format
-# displayed below: \code{function(i) abbr_years_cont(i,full_by_pos = *,
-# full_by_year = *)}.
+# If customizations are desired, users can use \code{full_by_pos} and/or
+# \code{full_by_year} to maintain the full version of the specified labels.
 
-# This example shows the use of \code{full_by_year} to maintain full labels on
-# the first entry (the default) and add a full label to the year 2000, the first
-# of the 21st century.
 ggplot(df2,
        aes(x = year2, y = ridership, color = system)) +
   geom_line() +
-  scale_x_date(labels = function(i) abbr_years_date(i,full_by_year = c(2000)))
+  scale_x_date(labels = abbr_years_date(full_by_year = c(2000)))
 
 # You can also remove the default maintenance of the first label and only
 # specify specific years.
 ggplot(df2,
        aes(x = year, y = ridership, color = system)) +
   geom_line() +
-  scale_x_continuous(labels = function(i) abbr_years_cont(i,full_by_pos = NULL,
-                                                          full_by_year = c(1990,2020)))
+  scale_x_continuous(labels = abbr_years_cont(full_by_pos = NULL,
+                                              full_by_year = c(1990,2020)))
 }
 
 }
