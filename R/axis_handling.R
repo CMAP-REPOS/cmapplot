@@ -9,6 +9,7 @@
 #'
 #'@importFrom stringr str_length
 #'@importFrom lubridate year month day
+#'@importFrom stats na.omit
 #'
 #'@examples
 #'
