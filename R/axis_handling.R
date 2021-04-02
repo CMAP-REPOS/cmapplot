@@ -3,11 +3,12 @@
 #'`abbr_years()` is a helper functions that allows users to abbreviate year
 #'labels to their two-digit representation (e.g., 2008 to '08), but not
 #'abbreviating any specified breaks. It does so by creating a new function that
-#'takes the breaks supplied by \code{ggplot} as its only argument. The
+#'takes the breaks supplied by \code{ggplot2} as its only argument. The
 #'function was modeled after the syntax and approach of the labeling functions
 #'in the \code{scales::label_*} family.
 #'
 #'@importFrom stringr str_length
+#'@importFrom lubridate year month day
 #'
 #'@examples
 #'\dontrun{
@@ -65,59 +66,52 @@ abbr_years <- function(full_by_pos = c(1),
 
   fxn <- function(breaks) {
 
-    # For integer breaks, determine length of each break. Note that when breaks
-    # have been modified, ggplot sometimes adds an additional NA break in the
-    # first and last positions. We check whether this is the case and, if so,
-    # remove those for testing purposes.
-    if (!dateaxis) {
-      actual_breaks <- breaks[which(!is.na(breaks))]
-
-      lengths <- stringr::str_length(as.integer(actual_breaks))
-
-      # # Stop if the breaks are not in a four-digit format.
-      if (!(min(lengths == 4) & max(lengths == 4))) {
-        stop("Breaks are not in a four-digit format. Cannot abbreviate.")
-        }
-
-      # # Stop if breaks cannot be coerced to a number
-      tryCatch({as.integer(actual_breaks)},
-               warning = function(w){stop("Breaks cannot be coerced to a year. Cannot abbreviate.")})
-    }
-
-    # If a date axis, convert given year integers into the number of days since
-    # 1970 (note this is how the breaks are handled internally by ggplot - they
-    # live in the following location of a ggplot chart 'a' that has been passed
-    # to ggplot_build() ggplot_build(a)$layout$panel_params[[1]]$x$breaks Note
-    # that breaks for the y axis can be accessed similarly.
+    # If a date axis, breaks are stored as number of days since 1/1/1970. These
+    # must be converted to integer years, but this should error if all breaks
+    # don't fall on the same calendar day of a distinct year.
     if (dateaxis) {
-      if (!is.null(full_by_year))
-      {full_by_year <- as.numeric(as.Date(paste0(full_by_year,"-01-01")))}
+      dates <- as.Date(breaks, origin = "1970-01-01")
+
+      if (length(unique(month(stats::na.omit(dates)))) != 1 |
+          length(unique(day(stats::na.omit(dates)))) != 1) {
+        message(paste(
+          paste("Currently, breaks are:", paste(dates[!is.na(dates)], collapse = ", ")),
+          "This function only works if all breaks are on identical calendar days.",
+          sep = "\n")
+        )
+        stop("Breaks cannot be abbreviated.", call. = FALSE)
+      }
+
+      breaks <- lubridate::year(dates)
     }
+
+    # Stop if the breaks are not in a four-digit format.
+    if (!all(stringr::str_length(breaks) == 4, na.rm = TRUE)) {
+      message(paste(
+        paste("Currently, breaks are:", paste(breaks[!is.na(breaks)], collapse = ", ")),
+        "Remove any breaks that contain decimals. Consider `breaks = scales::pretty_breaks()`",
+        "If the axis is in date format, use `abbr_years(dateaxis = TRUE)`.",
+        sep = "\n")
+      )
+      stop("Breaks cannot be abbreviated.", call. = FALSE)
+      }
 
     # Abbreviate all values
     abbr <- paste0("'",substr(breaks,3,4))
 
-    # Account for leading NAs and increment up positions accordingly
+    # If there is a leading NA, increment up positions accordingly
     leading_na <- which.min(is.na(breaks)) - 1
-    if(!is.null(full_by_pos)) {full_by_pos <- full_by_pos + leading_na}
+    if(!is.null(full_by_pos)) {
+      full_by_pos <- full_by_pos + leading_na
+    }
 
-    # Now convert referenced dates into positions
+    # Convert specified years into positions
     if(!is.null(full_by_year)) {
       full_by_pos <- sort(unique(c(full_by_pos,match(full_by_year,breaks))))
     }
 
     # Add back full years for specified positions
-    if(!is.null(full_by_pos)) {
-      # If the date axis, extract the name of the break in ggplot's named list
-      # of numbers, which is the 4-digit year
-      if (dateaxis) {
-      abbr[full_by_pos] <- names(breaks)[full_by_pos]
-      }
-      # Otherwise, use the normal breaks
-      else {
-        abbr[full_by_pos] <- breaks[full_by_pos]
-      }
-    }
+    abbr[full_by_pos] <- breaks[full_by_pos]
 
     return(abbr)
   }
