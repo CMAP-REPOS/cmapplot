@@ -23,7 +23,7 @@ reference:
 - contents:
   - starts_with("geom_")
   - cmap_default_aes
-  - integer_breaks
+  - abbr_years
 - title: Color Palettes and Gradients
 - contents:
   - starts_with("viz_")

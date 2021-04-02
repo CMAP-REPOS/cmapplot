@@ -29,15 +29,17 @@ function was modeled after the syntax and approach of the labeling functions
 in the \code{scales::label_*} family.
 }
 \examples{
-\dontrun{
-# Default implementation - this will abbreviate all labels except the first
-# for both continuous and date scales, using their respective abbreviation
-# function. Note the syntax - this function actually produces another
-# function, and so you must include the opening and closing parentheses
-# following the function's name (i.e., \code{abbr_year()}).
 
-df2 <- dplyr::mutate(transit_ridership,year2 = as.Date(paste0(year,"-01-01")))
-df1 <- filter(df2,year >= 2000)
+# basic functionality
+abbr_years()(c(2010:2020))
+abbr_years(full_by_year = 2000)(c(1990:2010))
+
+
+# Default implementation - this will abbreviate all labels except the first
+# for both continuous and date scales.
+
+df2 <- dplyr::mutate(transit_ridership, year2 = as.Date(lubridate::date_decimal(year)))
+df1 <- dplyr::filter(df2, year >= 2000)
 
 ggplot(df1,
        aes(x = year, y = ridership, color = system)) +
@@ -64,6 +66,6 @@ ggplot(df2,
   geom_line() +
   scale_x_continuous(labels = abbr_years(full_by_pos = NULL,
                                          full_by_year = c(1990,2020)))
-}
+
 
 }
