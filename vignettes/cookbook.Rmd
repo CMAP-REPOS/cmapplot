@@ -91,7 +91,7 @@ finalize_plot(
   
   # Tweak plot layout
   height = 4.5,
-  title_width = 2.6,
+  sidebar_width = 2.6,
   overrides = list(
     margin_plot_r = 0,  # Eliminate distance btwn plot and right side of image
     margin_legend_b = 25  # Larger than usual gap between legend and plot
@@ -244,6 +244,9 @@ finalize_plot(
 
 The cmapplot package includes functionality for highlighting specified data using a distinct color. This is useful to compare Chicago against peer regions, for example.
 
+This plot also utilizes `geom_label`, an alternative to `geom_text` that draws a 
+rectangle behind each label to help it stand out from gridlines where they overlap. 
+
 #### Example code
 
 ```{r highlightbar, message=FALSE}
@@ -258,23 +261,25 @@ df <- tibble(
 p <- ggplot(data = df,
             mapping = aes(
               x = reorder(REGION, -MED_HH_INC), # Order race by decreasing income
-              y = MED_HH_INC,
-              fill = REGION  # Fill must be set for a highlighted chart
+              y = MED_HH_INC
             )) +
 
   # Add bars
-  geom_col(width = 0.5) +
+  geom_col(mapping = aes(fill = REGION),  # Fill must be set for a highlighted chart
+           width = 0.5) +
 
   # Add horizontal line at specified value
   geom_hline(yintercept = 55322) +
 
-  # Label bars
-  geom_text(
+  # Label bars. `geom_label` draws a rectangle behind the label, to prevent 
+  # overlap with gridlines
+  geom_label(
     mapping = aes(
-      y = MED_HH_INC + 2500,  # Offset by trial & error
+      y = MED_HH_INC + 2600,  # Offset by trial & error
       label = scales::label_dollar()(MED_HH_INC)  # Format labels as dollars
     ),
-    hjust = .5  # Center label (0 = left aligned, 1 = right aligned)
+    hjust = .5,  # Center label (0 = left aligned, 1 = right aligned)
+    label.size = 0 # necessary to not draw a line around the label box
   ) +
 
   # Annotate the horizontal line
@@ -393,7 +398,7 @@ finalize_plot(
     (as of August 19, 2020).",
     # Note that we used two "<br>" tags to create a line break and empty line 
     #  between sources and notes.
-  title_width = 2.4,  # Manually specify title width
+  sidebar_width = 2.4,  # Manually specify sidebar width
   overrides = list(margin_legend_b = 50)  # Increase margin below legend
 )
 ```
@@ -616,7 +621,7 @@ finalize_plot(
   plot = p,
   title = "Regional emissions by sector, 2015",
   caption = "Source: Chicago Metropolitan Agency for Planning.",
-  caption_valign = "top")
+  caption_align = 1)
 ```
 
 #### Original graphic

@@ -1,4 +1,32 @@
 
+<!--
+
+    ####### UUUUUUUU        ,ad8888ba,   88b           d88         db         88888888ba
+    ####### :UUUUUUU       d8"'    `"8b  888b         d888        d88b        88      "8b
+    #######. :UUUUUU      d8'            88`8b       d8'88       d8'`8b       88      ,8P
+    ########  :UUUUU      88             88 `8b     d8' 88      d8'  `8b      88aaaaaa8P'
+    #########:  :UUU      88             88  `8b   d8'  88     d8YaaaaY8b     88""""""'
+    ##########:    '      Y8,            88   `8b d8'   88    d8""""""""8b    88
+    #############:.        Y8a.    .a8P  88    `888'    88   d8'        `8b   88
+    ################        `"Y8888Y"'   88     `8'     88  d8'          `8b  88
+    
+    
+                                    PROUDLY PRESENTS
+                                                                      88
+                                                                      88                ,d
+                                                                      88                88
+ ,adPPYba,  88,dPYba,,adPYba,   ,adPPYYba,  8b,dPPYba,   8b,dPPYba,   88   ,adPPYba,  MM88MMM
+a8"     ""  88P'   "88"    "8a  ""     `Y8  88P'    "8a  88P'    "8a  88  a8"     "8a   88
+8b          88      88      88  ,adPPPPP88  88       d8  88       d8  88  8b       d8   88
+"8a,   ,aa  88      88      88  88,    ,88  88b,   ,a8"  88b,   ,a8"  88  "8a,   ,a8"   88,
+ `"Ybbd8"'  88      88      88  `"8bbdP"Y8  88`YbbdP"'   88`YbbdP"'   88   `"YbbdP"'    "Y888
+                                            88           88
+                                            88           88
+
+
+               An R package made with ♥ in Chicago by and for CMAP staff.
+-->
+
 # cmapplot <img src="man/figures/logo.png" align="right" alt="cmapplot logo" width="128" />
 
 <!-- badges: start -->
@@ -42,10 +70,14 @@ devtools::install_github("CMAP-REPOS/cmapplot", build_vignettes=TRUE)
 library(cmapplot)
 ```
 
+For more detailed information about installing the package, particularly
+on a CMAP-issued computer, see [this
+article](https://cmap-repos.github.io/cmapplot/articles/installation.html).
+
 To install on macOS, users must install
 [XQuartz](https://www.xquartz.org) before cmapplot can be loaded. (This
 can be easily accomplished via the [Homebrew](https://brew.sh) package
-manager with the command `brew cask install xquartz`.)
+manager with the command `brew install --cask xquartz`.)
 
 **A note about fonts**: The cmapplot package works best when installed
 on a computer with the Whitney family of fonts installed (specifically
@@ -106,16 +138,13 @@ already exist:
     scales](https://r-graphics.org/recipe-axes-range), [coordinate
     systems](https://r-graphics.org/recipe-axes-polar), and
     [facets](https://r-graphics.org/recipe-facet-basic).
-
 -   The [ggplot2 book](https://ggplot2-book.org/) delves deeper into why
     and how ggplot2 works the way it does, also with distinct chapters
     on topics like
     [scales](https://ggplot2-book.org/scales-guides.html), [coordinate
     systems](https://ggplot2-book.org/coord.html),
     [facets](https://ggplot2-book.org/facet.html), etc.
-
 -   The [ggplot2](ggplot2.tidyverse.org/) website.
-
 -   The [R for Data Science (R4DS)](https://r4ds.had.co.nz/) book,
     especially the [Graphics for
     Communication](https://r4ds.had.co.nz/graphics-for-communication.html)

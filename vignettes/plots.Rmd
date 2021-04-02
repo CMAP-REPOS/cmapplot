@@ -79,6 +79,17 @@ p + theme_cmap(ylab = "Annual Ridership (Millions)",
   geom_line()
 ```
 
+
+`theme_cmap()` also allows users to easily add tick marks on the x- and/or the y-axes, using the argument `axisticks`. Note that here, some additional manipulation of the y-axis scale is necessary for the axis ticks to touch the lowest horizontal gridline (this is to override `ggplot2`'s default behavior, which expands the scale slightly beyond the extent of the data for aesthetic reasons).
+```{r mods2, message = FALSE}
+p + scale_y_continuous(breaks = c(0, 200, 400), 
+                       limits = c(-1, 575),
+                       expand = c(0, 0)) + 
+  theme_cmap(ylab = "Annual Ridership (Millions)",
+             axisticks = "x") +
+  geom_line()
+```
+
 ### Overriding plotting defaults
 
 The package contains a list of default values (`cmapplot_globals$consts`) that control various plotting constants. Most of these impact the function `finalize_plot()`, but a few impact `theme_cmap()`. For a complete description of these constants, see `?cmapplot_globals`. 
@@ -96,15 +107,11 @@ p + scale_x_continuous(labels = c("1980", "1990", "2000", "2010", "A very long l
 
 ### Further theme modifications
 
-In addition, any ggplot2 theme element can also be modified directly in `theme_cmap()` by passing valid arguments from the `ggplot2::theme()` function. In the following example, the addition of `axis.ticks.x` and the establishment of an `axis.ticks.length.x` "turns on" the tick marks automatically turned off by `theme_cmap()`'s underlying theme. Note that here, some additional manipulation of the y-axis scale is necessary for the axis ticks to touch the lowest horizontal gridline.
+In addition, any ggplot2 theme element can also be modified directly in `theme_cmap()` by passing valid arguments from the `ggplot2::theme()` function. In the following example, the addition of `panel.grid.major.y = element_line(color = "light gray")` modifies the default color of a horizontal grid line, changing it from black to light gray.
 
-```{r mods2, message = FALSE}
-p + scale_y_continuous(breaks = c(0, 200, 400), 
-                       limits = c(-1, 575),
-                       expand = c(0, 0)) + 
-  theme_cmap(ylab = "Annual Ridership (Millions)",
-             axis.ticks.x = element_line(color = "red"),
-             axis.ticks.length.x = unit(10, "bigpts")) +
+```{r mods3, message = FALSE}
+p + theme_cmap(ylab = "Annual Ridership (Millions)",
+               panel.grid.major.y = element_line(color = "light gray")) +
   geom_line()
 ```
 
@@ -118,6 +125,8 @@ The cmapplot package also includes two custom geoms that allow the user to easil
 The function `geom_recessions()`, allows for the addition of rectangles (and text, if desired) representing US economic recessions. Similar to the `hline` example above, `geom_recessions()` should be added before the plot's primary geom (`geom_line()`) so that lines are drawn on top of recession rectangles. 
 
 `ggplot()` always draws geoms *on top* of base plot elements like gridlines. The default fill and alpha values for `geom_recessions()` are the most transparent way possible to achieve CMAP palette color `#002d49` when drawn on a white background — thus impacting the color of the gridlines as little as possible. 
+
+This function relies on the National Bureau of Economic Research's definitions of recessions. Details on how to update these dates, as well as how to provide your own, can be found in `geom_recessions()` and `update_recessions()`. If the most recent recession has not yet been declared over (as is the case in March 2021), the function will default to displaying this ongoing recession from its beginning through the end of the visualized data. If this is not desired (for example, if the visualization is of a projection far into the future), users can remove this ongoing recession by setting `show_ongoing = FALSE`. 
 
 ```{r recessions, message = FALSE}
 q <- ggplot(data = df, 

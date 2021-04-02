@@ -3,7 +3,7 @@
 #' A selection of discrete color palettes from the CMAP color palette.
 #'
 #' @examples
-#' # Get names of avialable discrete palettes.
+#' # Get names of available discrete palettes.
 #' # (Call viz_palette("name_of_palette") to preview one.)
 #' names(cmap_palettes)
 #'
@@ -63,6 +63,7 @@ viz_palette <- function(pal, ttl = deparse(substitute(pal)), num = length(pal)) 
 #'
 #' @param palette Choose from 'cmap_palettes' list
 #' @param reverse Logical; reverse color order?
+#' @param ... Additional parameters passed on to the scale type
 #'
 #' @noRd
 cmap_pal_discrete <- function(palette = "prosperity", reverse = FALSE) {
@@ -81,6 +82,7 @@ cmap_pal_discrete <- function(palette = "prosperity", reverse = FALSE) {
 #'
 #' @param palette Choose from 'cmap_palettes' list
 #' @param reverse Logical; reverse color order?
+#' @param ... Additional parameters passed on to the scale type
 #'
 #' @examples
 #' ggplot(pop_and_laborforce_by_age, aes(x = variable, y = value, fill = age)) +
@@ -94,17 +96,21 @@ cmap_pal_discrete <- function(palette = "prosperity", reverse = FALSE) {
 #'
 #' @describeIn cmap_fill_discrete For fill aesthetic
 #' @export
-cmap_fill_discrete <- function(palette = "prosperity", reverse = FALSE) {
+cmap_fill_discrete <- function(palette = "prosperity", reverse = FALSE, ...) {
     ggplot2::discrete_scale(
-        "fill", "cmap_palettes", palette = cmap_pal_discrete(palette, reverse = reverse)
+        "fill", "cmap_palettes",
+        palette = cmap_pal_discrete(palette, reverse = reverse),
+        ...
     )
 }
 
 #' @describeIn cmap_fill_discrete For color aesthetic
 #' @export
-cmap_color_discrete <- function(palette = "prosperity", reverse = FALSE) {
+cmap_color_discrete <- function(palette = "prosperity", reverse = FALSE, ...) {
     ggplot2::discrete_scale(
-        "colour", "cmap_palettes", palette = cmap_pal_discrete(palette, reverse = reverse)
+        "colour", "cmap_palettes",
+        palette = cmap_pal_discrete(palette, reverse = reverse),
+        ...
     )
 }
 
