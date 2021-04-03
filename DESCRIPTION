@@ -51,7 +51,7 @@ Imports:
     rlang,
     scales,
     stringr,
-    sysfonts
+    systemfonts
 Suggests:
     knitr,
     rmarkdown,

@@ -13,7 +13,6 @@
 #' @docType package
 #' @import ggplot2 dplyr grid scales grDevices graphics rlang gridtext
 #' @importFrom glue glue glue_collapse
-#' @importFrom sysfonts font_files
 #' @keywords internal
 "_PACKAGE"
 
@@ -110,11 +109,16 @@ cmapplot_globals$consts = list(
 # why aren't these available functions?
 # and, I'd like to figure out how to parse for $
 
+#' Get a value from the cmapplot_globals environment
+#'
 #' @export
 get_cmapplot_global <- function(name){
   get(name, envir = cmapplot_globals)
 }
 
+
+#' Set a value in the cmapplot_globals environment
+#'
 #' @export
 set_cmapplot_global <- function(name, value){
 
