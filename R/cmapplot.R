@@ -69,6 +69,8 @@ cmapplot_globals$consts = list(
 #' @import systemfonts
 .onLoad <- function(...) {
 
+  family <- name <- path <- NULL
+
   # check for Whitney
   all_fonts <- systemfonts::system_fonts()
   whitney_core <- all_fonts$name[all_fonts$name %in% c("Whitney-Medium", "Whitney-Book", "Whitney-Semibold")]
@@ -97,23 +99,28 @@ cmapplot_globals$consts = list(
   # Load CMAP preferred default.aes (can't be done until fonts are specified)
   assign("default_aes_cmap",
          init_cmap_default_aes(),
-         env = cmapplot_globals)
+         envir = cmapplot_globals)
 
   # Cache existing default.aes
   assign("default_aes_cached",
          fetch_current_default_aes(),
-         env = cmapplot_globals)
+         envir = cmapplot_globals)
 }
 
 
-# why aren't these available functions?
-# and, I'd like to figure out how to parse for $
+# Figure out how to parse for $
 
 #' Get a value from the cmapplot_globals environment
 #'
 #' @export
 get_cmapplot_global <- function(name){
+
+  # WORKING HERE
+  #names <- stringr::str_split(name, "\\$")[[1]]
+  #top <- get(names[[1]], envir = cmapplot_globals)
+
   get(name, envir = cmapplot_globals)
+
 }
 
 
