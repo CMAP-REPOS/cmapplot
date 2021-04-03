@@ -1,23 +1,75 @@
-# list of all geoms whose aesthetics will be customized
-cmapplot_globals$geoms_that_change <- c(
-  "Label",
-  "Line",
-  "Text",
-  "TextLast",
-  "PointLast",
-  "RecessionsText"
-)
+#' Calculate, fetch, and set aesthetic defaults
+#'
+#' Aesthetics for ggplot2's "geoms" (e.g. the default font for a label or width
+#' for a line) cannot be set via a theme. However, ggplot2 allows these defaults
+#' to be overridden at the package level. These functions work together to align
+#' the most commonly used geoms to CMAP's design style. They are rarely needed
+#' by users except in specific circumstances.
+#'
+#' Because ggplot2 does not allow for the "theming" of aesthetics, applying
+#' \code{theme_cmap()} will change attributes of the axes, legends, etc, but not
+#' the attributes of geoms. \code{finalize_plot()} implicitly makes these
+#' changes for the user. However, you may want plots to use these defaults
+#' outside of \code{finalize_plot()}. Run \code{apply_cmap_default_aes()} to use CMAP
+#' defaults for all ggplot2 plots drawn in the current session. To reset to
+#' \code{ggplot2} defaults (technically, to whatever the defaults were when
+#' \code{cmapplot} was loaded), use \code{unapply_cmap_default_aes}.
+#'
+#' \code{calc_cmap_default_aes} interprets \code{cmapplot_globals} to figure out
+#' what CMAP default aesthetics should be. It is run automatically when the cmapplot
+#' package is loaded. Manual overrides to \code{cmapplot_globals}, which can be
+#' triggered by \code{set_cmapplot_global()}, will not automatically change
+#' these defaults. Run this after modifying global variables if you want your
+#' changes to impact geom aesthetics.
+#'
+#' The geoms these functions currently override are listed in
+#' \code{cmapplot_globals$geoms_to_change}.
+#'
+#' @param quietly Should the function suppress confirmation messages?
+#'
+#' @examples
+#'
+#' # IMPROVE AND BROADEN TO ACCOUNT FOR NEW FUNCTIONS
+#'
+#' \dontrun{
+#' g <- ggplot(filter(grp_over_time, category == "Services"),
+#'             aes(x = year, y = realgrp, color = cluster)) +
+#'   geom_recessions(ymax = 0.4, text_nudge_x = 0.1) +
+#'   theme_cmap(hline = 0,
+#'              axislines = "x",
+#'              legend.max.columns = 2) +
+#'   ggtitle("Change in gross regional product over time") +
+#'   geom_line() +
+#'   scale_x_continuous("Year", breaks = seq(2007, 2017, 2)) +
+#'   coord_cartesian(clip = "off") +
+#' geom_text_lastonly(aes(label = realgrp), add_points = TRUE)
+#'
+#' # print normally
+#' g
+#'
+#' # overwrite `default_aes`
+#' apply_cmap_default_aes()
+#' g
+#'
+#' # reset `default_aes`
+#' unapply_cmap_default_aes()
+#' g
+#'
+#' # finalize alters the defaults implicitly, but then resets them automatically.
+#' finalize_plot(g)
+#'
+#' # you can also use `finalize` without these modifications
+#' finalize_plot(g, use_cmap_aes = FALSE)
+#' }
+#'
+#' @aliases cmap_default_aes
+#'
+#' @describeIn calc_cmap_default_aes Calculate CMAP default aesthetics
+#'
+#' @export
+calc_cmap_default_aes <- function (quietly = FALSE) {
 
-
-#' Initialize CMAP `default_aes` values
-#'
-#' Internal function to load in default aesthetics for modified geoms.
-#' Loaded in to `cmapplot_globals` in `.onLoad`.
-#'
-#' This list's names MUST equal `cmapplot_globals$geoms_that_change`
-#'
-#' @noRd
-init_cmap_default_aes <- function () {
+  # this list MUST have the same structure as `cmapplot_globals$geoms_that_change`
   defaults <- list(
     Label = list(
       family = cmapplot_globals$font$strong$family,
@@ -53,76 +105,47 @@ init_cmap_default_aes <- function () {
 
   # Return this list only if it lines up with `geoms_that_change`.
   # Otherwise, throw an error.
-  if( setequal(names(defaults), cmapplot_globals$geoms_that_change) ){
-    return(defaults)
-  } else {
+  if( !setequal(names(defaults), cmapplot_globals$geoms_that_change) ){
+
     stop("DEV ISSUE: programmed list of `default_aes` does not line up with
          `cmapplot_globals$geoms_that_change`.", call. = FALSE)
+
   }
+
+  # load in CMAP default aes to cmapplot_globals
+  assign("default_aes_cmap", defaults, envir = cmapplot_globals)
+
+  if(!quietly){
+    message(
+      paste0("Calculated CMAP default aesthetics for the following Geoms:",
+             "\n  ", paste(cmapplot_globals$geoms_that_change, collapse = ", ")
+      )
+    )
+  }
+
+  invisible()
 
 }
 
-#' Fetch and set aesthetic defaults
-#'
-#' These functions allow for setting and resetting default aesthetic values for
-#' certain ggplot2 geoms. This is necessary for geoms to be "themed" to CMAP
-#' style standards, because (at least at the moment) setting geom aesthetic
-#' defaults on a plot-by-plot basis (such as with \code{ggplot2::theme}) is not
-#' possible. The geoms impacted are stored in
-#' \code{cmapplot_globals$geoms_to_change}.
-#'
-#' These functions are employed implicitly within \code{\link{finalize_plot}} to
-#' apply preferred aesthetic defaults to final outputs. They are only necessary
-#' to use explicitly if you would like plots to use these defaults
-#' pre-\code{finalize}.
-#'
-#' CAUTION: Running \code{apply_cmap_default_aes} will set defaults for all
-#' ggplot2 plots drawn in the current session. To reset to \code{ggplot2}
-#' defaults (technically, to whatever the defaults were when \code{cmapplot}
-#' was loaded), use \code{unapply_cmap_default_aes}.
-#'
-#' Note: CMAP aesthetic defaults are loaded into
-#' \code{cmapplot_globals$default_aes_cmap} by the internal pkg function
-#' \code{init_cmap_default_aes} when \code{cmapplot} is first loaded into R.
-#'
-#' @param quietly Should the function suppress confirmation message?
-#'
-#' @examples
-#' \dontrun{
-#' g <- ggplot(filter(grp_over_time, category == "Services"),
-#'             aes(x = year, y = realgrp, color = cluster)) +
-#'   geom_recessions(ymax = 0.4, text_nudge_x = 0.1) +
-#'   theme_cmap(hline = 0,
-#'              axislines = "x",
-#'              legend.max.columns = 2) +
-#'   ggtitle("Change in gross regional product over time") +
-#'   geom_line() +
-#'   scale_x_continuous("Year", breaks = seq(2007, 2017, 2)) +
-#'   coord_cartesian(clip = "off") +
-#' geom_text_lastonly(aes(label = realgrp), add_points = TRUE)
-#'
-#' # print normally
-#' g
-#'
-#' # overwrite `default_aes`
-#' apply_cmap_default_aes()
-#' g
-#'
-#' # reset `default_aes`
-#' unapply_cmap_default_aes()
-#' g
-#'
-#' # finalize alters the defaults implicitly, but then resets them automatically.
-#' finalize_plot(g)
-#'
-#' # you can also use `finalize` without these modifications
-#' finalize_plot(g, use_cmap_aes = FALSE)
-#' }
-#'
-#' @name cmap_default_aes
-NULL
 
-#' @describeIn cmap_default_aes Apply CMAP aesthetic defaults to all ggplots in
+#'  Geoms that change
+#'
+#'  This is a list of all geoms whose aesthetics will be customized. It must
+#'  parallel the list of geoms initialized in `calc_cmap_default_aes`.
+#'
+#'  @noRd
+#'
+cmapplot_globals$geoms_that_change <- c(
+  "Label",
+  "Line",
+  "Text",
+  "TextLast",
+  "PointLast",
+  "RecessionsText"
+)
+
+
+#' @describeIn calc_cmap_default_aes Apply CMAP aesthetic defaults to all ggplots in
 #'   the current session
 #'
 #' @export
@@ -141,7 +164,7 @@ apply_cmap_default_aes <- function (quietly = FALSE) {
 }
 
 
-#' @describeIn cmap_default_aes Reset modified geom aesthetics to their values
+#' @describeIn calc_cmap_default_aes Reset modified geom aesthetics to their values
 #'   when \code{cmapplot} was first loaded
 #'
 #' @export
@@ -157,9 +180,6 @@ unapply_cmap_default_aes <- function (quietly = FALSE) {
     )
   }
 }
-
-
-
 
 #' Fetch `default_aes` from select geoms
 #'
@@ -179,8 +199,6 @@ fetch_current_default_aes <- function () {
     rlang::set_names(cmapplot_globals$geoms_that_change)
 }
 
-
-
 #' Set `default_aes` for select geoms
 #'
 #' Internal function to overwrite `default_aes` for the necessary geoms. Used in
@@ -199,6 +217,3 @@ set_default_aes <- function (values) {
     ggplot2::update_geom_defaults
   )
 }
-
-
-
