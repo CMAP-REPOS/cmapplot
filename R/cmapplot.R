@@ -17,6 +17,26 @@
 #' @keywords internal
 "_PACKAGE"
 
+
+# establish location for cmapplot global variables
+cmapplot_global <- new.env(parent = emptyenv())
+
+# set up default font handling
+# (overridden if local machine has Whitney in .onLoad)
+cmapplot_global$use_whitney <- FALSE
+cmapplot_global$font <- list(
+  strong = list(family = "sans", face = "bold"),
+  regular = list(family = "sans", face = "plain"),
+  light = list(family = "sans", face = "plain"))
+
+# establish font sizes
+cmapplot_global$fsize <- list(
+  S = 11,
+  M = 14,
+  L = 17
+)
+
+
 #'cmapplot global variables
 #'
 #'A list of predefined variables for use by the cmapplot package and its users.
@@ -134,77 +154,103 @@ cmapplot_globals <- list(
 
 
 ## Update fonts based on system -- *must* be done with .onLoad()
+#' @import systemfonts
 .onLoad <- function(...) {
 
-  # Check for Whitney
-  all_fonts <- sysfonts::font_files()
-  whitney_fonts <- all_fonts[all_fonts$family %in% c("Whitney Medium", "Whitney Book", "Whitney Semibold") & all_fonts$face=="Regular", ]
-  cmapplot_globals$use_whitney <<- length(whitney_fonts$family) >= 3
+  # check for Whitney
+  all_fonts <- systemfonts::system_fonts()
+  whitney_core <- all_fonts$name[all_fonts$name %in% c("Whitney-Medium", "Whitney-Book", "Whitney-Semibold")]
+  assign("use_whitney", length(whitney_core) >= 3, envir = cmapplot_global)
 
-  # Font handling for Windows users
-  if (.Platform$OS.type == "windows") {
+  if(get("use_whitney", envir = cmapplot_global)){
+    # Register all Whitney fonts
+    # note: this registers italic fonts as variants of core fonts and as standalone fonts,
+    #       so there is some duplication.
+    whitney_fonts <- select(filter(all_fonts, family == "Whitney"), name, path)
+    purrr::walk2(whitney_fonts$name, whitney_fonts$path, register_font)
 
-    # Use Whitney if available
-    if (cmapplot_globals$use_whitney) {
-      # Add fonts to R
-      grDevices::windowsFonts(
-        `Whitney Medium` = grDevices::windowsFont("Whitney Medium"),
-        `Whitney Book` = grDevices::windowsFont("Whitney Book"),
-        `Whitney Semibold` = grDevices::windowsFont("Whitney Semibold")
-      )
-
-      # Update font variables
-      cmapplot_globals$font <<- list(
-        strong = list(family = "Whitney Semibold", face = "plain"),
-        regular = list(family = "Whitney Medium", face = "plain"),
-        light = list(family = "Whitney Book", face = "plain")
-      )
-
-    # Otherwise, use Calibri
-    } else {
-      packageStartupMessage(
-        "WARNING: Whitney is not installed on this PC, so CMAP theme will default to Calibri"
-      )
-      # Add fonts to R
-      grDevices::windowsFonts(
-        `Calibri` = grDevices::windowsFont("Calibri"),
-        `Calibri Light` = grDevices::windowsFont("Calibri Light")
-      )
-
-      # Update font variables
-      cmapplot_globals$font <<- list(
-        strong = list(family = "Calibri", face = "bold"),
-        regular = list(family = "Calibri", face = "plain"),
-        light = list(family = "Calibri Light", face = "plain")
-      )
-    }
-
-  # Font handling for macOS/Linux/Unix
+    # Update font variables
+    assign("font",
+           list(
+             strong = list(family = "Whitney-Semibold", face = "plain"),
+             regular = list(family = "Whitney-Medium", face = "plain"),
+             light = list(family = "Whitney-Book", face = "plain")),
+           envir = cmapplot_global)
   } else {
-
-    # Use Whitney if available
-    if (cmapplot_globals$use_whitney) {
-      # Add fonts to R
-      grDevices::X11Fonts(
-        `Whitney Medium` = grDevices::X11Font("-*-whitney-medium-%s-*-*-%d-*-*-*-*-*-*-*"),
-        `Whitney Book` = grDevices::X11Font("-*-whitney-book-%s-*-*-%d-*-*-*-*-*-*-*"),
-        `Whitney Semibold` = grDevices::X11Font("-*-whitney-semibold-%s-*-*-%d-*-*-*-*-*-*-*")
-      )
-
-      # Update font variables
-      cmapplot_globals$font <<- list(
-        strong = list(family = "Whitney Semibold", face = "plain"),
-        regular = list(family = "Whitney Medium", face = "plain"),
-        light = list(family = "Whitney Book", face = "plain")
-      )
-
-    # Otherwise, stick to Arial (set prior to .onLoad())
-    } else {
-      packageStartupMessage(
-        "WARNING: Whitney is not installed on this system, so CMAP theme will default to Arial"
-      )
-    }
+    packageStartupMessage(
+      "WARNING: Whitney is not installed on this machine, so CMAP theme will use your default sans-Serif font"
+    )
   }
+
+  # # Check for Whitney
+  # all_fonts <- sysfonts::font_files()
+  # whitney_fonts <- all_fonts[all_fonts$family %in% c("Whitney Medium", "Whitney Book", "Whitney Semibold") & all_fonts$face=="Regular", ]
+  # cmapplot_globals$use_whitney <<- length(whitney_fonts$family) >= 3
+  #
+  # # Font handling for Windows users
+  # if (.Platform$OS.type == "windows") {
+  #
+  #   # Use Whitney if available
+  #   if (cmapplot_globals$use_whitney) {
+  #     # Add fonts to R
+  #     grDevices::windowsFonts(
+  #       `Whitney Medium` = grDevices::windowsFont("Whitney Medium"),
+  #       `Whitney Book` = grDevices::windowsFont("Whitney Book"),
+  #       `Whitney Semibold` = grDevices::windowsFont("Whitney Semibold")
+  #     )
+  #
+  #     # Update font variables
+  #     cmapplot_globals$font <<- list(
+  #       strong = list(family = "Whitney Semibold", face = "plain"),
+  #       regular = list(family = "Whitney Medium", face = "plain"),
+  #       light = list(family = "Whitney Book", face = "plain")
+  #     )
+  #
+  #   # Otherwise, use Calibri
+  #   } else {
+  #     packageStartupMessage(
+  #       "WARNING: Whitney is not installed on this PC, so CMAP theme will default to Calibri"
+  #     )
+  #     # Add fonts to R
+  #     grDevices::windowsFonts(
+  #       `Calibri` = grDevices::windowsFont("Calibri"),
+  #       `Calibri Light` = grDevices::windowsFont("Calibri Light")
+  #     )
+  #
+  #     # Update font variables
+  #     cmapplot_globals$font <<- list(
+  #       strong = list(family = "Calibri", face = "bold"),
+  #       regular = list(family = "Calibri", face = "plain"),
+  #       light = list(family = "Calibri Light", face = "plain")
+  #     )
+  #   }
+  #
+  # # Font handling for macOS/Linux/Unix
+  # } else {
+  #
+  #   # Use Whitney if available
+  #   if (cmapplot_globals$use_whitney) {
+  #     # Add fonts to R
+  #     grDevices::X11Fonts(
+  #       `Whitney Medium` = grDevices::X11Font("-*-whitney-medium-%s-*-*-%d-*-*-*-*-*-*-*"),
+  #       `Whitney Book` = grDevices::X11Font("-*-whitney-book-%s-*-*-%d-*-*-*-*-*-*-*"),
+  #       `Whitney Semibold` = grDevices::X11Font("-*-whitney-semibold-%s-*-*-%d-*-*-*-*-*-*-*")
+  #     )
+  #
+  #     # Update font variables
+  #     cmapplot_globals$font <<- list(
+  #       strong = list(family = "Whitney Semibold", face = "plain"),
+  #       regular = list(family = "Whitney Medium", face = "plain"),
+  #       light = list(family = "Whitney Book", face = "plain")
+  #     )
+  #
+  #   # Otherwise, stick to Arial (set prior to .onLoad())
+  #   } else {
+  #     packageStartupMessage(
+  #       "WARNING: Whitney is not installed on this system, so CMAP theme will default to Arial"
+  #     )
+  #   }
+  # }
 
   # Load CMAP preferred default.aes (can't be done until fonts are specified)
   cmapplot_globals$default_aes_cmap <<- init_cmap_default_aes()
@@ -220,8 +266,8 @@ display_cmap_fonts <- function() {
   graphics::plot(c(0,2), c(0,6), type="n", xlab="", ylab="")
 
   draw.me <- function(name, font, size, placement){
-    thisfont <- cmapplot_globals$font[[font]]
-    thissize <- cmapplot_globals$fsize[[size]]
+    thisfont <- cmapplot_global$font[[font]]
+    thissize <- cmapplot_global$fsize[[size]]
 
     graphics::par(family=thisfont$family,
                   font=ifelse(thisfont$face == "bold", 2, 1))
