@@ -18,101 +18,32 @@
 "_PACKAGE"
 
 
+
 # establish location for cmapplot global variables
-cmapplot_global <- new.env(parent = emptyenv())
+cmapplot_globals <- new.env(parent = emptyenv())
 
 # set up default font handling
 # (overridden if local machine has Whitney in .onLoad)
-cmapplot_global$use_whitney <- FALSE
-cmapplot_global$font <- list(
+cmapplot_globals$use_whitney <- FALSE
+cmapplot_globals$font <- list(
   strong = list(family = "sans", face = "bold"),
   regular = list(family = "sans", face = "plain"),
   light = list(family = "sans", face = "plain"))
 
 # establish font sizes
-cmapplot_global$fsize <- list(
+cmapplot_globals$fsize <- list(
   S = 11,
   M = 14,
   L = 17
 )
 
-
-#'cmapplot global variables
-#'
-#'A list of predefined variables for use by the cmapplot package and its users.
-#'It includes commonly used colors, font and font size specifications, and a
-#'list of constants which aid in drawing cmap-themed plots.
-#'
-#'@section Plot Constants: The only portion of these global variables of
-#'  interest to the user is \code{cmapplot_globals$consts}, a list of default
-#'  constants that set certain plot aesthetics. Units of all plot constants are
-#'  "bigpts": 1/72 of an inch. Most plot constants are invoked (and can be
-#'  overridden) in \code{\link{finalize_plot}}: these are marked below with an
-#'  \strong{F}. Some are used/can be overridden in \code{\link{theme_cmap}}:
-#'  these are marked with \strong{T}.
-#'
-#'  \itemize{ \item \code{lwd_strongline}: This stronger-width line is drawn
-#'  vertically or horizontally with the \code{hline, vline} args of
-#'  \code{theme_cmap()}. \strong{(T)} \item \code{lwd_gridline}: This
-#'  thinner-width line is drawn vertically or horizontally with the
-#'  \code{gridlines, axislines} args of \code{theme_cmap()}. \strong{(T)} \item
-#'  \code{lwd_plotline}: The width of any lines drawn by geoms in the plot (e.g.
-#'  \code{geom_line}) but not explicitly sized by the geom's aesthetic.
-#'  Implemented by \code{finalize_plot} or by \code{apply_cmap_default_aes} but
-#'  not overridable in either context. (Modify by setting the size explicitly in
-#'  the geom, but see \code{gg_lwd_convert} first.) \item \code{lwd_topline}:
-#'  The width of the line above the plot. \strong{(F)} \item
-#'  \code{length_ticks}: The length of the axis ticks (if shown). \strong{(T)}
-#'  \item \code{margin_topline_t}: The margin between the top edge of the image
-#'  and the top line. \strong{(F)} \item \code{margin_title_t}: The margin
-#'  between the top line and the title. \strong{(F)} \item
-#'  \code{margin_title_b}: The margin between the title and the caption when
-#'  both are drawn in the sidebar. \strong{(F)} \item \code{margin_caption_b}:
-#'  The margin between the bottom of the caption and the bottom edge of the
-#'  image. \strong{(F)} \item \code{margin_legend_t}: The margin between the top
-#'  line and the plot box (i.e., the top of the legend). \strong{(F)} \item
-#'  \code{margin_legend_i}: The margin between legends (this only applies in
-#'  plots with two or more legends and does not affect legend spacing on plots
-#'  with single legends that have multiple rows). \strong{(T, F)} \item
-#'  \code{margin_legend_b}: The margin between the bottom of the legend and the
-#'  rest of the plot. \strong{(T, F)} \item \code{margin_plot_b}: The margin
-#'  between the bottom of the plot and the bottom edge of the image (or top of
-#'  caption). \strong{(F)} \item \code{margin_sidebar_l}: The margin between the
-#'  left edge of the image and the title and caption, when the sidebar exists.
-#'  Deducted from \code{title_width}. \strong{(F)} \item \code{margin_plot_l}:
-#'  The margin between the left edge of the plot and the sodebar. \strong{(F)}
-#'  \item \code{margin_plot_r}: The margin between the right edge of the plot
-#'  and the edge of the image. \strong{(F)} \item \code{margin_panel_r}: Padding
-#'  between the plot and its right-hand drawing extent. Override this based on
-#'  space needed for x axis labels. \strong{(T)} \item \code{leading_title}:
-#'  Text leading for Title text. \strong{(F)} \item \code{leading_caption}: Text
-#'  leading for Caption text. \strong{(F)} }
-#'
-#'@export
-cmapplot_globals <- list(
-
-  ## Colors
-  colors = list(
+## Colors
+cmapplot_globals$colors <- list(
     blackish = "#222222"
-  ),
+  )
 
-  ## Font sizes
-  fsize = list(
-    S = 11,
-    M = 14,
-    L = 17
-  ),
-
-  ## Base typefaces -- modified later by .onLoad()
-  font = list(
-    strong = list(family = "Arial", face = "bold"),
-    regular = list(family = "Arial", face = "plain"),
-    light = list(family = "Arial", face = "plain")
-  ),
-  use_whitney = FALSE,
-
-  ## Establish plotting constants in bigpts (1/72 of inch)
-  consts = list(
+## Establish plotting constants in bigpts (1/72 of inch)
+cmapplot_globals$consts = list(
     lwd_gridline = 0.3,
     lwd_strongline = 1,
     lwd_plotline = 3,
@@ -132,25 +63,7 @@ cmapplot_globals <- list(
     margin_panel_r = 10,
     leading_title = 1,
     leading_caption = 1
-  ),
-
-  # list of geoms whose aesthetics will be customized
-  geoms_that_change = c(
-    "Label",
-    "Line",
-    "Text",
-    "TextLast",
-    "PointLast",
-    "RecessionsText"
-  ),
-
-  # empty location for loading in preferred aesthetics during `.onLoad`
-  default_aes_cmap = NULL,
-
-  # empty location for caching existing aesthetics during `.onLoad`
-  default_aes_cached = NULL
-
-)
+  )
 
 
 ## Update fonts based on system -- *must* be done with .onLoad()
@@ -160,9 +73,9 @@ cmapplot_globals <- list(
   # check for Whitney
   all_fonts <- systemfonts::system_fonts()
   whitney_core <- all_fonts$name[all_fonts$name %in% c("Whitney-Medium", "Whitney-Book", "Whitney-Semibold")]
-  assign("use_whitney", length(whitney_core) >= 3, envir = cmapplot_global)
+  assign("use_whitney", length(whitney_core) >= 3, envir = cmapplot_globals)
 
-  if(get("use_whitney", envir = cmapplot_global)){
+  if(get("use_whitney", envir = cmapplot_globals)){
     # Register all Whitney fonts (note: this registers italic fonts both as
     # variants of core fonts and as standalone fonts, so there is some
     # duplication.)
@@ -175,99 +88,40 @@ cmapplot_globals <- list(
              strong = list(family = "Whitney-Semibold", face = "plain"),
              regular = list(family = "Whitney-Medium", face = "plain"),
              light = list(family = "Whitney-Book", face = "plain")),
-           envir = cmapplot_global)
+           envir = cmapplot_globals)
   } else {
     packageStartupMessage(
       "WARNING: Whitney is not installed on this machine, so CMAP theme will use your default sans-Serif font"
     )
   }
 
-  # # Check for Whitney
-  # all_fonts <- sysfonts::font_files()
-  # whitney_fonts <- all_fonts[all_fonts$family %in% c("Whitney Medium", "Whitney Book", "Whitney Semibold") & all_fonts$face=="Regular", ]
-  # cmapplot_globals$use_whitney <<- length(whitney_fonts$family) >= 3
-  #
-  # # Font handling for Windows users
-  # if (.Platform$OS.type == "windows") {
-  #
-  #   # Use Whitney if available
-  #   if (cmapplot_globals$use_whitney) {
-  #     # Add fonts to R
-  #     grDevices::windowsFonts(
-  #       `Whitney Medium` = grDevices::windowsFont("Whitney Medium"),
-  #       `Whitney Book` = grDevices::windowsFont("Whitney Book"),
-  #       `Whitney Semibold` = grDevices::windowsFont("Whitney Semibold")
-  #     )
-  #
-  #     # Update font variables
-  #     cmapplot_globals$font <<- list(
-  #       strong = list(family = "Whitney Semibold", face = "plain"),
-  #       regular = list(family = "Whitney Medium", face = "plain"),
-  #       light = list(family = "Whitney Book", face = "plain")
-  #     )
-  #
-  #   # Otherwise, use Calibri
-  #   } else {
-  #     packageStartupMessage(
-  #       "WARNING: Whitney is not installed on this PC, so CMAP theme will default to Calibri"
-  #     )
-  #     # Add fonts to R
-  #     grDevices::windowsFonts(
-  #       `Calibri` = grDevices::windowsFont("Calibri"),
-  #       `Calibri Light` = grDevices::windowsFont("Calibri Light")
-  #     )
-  #
-  #     # Update font variables
-  #     cmapplot_globals$font <<- list(
-  #       strong = list(family = "Calibri", face = "bold"),
-  #       regular = list(family = "Calibri", face = "plain"),
-  #       light = list(family = "Calibri Light", face = "plain")
-  #     )
-  #   }
-  #
-  # # Font handling for macOS/Linux/Unix
-  # } else {
-  #
-  #   # Use Whitney if available
-  #   if (cmapplot_globals$use_whitney) {
-  #     # Add fonts to R
-  #     grDevices::X11Fonts(
-  #       `Whitney Medium` = grDevices::X11Font("-*-whitney-medium-%s-*-*-%d-*-*-*-*-*-*-*"),
-  #       `Whitney Book` = grDevices::X11Font("-*-whitney-book-%s-*-*-%d-*-*-*-*-*-*-*"),
-  #       `Whitney Semibold` = grDevices::X11Font("-*-whitney-semibold-%s-*-*-%d-*-*-*-*-*-*-*")
-  #     )
-  #
-  #     # Update font variables
-  #     cmapplot_globals$font <<- list(
-  #       strong = list(family = "Whitney Semibold", face = "plain"),
-  #       regular = list(family = "Whitney Medium", face = "plain"),
-  #       light = list(family = "Whitney Book", face = "plain")
-  #     )
-  #
-  #   # Otherwise, stick to Arial (set prior to .onLoad())
-  #   } else {
-  #     packageStartupMessage(
-  #       "WARNING: Whitney is not installed on this system, so CMAP theme will default to Arial"
-  #     )
-  #   }
-  # }
-
   # Load CMAP preferred default.aes (can't be done until fonts are specified)
-  cmapplot_globals$default_aes_cmap <<- init_cmap_default_aes()
+  assign("default_aes_cmap",
+         init_cmap_default_aes(),
+         env = cmapplot_globals)
 
   # Cache existing default.aes
-  cmapplot_globals$default_aes_cached <<- fetch_current_default_aes()
+  assign("default_aes_cached",
+         fetch_current_default_aes(),
+         env = cmapplot_globals)
 }
 
 
 # Font spec visualization helper function ---------------------------------
 
+#' Font visualization test
+#'
+#' This internal function uses base R graphics to display the five text variants
+#' that should show up on a cmap themed graphic - and what fonts the package is
+#' planning to use to display them.
+#'
+#' @noRd
 display_cmap_fonts <- function() {
   graphics::plot(c(0,2), c(0,6), type="n", xlab="", ylab="")
 
   draw.me <- function(name, font, size, placement){
-    thisfont <- cmapplot_global$font[[font]]
-    thissize <- cmapplot_global$fsize[[size]]
+    thisfont <- cmapplot_globals$font[[font]]
+    thissize <- cmapplot_globals$fsize[[size]]
 
     graphics::par(family=thisfont$family,
                   font=ifelse(thisfont$face == "bold", 2, 1))
@@ -354,3 +208,58 @@ gg_lwd_convert <- function(value, unit = "bigpts") {
     value_out / .lwd
   )
 }
+
+
+#'cmapplot global variables
+#'
+#'A list of predefined variables for use by the cmapplot package and its users.
+#'It includes commonly used colors, font and font size specifications, and a
+#'list of constants which aid in drawing cmap-themed plots.
+#'
+#'@section Plot Constants: The only portion of these global variables of
+#'  interest to the user is \code{cmapplot_globals$consts}, a list of default
+#'  constants that set certain plot aesthetics. Units of all plot constants are
+#'  "bigpts": 1/72 of an inch. Most plot constants are invoked (and can be
+#'  overridden) in \code{\link{finalize_plot}}: these are marked below with an
+#'  \strong{F}. Some are used/can be overridden in \code{\link{theme_cmap}}:
+#'  these are marked with \strong{T}.
+#'
+#'  \itemize{ \item \code{lwd_strongline}: This stronger-width line is drawn
+#'  vertically or horizontally with the \code{hline, vline} args of
+#'  \code{theme_cmap()}. \strong{(T)} \item \code{lwd_gridline}: This
+#'  thinner-width line is drawn vertically or horizontally with the
+#'  \code{gridlines, axislines} args of \code{theme_cmap()}. \strong{(T)} \item
+#'  \code{lwd_plotline}: The width of any lines drawn by geoms in the plot (e.g.
+#'  \code{geom_line}) but not explicitly sized by the geom's aesthetic.
+#'  Implemented by \code{finalize_plot} or by \code{apply_cmap_default_aes} but
+#'  not overridable in either context. (Modify by setting the size explicitly in
+#'  the geom, but see \code{gg_lwd_convert} first.) \item \code{lwd_topline}:
+#'  The width of the line above the plot. \strong{(F)} \item
+#'  \code{length_ticks}: The length of the axis ticks (if shown). \strong{(T)}
+#'  \item \code{margin_topline_t}: The margin between the top edge of the image
+#'  and the top line. \strong{(F)} \item \code{margin_title_t}: The margin
+#'  between the top line and the title. \strong{(F)} \item
+#'  \code{margin_title_b}: The margin between the title and the caption when
+#'  both are drawn in the sidebar. \strong{(F)} \item \code{margin_caption_b}:
+#'  The margin between the bottom of the caption and the bottom edge of the
+#'  image. \strong{(F)} \item \code{margin_legend_t}: The margin between the top
+#'  line and the plot box (i.e., the top of the legend). \strong{(F)} \item
+#'  \code{margin_legend_i}: The margin between legends (this only applies in
+#'  plots with two or more legends and does not affect legend spacing on plots
+#'  with single legends that have multiple rows). \strong{(T, F)} \item
+#'  \code{margin_legend_b}: The margin between the bottom of the legend and the
+#'  rest of the plot. \strong{(T, F)} \item \code{margin_plot_b}: The margin
+#'  between the bottom of the plot and the bottom edge of the image (or top of
+#'  caption). \strong{(F)} \item \code{margin_sidebar_l}: The margin between the
+#'  left edge of the image and the title and caption, when the sidebar exists.
+#'  Deducted from \code{title_width}. \strong{(F)} \item \code{margin_plot_l}:
+#'  The margin between the left edge of the plot and the sodebar. \strong{(F)}
+#'  \item \code{margin_plot_r}: The margin between the right edge of the plot
+#'  and the edge of the image. \strong{(F)} \item \code{margin_panel_r}: Padding
+#'  between the plot and its right-hand drawing extent. Override this based on
+#'  space needed for x axis labels. \strong{(T)} \item \code{leading_title}:
+#'  Text leading for Title text. \strong{(F)} \item \code{leading_caption}: Text
+#'  leading for Caption text. \strong{(F)} }
+#'
+#'@export
+cmapplot_globals_OLD <- list()
