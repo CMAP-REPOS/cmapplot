@@ -107,10 +107,16 @@ cmapplot_globals$consts = list(
          envir = cmapplot_globals)
 }
 
-
-# Figure out how to parse for $
+#' Get all values from the cmapplot_globals environment
+#'
+#' @export
+get_cmapplot_globals <- function(){
+  as.list(cmapplot_globals)
+}
 
 #' Get a value from the cmapplot_globals environment
+#'
+#' @describeIn get_cmapplot_globals
 #'
 #' @export
 get_cmapplot_global <- function(...){
@@ -137,6 +143,7 @@ get_cmapplot_global <- function(...){
 
 #' Set a value in the cmapplot_globals environment
 #'
+#' @describeIn get_cmapplot_globals
 #' @export
 set_cmapplot_global <- function(value, ..., quietly = FALSE){
 
