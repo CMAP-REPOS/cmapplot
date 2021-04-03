@@ -107,6 +107,9 @@ cmapplot_globals$consts = list(
 }
 
 
+# why aren't these available functions?
+# and, I'd like to figure out how to parse for $
+
 #' @export
 get_cmapplot_global <- function(name){
   get(name, envir = cmapplot_globals)
