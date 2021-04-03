@@ -113,13 +113,24 @@ cmapplot_globals$consts = list(
 #' Get a value from the cmapplot_globals environment
 #'
 #' @export
-get_cmapplot_global <- function(name){
+get_cmapplot_global <- function(...){
 
-  # WORKING HERE
-  #names <- stringr::str_split(name, "\\$")[[1]]
-  #top <- get(names[[1]], envir = cmapplot_globals)
+  # establish vector of sublocations
+  names <- unlist(stringr::str_split(c(...), "\\$"))
 
-  get(name, envir = cmapplot_globals)
+  # fetch the top-level element from the list
+  var <- get(names[1], envir = cmapplot_globals)
+
+  # recurse over additional names to extract the right value
+  for(i in seq_along(names[-1])+1){
+    var <- var[[names[i]]]
+  }
+
+  if(is.null(var)){
+    stop(paste0("object '", paste(names, collapse = "$"), "' not found"))
+  }
+
+  return(var)
 
 }
 
@@ -127,12 +138,38 @@ get_cmapplot_global <- function(name){
 #' Set a value in the cmapplot_globals environment
 #'
 #' @export
-set_cmapplot_global <- function(name, value){
+set_cmapplot_global <- function(value, ..., quietly = FALSE){
 
-  # do a get to make sure the variable exists.
-  p <- get_cmapplot_global(name)
+  # do a full get to make sure the variable exists.
+  # this is a throw-away, just used to as a check
+  p <- get_cmapplot_global(...)
 
-  assign(name, value, envir = cmapplot_globals)
+  # establish vector of sublocations
+  names <- unlist(stringr::str_split(c(...), "\\$"))
+
+  # get the top-level item
+  item <- get_cmapplot_global(names[1])
+
+  # build a string to evaluate that modifies some element of the item.
+  str <- paste0(
+    "item",
+    ifelse(length(names)>1, paste0("$", paste(names[-1], collapse = "$")),""),
+    "<- '", value, "'")
+
+  # replace the specific item by evaluating the string
+  eval(parse(text = str))
+
+  # and replace the top level item in the globals env
+  assign(names[1], item, envir = cmapplot_globals)
+
+  # report
+  if(!quietly){
+    cat(paste0(
+      "Item:      ", paste(names, collapse = "$"), "\n",
+      "Old value: '", p, "'\n",
+      "New value: '", value, "'"
+    ))
+  }
 
   invisible()
 }
