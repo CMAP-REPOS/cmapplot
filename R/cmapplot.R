@@ -107,10 +107,12 @@ cmapplot_globals$consts = list(
 }
 
 
+#' @export
 get_cmapplot_global <- function(name){
   get(name, envir = cmapplot_globals)
 }
 
+#' @export
 set_cmapplot_global <- function(name, value){
 
   # do a get to make sure the variable exists.
