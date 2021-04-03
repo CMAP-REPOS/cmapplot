@@ -107,6 +107,22 @@ cmapplot_globals$consts = list(
 }
 
 
+get_cmapplot_global <- function(name){
+  get(name, envir = cmapplot_globals)
+}
+
+set_cmapplot_global <- function(name, value){
+
+  # do a get to make sure the variable exists.
+  p <- get_cmapplot_global(name)
+
+  assign(name, value, envir = cmapplot_globals)
+
+  invisible()
+}
+
+
+
 # Font spec visualization helper function ---------------------------------
 
 #' Font visualization test
