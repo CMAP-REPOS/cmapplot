@@ -30,7 +30,7 @@
 #'@param mode Vector, the action(s) to be taken with the plot. View in R with
 #'  \code{plot}, the default, or \code{window} (\code{window} only works on
 #'  computers running Windows). Save using any of the following: \code{png},
-#'  \code{tiff}, \code{jpeg}, \code{bmp}, \code{svg}, \code{pdf}, \code{ps}. Run
+#'  \code{tiff}, \code{jpeg}, \code{svg}, \code{pdf}, \code{ps}. Run
 #'  multiple simultaneous outputs with a vector, e.g. \code{c("plot", "png",
 #'  "pdf")}.
 #'@param filename Char, the file path and name you want the plot to be saved to.
@@ -204,7 +204,7 @@ finalize_plot <- function(plot = NULL,
   }
 
   # Check mode argument
-  savetypes_raster <- c("png", "tiff", "jpeg", "bmp")
+  savetypes_raster <- c("png", "tiff", "jpeg")
   savetypes_vector <- c("svg", "ps", "pdf")
   savetypes_print <- c("plot", "window")
 
@@ -473,7 +473,6 @@ finalize_plot <- function(plot = NULL,
 
     # Construct arglist for drawing device
     arglist <- list(filename = filename,
-                    type = "cairo",
                     width = width,
                     height = height,
                     units = "in",
@@ -695,18 +694,16 @@ save_plot <- function(finished_graphic,
   # Add required cairo prefix to function name for pdf and ps (see `?cairo`)
   mode <- ifelse (mode == "pdf" | mode == "ps", paste0("cairo_" , mode), mode)
 
+  # Add required agg prefix to function name for raster modes
+  mode <- ifelse (mode %in% savetypes_raster, paste0("agg_" , mode), mode)
+
+  # change svg to svglite
+  mode <- ifelse (mode == "svg", "svglite", mode)
+
   # If file exists and overwrite == FALSE, do not write
   if (file.exists(arglist$filename) & !overwrite) {
     message(paste0(fname, ": SKIPPED (try `overwrite = TRUE`?)"))
     return()
-  }
-
-  # prepare the arglist for svg
-  if (mode == 'svglite') {
-
-    arglist$file <- arglist$filename
-    arglist$filename <- NULL;
-
   }
 
   # Write to device -----------------------------------------------

@@ -56,7 +56,7 @@ plot, 0 aligns left and 1 aligns right. 0.5 aligns center.}
 \item{mode}{Vector, the action(s) to be taken with the plot. View in R with
 \code{plot}, the default, or \code{window} (\code{window} only works on
 computers running Windows). Save using any of the following: \code{png},
-\code{tiff}, \code{jpeg}, \code{bmp}, \code{svg}, \code{pdf}, \code{ps}. Run
+\code{tiff}, \code{jpeg}, \code{svg}, \code{pdf}, \code{ps}. Run
 multiple simultaneous outputs with a vector, e.g. \code{c("plot", "png",
 "pdf")}.}
 
