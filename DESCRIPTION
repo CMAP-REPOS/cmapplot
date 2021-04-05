@@ -53,6 +53,7 @@ Imports:
     scales,
     stringr,
     systemfonts
+    svglite
 Suggests:
     knitr,
     rmarkdown,
