@@ -161,8 +161,8 @@ get_cmapplot_global <- function(...){
 #' @export
 set_cmapplot_global <- function(value, ..., quietly = FALSE){
 
-  # do a full get to make sure the variable exists.
-  # this is a throw-away, just used to as a check
+  # do a get of the specific attribute to make sure it exists.
+  # this will error if the path is null
   p <- get_cmapplot_global(...)
 
   # establish vector of sublocations
@@ -174,8 +174,12 @@ set_cmapplot_global <- function(value, ..., quietly = FALSE){
   # build a string to evaluate that modifies some element of the item.
   str <- paste0(
     "item",
-    ifelse(length(names)>1, paste0("$", paste(names[-1], collapse = "$")),""),
-    "<- '", value, "'")
+    if(length(names)>1){ paste0("$", paste(names[-1], collapse = "$"))} else {""},
+    "<- ",
+    if(!is.numeric(value)) {"'"} else {""},
+    value,
+    if(!is.numeric(value)) {"'"} else {""}
+  )
 
   # replace the specific item by evaluating the string
   eval(parse(text = str))
