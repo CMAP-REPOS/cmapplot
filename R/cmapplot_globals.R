@@ -44,6 +44,17 @@ cmapplot_globals$consts <- list(
   leading_caption = 1
 )
 
+# List of all geoms whose aesthetics will be modified by cmapplot
+cmapplot_globals$geoms_that_change <- c(
+  "Label",
+  "Line",
+  "Text",
+  "TextLast",
+  "PointLast",
+  "RecessionsText"
+)
+
+
 #'The cmapplot_globals environment
 #'
 #'The \code{cmapplot_globals} environment contains a list of predefined

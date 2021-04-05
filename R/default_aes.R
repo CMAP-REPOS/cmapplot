@@ -1,14 +1,3 @@
-# list of all geoms whose aesthetics will be customized
-cmapplot_globals$geoms_that_change <- c(
-  "Label",
-  "Line",
-  "Text",
-  "TextLast",
-  "PointLast",
-  "RecessionsText"
-)
-
-
 #' Initialize CMAP `default_aes` values
 #'
 #' Internal function to load in default aesthetics for modified geoms.
