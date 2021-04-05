@@ -9,7 +9,7 @@ cmapplot_globals$font <- list(
   regular = list(family = "sans", face = "plain"),
   light = list(family = "sans", face = "plain"))
 
-# Set common font sizes
+# Set common font sizes (bigpts)
 cmapplot_globals$fsize <- list(
   S = 11,
   M = 14,
