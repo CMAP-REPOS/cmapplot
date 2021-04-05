@@ -59,7 +59,8 @@ jobs:
       - name: Check Whitney availability
         run: |
           all_fonts <- systemfonts::system_fonts()
-          message(paste(all_fonts$path[all_fonts$name %in% c("Whitney-Medium", "Whitney-Book", "Whitney-Semibold")], collapse = "\n"))
+          message(paste(all_fonts$path, collapse = "\n"))
+          message(paste(all_fonts$name[all_fonts$name %in% c("Whitney-Medium", "Whitney-Book", "Whitney-Semibold")], collapse = "\n"))
         shell: Rscript {0}
 
       - name: Install package
