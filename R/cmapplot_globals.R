@@ -187,7 +187,7 @@ set_cmapplot_global <- function(value, ..., quietly = FALSE){
     "item",
     ifelse(length(names) > 1, paste0("$", paste(names[-1], collapse = "$")), ""),
     " <- ",
-    ifelse(!is.numeric(value), paste0("'", value, "'"), value)
+    ifelse(is.character(value), paste0("'", value, "'"), value)
   )
 
   # replace the specific item by evaluating the string
@@ -200,8 +200,8 @@ set_cmapplot_global <- function(value, ..., quietly = FALSE){
   if(!quietly){
     cat(paste0(
       "Item:      ", paste(names, collapse = "$"), "\n",
-      "Old value: '", p, "'\n",
-      "New value: '", value, "'"
+      "Old value: ", ifelse(is.character(p), paste0("'", p, "'"), p), "\n",
+      "New value: ", ifelse(is.character(value), paste0("'", value, "'"), value)
     ))
   }
   invisible()
