@@ -41,7 +41,7 @@ reference:
   - vehicle_ownership
 - title: Lesser used objects
 - contents:
-  - cmapplot_globals
+  - ends_with("cmapplot_globals")
   - gg_lwd_convert
   - update_recessions
   - customproto

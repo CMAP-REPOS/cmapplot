@@ -15,7 +15,8 @@ knitr::opts_chunk$set(
   fig.asp = 400/670,
   fig.retina = 4,
   fig.align = "center",
-  out.width = "100%"
+  out.width = "100%",
+  dev = "ragg_png"
 )
 
 library(tidyverse)
