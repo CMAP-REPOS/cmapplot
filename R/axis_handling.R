@@ -69,9 +69,10 @@ abbr_years <- function(full_by_pos = c(1),
 
   fxn <- function(breaks) {
 
-    # If a date axis, breaks are stored as number of days since 1/1/1970. These
-    # must be converted to integer years, but this should error if all breaks
-    # don't fall on the same calendar day of a distinct year.
+    # If a date axis, breaks are stored by ggplot as the number of days since
+    # the origin date of January 1, 1970. These must be converted to integer
+    # years, but this should error if all breaks don't fall on the same calendar
+    # day of a distinct year.
     if (dateaxis) {
       dates <- as.Date(breaks, origin = "1970-01-01")
 
