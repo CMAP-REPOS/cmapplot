@@ -1,27 +1,27 @@
-# establish location for cmapplot global variables
+# Initialize environment for cmapplot global variables
 cmapplot_globals <- new.env(parent = emptyenv())
 
-# set up default font handling
-# (overridden if local machine has Whitney in .onLoad)
+# Set up default font handling
+# (Note: overridden by .onLoad() if Whitney is available)
 cmapplot_globals$use_whitney <- FALSE
 cmapplot_globals$font <- list(
   strong = list(family = "sans", face = "bold"),
   regular = list(family = "sans", face = "plain"),
   light = list(family = "sans", face = "plain"))
 
-# establish font sizes
+# Set common font sizes
 cmapplot_globals$fsize <- list(
   S = 11,
   M = 14,
   L = 17
 )
 
-## Colors
+# Define CMAP colors
 cmapplot_globals$colors <- list(
   blackish = "#222222"
 )
 
-## Establish plotting constants in bigpts (1/72 of inch)
+# Establish plotting constants in bigpts (1/72 of inch)
 cmapplot_globals$consts <- list(
   lwd_gridline = 0.3,
   lwd_strongline = 1,
@@ -174,11 +174,9 @@ set_cmapplot_global <- function(value, ..., quietly = FALSE){
   # build a string to evaluate that modifies some element of the item.
   str <- paste0(
     "item",
-    if(length(names)>1){ paste0("$", paste(names[-1], collapse = "$"))} else {""},
-    "<- ",
-    if(!is.numeric(value)) {"'"} else {""},
-    value,
-    if(!is.numeric(value)) {"'"} else {""}
+    ifelse(length(names) > 1, paste0("$", paste(names[-1], collapse = "$")), ""),
+    " <- ",
+    ifelse(!is.numeric(value), paste0("'", value, "'"), value)
   )
 
   # replace the specific item by evaluating the string
@@ -195,6 +193,5 @@ set_cmapplot_global <- function(value, ..., quietly = FALSE){
       "New value: '", value, "'"
     ))
   }
-
   invisible()
 }
