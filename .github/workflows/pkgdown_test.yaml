@@ -56,18 +56,28 @@ jobs:
           install.packages("pkgdown")
         shell: Rscript {0}
 
-      - name: Check Whitney availability
-        run: |
-          all_fonts <- systemfonts::system_fonts()
-          message(paste(all_fonts$path, collapse = "\n"))
-          message(paste(all_fonts$name[all_fonts$name %in% c("Whitney-Medium", "Whitney-Book", "Whitney-Semibold")], collapse = "\n"))
-        shell: Rscript {0}
+      # - name: Check Whitney availability
+      #   run: |
+      #     all_fonts <- systemfonts::system_fonts()
+      #     message(paste(all_fonts$path, collapse = "\n"))
+      #     message(paste(all_fonts$name[all_fonts$name %in% c("Whitney-Medium", "Whitney-Book", "Whitney-Semibold")], collapse = "\n"))
+      #   shell: Rscript {0}
 
       - name: Install package
         run: R CMD INSTALL .
 
-      - name: Deploy package
+      - name: Set git config
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
-          Rscript -e 'pkgdown::deploy_to_branch(branch="gh-pages-test", new_process = FALSE, clean = TRUE)'
+
+      -name: Deploy package
+        run: |
+          font_dir <- paste0(Sys.getenv("HOME"), "/Library/Fonts")
+          font_files <- list.files(font_dir, pattern = "Whitney")
+          font_names <- stringr::str_extract(font_files, "^[^.]+")
+          font_paths <- paste(font_dir, font_files, sep = "/")
+          purrr::walk2(font_names, font_paths, systemfonts::register_font)
+          message(cmapplot::get_cmapplot_global("use_whitney"))
+          pkgdown::deploy_to_branch(branch="gh-pages-test", new_process = FALSE, clean = TRUE)
+        shell Rscript {0}
