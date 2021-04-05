@@ -52,7 +52,7 @@ Imports:
     rlang,
     scales,
     stringr,
-    systemfonts
+    systemfonts,
     svglite
 Suggests:
     knitr,

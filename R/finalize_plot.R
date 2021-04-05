@@ -695,7 +695,7 @@ save_plot <- function(finished_graphic,
   mode <- ifelse (mode == "pdf" | mode == "ps", paste0("cairo_" , mode), mode)
 
   # Add required agg prefix to function name for raster modes
-  mode <- ifelse (mode %in% savetypes_raster, paste0("agg_" , mode), mode)
+  mode <- ifelse (mode %in% c("png", "tiff", "jpeg"), paste0("agg_" , mode), mode)
 
   # change svg to svglite
   mode <- ifelse (mode == "svg", "svglite", mode)
