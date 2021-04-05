@@ -76,11 +76,8 @@ jobs:
           font_dir <- paste0(Sys.getenv("HOME"), "/Library/Fonts")
           font_files <- list.files(font_dir, pattern = "Whitney")
           font_names <- stringr::str_extract(font_files, "^[^.]+")
-          message(font_names)
           font_paths <- paste(font_dir, font_files, sep = "/")
-          message(font_paths)
           purrr::walk2(font_names, font_paths, systemfonts::register_font)
-          devtools::reload()
           message(get_cmapplot_global("use_whitney"))
           pkgdown::deploy_to_branch(branch="gh-pages-test", new_process = FALSE, clean = TRUE)
         shell: Rscript {0}
