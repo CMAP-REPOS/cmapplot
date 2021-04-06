@@ -74,10 +74,9 @@ jobs:
       - name: Deploy package
         run: |
           font_dir <- paste0(Sys.getenv("HOME"), "/Library/Fonts")
-          font_files <- list.files(font_dir, pattern = "Whitney")
-          font_names <- stringr::str_extract(font_files, "^[^.]+")
-          font_paths <- paste(font_dir, font_files, sep = "/")
-          purrr::walk2(font_names, font_paths, systemfonts::register_font)
+          systemfonts::register_font("Whitney-Book", plain=paste0(font_dir, "/Whitney-Book-Adv.otf"), italic=paste0(font_dir, "/Whitney-BookItal-Adv.otf"))
+          systemfonts::register_font("Whitney-Medium", plain=paste0(font_dir, "/Whitney-Medium-Adv.otf"), italic=paste0(font_dir, "/Whitney-MediumItal-Adv.otf"))
+          systemfonts::register_font("Whitney-Semibold", plain=paste0(font_dir, "/Whitney-Semibold-Adv.otf"), italic=paste0(font_dir, "/Whitney-SemiboldItal-Adv.otf"))
           library(cmapplot)
           message(get_cmapplot_global("use_whitney"))
           pkgdown::deploy_to_branch(branch="gh-pages-test", new_process = FALSE, clean = TRUE)
