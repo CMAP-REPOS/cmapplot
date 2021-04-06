@@ -32,11 +32,11 @@
   assign("use_whitney", length(whitney_core) >= 3, envir = cmapplot_globals)
 
   if(get("use_whitney", envir = cmapplot_globals)){
-    # Register all Whitney fonts (note: this registers italic fonts both as
-    # variants of core fonts and as standalone fonts, so there is some
-    # duplication.)
-    whitney_fonts <- select(filter(all_fonts, family == "Whitney"), name, path)
-    purrr::walk2(whitney_fonts$name, whitney_fonts$path, systemfonts::register_font)
+    # # Register all Whitney fonts (note: this registers italic fonts both as
+    # # variants of core fonts and as standalone fonts, so there is some
+    # # duplication.)
+    # whitney_fonts <- select(filter(all_fonts, family == "Whitney"), name, path)
+    # purrr::walk2(whitney_fonts$name, whitney_fonts$path, systemfonts::register_font)
 
     # Update font variables
     assign("font",
