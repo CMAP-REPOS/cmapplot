@@ -75,9 +75,9 @@ jobs:
         run: |
           systemfonts::clear_registry()
           font_dir <- paste0(Sys.getenv("HOME"), "/Library/Fonts")
-          systemfonts::register_font("Whitney-Book", plain=paste0(font_dir, "/Whitney-Book-Adv.otf"), italic=paste0(font_dir, "/Whitney-BookItal-Adv.otf"))
-          systemfonts::register_font("Whitney-Medium", plain=paste0(font_dir, "/Whitney-Medium-Adv.otf"), italic=paste0(font_dir, "/Whitney-MediumItal-Adv.otf"))
-          systemfonts::register_font("Whitney-Semibold", plain=paste0(font_dir, "/Whitney-Semibold-Adv.otf"), italic=paste0(font_dir, "/Whitney-SemiboldItal-Adv.otf"))
+          systemfonts::register_font("Whitney-Book", paste0(font_dir, "/Whitney-Book-Adv.otf"))
+          systemfonts::register_font("Whitney-Medium", paste0(font_dir, "/Whitney-Medium-Adv.otf"))
+          systemfonts::register_font("Whitney-Semibold", paste0(font_dir, "/Whitney-Semibold-Adv.otf"))
           message(paste(systemfonts::registry_fonts()$family, systemfonts::registry_fonts()$path, collapse="\n"))
           library(cmapplot)
           message(get_cmapplot_global("use_whitney"))
