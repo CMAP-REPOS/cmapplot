@@ -37,7 +37,7 @@
     user_dir <- paste0(Sys.getenv("HOME"), "/Library/Fonts")
     user_font_names <- sub("-Adv.otf$", "", list.files(user_dir))
     user_font_paths <- list.files(user_dir, full.names = TRUE)
-    purr::walk2(user_font_names, user_font_paths, systemfonts::register_font)
+    purrr::walk2(user_font_names, user_font_paths, systemfonts::register_font)
 
     registry_fonts <- systemfonts::registry_fonts()
     assign("use_whitney",
