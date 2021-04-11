@@ -25,16 +25,16 @@ jobs:
           token: ${{ secrets.CMAP_REPO_FULL_ACCESS }}
           path: cmap-fonts
 
-      # - name: Install CMAP fonts for R access
-      #   # Inspiration: https://gist.github.com/Kevin-Lee/328e9993d6b3ad250636023fb2c7827f
-      #   run: |
-      #     repo_dir="$GITHUB_WORKSPACE/cmap-fonts"
-      #     font_dir="$HOME/Library/Fonts"
-      #     mkdir -p $font_dir
-      #     find_command="find \"$repo_dir\" -name '*.[o,t]tf' -type f -print0"
-      #     eval $find_command | xargs -0 -I %
-      #     eval $find_command | xargs -0 -I % cp "%" "$font_dir/"
-      #     find "$font_dir" -name '*.[o,t]tf' -print0 | xargs -0 -I %
+      - name: Install CMAP fonts for R access
+        # Inspiration: https://gist.github.com/Kevin-Lee/328e9993d6b3ad250636023fb2c7827f
+        run: |
+          repo_dir="$GITHUB_WORKSPACE/cmap-fonts"
+          font_dir="$HOME/Library/Fonts"
+          mkdir -p $font_dir
+          find_command="find \"$repo_dir\" -name '*.[o,t]tf' -type f -print0"
+          eval $find_command | xargs -0 -I %
+          eval $find_command | xargs -0 -I % cp "%" "$font_dir/"
+          find "$font_dir" -name '*.[o,t]tf' -print0 | xargs -0 -I %
 
       - name: Query dependencies
         run: |
@@ -56,12 +56,15 @@ jobs:
           install.packages("pkgdown")
         shell: Rscript {0}
 
-      # - name: Check Whitney availability
-      #   run: |
-      #     all_fonts <- systemfonts::system_fonts()
-      #     message(paste(all_fonts$path, collapse = "\n"))
-      #     message(paste(all_fonts$name[all_fonts$name %in% c("Whitney-Medium", "Whitney-Book", "Whitney-Semibold")], collapse = "\n"))
-      #   shell: Rscript {0}
+      - name: Check Whitney availability
+        run: |
+          all_fonts <- systemfonts::system_fonts()
+          message("CONTENTS OF SYSTEMFONTS:")
+          message(paste(all_fonts$path, collapse = "\n"))
+          message(paste(all_fonts$name[all_fonts$name %in% c("Whitney-Medium", "Whitney-Book", "Whitney-Semibold")], collapse = "\n"))
+          message("CONTENTS OF USER FONT FILE:")
+          message(paste(list.files(paste0(Sys.getenv("HOME"), "/Library/Fonts")), collapse = "\n"))
+        shell: Rscript {0}
 
       - name: Install package
         run: R CMD INSTALL .

@@ -24,12 +24,13 @@
 
   # check for Whitney
   #all_fonts <- systemfonts::system_fonts()
-  all_fonts <- dplyr::bind_rows(
-    dplyr::select(systemfonts::system_fonts(), name, family, path),
-    dplyr::transmute(systemfonts::registry_fonts(), name = family, family = family, path = path)
-  )
+  all_fonts <- systemfonts::system_fonts()
   whitney_core <- all_fonts$name[all_fonts$name %in% c("Whitney-Medium", "Whitney-Book", "Whitney-Semibold")]
   assign("use_whitney", length(whitney_core) >= 3, envir = cmapplot_globals)
+
+  if(!get("use_whitney", envir = cmapplot_globals)){
+
+  }
 
   if(get("use_whitney", envir = cmapplot_globals)){
     # # Register all Whitney fonts (note: this registers italic fonts both as
