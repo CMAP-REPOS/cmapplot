@@ -23,23 +23,30 @@
   family <- name <- path <- NULL
 
   # check for Whitney
-  #all_fonts <- systemfonts::system_fonts()
   all_fonts <- systemfonts::system_fonts()
-  whitney_core <- all_fonts$name[all_fonts$name %in% c("Whitney-Medium", "Whitney-Book", "Whitney-Semibold")]
-  assign("use_whitney", length(whitney_core) >= 3, envir = cmapplot_globals)
+  whitney_core <- c("Whitney-Medium", "Whitney-Book", "Whitney-Semibold")
+  assign("use_whitney",
+         length(all_fonts$name[all_fonts$name %in% whitney_core]) >= 3,
+         envir = cmapplot_globals)
 
-  if(!get("use_whitney", envir = cmapplot_globals)){
+  # If on a Mac, and !use_whitney, attempt to register from user's fonts folder
+  ## SHOULD THIS BE CHANGED TO ONLY IMPACT THE VM? SUCH AS USER == "runner"???
+  if(.Platform$OS.type != "windows" & !get("use_whitney", envir = cmapplot_globals)){
+    # attempt to register fonts in user's fonts folder
+    ## SHOULD THIS BE CHANGED TO ONLY WHITNEY FONTS?
+    user_dir <- paste0(Sys.getenv("HOME"), "/Library/Fonts")
+    user_font_names <- sub("-Adv.otf$", "", list.files(user_dir))
+    user_font_paths <- list.files(user_dir, full.names = TRUE)
+    purr::walk2(user_font_names, user_font_paths, systemfonts::register_font)
 
+    registry_fonts <- systemfonts::registry_fonts()
+    assign("use_whitney",
+           length(registry_fonts$name[registry_fonts$name %in% whitney_core]) >= 3,
+           envir = cmapplot_globals)
   }
 
+  # Update font names
   if(get("use_whitney", envir = cmapplot_globals)){
-    # # Register all Whitney fonts (note: this registers italic fonts both as
-    # # variants of core fonts and as standalone fonts, so there is some
-    # # duplication.)
-    # whitney_fonts <- select(filter(all_fonts, family == "Whitney"), name, path)
-    # purrr::walk2(whitney_fonts$name, whitney_fonts$path, systemfonts::register_font)
-
-    # Update font variables
     assign("font",
            list(strong = list(family = "Whitney-Semibold", face = "plain"),
                 regular = list(family = "Whitney-Medium", face = "plain"),
