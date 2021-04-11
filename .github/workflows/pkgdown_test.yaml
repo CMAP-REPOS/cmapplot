@@ -61,9 +61,9 @@ jobs:
           all_fonts <- systemfonts::system_fonts()
           message("FONTS AUTOMATICALLY AVAILABLE TO SYSTEMFONTS:")
           message(paste(all_fonts$name[all_fonts$name %in% c("Whitney-Medium", "Whitney-Book", "Whitney-Semibold")], collapse = "\n"))
-          user_dir <- paste0(Sys.getenv("HOME"), "/Library/Fonts/cmap-fonts")
+          user_dir <- paste0(Sys.getenv("HOME"), "/Library/Fonts")
           message(paste0("CONTENTS OF ", user_dir, ":"))
-          message(paste(list.files(), collapse = "\n"))
+          message(paste(list.files(user_dir), collapse = "\n"))
         shell: Rscript {0}
 
       - name: Install package
