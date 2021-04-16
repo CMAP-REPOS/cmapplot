@@ -40,9 +40,9 @@
     purrr::walk2(user_font_names, user_font_paths, systemfonts::register_font)
 
     registry_fonts <- systemfonts::registry_fonts()
-    message(paste(registry_fonts, collapse = "\n")) ## temp
+    message(length(registry_fonts$family[registry_fonts$family %in% whitney_core])) ## temp
     assign("use_whitney",
-           length(registry_fonts$name[registry_fonts$name %in% whitney_core]) >= 3,
+           length(registry_fonts$family[registry_fonts$family %in% whitney_core]) >= 3,
            envir = cmapplot_globals)
   }
 
