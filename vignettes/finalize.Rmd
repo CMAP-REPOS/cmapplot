@@ -44,7 +44,7 @@ p <- ggplot(data = df,
   coord_cartesian(clip = "off") + 
   theme_cmap()
 
-systemfonts::registry_fonts()
+systemfonts::registry_fonts() 
 ```
 
 `finalize_plot()` will place a ggplot into a frame defined by CMAP design standards. It will align your title and caption to the left, add a horizontal line on top, and make other adjustments. It can show you the final plot and/or export it as a raster or vector file. This function will not apply CMAP design standards to the plot itself; use `theme_cmap()` for that.
