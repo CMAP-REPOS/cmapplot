@@ -62,8 +62,9 @@ jobs:
           message("WHITNEY FONTS AUTOMATICALLY AVAILABLE TO SYSTEMFONTS:")
           message(paste(all_fonts$name[grepl("^Whitney", all_fonts$name)], collapse = "\n"))
           user_dir <- paste0(Sys.getenv("HOME"), "/Library/Fonts")
-          message(paste0("CONTENTS OF ", user_dir, " (MUST BE REGISTERED):"))
-          message(paste(list.files(user_dir), collapse = "\n"))
+          library_fonts <- list.files(user_dir)
+          message(paste0("WHITNEY FONTS IN ", user_dir, " (MUST BE REGISTERED):"))
+          message(paste(library_fonts[grepl("^Whitney", library_fonts)], collapse = "\n"))
         shell: Rscript {0}
 
       - name: Install package

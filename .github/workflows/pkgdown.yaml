@@ -56,11 +56,15 @@ jobs:
           install.packages("pkgdown")
         shell: Rscript {0}
 
-      - name: Check Whitney availability
+      - name: Check Whitney availability in R
         run: |
-          message(paste(sysfonts::font_paths(), collapse = "\n"))
-          all_fonts <- sysfonts::font_files()
-          message(paste(all_fonts[all_fonts$family %in% c("Whitney Medium", "Whitney Book", "Whitney Semibold") & all_fonts$face=="Regular", "file"], collapse = "\n"))
+          all_fonts <- systemfonts::system_fonts()
+          message("WHITNEY FONTS AUTOMATICALLY AVAILABLE TO SYSTEMFONTS:")
+          message(paste(all_fonts$name[grepl("^Whitney", all_fonts$name)], collapse = "\n"))
+          user_dir <- paste0(Sys.getenv("HOME"), "/Library/Fonts")
+          library_fonts <- list.files(user_dir)
+          message(paste0("WHITNEY FONTS IN ", user_dir, " (MUST BE REGISTERED):"))
+          message(paste(library_fonts[grepl("^Whitney", library_fonts)], collapse = "\n"))
         shell: Rscript {0}
 
       - name: Install package
@@ -70,4 +74,4 @@ jobs:
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
-          Rscript -e 'pkgdown::deploy_to_branch(new_process = FALSE, clean = TRUE)'
+          Rscript -e 'pkgdown::deploy_to_branch(clean = TRUE)'
