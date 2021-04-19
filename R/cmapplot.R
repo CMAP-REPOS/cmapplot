@@ -66,9 +66,9 @@
   # Update font names
   if(get("use_whitney", envir = cmapplot_globals)){
     assign("font",
-           list(strong = list(family = "Whitney-Semibold", face = "plain"),
-                regular = list(family = "Whitney-Medium", face = "plain"),
-                light = list(family = "Whitney-Book", face = "plain")),
+           list(strong = list(family = cmapplot_globals$preferred_font$strong, face = "plain"),
+                regular = list(family = cmapplot_globals$preferred_font$regular, face = "plain"),
+                light = list(family = cmapplot_globals$preferred_font$light, face = "plain")),
            envir = cmapplot_globals)
   }
 

@@ -1,6 +1,13 @@
 # Initialize environment for cmapplot global variables
 cmapplot_globals <- new.env(parent = emptyenv())
 
+# Establish names of preferred fonts
+cmapplot_globals$preferred_font <- list(
+  strong = "Whitney-Semibold",
+  regular = "Whitney-Medium",
+  light = "Whitney-Book"
+)
+
 # Set up default font handling
 # (Note: overridden by .onLoad() if Whitney is available)
 cmapplot_globals$use_whitney <- FALSE

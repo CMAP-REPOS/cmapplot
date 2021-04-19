@@ -109,11 +109,11 @@ gg_lwd_convert <- function(value, unit = "bigpts") {
 #' @noRd
 check_for_whitney_core <- function(set_global = FALSE){
 
-  whitney_core <- c("Whitney-Medium", "Whitney-Book", "Whitney-Semibold")
-
   registry_fonts <- systemfonts::registry_fonts()
 
-  whitney_core_present <- nrow(registry_fonts[registry_fonts$family %in% whitney_core,]) >= 3
+  whitney_core_present <- nrow(
+    registry_fonts[registry_fonts$family %in% cmapplot_globals$preferred_font,]
+    ) >= 3
 
   if(set_global){
     assign("use_whitney",
