@@ -97,3 +97,29 @@ gg_lwd_convert <- function(value, unit = "bigpts") {
     value_out / .lwd
   )
 }
+
+
+#' Check for necessary Whitney fonts in systemfonts registry
+#'
+#' Invisibly returns TRUE or FALSE based on whether the three used Whitney fonts
+#' are available in the systemfonts registry.
+#'
+#' @param set_global sets cmapplot_globals$use_whitney based on results
+#'
+#' @noRd
+check_for_whitney_core <- function(set_global = FALSE){
+
+  whitney_core <- c("Whitney-Medium", "Whitney-Book", "Whitney-Semibold")
+
+  registry_fonts <- systemfonts::registry_fonts()
+
+  whitney_core_present <- nrow(registry_fonts[registry_fonts$family %in% whitney_core,]) >= 3
+
+  if(set_global){
+    assign("use_whitney",
+           whitney_core_present,
+           envir = cmapplot_globals)
+  }
+
+  invisible(whitney_core_present)
+}

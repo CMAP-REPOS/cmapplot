@@ -22,28 +22,45 @@
 
   family <- name <- path <- NULL
 
-  # check for Whitney
-  all_fonts <- systemfonts::system_fonts()
-  whitney_core <- c("Whitney-Medium", "Whitney-Book", "Whitney-Semibold")
-  assign("use_whitney",
-         length(all_fonts$name[all_fonts$name %in% whitney_core]) >= 3,
-         envir = cmapplot_globals)
+  # if font registry already contains whitney core, set use_whitney == TRUE
+  check_for_whitney_core(set_global = TRUE)
 
-  # If on a Mac, and !use_whitney, attempt to register from user's fonts folder
-  ## SHOULD THIS BE CHANGED TO ONLY IMPACT THE VM? SUCH AS USER == "runner"???
-  if(.Platform$OS.type != "windows" & !get("use_whitney", envir = cmapplot_globals)){
-    # attempt to register fonts in user's fonts folder
-    ## SHOULD THIS BE CHANGED TO ONLY WHITNEY FONTS?
+  # else, register all whitney fonts in systemfonts. Then, if font registry
+  # contains whitney core, set use_whitney == TRUE
+  #
+  # (This is necessary because R looks up font by "family" with only basic
+  # variation (bold, italic, etc), so fonts like "Whitney-Book" are inaccessible
+  # by default. Font registration allows us to use the font's "name" as it's
+  # "family" so R can identify it.)
+  if(!get("use_whitney", envir = cmapplot_globals)){
+
+    whitney_fonts <- systemfonts::system_fonts() %>%
+      dplyr::filter(family == "Whitney") %>%
+      dplyr::select(name, path)
+
+    purrr::walk2(whitney_fonts$name, whitney_fonts$path, systemfonts::register_font)
+
+    check_for_whitney_core(set_global = TRUE)
+  }
+
+  # else, if not on Windows, check for /Library/Fonts directory.
+  # register all Whitney fonts in this folder.
+  # If font registry contains whitney core, set use_whitney == TRUE
+  if(!get("use_whitney", envir = cmapplot_globals) & .Platform$OS.type != "windows"){
+
     user_dir <- paste0(Sys.getenv("HOME"), "/Library/Fonts")
-    user_font_names <- sub("-Adv.otf$", "", list.files(user_dir))
-    user_font_paths <- list.files(user_dir, full.names = TRUE)
-    purrr::walk2(user_font_names, user_font_paths, systemfonts::register_font)
 
-    registry_fonts <- systemfonts::registry_fonts()
-    message(length(registry_fonts$family[registry_fonts$family %in% whitney_core])) ## temp
-    assign("use_whitney",
-           length(registry_fonts$family[registry_fonts$family %in% whitney_core]) >= 3,
-           envir = cmapplot_globals)
+    if(dir.exists(user_dir)){
+      whitney_fonts <- list.files(user_dir, full.names = TRUE) %>%
+        as.data.frame() %>%
+        rlang::set_names("path") %>%
+        dplyr::filter(stringr::str_detect(path, "Whitney")) %>% # Will error for username of "Whitney"
+        dplyr::mutate(name = stringr::str_extract(path, "Whitney-[:alpha:]*(?=-Adv.otf$)"))
+
+      purrr::walk2(whitney_fonts$name, whitney_fonts$path, systemfonts::register_font)
+
+      check_for_whitney_core(set_global = TRUE)
+    }
   }
 
   # Update font names
