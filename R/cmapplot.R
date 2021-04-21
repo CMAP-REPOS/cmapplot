@@ -22,15 +22,15 @@
 
   family <- name <- path <- NULL
 
-  # if font registry already contains whitney core, set use_whitney == TRUE
+  # If font registry already contains whitney core, set use_whitney == TRUE
   check_for_whitney_core(set_global = TRUE)
 
-  # else, register all whitney fonts in systemfonts. Then, if font registry
-  # contains whitney core, set use_whitney == TRUE
+  # Else, register all whitney fonts in systemfonts. Then, if font registry
+  # contains whitney core, set use_whitney == TRUE.
   #
   # (This is necessary because R looks up font by "family" with only basic
   # variation (bold, italic, etc), so fonts like "Whitney-Book" are inaccessible
-  # by default. Font registration allows us to use the font's "name" as it's
+  # by default. Font registration allows us to use the font's "name" as its
   # "family" so R can identify it.)
   if(!get("use_whitney", envir = cmapplot_globals)){
 
@@ -43,8 +43,8 @@
     check_for_whitney_core(set_global = TRUE)
   }
 
-  # else, if not on Windows, check for /Library/Fonts directory.
-  # register all Whitney fonts in this folder.
+  # Else, if not on Windows, check for ~/Library/Fonts directory.
+  # Register all Whitney fonts in this folder.
   # If font registry contains whitney core, set use_whitney == TRUE
   if(!get("use_whitney", envir = cmapplot_globals) & .Platform$OS.type != "windows"){
 
@@ -54,7 +54,7 @@
       whitney_fonts <- list.files(user_dir, full.names = TRUE) %>%
         as.data.frame() %>%
         rlang::set_names("path") %>%
-        dplyr::filter(stringr::str_detect(path, "Whitney")) %>% # Will error for username of "Whitney"
+        dplyr::filter(stringr::str_detect(path, "Whitney-")) %>%  # Hope "Whitney-" is not in username!
         dplyr::mutate(name = stringr::str_extract(path, "Whitney-[:alpha:]*(?=-Adv.otf$)"))
 
       purrr::walk2(whitney_fonts$name, whitney_fonts$path, systemfonts::register_font)

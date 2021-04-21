@@ -70,7 +70,6 @@ jobs:
       - name: Install package
         run: R CMD INSTALL .
 
-
       - name: Deploy package
         run: |
           git config --local user.email "actions@github.com"
