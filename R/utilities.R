@@ -107,19 +107,35 @@ gg_lwd_convert <- function(value, unit = "bigpts") {
 #' @param set_global sets cmapplot_globals$use_whitney based on results
 #'
 #' @noRd
-check_for_whitney_core <- function(set_global = FALSE){
+check_for_fonts <- function(set_global = FALSE){
 
   registry_fonts <- systemfonts::registry_fonts()
 
-  whitney_core_present <- nrow(
+  fonts_present <- nrow(
     registry_fonts[registry_fonts$family %in% cmapplot_globals$preferred_font,]
     ) >= 3
 
   if(set_global){
     assign("use_whitney",
-           whitney_core_present,
+           fonts_present,
            envir = cmapplot_globals)
   }
 
-  invisible(whitney_core_present)
+  invisible(fonts_present)
+}
+
+#' Find a "path" using a "name"
+#'
+#' Taking a dataframe that has columns "name" and "path", search for one
+#' specific name and, if a perfect match is found, return it's "path".
+#'
+#' @noRd
+find_path <- function(query, df){
+  df <- dplyr::filter(df, stringr::str_detect(name, paste0("^", query, "$")))
+
+  if(nrow(df) == 1){
+    return(df[[1,"path"]])
+  } else {
+    stop("Font not found", call. = FALSE)
+  }
 }
