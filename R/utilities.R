@@ -99,30 +99,6 @@ gg_lwd_convert <- function(value, unit = "bigpts") {
 }
 
 
-#' Check for necessary Whitney fonts in systemfonts registry
-#'
-#' Invisibly returns TRUE or FALSE based on whether the three used Whitney fonts
-#' are available in the systemfonts registry.
-#'
-#' @param set_global sets cmapplot_globals$use_whitney based on results
-#'
-#' @noRd
-check_for_fonts <- function(set_global = FALSE){
-
-  registry_fonts <- systemfonts::registry_fonts()
-
-  fonts_present <- nrow(
-    registry_fonts[registry_fonts$family %in% cmapplot_globals$preferred_font,]
-    ) >= 3
-
-  if(set_global){
-    assign("use_whitney",
-           fonts_present,
-           envir = cmapplot_globals)
-  }
-
-  invisible(fonts_present)
-}
 
 #' Find a "path" using a "name"
 #'
@@ -130,13 +106,15 @@ check_for_fonts <- function(set_global = FALSE){
 #' specific name and, if a perfect match is found, return it's "path".
 #'
 #' @noRd
-find_path <- function(query, df){
-  warning("test warning")
-  df2 <- dplyr::filter(df, stringr::str_detect(name, paste0("^", query, "$")))
+find_path <- function(query, vector){
+  result <- vector[grepl(paste0("(\\\\|/)", query, ".[ot]tf$"), vector)]
 
-  if(nrow(df2) == 1){
-    return(df2[[1,"path"]])
+  if(length(result) == 1){
+    return(result)
   } else {
-    stop(paste0("Font '", query, "' not found. nrow before: ", nrow(df), ". nrow after: ", nrow(df2)), call. = FALSE)
+    stop(
+      paste0("Font '", query, "' not found. search vector:\n",
+             paste(vector, collapse = "\n")),
+         call. = FALSE)
   }
 }

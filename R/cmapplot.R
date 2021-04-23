@@ -23,7 +23,14 @@
   family <- name <- path <- NULL
 
   # If font registry already contains whitney core, set use_whitney == TRUE
-  check_for_fonts(set_global = TRUE)
+  fonts_present <- systemfonts::registry_fonts() %>%
+    dplyr::filter(family %in% cmapplot_globals$preferred_font) %>%
+    nrow() >= 12
+
+  assign("use_whitney",
+         fonts_present,
+         envir = cmapplot_globals)
+
 
   # Else, Find and register necessary whitney varients using systemfonts (or,
   # alternatively, find them manually in ~/Library/Fonts). Then, if font
@@ -33,50 +40,47 @@
   # variation (bold, italic, etc), so fonts like "Whitney-Book" are inaccessible
   # by default.)
   if(!get("use_whitney", envir = cmapplot_globals)){
-    whitney_fonts <- systemfonts::system_fonts() %>%
+    whitney_paths <- systemfonts::system_fonts() %>%
       dplyr::filter(family == "Whitney") %>%
-      dplyr::select(name, path)
+      .[["path"]]
 
     # On some OSX systems (e.g. pkgdown GHA VM) system_fonts() cannot find fonts
     # installed in the user fonts directory. In any case where system_fonts()
-    # sees no Whitney fonts, if `user_dir` exists it too is checked for fonts.
+    # sees no Whitney fonts, if `user_dir` exists, it too is checked for fonts.
     user_dir <- paste0(Sys.getenv("HOME"), "/Library/Fonts")
-    if(nrow(whitney_fonts) == 0 & dir.exists(user_dir)){
+    if(length(whitney_paths) == 0 & dir.exists(user_dir)){
       warning(paste("alternative search in", user_dir))
-      whitney_fonts <- list.files(user_dir, full.names = TRUE) %>%
-        as.data.frame() %>%
-        rlang::set_names("path") %>%
-        dplyr::filter(stringr::str_detect(path, "Whitney-")) %>%  # Hope "Whitney-" is not in username!
-        dplyr::mutate(name = stringr::str_extract(path, "Whitney-[:alpha:]*(?=-Adv.otf$)"))
+      whitney_paths <- list.files(user_dir, full.names = TRUE) %>%
+        .[grepl("Whitney-", .)]
     }
 
-    warning(paste(whitney_fonts, collapse = "\n"))
+    warning(paste(whitney_paths, collapse = "\n"))
 
     # register preferred strong font (Whitney Semibold), with variants
     systemfonts::register_font(
       name = cmapplot_globals$preferred_font$strong,
-      plain = find_path("Whitney-Semibold", whitney_fonts),
-      bold = find_path("Whitney-Black", whitney_fonts),
-      italic = find_path("Whitney-SemiboldItalic", whitney_fonts),
-      bolditalic = find_path("Whitney-BlackItalic", whitney_fonts)
+      plain = find_path("Whitney-Semibold-Adv", whitney_paths),
+      bold = find_path("Whitney-Black-Adv", whitney_paths),
+      italic = find_path("Whitney-SemiboldItal-Adv", whitney_paths),
+      bolditalic = find_path("Whitney-BlackItal-Adv", whitney_paths)
     )
 
     # register preferred regular font (Whitney Medium), with variants
     systemfonts::register_font(
       name = cmapplot_globals$preferred_font$regular,
-      plain = find_path("Whitney-Medium", whitney_fonts),
-      bold = find_path("Whitney-Bold", whitney_fonts),
-      italic = find_path("Whitney-MediumItalic", whitney_fonts),
-      bolditalic = find_path("Whitney-BoldItalic", whitney_fonts)
+      plain = find_path("Whitney-Medium-Adv", whitney_paths),
+      bold = find_path("Whitney-Bold-Adv", whitney_paths),
+      italic = find_path("Whitney-MediumItal-Adv", whitney_paths),
+      bolditalic = find_path("Whitney-BoldItal-Adv", whitney_paths)
     )
 
     # register preferred light font (Whitney Book), with variants
     systemfonts::register_font(
       name = cmapplot_globals$preferred_font$light,
-      plain = find_path("Whitney-Book", whitney_fonts),
-      bold = find_path("Whitney-Semibold", whitney_fonts),
-      italic = find_path("Whitney-BookItalic", whitney_fonts),
-      bolditalic = find_path("Whitney-SemiboldItalic", whitney_fonts)
+      plain = find_path("Whitney-Book-Adv", whitney_paths),
+      bold = find_path("Whitney-Semibold-Adv", whitney_paths),
+      italic = find_path("Whitney-BookItal-Adv", whitney_paths),
+      bolditalic = find_path("Whitney-SemiboldItal-Adv", whitney_paths)
     )
 
     check_for_fonts(set_global = TRUE)
