@@ -49,41 +49,43 @@
     # sees no Whitney fonts, if `user_dir` exists, it too is checked for fonts.
     user_dir <- paste0(Sys.getenv("HOME"), "/Library/Fonts")
     if(length(whitney_paths) == 0 & dir.exists(user_dir)){
-      warning(paste("alternative search in", user_dir))
       whitney_paths <- list.files(user_dir, full.names = TRUE) %>%
         .[grepl("Whitney-", .)]
     }
 
-    warning(paste(whitney_paths, collapse = "\n"))
 
-    # register preferred strong font (Whitney Semibold), with variants
-    systemfonts::register_font(
-      name = cmapplot_globals$preferred_font$strong,
-      plain = find_path("Whitney-Semibold-Adv", whitney_paths),
-      bold = find_path("Whitney-Black-Adv", whitney_paths),
-      italic = find_path("Whitney-SemiboldItal-Adv", whitney_paths),
-      bolditalic = find_path("Whitney-BlackItal-Adv", whitney_paths)
-    )
+    if(length(whitney_paths >= 12)){
+      # register preferred strong font (Whitney Semibold), with variants
+      systemfonts::register_font(
+        name = cmapplot_globals$preferred_font$strong,
+        plain = find_path("Whitney-Semibold-Adv", whitney_paths),
+        bold = find_path("Whitney-Black-Adv", whitney_paths),
+        italic = find_path("Whitney-SemiboldItal-Adv", whitney_paths),
+        bolditalic = find_path("Whitney-BlackItal-Adv", whitney_paths)
+      )
 
-    # register preferred regular font (Whitney Medium), with variants
-    systemfonts::register_font(
-      name = cmapplot_globals$preferred_font$regular,
-      plain = find_path("Whitney-Medium-Adv", whitney_paths),
-      bold = find_path("Whitney-Bold-Adv", whitney_paths),
-      italic = find_path("Whitney-MediumItal-Adv", whitney_paths),
-      bolditalic = find_path("Whitney-BoldItal-Adv", whitney_paths)
-    )
+      # register preferred regular font (Whitney Medium), with variants
+      systemfonts::register_font(
+        name = cmapplot_globals$preferred_font$regular,
+        plain = find_path("Whitney-Medium-Adv", whitney_paths),
+        bold = find_path("Whitney-Bold-Adv", whitney_paths),
+        italic = find_path("Whitney-MediumItal-Adv", whitney_paths),
+        bolditalic = find_path("Whitney-BoldItal-Adv", whitney_paths)
+      )
 
-    # register preferred light font (Whitney Book), with variants
-    systemfonts::register_font(
-      name = cmapplot_globals$preferred_font$light,
-      plain = find_path("Whitney-Book-Adv", whitney_paths),
-      bold = find_path("Whitney-Semibold-Adv", whitney_paths),
-      italic = find_path("Whitney-BookItal-Adv", whitney_paths),
-      bolditalic = find_path("Whitney-SemiboldItal-Adv", whitney_paths)
-    )
+      # register preferred light font (Whitney Book), with variants
+      systemfonts::register_font(
+        name = cmapplot_globals$preferred_font$light,
+        plain = find_path("Whitney-Book-Adv", whitney_paths),
+        bold = find_path("Whitney-Semibold-Adv", whitney_paths),
+        italic = find_path("Whitney-BookItal-Adv", whitney_paths),
+        bolditalic = find_path("Whitney-SemiboldItal-Adv", whitney_paths)
+      )
 
-    check_for_fonts(set_global = TRUE)
+      assign("use_whitney",
+             fonts_present,
+             envir = cmapplot_globals)
+    }
   }
 
   # Update font names
