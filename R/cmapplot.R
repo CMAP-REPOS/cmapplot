@@ -33,9 +33,6 @@
   # variation (bold, italic, etc), so fonts like "Whitney-Book" are inaccessible
   # by default.)
   if(!get("use_whitney", envir = cmapplot_globals)){
-    packageStartupMessage("Attempting to register Whitney fonts...")
-    message("Attempting to register Whitney fonts...")
-
     whitney_fonts <- systemfonts::system_fonts() %>%
       dplyr::filter(family == "Whitney") %>%
       dplyr::select(name, path)

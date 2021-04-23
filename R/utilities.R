@@ -136,6 +136,6 @@ find_path <- function(query, df){
   if(nrow(df) == 1){
     return(df[[1,"path"]])
   } else {
-    stop("Font not found", call. = FALSE)
+    stop(paste0("Font '", query, "' not found"), call. = FALSE)
   }
 }
