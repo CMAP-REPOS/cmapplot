@@ -22,7 +22,7 @@
 
   family <- name <- path <- NULL
 
-  # If font registry already contains whitney core, set use_whitney == TRUE
+  # If font registry already contains Whitney core, set use_whitney == TRUE
   fonts_present <- systemfonts::registry_fonts() %>%
     dplyr::filter(family %in% cmapplot_globals$preferred_font) %>%
     nrow() >= 12
@@ -32,13 +32,9 @@
          envir = cmapplot_globals)
 
 
-  # Else, Find and register necessary whitney varients using systemfonts (or,
+  # Else, Find and register necessary Whitney variants using systemfonts (or,
   # alternatively, find them manually in ~/Library/Fonts). Then, if font
-  # registry contains whitney core, set use_whitney == TRUE.
-  #
-  # (This is necessary because R looks up font by "family" with only basic
-  # variation (bold, italic, etc), so fonts like "Whitney-Book" are inaccessible
-  # by default.)
+  # registry contains Whitney core, set use_whitney == TRUE.
   if(!get("use_whitney", envir = cmapplot_globals)){
     whitney_paths <- systemfonts::system_fonts() %>%
       dplyr::filter(family == "Whitney") %>%
@@ -53,7 +49,7 @@
         .[grepl("Whitney-", .)]
     }
 
-
+    # If all Whitney fonts have been found...
     if(length(whitney_paths >= 12)){
       # register preferred strong font (Whitney Semibold), with variants
       systemfonts::register_font(
@@ -83,7 +79,7 @@
       )
 
       assign("use_whitney",
-             fonts_present,
+             TRUE,
              envir = cmapplot_globals)
     }
   }
