@@ -48,6 +48,8 @@
         rlang::set_names("path") %>%
         dplyr::filter(stringr::str_detect(path, "Whitney-")) %>%  # Hope "Whitney-" is not in username!
         dplyr::mutate(name = stringr::str_extract(path, "Whitney-[:alpha:]*(?=-Adv.otf$)"))
+
+      message(paste(whitney_fonts, collapse = "\n"))
     }
 
     # register preferred strong font (Whitney Semibold), with variants
