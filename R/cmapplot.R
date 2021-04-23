@@ -41,7 +41,7 @@
     # installed in the user fonts directory. In any case where system_fonts()
     # sees no Whitney fonts, if `user_dir` exists it too is checked for fonts.
     user_dir <- paste0(Sys.getenv("HOME"), "/Library/Fonts")
-    if(nrow(whitney_fonts == 0) & dir.exists(user_dir)){
+    if(nrow(whitney_fonts) == 0 & dir.exists(user_dir)){
       warning(paste("alternative search in", user_dir))
       whitney_fonts <- list.files(user_dir, full.names = TRUE) %>%
         as.data.frame() %>%
