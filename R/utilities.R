@@ -131,12 +131,12 @@ check_for_fonts <- function(set_global = FALSE){
 #'
 #' @noRd
 find_path <- function(query, df){
-  query <- paste0("^", query, "$")
-  df <- dplyr::filter(df, stringr::str_detect(name, query))
+  warning("test warning")
+  df2 <- dplyr::filter(df, stringr::str_detect(name, paste0("^", query, "$")))
 
-  if(nrow(df) == 1){
-    return(df[[1,"path"]])
+  if(nrow(df2) == 1){
+    return(df2[[1,"path"]])
   } else {
-    stop(paste0("Font '", query, "' not found. Query: ", query, ". nrow: ", nrow(df)), call. = FALSE)
+    stop(paste0("Font '", query, "' not found. nrow before: ", nrow(df), ". nrow after: ", nrow(df2)), call. = FALSE)
   }
 }
