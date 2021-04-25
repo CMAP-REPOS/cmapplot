@@ -85,7 +85,7 @@
         )
 
         packageStartupMessage(paste0(
-          "cmapplot has registered the following fonts for use in this R session:\n   ",
+          "cmapplot has registered the following fonts for use in this R session:\n  ",
           paste(cmapplot_globals$preferred_font, collapse = ", ")
         ))
 
@@ -110,7 +110,11 @@
       if(rstudioapi::getVersion() > 1.4){
         if(getOption("RStudioGD.backend") != "ragg"){
           options(RStudioGD.backend = "ragg")
-          packageStartupMessage("cmapplot has set RStudio graphics to `ragg`.")
+          packageStartupMessage(paste(
+            "cmapplot has set RStudio graphics to `ragg` for the current session.",
+            "You can make this change permanent:\n  ",
+            "Tools > Global Options > General > Graphics > Graphics Device > Backend == 'AGG'."
+            ))
         }
       } else {
         packageStartupMessage(paste(
@@ -121,7 +125,7 @@
   # Otherwise, notify user
   } else {
     packageStartupMessage(
-      "cmapplot cannot locate Whitney fonts, so CMAP themes will use your default sans-serif font"
+      "cmapplot cannot locate Whitney fonts, so CMAP themes will use your default sans-serif font."
     )
   }
 
