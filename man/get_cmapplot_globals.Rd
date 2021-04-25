@@ -77,7 +77,7 @@ helper functions described here provide the user access if needed.
  caption). \strong{(F)} \item \code{margin_sidebar_l}: The margin between the
  left edge of the image and the title and caption, when the sidebar exists.
  Deducted from \code{title_width}. \strong{(F)} \item \code{margin_plot_l}:
- The margin between the left edge of the plot and the sidebar. \strong{(F)}
+ The margin between the left edge of the plot and the sodebar. \strong{(F)}
  \item \code{margin_plot_r}: The margin between the right edge of the plot
  and the edge of the image. \strong{(F)} \item \code{margin_panel_r}: Padding
  between the plot and its right-hand drawing extent. Override this based on

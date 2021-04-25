@@ -105,16 +105,17 @@ gg_lwd_convert <- function(value, unit = "bigpts") {
 #' Taking a dataframe that has columns "name" and "path", search for one
 #' specific name and, if a perfect match is found, return it's "path".
 #'
+#' @param filename the complete file name, less a .otf or .ttf extension.
+#'
 #' @noRd
-find_path <- function(query, vector){
-  result <- vector[grepl(paste0("(\\\\|/)", query, ".[ot]tf$"), vector)]
+find_path <- function(filename, paths){
+  result <- paths[grepl(paste0("(\\\\|/)", filename, ".[ot]tf$"), paths)]
 
   if(length(result) == 1){
     return(result)
   } else {
     stop(
-      paste0("Font '", query, "' not found. search vector:\n",
-             paste(vector, collapse = "\n")),
+      paste0("Font '", filename, "' not found."),
          call. = FALSE)
   }
 }
