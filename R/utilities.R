@@ -100,12 +100,13 @@ gg_lwd_convert <- function(value, unit = "bigpts") {
 
 
 
-#' Find a "path" using a "name"
+#' Identify correct font path based on filename
 #'
-#' Taking a dataframe that has columns "name" and "path", search for one
-#' specific name and, if a perfect match is found, return it's "path".
+#' Taking a list of font paths, search for a specific filename. If a perfect
+#' match is found, return that path.
 #'
 #' @param filename the complete file name, less a .otf or .ttf extension.
+#' @param path a vector of filepaths
 #'
 #' @noRd
 find_path <- function(filename, paths){
