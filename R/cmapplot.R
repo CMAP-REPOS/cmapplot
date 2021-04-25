@@ -17,7 +17,10 @@
 "_PACKAGE"
 
 
-# Update fonts based on system -- *must* be done with .onLoad()
+#' Update fonts based on system -- *must* be done with .onLoad()
+#'
+#' @noRd
+#' @import rstudioapi
 .onLoad <- function(...) {
 
   family <- name <- path <- NULL
@@ -93,24 +96,34 @@
     }
   }
 
-  # Update font names
+  # If Whitney is available...
   if(get("use_whitney", envir = cmapplot_globals)){
+    # ... Update font names
     assign("font",
            list(strong = list(family = cmapplot_globals$preferred_font$strong, face = "plain"),
                 regular = list(family = cmapplot_globals$preferred_font$regular, face = "plain"),
                 light = list(family = cmapplot_globals$preferred_font$light, face = "plain")),
            envir = cmapplot_globals)
+
+    # ... and check on rstudio graphics
+    if (rstudioapi::isAvailable()){
+      if(rstudioapi::getVersion() > 1.4){
+        if(getOption("RStudioGD.backend") != "ragg"){
+          options(RStudioGD.backend = "ragg")
+          packageStartupMessage("cmapplot has set RStudio graphics to `ragg`.")
+        }
+      } else {
+        packageStartupMessage(paste(
+          "cmapplot requires RStudio v1.4 or greater to use Whitney fonts",
+          "in the R plots window. "))
+      }
+    }
+  # Otherwise, notify user
   } else {
     packageStartupMessage(
       "cmapplot cannot locate Whitney fonts, so CMAP themes will use your default sans-serif font"
     )
   }
-
-  # if (VERSION >= 1.4){
-  #   check ragg, set ragg, notify
-  # } else {
-  #   message about need to update rstudio
-  # }
 
   # Load CMAP preferred default.aes (can't be done until fonts are specified)
   assign("default_aes_cmap",

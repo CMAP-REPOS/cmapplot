@@ -50,6 +50,7 @@ Imports:
     purrr,
     ragg,
     rlang,
+    rstudioapi,
     scales,
     stringr,
     systemfonts
