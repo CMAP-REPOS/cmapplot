@@ -48,7 +48,7 @@
     user_dir <- paste0(Sys.getenv("HOME"), "/Library/Fonts")
     if(length(whitney_paths) == 0 & dir.exists(user_dir)){
       whitney_paths <- list.files(user_dir, full.names = TRUE)
-      whitney_paths <- grep("Whitney-", whitney_paths)
+      whitney_paths <- grep("Whitney-", whitney_paths, value = TRUE)
     }
 
     # If all Whitney fonts have been found, attempt to register preferred
@@ -115,7 +115,7 @@
       } else {
         packageStartupMessage(paste(
           "cmapplot requires RStudio v1.4 or greater to use Whitney fonts",
-          "in the R plots window. "))
+          "in the R plots window. Please upgrade RStudio."))
       }
     }
   # Otherwise, notify user
