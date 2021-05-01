@@ -93,7 +93,6 @@
              TRUE,
              envir = cmapplot_globals)
     })
-    }
   }
 
   # If Whitney is available...
