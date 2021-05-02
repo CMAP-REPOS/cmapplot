@@ -2,7 +2,8 @@
 # Based on <https://github.com/r-lib/actions/blob/master/examples/pkgdown.yaml>.
 on:
   push:
-    branches: systemfonts
+    branches: master
+  pull_request:
 
 name: pkgdown_systemfonts_test
 
@@ -52,6 +53,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          message()
           remotes::install_deps(dependencies = TRUE)
           install.packages("pkgdown")
         shell: Rscript {0}
@@ -70,8 +72,18 @@ jobs:
       - name: Install package
         run: R CMD INSTALL .
 
-      - name: Deploy package
+      - name: Deploy packageto live branch
+        if: ${{ github.ref == 'refs/heads/main' }}
         run: |
+          echo "This is $GITHUB_REF. Deploying to 'gh-pages' branch."
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
-          Rscript -e 'pkgdown::deploy_to_branch(branch="gh-pages-test2", clean = TRUE)'
+          Rscript -e 'pkgdown::deploy_to_branch(clean = TRUE)'
+
+      - name: Deploy package to test branch
+        if: ${{ github.ref != 'refs/heads/main' }}
+        run: |
+          echo "This is $GITHUB_REF. Deploying to 'gh-pages-test' branch."
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          Rscript -e 'pkgdown::deploy_to_branch(branch="gh-pages-test", clean = TRUE)'
