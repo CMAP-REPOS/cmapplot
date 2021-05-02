@@ -138,9 +138,9 @@ The title and caption blocks take HTML formatting tags, which you can use to man
 ```{r finalize5, message=FALSE}
 # A finalized line graph, with text tweaks
 finalize_plot(plot = p,
-              title = "Annual <br> unlinked passenger trips <br> (in millions)",
+              title = "Annual<br><i>unlinked</i> passenger trips <br> (in millions)",
               caption = "Source: Chicago Metropolitan Agency for <b>Planning
-                analysis of <i>Regional</b> Transportation Authority</i> data")
+                analysis of <i>Regional</i></b> Transportation Authority data")
 ```
 
 ## Advanced customization 
