@@ -1,8 +1,11 @@
 # Automatically rebuilds pkgdown website any time master branch is updated.
+# Also builds pkgdown on "gh-pages-test" on commits to pull requests.
 # Based on <https://github.com/r-lib/actions/blob/master/examples/pkgdown.yaml>.
+# Conditional based on <https://docs.github.com/en/actions/reference/environment-variables#default-environment-variables>.
 on:
   push:
     branches: master
+  pull_request:
 
 name: pkgdown
 
@@ -70,8 +73,18 @@ jobs:
       - name: Install package
         run: R CMD INSTALL .
 
-      - name: Deploy package
+      - name: Deploy package to live branch
+        if: ${{ github.ref == 'refs/heads/main' }}
         run: |
+          echo "This is $GITHUB_REF. Deploying to gh-pages branch."
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
           Rscript -e 'pkgdown::deploy_to_branch(clean = TRUE)'
+
+      - name: Deploy package to test branch
+        if: ${{ github.ref != 'refs/heads/main' }}
+        run: |
+          echo "This is $GITHUB_REF. Deploying to gh-pages-test branch."
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          Rscript -e 'pkgdown::deploy_to_branch(branch="gh-pages-test", clean = TRUE)'
