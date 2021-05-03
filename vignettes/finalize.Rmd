@@ -139,10 +139,11 @@ The title and caption blocks take HTML formatting tags, which you can use to man
 # A finalized line graph, with text tweaks
 finalize_plot(plot = p,
               title = "Annual <b>unlinked</b> passenger trips<br><i>(in millions)</i>",
-              caption = "Source: <ul>
-                  <li><i>Chicago Metropolitan Agency for Planning</i> <b>analysis</b></li>
-                  <li><b>Regional <i>Transportation</i> Authority</b> data</li>
-                </ul>")
+              caption = 'Source: <b><span style="color: purple;"><i>Chicago
+                Metropolitan Agency for Planning</i></span> analysis of
+                <i>RTA<sup>1</sup></i> data.</b>
+                <br><br>
+                <i><sup>1</sup> Regional Transportation Authority</i>')
 ```
 
 ## Advanced customization 
@@ -155,11 +156,8 @@ finalize_plot(plot = p,
 # A debugged finalized plot
 finalize_plot(plot = p,
               title = "Annual unlinked passenger trips (in millions)",
-              caption = '<b>Source:</b> <span style="color: red;">Chicago
-                Metropolitan Agency for Planning</span> analysis of
-                <b><i>RTA<sup>1</sup></i> data.</b>
-                <br><br>
-                <i><sup>1</sup> Regional Transportation Authority</i>',
+              caption = "Source: Chicago Metropolitan Agency for Planning
+                analysis of Regional Transportation Authority data",
               debug = TRUE)
 ```
 
