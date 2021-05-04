@@ -22,13 +22,13 @@ reference:
 - title: Additional geoms & auxiliary functions
 - contents:
   - starts_with("geom_")
-  - cmap_default_aes
+  - ends_with("cmap_default_aes")
   - abbr_years
-- title: Color Palettes and Gradients
+- title: Color palettes & gradients
 - contents:
   - starts_with("viz_")
   - starts_with("cmap_fill_")
-- title: Sample Datasets
+- title: Sample datasets
 - contents:
   - cluster_jobchange
   - economy_basic
@@ -41,7 +41,7 @@ reference:
   - vehicle_ownership
 - title: Lesser used objects
 - contents:
-  - cmapplot_globals
+  - contains("cmapplot_global")
   - gg_lwd_convert
   - update_recessions
   - customproto

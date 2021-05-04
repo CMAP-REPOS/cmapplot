@@ -48,10 +48,12 @@ Imports:
     lubridate,
     magrittr,
     purrr,
+    ragg,
     rlang,
+    rstudioapi,
     scales,
     stringr,
-    sysfonts
+    systemfonts
 Suggests:
     knitr,
     rmarkdown,
