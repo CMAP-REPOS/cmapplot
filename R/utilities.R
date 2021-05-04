@@ -112,8 +112,8 @@ gg_lwd_convert <- function(value, unit = "bigpts") {
 find_path <- function(filename, paths){
   result <- grep(paste0("(\\\\|/)", filename, ".[ot]tf$"), paths, value = TRUE)
 
-  if(length(result) == 1){
-    return(result)
+  if(length(result) >= 1){
+    return(result[1])
   } else {
     stop(
       paste0("Font '", filename, "' not found."),
