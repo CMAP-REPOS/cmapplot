@@ -97,3 +97,47 @@ gg_lwd_convert <- function(value, unit = "bigpts") {
     value_out / .lwd
   )
 }
+
+
+
+#' Identify correct font path based on filename
+#'
+#' Taking a list of font paths, search for a specific filename. If a perfect
+#' match is found, return that path.
+#'
+#' @param filename the complete file name, less a .otf or .ttf extension.
+#' @param path a vector of filepaths
+#'
+#' @noRd
+find_path <- function(filename, paths){
+  result <- grep(paste0("(\\\\|/)", filename, ".[ot]tf$"), paths, value = TRUE)
+
+  if(length(result) >= 1){
+    return(result[1])
+  } else {
+    stop(
+      paste0("Font '", filename, "' not found."),
+         call. = FALSE)
+  }
+}
+
+
+#' Sub-fn to safely intepret grobHeight
+#'
+#' This returns the height of Grob in any real unit.
+#' If the value passed in is null, it returns 0.
+#' It is used in various places in `finalize_plot`
+#'
+#' @noRd
+safe_grobHeight <- function(grob, unitTo = "bigpts", valueOnly = TRUE){
+
+  if(is.null(grob)){
+    if(valueOnly){
+      return(0)
+    } else {
+      return(unit(0, unitTo))
+    }
+  }
+
+  return(grid::convertHeight(grid::grobHeight(grob), unitTo, valueOnly))
+}

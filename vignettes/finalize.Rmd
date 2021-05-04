@@ -138,9 +138,12 @@ The title and caption blocks take HTML formatting tags, which you can use to man
 ```{r finalize5, message=FALSE}
 # A finalized line graph, with text tweaks
 finalize_plot(plot = p,
-              title = "Annual <br> unlinked passenger trips <br> (in millions)",
-              caption = "Source: Chicago Metropolitan Agency for Planning
-                analysis of <i>Regional Transportation Authority</i> data")
+              title = "Annual <b>unlinked</b> passenger trips<br><i>(in millions)</i>",
+              caption = 'Source: <b><span style="color: purple;"><i>Chicago
+                Metropolitan Agency for Planning</i></span> analysis of
+                <i>RTA<sup>1</sup></i> data.</b>
+                <br><br>
+                <i><sup>1</sup> Regional Transportation Authority</i>')
 ```
 
 ## Advanced customization 
@@ -196,9 +199,8 @@ There is a fairly long list of possible margins that can be customized using the
 
 Here, the margins are visualized as they impact a finalized plot that has a sidebar:
 
-<img src="./../man/figures/margins1.png" width="100%" style="display: block; margin: auto;"/>
+<img src="./../man/figures/margins1.png" width="100%" style="display: block; margin: auto;">
 
 Here, the same margins are visualized as they impact a finalized plot with no sidebar:
 
-<img src="./../man/figures/margins2.png" width="100%" style="display: block; margin: auto;"/>
-
+<img src="./../man/figures/margins2.png" width="100%" style="display: block; margin: auto;">

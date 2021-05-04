@@ -727,23 +727,3 @@ save_plot <- function(finished_graphic,
   )
 
 }
-
-
-#' Sub-fn to safely intepret grobHeight
-#'
-#' This returns the height of Grob in any real unit.
-#' If the value passed in is null, it returns 0.
-#'
-#' @noRd
-safe_grobHeight <- function(grob, unitTo = "bigpts", valueOnly = TRUE){
-
-  if(is.null(grob)){
-    if(valueOnly){
-      return(0)
-    } else {
-      return(unit(0, unitTo))
-    }
-  }
-
-  return(grid::convertHeight(grid::grobHeight(grob), unitTo, valueOnly))
-}

@@ -1,6 +1,13 @@
 # Initialize environment for cmapplot global variables
 cmapplot_globals <- new.env(parent = emptyenv())
 
+# Establish names of preferred fonts
+cmapplot_globals$preferred_font <- list(
+  strong = "Whitney Semibold",
+  regular = "Whitney Medium",
+  light = "Whitney Book"
+)
+
 # Set up default font handling
 # (Note: overridden by .onLoad() if Whitney is available)
 cmapplot_globals$use_whitney <- FALSE
@@ -9,7 +16,7 @@ cmapplot_globals$font <- list(
   regular = list(family = "sans", face = "plain"),
   light = list(family = "sans", face = "plain"))
 
-# Set common font sizes (bigpts)
+# Set common font sizes (pts)
 cmapplot_globals$fsize <- list(
   S = 11,
   M = 14,
@@ -187,7 +194,7 @@ set_cmapplot_global <- function(value, ..., quietly = FALSE){
     "item",
     ifelse(length(names) > 1, paste0("$", paste(names[-1], collapse = "$")), ""),
     " <- ",
-    ifelse(!is.numeric(value), paste0("'", value, "'"), value)
+    ifelse(is.character(value), paste0("'", value, "'"), value)
   )
 
   # replace the specific item by evaluating the string
@@ -200,8 +207,8 @@ set_cmapplot_global <- function(value, ..., quietly = FALSE){
   if(!quietly){
     cat(paste0(
       "Item:      ", paste(names, collapse = "$"), "\n",
-      "Old value: '", p, "'\n",
-      "New value: '", value, "'"
+      "Old value: ", ifelse(is.character(p), paste0("'", p, "'"), p), "\n",
+      "New value: ", ifelse(is.character(value), paste0("'", value, "'"), value)
     ))
   }
   invisible()
