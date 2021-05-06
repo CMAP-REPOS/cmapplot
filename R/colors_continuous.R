@@ -141,19 +141,36 @@ mid_rescaler2 <- function(mid) {
 #' @export
 cmap_fill_continuous <- function(palette = "seq_reds",
                                  reverse = FALSE,
+                                 discrete = FALSE,
                                  middle = 0,
                                  ...) {
     if (substr(palette,1,3) == "div") {
-        ggplot2::scale_fill_gradientn(
-            colours = cmap_pal_continuous(palette, reverse = reverse)(256),
-            rescaler = mid_rescaler2(middle),
-            ...
-        )
+        if (discrete) {
+            ggplot2::discrete_scale(
+                "fill", "cmap_palettes",
+                palette = cmap_pal_discrete(palette, reverse = reverse),
+                ...
+            )
+        } else {
+            ggplot2::scale_fill_gradientn(
+                colours = cmap_pal_continuous(palette, reverse = reverse)(256),
+                rescaler = mid_rescaler2(middle),
+                ...
+                )
+        }
     } else {
-        ggplot2::scale_fill_gradientn(
-            colours = cmap_pal_continuous(palette, reverse = reverse)(256),
-            ...
-        )
+        if (discrete) {
+            ggplot2::discrete_scale(
+                "fill", "cmap_palettes",
+                palette = cmap_pal_discrete(palette, reverse = reverse),
+                ...
+            )
+        } else {
+            ggplot2::scale_fill_gradientn(
+                colours = cmap_pal_continuous(palette, reverse = reverse)(256),
+                ...
+                )
+        }
     }
 }
 
