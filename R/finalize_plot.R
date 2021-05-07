@@ -4,9 +4,8 @@
 #'your title and caption to the left, add a horizontal line on top, and make
 #'other adjustments. It can show you the final plot and/or export it as a raster
 #'or vector file. This function will not apply CMAP design standards to the plot
-#'itself: use with \code{theme_cmap()} for that. Exports from this function use
-#'Cairo graphics drivers, while drawing within R is done with default (Windows)
-#'drivers.
+#'itself: use with \code{theme_cmap()} for that. This function uses ragg drivers
+#'in R and for raster exports, svglite for svg, and cairo_pdf for PDFs.
 #'
 #'@param plot ggplot object, the variable name of the plot you have created that
 #'  you want to finalize. If null (the default), the most recent plot will be
@@ -28,8 +27,7 @@
 #'  aligns text to bottom; 1 aligns top. When the caption is located below the
 #'  plot, 0 aligns left and 1 aligns right. 0.5 aligns center.
 #'@param mode Vector, the action(s) to be taken with the plot. View in R with
-#'  \code{plot}, the default, or \code{window} (\code{window} only works on
-#'  computers running Windows). Save using any of the following: \code{png},
+#'  \code{plot}, the default. Save using any of the following: \code{png},
 #'  \code{tiff}, \code{jpeg}, \code{svg}, \code{pdf}, \code{ps}. Run
 #'  multiple simultaneous outputs with a vector, e.g. \code{c("plot", "png",
 #'  "pdf")}.
@@ -94,7 +92,7 @@
 #' finalize_plot(econ_plot,
 #'                "Cluster-level employment changes in the Chicago MSA, 2001-17",
 #'                "Source: Chicago Metropolitan Agency for Planning analysis",
-#'                mode = "window",
+#'                mode = "plot",
 #'                height = 6,
 #'                width = 8,
 #'                sidebar_width = 2.5,
@@ -197,16 +195,17 @@ finalize_plot <- function(plot = NULL,
     caption_align <- 1
   }
 
-  # Remove any `window` mode specified if OS is not Windows
-  if ("window" %in% mode & .Platform$OS.type != "windows"){
-    mode <- stringr::str_replace(mode, "^window$", "plot")
-    message("`mode='window'` is not supported on non-Windows systems. Switching to `mode='plot'` instead.")
-  }
+  # mode "window" disabled for now
+  # # Remove any `window` mode specified if OS is not Windows
+  # if ("window" %in% mode & .Platform$OS.type != "windows"){
+  #   mode <- stringr::str_replace(mode, "^window$", "plot")
+  #   message("`mode='window'` is not supported on non-Windows systems. Switching to `mode='plot'` instead.")
+  # }
 
   # Check mode argument
   savetypes_raster <- c("png", "tiff", "jpeg")
   savetypes_vector <- c("svg", "ps", "pdf")
-  savetypes_print <- c("plot", "window")
+  savetypes_print <- c("plot") # mode "window" disabled for now
 
   mode <- match.arg(arg = unique(mode),
                     choices = c(savetypes_print,
@@ -630,6 +629,10 @@ prepare_plot <- function(plot,
 
 
 #' Sub-fn to draw plot within R
+#'
+#' At the moment, it is not known how to open a new ragg device, so "window"
+#' mode is disabled.
+#'
 #' @noRd
 draw_plot <- function(finished_graphic,
                       width,
@@ -637,12 +640,12 @@ draw_plot <- function(finished_graphic,
                       fill_canvas,
                       mode){
 
-  # In window mode, open new drawing device
-  if (mode == "window") {
-    grDevices::dev.new(width = width * 1.02,
-                       height = height * 1.02,
-                       noRStudioGD = TRUE)
-  }
+  # # In window mode, open new drawing device
+  # if (mode == "window") {
+  #   grDevices::dev.new(width = width * 1.02,
+  #                      height = height * 1.02,
+  #                      noRStudioGD = TRUE)
+  # }
 
   # Draw blank canvas
   grid::grid.rect(gp = grid::gpar(fill = fill_canvas,
@@ -665,10 +668,10 @@ draw_plot <- function(finished_graphic,
   grid::grid.draw(finished_graphic)
   grid::popViewport()
 
-  # In window mode, reset device to default without closing window
-  if (mode == "window") {
-    grDevices::dev.next()
-  }
+  # # In window mode, reset device to default without closing window
+  # if (mode == "window") {
+  #   grDevices::dev.next()
+  # }
 }
 
 
