@@ -693,27 +693,27 @@ save_plot <- function(finished_graphic,
   # Construct pretty filename for messages
   fname <- stringr::str_trunc(arglist$filename, 50, "left")
 
-
-  # Add required cairo prefix to function name for pdf and ps (see `?cairo`)
-  mode <- ifelse (mode == "pdf" | mode == "ps", paste0("cairo_" , mode), mode)
-
-  # Add required agg prefix to function name for raster modes
-  mode <- ifelse (mode %in% c("png", "tiff", "jpeg"), paste0("agg_" , mode), mode)
-
-  # change svg to svglite
-  mode <- ifelse (mode == "svg", "svglite", mode)
-
   # If file exists and overwrite == FALSE, do not write
   if (file.exists(arglist$filename) & !overwrite) {
     message(paste0(fname, ": SKIPPED (try `overwrite = TRUE`?)"))
     return()
   }
 
+  # identify device function based on mode
+  devfn <- switch(
+    mode,
+    svg = "svglite",
+    pdf = "cairo_pdf",
+    ps = "cairo_ps",
+    png = "agg_png",
+    tiff = "agg_tiff",
+    jpeg = "agg_jpeg")
+
   # Write to device -----------------------------------------------
   tryCatch(
     {
       # Open the device, draw the plot, close the device
-      suppressWarnings(do.call(mode, arglist))
+      suppressWarnings(do.call(devfn, arglist))
       grid::grid.draw(finished_graphic)
       dev.off()
 
