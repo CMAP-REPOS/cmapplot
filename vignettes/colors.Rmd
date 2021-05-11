@@ -24,24 +24,6 @@ library(cmapplot)
 
 Palettes based on the CMAP color palette can be applied directly to ggplot2 graphics. The package contains both discrete and continuous color palettes. Each type of palette can be applied to either the color or fill attributes of a ggplot.
 
-
-## Discrete palettes
-
-Add discrete palettes by adding either the `cmap_fill_discrete()` or `cmap_color_discrete()` function to your plot construction. Note that discrete palettes will automatically interpolate additional colors if the dataset has more colors than the palette. This can be helpful but is not ideal for finished graphics. See `?cmap_palettes` for displays of all discrete palettes.
-
-```{r color_discrete, message = FALSE}
-df <- dplyr::filter(grp_over_time, category == "Goods-Producing")
-
-ggplot(data = df) +
-  geom_line(mapping = aes(x = year, y = realgrp, color = cluster), 
-            size = 1.25) +
-  scale_x_continuous(breaks = seq(from = 2007, to = 2017, by = 2)) +
-  cmap_color_discrete(palette = "community", reverse = TRUE) +
-  theme_cmap() +
-  ggtitle("Real GRP of goods-producing clusters over time")
-```
-
-
 ## Continuous palettes
 
 Add continuous palettes by adding either the `cmap_fill_continuous()` or `cmap_color_continuous()` function to your plot construction. For example:
@@ -64,6 +46,23 @@ ggplot(data = df) +
 ```
 
 If you're using a divergent palette, you can specify the midpoint where the divergence begins (default is zero). See `?cmap_gradients` for displays of all continuous palettes.
+
+
+## Discrete palettes
+
+Add discrete palettes by adding either the `cmap_fill_discrete()` or `cmap_color_discrete()` function to your plot construction. Note that discrete palettes will automatically interpolate additional colors if the dataset has more colors than the palette. This can be helpful but is not ideal for finished graphics. See `?cmap_palettes` for displays of all discrete palettes. These include a set of complementary colors (e.g., the `"prosperity"` palette), but also discrete versions of the gradients defined above (e.g., a binned blue palette implemented by calling `"seq_blues"`).
+
+```{r color_discrete, message = FALSE}
+df <- dplyr::filter(grp_over_time, category == "Goods-Producing")
+
+ggplot(data = df) +
+  geom_line(mapping = aes(x = year, y = realgrp, color = cluster), 
+            size = 1.25) +
+  scale_x_continuous(breaks = seq(from = 2007, to = 2017, by = 2)) +
+  cmap_color_discrete(palette = "community", reverse = TRUE) +
+  theme_cmap() +
+  ggtitle("Real GRP of goods-producing clusters over time")
+```
 
 
 ## Race/ethnicity palette
