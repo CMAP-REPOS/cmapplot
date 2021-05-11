@@ -6,7 +6,7 @@
 \alias{viz_palette}
 \title{CMAP discrete color palettes}
 \format{
-An object of class \code{list} of length 8.
+An object of class \code{list} of length 31.
 }
 \usage{
 cmap_palettes
@@ -21,13 +21,14 @@ viz_palette(pal, ttl = deparse(substitute(pal)), num = length(pal))
 \item{num}{numeric, the number of colours to display}
 }
 \description{
-A selection of discrete color palettes from the CMAP color palette.
+A selection of discrete color palettes from the CMAP color palette. These
+include mixed color palettes and discrete versions of the gradients defined
+in \code{link{cmap_fill_continuous}}.
 }
 \section{Functions}{
 \itemize{
-\item \code{viz_palette}: Display CMAP diverging palettes. Borrowed with
-respect from the \href{https://github.com/ropenscilabs/ochRe}{ochRe
-package}
+\item \code{viz_palette}: Display CMAP palettes. Borrowed with respect from
+the \href{https://github.com/ropenscilabs/ochRe}{ochRe package}
 }}
 
 \examples{

@@ -1,6 +1,8 @@
 #' CMAP discrete color palettes
 #'
-#' A selection of discrete color palettes from the CMAP color palette.
+#' A selection of discrete color palettes from the CMAP color palette. These
+#' include mixed color palettes and discrete versions of the gradients defined
+#' in \code{link{cmap_fill_continuous}}.
 #'
 #' @examples
 #' # Get names of available discrete palettes.
@@ -47,9 +49,8 @@ cmap_palettes <- c(
 #' @param ttl character, title to be displayed (the name of the palette)
 #' @param num numeric, the number of colours to display
 #'
-#' @describeIn cmap_palettes Display CMAP diverging palettes. Borrowed with
-#'   respect from the \href{https://github.com/ropenscilabs/ochRe}{ochRe
-#'   package}
+#' @describeIn cmap_palettes Display CMAP palettes. Borrowed with respect from
+#'   the \href{https://github.com/ropenscilabs/ochRe}{ochRe package}
 #'
 #' @export
 viz_palette <- function(pal, ttl = deparse(substitute(pal)), num = length(pal)) {
@@ -66,7 +67,9 @@ viz_palette <- function(pal, ttl = deparse(substitute(pal)), num = length(pal)) 
 
 #' Discrete palette prep function
 #'
-#' @param palette Choose from 'cmap_palettes' list
+#' @param palette Choose from 'cmap_palettes' list, or use one of the gradients
+#'   defined in the 'cmap_gradients' list (gradients will be automatically
+#'   converted into discrete bins)
 #' @param reverse Logical; reverse color order?
 #' @param ... Additional parameters passed on to the scale type
 #'
@@ -85,7 +88,9 @@ cmap_pal_discrete <- function(palette = "prosperity", reverse = FALSE) {
 #' Pick the function depending on the aesthetic of your ggplot object (fill or
 #' color). See \code{link{cmap_palettes}} for a listing of available gradients.
 #'
-#' @param palette Choose from 'cmap_palettes' list
+#' @param palette Choose from 'cmap_palettes' list, or use one of the gradients
+#'   defined in the 'cmap_gradients' list (gradients will be automatically
+#'   converted into discrete bins)
 #' @param reverse Logical; reverse color order?
 #' @param ... Additional parameters passed on to the scale type
 #'
