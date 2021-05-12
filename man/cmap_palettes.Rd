@@ -14,11 +14,11 @@ cmap_palettes
 viz_palette(pal, ttl = deparse(substitute(pal)), num = length(pal))
 }
 \arguments{
-\item{pal}{character, vector of (hexadecimal) colours representing a palette}
+\item{pal}{character, vector of (hexadecimal) colors representing a palette}
 
 \item{ttl}{character, title to be displayed (the name of the palette)}
 
-\item{num}{numeric, the number of colours to display}
+\item{num}{numeric, the number of colors to display}
 }
 \description{
 A selection of discrete color palettes from the CMAP color palette. These

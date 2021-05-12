@@ -45,9 +45,9 @@ cmap_palettes <- c(
 
 #' Print palette for reference
 #'
-#' @param pal character, vector of (hexadecimal) colours representing a palette
+#' @param pal character, vector of (hexadecimal) colors representing a palette
 #' @param ttl character, title to be displayed (the name of the palette)
-#' @param num numeric, the number of colours to display
+#' @param num numeric, the number of colors to display
 #'
 #' @describeIn cmap_palettes Display CMAP palettes. Borrowed with respect from
 #'   the \href{https://github.com/ropenscilabs/ochRe}{ochRe package}
@@ -59,11 +59,10 @@ viz_palette <- function(pal, ttl = deparse(substitute(pal)), num = length(pal)) 
     }
     pal_func <- grDevices::colorRampPalette(pal)
     graphics::image(seq_len(num), 1, as.matrix(seq_len(num)), col = pal_func(num),
-                    main = paste0(ttl, " (", length(pal), " colours in palette, ",
+                    main = paste0(ttl, " (", length(pal), " colors in palette, ",
                                   num, " displayed)"),
                     xlab = "", ylab = "", xaxt = "n", yaxt = "n",  bty = "n")
 }
-
 
 #' Discrete palette prep function
 #'
@@ -81,7 +80,6 @@ cmap_pal_discrete <- function(palette = "prosperity", reverse = FALSE) {
     }
     return(grDevices::colorRampPalette(pal))
 }
-
 
 #' Apply discrete CMAP palettes to ggplot2 aesthetics
 #'
@@ -118,7 +116,7 @@ cmap_fill_discrete <- function(palette = "prosperity", reverse = FALSE, ...) {
 #' @export
 cmap_color_discrete <- function(palette = "prosperity", reverse = FALSE, ...) {
     ggplot2::discrete_scale(
-        "colour", "cmap_palettes",
+        "color", "cmap_palettes",
         palette = cmap_pal_discrete(palette, reverse = reverse),
         ...
     )
