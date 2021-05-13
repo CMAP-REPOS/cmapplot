@@ -55,3 +55,7 @@ articles:
   - finalize
   - colors
   - cookbook
+
+resource_files:
+- man/figures/margins1.png
+- man/figures/margins2.png

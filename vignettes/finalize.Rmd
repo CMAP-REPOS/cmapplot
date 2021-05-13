@@ -199,8 +199,8 @@ There is a fairly long list of possible margins that can be customized using the
 
 Here, the margins are visualized as they impact a finalized plot that has a sidebar:
 
-<img src="./../man/figures/margins1.png" width="100%" style="display: block; margin: auto;">
+<img src="./../reference/figures/margins1.png" width="100%" style="display: block; margin: auto;">
 
 Here, the same margins are visualized as they impact a finalized plot with no sidebar:
 
-<img src="./../man/figures/margins2.png" width="100%" style="display: block; margin: auto;">
+<img src="./../reference/figures/margins2.png" width="100%" style="display: block; margin: auto;">
