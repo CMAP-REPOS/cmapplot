@@ -112,27 +112,11 @@
     
     
 <p>Palettes based on the CMAP color palette can be applied directly to ggplot2 graphics. The package contains both discrete and continuous color palettes. Each type of palette can be applied to either the color or fill attributes of a ggplot.</p>
-<div id="discrete-palettes" class="section level2">
-<h2 class="hasAnchor">
-<a href="#discrete-palettes" class="anchor"></a>Discrete palettes</h2>
-<p>Add discrete palettes by adding either the <code><a href="../reference/cmap_fill_discrete.html">cmap_fill_discrete()</a></code> or <code><a href="../reference/cmap_fill_discrete.html">cmap_color_discrete()</a></code> function to your plot construction. Note that discrete palettes will automatically interpolate additional colors if the dataset has more colors than the palette. This can be helpful but is not ideal for finished graphics. See <code><a href="../reference/cmap_palettes.html">?cmap_palettes</a></code> for displays of all discrete palettes.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">grp_over_time</span>, <span class="va">category</span> <span class="op">==</span> <span class="st">"Goods-Producing"</span><span class="op">)</span>
-
-<span class="fu">ggplot</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">geom_line</span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">realgrp</span>, color <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span>, 
-            size <span class="op">=</span> <span class="fl">1.25</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">scale_x_continuous</span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">2007</span>, to <span class="op">=</span> <span class="fl">2017</span>, by <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/cmap_fill_discrete.html">cmap_color_discrete</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"community"</span>, reverse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Real GRP of goods-producing clusters over time"</span><span class="op">)</span></code></pre></div>
-<p><img src="colors_files/figure-html/color_discrete-1.png" width="672" style="display: block; margin: auto;"></p>
-</div>
 <div id="continuous-palettes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#continuous-palettes" class="anchor"></a>Continuous palettes</h2>
 <p>Add continuous palettes by adding either the <code><a href="../reference/cmap_fill_continuous.html">cmap_fill_continuous()</a></code> or <code><a href="../reference/cmap_fill_continuous.html">cmap_color_continuous()</a></code> function to your plot construction. For example:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span>
   <span class="va">percentile_wages</span>,
   <span class="va">cluster</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Biopharmaceuticals"</span>, <span class="st">"Hospitality and Tourism"</span>, <span class="st">"Paper and Packaging"</span><span class="op">)</span>
@@ -149,6 +133,22 @@
   <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Wage percentiles for key clusters"</span><span class="op">)</span></code></pre></div>
 <p><img src="colors_files/figure-html/color_continuous-1.png" width="672" style="display: block; margin: auto;"></p>
 <p>If you’re using a divergent palette, you can specify the midpoint where the divergence begins (default is zero). See <code><a href="../reference/cmap_gradients.html">?cmap_gradients</a></code> for displays of all continuous palettes.</p>
+</div>
+<div id="discrete-palettes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#discrete-palettes" class="anchor"></a>Discrete palettes</h2>
+<p>Add discrete palettes by adding either the <code><a href="../reference/cmap_fill_discrete.html">cmap_fill_discrete()</a></code> or <code><a href="../reference/cmap_fill_discrete.html">cmap_color_discrete()</a></code> function to your plot construction. Note that discrete palettes will automatically interpolate additional colors if the dataset has more colors than the palette. This can be helpful but is not ideal for finished graphics. See <code><a href="../reference/cmap_palettes.html">?cmap_palettes</a></code> for displays of all discrete palettes. These include a set of complementary colors (e.g., the <code>"prosperity"</code> palette), but also discrete versions of the gradients defined above (e.g., a binned blue palette implemented by calling <code>"seq_blues"</code>).</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">grp_over_time</span>, <span class="va">category</span> <span class="op">==</span> <span class="st">"Goods-Producing"</span><span class="op">)</span>
+
+<span class="fu">ggplot</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">geom_line</span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">realgrp</span>, color <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span>, 
+            size <span class="op">=</span> <span class="fl">1.25</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">scale_x_continuous</span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">2007</span>, to <span class="op">=</span> <span class="fl">2017</span>, by <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/cmap_fill_discrete.html">cmap_color_discrete</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"community"</span>, reverse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Real GRP of goods-producing clusters over time"</span><span class="op">)</span></code></pre></div>
+<p><img src="colors_files/figure-html/color_discrete-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div id="raceethnicity-palette" class="section level2">
 <h2 class="hasAnchor">
