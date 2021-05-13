@@ -116,7 +116,7 @@ cmap_fill_discrete <- function(palette = "prosperity", reverse = FALSE, ...) {
 #' @export
 cmap_color_discrete <- function(palette = "prosperity", reverse = FALSE, ...) {
     ggplot2::discrete_scale(
-        "color", "cmap_palettes",
+        "colour", "cmap_palettes",
         palette = cmap_pal_discrete(palette, reverse = reverse),
         ...
     )
