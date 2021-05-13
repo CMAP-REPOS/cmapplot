@@ -47,9 +47,7 @@
 
 
 <meta property="og:title" content="CMAP discrete color palettes — cmap_palettes" />
-<meta property="og:description" content="A selection of discrete color palettes from the CMAP color palette. These
-include mixed color palettes and discrete versions of the gradients defined
-in link{cmap_fill_continuous}." />
+<meta property="og:description" content="A selection of discrete color palettes from the CMAP color palette." />
 <meta property="og:image" content="https://cmap-repos.github.io/cmapplot/logo.png" />
 
 
@@ -151,9 +149,7 @@ in link{cmap_fill_continuous}." />
     </div>
 
     <div class="ref-description">
-    <p>A selection of discrete color palettes from the CMAP color palette. These
-include mixed color palettes and discrete versions of the gradients defined
-in <code>link{cmap_fill_continuous}</code>.</p>
+    <p>A selection of discrete color palettes from the CMAP color palette.</p>
     </div>
 
     <pre class="usage"><span class='va'>cmap_palettes</span>
@@ -165,7 +161,7 @@ in <code>link{cmap_fill_continuous}</code>.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>pal</th>
-      <td><p>character, vector of (hexadecimal) colors representing a palette</p></td>
+      <td><p>character, vector of (hexadecimal) colours representing a palette</p></td>
     </tr>
     <tr>
       <th>ttl</th>
@@ -173,39 +169,31 @@ in <code>link{cmap_fill_continuous}</code>.</p>
     </tr>
     <tr>
       <th>num</th>
-      <td><p>numeric, the number of colors to display</p></td>
+      <td><p>numeric, the number of colours to display</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>An object of class <code>list</code> of length 31.</p>
+    <p>An object of class <code>list</code> of length 8.</p>
     <h2 class="hasAnchor" id="functions"><a class="anchor" href="#functions"></a>Functions</h2>
 
     
 <ul>
-<li><p><code>viz_palette</code>: Display CMAP palettes. Borrowed with respect from
-the <a href='https://github.com/ropenscilabs/ochRe'>ochRe package</a></p></li>
+<li><p><code>viz_palette</code>: Display CMAP diverging palettes. Borrowed with
+respect from the <a href='https://github.com/ropenscilabs/ochRe'>ochRe
+package</a></p></li>
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Get names of available discrete palettes.</span>
 <span class='co'># (Call viz_palette("name_of_palette") to preview one.)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>cmap_palettes</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;  [1] "seq_reds"              "seq_oranges"           "seq_yellows"          
-#&gt;  [4] "seq_greens"            "seq_teals"             "seq_blues"            
-#&gt;  [7] "seq_purples"           "seq_grays"             "seq_yellow_orange_red"
-#&gt; [10] "seq_green_teal_blue"   "seq_orange_red"        "seq_yellow_orange"    
-#&gt; [13] "seq_yellow_green"      "seq_green_teal"        "seq_teal_blue"        
-#&gt; [16] "seq_red_purple"        "div_yellow_purple"     "div_orange_blue"      
-#&gt; [19] "div_red_teal"          "div_purple_green"      "div_blue_yellow"      
-#&gt; [22] "div_teal_orange"       "div_green_red"         "prosperity"           
-#&gt; [25] "community"             "environment"           "governance"           
-#&gt; [28] "mobility"              "legislation"           "friday"               
-#&gt; [31] "race"                 </div><div class='input'>
+</div><div class='output co'>#&gt; [1] "prosperity"  "community"   "environment" "governance"  "mobility"   
+#&gt; [6] "legislation" "friday"      "race"       </div><div class='input'>
 <span class='co'># Run the following function to visualize *all* discrete palettes</span>
 <span class='fu'>purrr</span><span class='fu'>::</span><span class='fu'><a href='https://purrr.tidyverse.org/reference/map2.html'>walk2</a></span><span class='op'>(</span><span class='va'>cmap_palettes</span>, <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>cmap_palettes</span><span class='op'>)</span>, <span class='va'>viz_palette</span><span class='op'>)</span>
-</div><div class='img'><img src='cmap_palettes-1.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-2.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-3.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-4.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-5.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-6.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-7.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-8.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-9.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-10.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-11.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-12.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-13.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-14.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-15.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-16.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-17.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-18.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-19.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-20.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-21.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-22.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-23.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-24.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-25.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-26.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-27.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-28.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-29.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-30.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-31.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='img'><img src='cmap_palettes-1.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-2.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-3.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-4.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-5.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-6.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-7.png' alt='' width='700' height='433' /></div><div class='img'><img src='cmap_palettes-8.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
