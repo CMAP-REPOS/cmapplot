@@ -56,7 +56,7 @@ In this vignette we will use the final version of the line chart developed in `v
 
 After creating a plot and applying `theme_cmap()`, use `finalize_plot()` to complete the implementation of CMAP design standards. You will probably want to set at least the `title` and `caption`, although the function will extract them from the ggplot if they were specified. 
 
-As you are preparing the plot, you will likely want to view it within R. Do this by leaving leaving the default `mode = "plot"` to send the finished plot to the "Plots" tab within RStudio. The plot will show up "actual size" (depending on your screen's resolution) surrounded by a gray canvas.
+As you are preparing the plot, you will likely want to view it within R. Do this by leaving leaving the default `mode = "plot"` to send the finished plot to the "Plots" tab within RStudio. The plot will show up "actual size" (depending on your screen's resolution) surrounded by a gray canvas. If you want to view the plot in a separate window, you can select the "Zoom" button at the top left of the plot. This may be especially useful for large plots that cannot easily be displayed within RStudio's default plotting window.
 
 ```{r finalize1, fig.width=11, out.width="100%"}
 finalize_plot(plot = p,
