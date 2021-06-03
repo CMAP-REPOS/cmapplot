@@ -116,7 +116,7 @@ your title and caption to the left, add a horizontal line on top, and make
 other adjustments. It can show you the final plot and/or export it as a raster
 or vector file. This function will not apply CMAP design standards to the plot
 itself: use with \code{theme_cmap()} for that. This function uses ragg drivers
-in R and for raster exports, svglite for svg, and cairo_pdf for PDFs.
+in R and for raster exports, svg for svg, and cairo_pdf for PDFs.
 }
 \examples{
 \dontrun{

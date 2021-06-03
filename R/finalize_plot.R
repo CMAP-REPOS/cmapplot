@@ -5,7 +5,7 @@
 #'other adjustments. It can show you the final plot and/or export it as a raster
 #'or vector file. This function will not apply CMAP design standards to the plot
 #'itself: use with \code{theme_cmap()} for that. This function uses ragg drivers
-#'in R and for raster exports, svglite for svg, and cairo_pdf for PDFs.
+#'in R and for raster exports, svg for svg, and cairo_pdf for PDFs.
 #'
 #'@param plot ggplot object, the variable name of the plot you have created that
 #'  you want to finalize. If null (the default), the most recent plot will be
