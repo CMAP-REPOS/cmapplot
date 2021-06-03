@@ -53,8 +53,7 @@ Imports:
     rstudioapi,
     scales,
     stringr,
-    systemfonts,
-    svglite
+    systemfonts
 Suggests:
     knitr,
     rmarkdown,
