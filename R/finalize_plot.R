@@ -76,7 +76,6 @@
 #'@importFrom ggpubr get_legend
 #'@importFrom purrr compact
 #'@importFrom stringr str_replace
-#'@importFrom svglite svglite
 #'
 #'@examples
 #' \dontrun{
@@ -702,7 +701,7 @@ save_plot <- function(finished_graphic,
   # identify device function based on mode
   devfn <- switch(
     mode,
-    svg = "svglite",
+    svg = "svg",
     pdf = "cairo_pdf",
     ps = "cairo_ps",
     png = "agg_png",
