@@ -155,6 +155,19 @@ q <- q + geom_text_lastonly(
 q
 ```
 
+### Abbreviating years in date axes
+
+By default, date axes with units in years display the full year for each axis label (e.g., 2000, 2001, 2002, 2003). In some cases, users may want to abbreviate some, but not all, of these axis labels, such as by maintaining the full year for the first label and abbreviating subsequent labels (e.g., 2000, '01, '02, '03). The function `abbr_years` enables users to do so, defaulting to abbreviating all years but the first. 
+
+This function uses syntax similar to those in the `scales::label_*` family, and can be applied to scales of the `scale_*_continuous` or `scale_*_date` families. Users can specify which years should be abbreviated by either their value (using `full_by_year`) or their position on the axis (using `full_by_pos`). More details are available in `?abbr_years`.
+
+```{r abbr_years, message = FALSE}
+p + 
+  geom_line() + 
+  theme_cmap() +
+  scale_x_continuous(labels = abbr_years(full_by_year = c(2000)))
+```
+
 ### Applying CMAP default aesthetics
 
 Every ggplot2 "geom" has default aesthetics that cannot be modified by a ggplot2 theme (and therefore, cannot be modified by `theme_cmap()`). Notice, for example, that the text drawn in the plot via `geom_text_lastonly()` and `geom_recessions()` still appears in Arial (R's default font), although the legend and axis fonts appear in Whitney. This is automatically corrected in `finalize_plot()`. However, if you'd like to see these impacts at this stage, you can override ggplot2's default aesthetics for line and text geoms with CMAP defaults via `apply_cmap_default_aes()`.
