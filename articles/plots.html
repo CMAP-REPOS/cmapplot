@@ -233,11 +233,23 @@
 <span class="va">q</span></code></pre></div>
 <p><img src="plots_files/figure-html/textlast-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
+<div id="abbreviating-years-in-date-axes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#abbreviating-years-in-date-axes" class="anchor"></a>Abbreviating years in date axes</h3>
+<p>By default, date axes with units in years display the full year for each axis label (e.g., 2000, 2001, 2002, 2003). In some cases, users may want to abbreviate some, but not all, of these axis labels, such as by maintaining the full year for the first label and abbreviating subsequent labels (e.g., 2000, ’01, ’02, ’03). The function <code>abbr_years</code> enables users to do so, defaulting to abbreviating all years but the first.</p>
+<p>This function uses syntax similar to those in the <code>scales::label_*</code> family, and can be applied to scales of the <code>scale_*_continuous</code> or <code>scale_*_date</code> families. Users can specify which years should be abbreviated by either their value (using <code>full_by_year</code>) or their position on the axis (using <code>full_by_pos</code>). More details are available in <code><a href="../reference/abbr_years.html">?abbr_years</a></code>.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">p</span> <span class="op">+</span> 
+  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">scale_x_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu"><a href="../reference/abbr_years.html">abbr_years</a></span><span class="op">(</span>full_by_year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2000</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p><img src="plots_files/figure-html/abbr_years-1.png" width="672" style="display: block; margin: auto;"></p>
+</div>
 <div id="applying-cmap-default-aesthetics" class="section level3">
 <h3 class="hasAnchor">
 <a href="#applying-cmap-default-aesthetics" class="anchor"></a>Applying CMAP default aesthetics</h3>
 <p>Every ggplot2 “geom” has default aesthetics that cannot be modified by a ggplot2 theme (and therefore, cannot be modified by <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code>). Notice, for example, that the text drawn in the plot via <code><a href="../reference/geom_text_lastonly.html">geom_text_lastonly()</a></code> and <code><a href="../reference/geom_recessions.html">geom_recessions()</a></code> still appears in Arial (R’s default font), although the legend and axis fonts appear in Whitney. This is automatically corrected in <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code>. However, if you’d like to see these impacts at this stage, you can override ggplot2’s default aesthetics for line and text geoms with CMAP defaults via <code><a href="../reference/cmap_default_aes.html">apply_cmap_default_aes()</a></code>.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/cmap_default_aes.html">apply_cmap_default_aes</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; Aesthetic defaults overridden in the current session for the following Geoms:</span>
 <span class="co">#&gt;   Label, Line, Text, TextLast, PointLast, RecessionsText</span>
@@ -252,7 +264,7 @@
 <h2 class="hasAnchor">
 <a href="#debug-mode" class="anchor"></a>Debug mode</h2>
 <p>In addition, <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code> provides a debug mode in which it draws outlines around the rectangular elements in the plot. This can help the user understand what is being drawn and identify additional modifications that they might want to make via <code>overrides</code> or <code><a href="https://ggplot2.tidyverse.org/reference/theme.html">ggplot2::theme()</a></code> arguments:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggplot</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>, 
             mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">ridership</span>, color <span class="op">=</span> <span class="va">system</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/geom_recessions.html">geom_recessions</a></span><span class="op">(</span>ymin <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span>
