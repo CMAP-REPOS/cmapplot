@@ -33,7 +33,7 @@ the \href{https://github.com/ropenscilabs/ochRe}{ochRe package}
 
 \examples{
 # Get names of available discrete palettes.
-# (Call viz_palette("name_of_palette") to preview one.)
+# (Call viz_palette(cmap_palettes$name_of_palette) to preview one.)
 names(cmap_palettes)
 
 # Run the following function to visualize *all* discrete palettes
