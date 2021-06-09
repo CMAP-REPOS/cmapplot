@@ -121,8 +121,13 @@
       } else {
         packageStartupMessage(paste(
           "cmapplot requires RStudio v1.4 or greater to use Whitney fonts",
-          "in the R plots window. Please upgrade RStudio."))
+          "in the R plots window.\nPlease update RStudio."))
       }
+    # If using vanilla R, encourage RStudio installation
+    } else {
+      packageStartupMessage(paste(
+        "cmapplot requires RStudio to use Whitney fonts in the R plots window.\n",
+        "Please install RStudio. <https://www.rstudio.com>"))
     }
   # Otherwise, notify user
   } else {
