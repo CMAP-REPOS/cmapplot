@@ -30,7 +30,7 @@ additional colors as needed. Modeled after viz_palette from the
 
 \examples{
 # Get names of available continuous palettes.
-# (Call viz_palette("name_of_palette") to preview one.)
+# (Call viz_gradient(cmap_gradients$name_of_palette) to preview one.)
 names(cmap_gradients)
 
 # Run the following function to visualize *all* continuous palettes

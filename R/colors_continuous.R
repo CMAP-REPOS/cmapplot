@@ -4,7 +4,7 @@
 #'
 #' @examples
 #' # Get names of available continuous palettes.
-#' # (Call viz_palette("name_of_palette") to preview one.)
+#' # (Call viz_gradient(cmap_gradients$name_of_palette) to preview one.)
 #' names(cmap_gradients)
 #'
 #' # Run the following function to visualize *all* continuous palettes
@@ -86,7 +86,7 @@ cmap_gradients <- list(
 #' @export
 viz_gradient <- function(pal, ttl = deparse(substitute(pal))) {
     pal_func <- grDevices::colorRampPalette(pal, space = "Lab")
-    graphics::image(seq_len(30), 1, as.matrix(seq_len(30)), col = pal_func(30),
+    graphics::image(seq_len(300), 1, as.matrix(seq_len(300)), col = pal_func(300),
                     main = ttl, xlab = "", ylab = "",
                     xaxt = "n", yaxt = "n",  bty = "n")
 }
