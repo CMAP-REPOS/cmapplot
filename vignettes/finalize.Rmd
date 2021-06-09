@@ -163,9 +163,9 @@ finalize_plot(plot = p,
 
 ### Overriding plotting constants
 
-Default values in `finalize_plot()` attempt to reflect CMAP design standards using constants defined in `cmapplot_globals$consts`. Users can manually adjust these constants by passing a named list to the `overrides` argument. For example, the chart below uses `overrides` to modify the margin below the title (`margin_title_b`), the margin to the left of the sidebar (`margin_sidebar_l`), and the margin above the legend (`margin_legend_t`).
+Default values in `finalize_plot()` attempt to reflect CMAP design standards using constants. The list of preset values can be accessed by calling `get_cmapplot_globals()`, while individual presets can be accessed using `get_cmapplot_global()`. Users can manually adjust these constants by passing a named list to the `overrides` argument. For example, the chart below uses `overrides` to modify the margin below the title (`margin_title_b`), the margin to the left of the sidebar (`margin_sidebar_l`), and the margin above the legend (`margin_legend_t`).
 
-The [Many, many margins] section of this article describes most of these `consts` visually. To learn more about all possible overrides, see `?cmapplot_globals`.
+The [Many, many margins] section of this article describes most of these `consts` visually. To learn more about all possible overrides, see `?set_cmapplot_global`.
 
 ```{r finalize7, message=FALSE}
 # A finalized plot with some formatting overrides
@@ -195,7 +195,7 @@ finalize_plot(plot = p,
 
 ### Many, many margins
 
-There is a fairly long list of possible margins that can be customized using the `overrides` argument of `finalize_plot()`. You can read more about the available options for customization in `?cmapplot_globals`.
+There is a fairly long list of possible margins that can be customized using the `overrides` argument of `finalize_plot()`. You can read more about the available options for customization in `?set_cmapplot_global`.
 
 Here, the margins are visualized as they impact a finalized plot that has a sidebar:
 
