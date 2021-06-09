@@ -218,8 +218,8 @@
 <div id="overriding-plotting-constants" class="section level3">
 <h3 class="hasAnchor">
 <a href="#overriding-plotting-constants" class="anchor"></a>Overriding plotting constants</h3>
-<p>Default values in <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code> attempt to reflect CMAP design standards using constants defined in <code>cmapplot_globals$consts</code>. Users can manually adjust these constants by passing a named list to the <code>overrides</code> argument. For example, the chart below uses <code>overrides</code> to modify the margin below the title (<code>margin_title_b</code>), the margin to the left of the sidebar (<code>margin_sidebar_l</code>), and the margin above the legend (<code>margin_legend_t</code>).</p>
-<p>The <a href="#many-many-margins">Many, many margins</a> section of this article describes most of these <code>consts</code> visually. To learn more about all possible overrides, see <code><a href="../reference/get_cmapplot_globals.html">?cmapplot_globals</a></code>.</p>
+<p>Default values in <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code> attempt to reflect CMAP design standards using constants. The list of preset values can be accessed by calling <code><a href="../reference/get_cmapplot_globals.html">get_cmapplot_globals()</a></code>, while individual presets can be accessed using <code><a href="../reference/get_cmapplot_globals.html">get_cmapplot_global()</a></code>. Users can manually adjust these constants by passing a named list to the <code>overrides</code> argument. For example, the chart below uses <code>overrides</code> to modify the margin below the title (<code>margin_title_b</code>), the margin to the left of the sidebar (<code>margin_sidebar_l</code>), and the margin above the legend (<code>margin_legend_t</code>).</p>
+<p>The <a href="#many-many-margins">Many, many margins</a> section of this article describes most of these <code>consts</code> visually. To learn more about all possible overrides, see <code><a href="../reference/get_cmapplot_globals.html">?set_cmapplot_global</a></code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># A finalized plot with some formatting overrides</span>
 <span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>plot <span class="op">=</span> <span class="va">p</span>,
@@ -249,7 +249,7 @@
 <div id="many-many-margins" class="section level3">
 <h3 class="hasAnchor">
 <a href="#many-many-margins" class="anchor"></a>Many, many margins</h3>
-<p>There is a fairly long list of possible margins that can be customized using the <code>overrides</code> argument of <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code>. You can read more about the available options for customization in <code><a href="../reference/get_cmapplot_globals.html">?cmapplot_globals</a></code>.</p>
+<p>There is a fairly long list of possible margins that can be customized using the <code>overrides</code> argument of <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code>. You can read more about the available options for customization in <code><a href="../reference/get_cmapplot_globals.html">?set_cmapplot_global</a></code>.</p>
 <p>Here, the margins are visualized as they impact a finalized plot that has a sidebar:</p>
 <p><img src="../man/figures/margins1.png" width="100%" style="display: block; margin: auto;"></p>
 <p>Here, the same margins are visualized as they impact a finalized plot with no sidebar:</p>
