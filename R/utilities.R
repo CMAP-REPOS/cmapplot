@@ -3,7 +3,7 @@
 #' Font visualization test
 #'
 #' This internal function uses base R graphics to display the five text variants
-#' that should show up on a cmap themed graphic - and what fonts the package is
+#' that should show up on a CMAP themed graphic - and what fonts the package is
 #' planning to use to display them.
 #'
 #' @noRd
@@ -124,9 +124,8 @@ find_path <- function(filename, paths){
 
 #' Sub-fn to safely intepret grobHeight
 #'
-#' This returns the height of Grob in any real unit.
-#' If the value passed in is null, it returns 0.
-#' It is used in various places in `finalize_plot`
+#' This returns the height of a grob in any real unit. If the value passed in is
+#' null, it returns 0. It is used in various places in `finalize_plot`.
 #'
 #' @noRd
 safe_grobHeight <- function(grob, unitTo = "bigpts", valueOnly = TRUE){
