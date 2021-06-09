@@ -2,7 +2,7 @@
 #'
 #'`abbr_years()` is a helper functions that allows users to abbreviate year
 #'labels to their two-digit representation (e.g., 2008 to '08), but not
-#'abbreviating any specified breaks. It does so by creating a new function that
+#'abbreviate any specified breaks. It does so by creating a new function that
 #'takes the breaks supplied by \code{ggplot2} as its only argument. The
 #'function was modeled after the syntax and approach of the labeling functions
 #'in the \code{scales::label_*} family.
