@@ -35,7 +35,7 @@
          envir = cmapplot_globals)
 
 
-  # Else, Find and register necessary Whitney variants using systemfonts (or,
+  # Else, find and register necessary Whitney variants using systemfonts (or,
   # alternatively, find them manually in ~/Library/Fonts). Then, if font
   # registry contains Whitney core, set use_whitney == TRUE.
   if(!get("use_whitney", envir = cmapplot_globals)){
