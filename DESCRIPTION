@@ -24,7 +24,7 @@ Authors@R: c(
            role = "aut",
            email = "gritzenthaler@cmap.illinois.gov"),
     person("Chicago Metropolitan Agency for Planning",
-           role = "cph", "fnd"))
+           role = c("cph", "fnd")))
 Description: Provides themes and color scales for 'ggplot2', based on Chicago
     Metropolitan Agency for Planning (CMAP) design guidelines.
 URL: https://cmap-repos.github.io/cmapplot, https://github.com/CMAP-REPOS/cmapplot
