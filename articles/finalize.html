@@ -131,7 +131,7 @@
 <div id="exporting-a-plot" class="section level3">
 <h3 class="hasAnchor">
 <a href="#exporting-a-plot" class="anchor"></a>Exporting a plot</h3>
-<p>Once you are happy with your plot, export it using <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code> with one or more of the write modes <code><a href="https://rdrr.io/r/base/c.html">c("svg", "ps", "pdf", "png", "tiff", "jpeg", "bmp")</a></code> as well as the filename argument. If Communications staff will be modifying your graphic, they will require one of the vector formats (preferably PDF). While many raster formats are available, PNG is <em>strongly</em> recommended over the others for the best balance of filesize and visual fidelity.</p>
+<p>Once you are happy with your plot, export it using <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code> with one or more of the write modes <code><a href="https://rdrr.io/r/base/c.html">c("svg", "ps", "pdf", "png", "tiff", "jpeg")</a></code> as well as the filename argument. If Communications staff will be modifying your graphic, they will require one of the vector formats (preferably PDF). While many raster formats are available, PNG is <em>strongly</em> recommended over the others for the best balance of filesize and visual fidelity.</p>
 <p>You may specify multiple modes simultaneously using the form <code>mode = c("png", "pdf", "plot")</code>. That would export the plot as both a PDF and PNG, as well as display it in the plotting window of your R console.</p>
 <p>Some additional notes:</p>
 <ul>
