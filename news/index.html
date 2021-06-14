@@ -146,6 +146,53 @@
       <small>Source: <a href='https://github.com/CMAP-REPOS/cmapplot/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="cmapplot-120" class="section level1">
+<h1 class="page-header" data-toc-text="1.2.0">
+<a href="#cmapplot-120" class="anchor"></a>cmapplot 1.2.0</h1>
+<p>PR # 123</p>
+<p>This is a version-level update that includes many fixes and new features and introduces new dependencies, most significantly RStudio 1.4 or greater.</p>
+<div id="new-features" class="section level3">
+<h3 class="hasAnchor">
+<a href="#new-features" class="anchor"></a>New features</h3>
+<ul>
+<li>cmapplot now utilizes the new systemfonts package for custom font rendering, rather than sysfonts on Windows and X11fonts on Mac and other Unix-based machines. In addition, raster exports from <code>finalize_plot</code> now rely on the new raster drawing package ragg. These changes improve font accuracy and consistency across platforms. Note that this improvement does not yet extend to svg outputs, but may in the future (<a href='https://github.com/CMAP-REPOS/cmapplot/issues/134'>#134</a>).</li>
+<li>When an axis breaks are 4-digit years, new function <code>abbr_years</code> allows the conversion of specific years to 2-digit abbreviations, as is common on some designed CMAP graphics.</li>
+<li>cmapplot_globals, which contains key package constants, is now an internal environment rather than an exported list. It can be accessed via new functions <code>get_cmapplot_globals</code> and <code>get_cmapplot_global</code>. Constants can now be overridden by the user for the current session by using <code>set_cmapplot_global</code>. Note that this does not yet apply to geom aesthetics set by the package, but may in the future (issue <a href='https://github.com/CMAP-REPOS/cmapplot/issues/117'>#117</a>).</li>
+</ul>
+</div>
+<div id="bug-fixes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#bug-fixes" class="anchor"></a>Bug fixes</h3>
+<ul>
+<li>Continuous color gradients can now be used on discrete color scales. E.g. <code>cmap_color_discrete</code> and <code>cmap_fill_discrete</code> can now call gradients as well as discrete palettes (see <a href='https://github.com/CMAP-REPOS/cmapplot/issues/70'>#70</a> and <a href='https://github.com/CMAP-REPOS/cmapplot/issues/119'>#119</a>)</li>
+<li>internal table <code>recessions</code> has been updated to include the business cycle contraction that began in Feb 202 (no end date for this cycle yet).</li>
+<li>
+<code>geom_recessions</code> and related <code>update_recessions</code> have been updated to allow for ongoing recessions, improve NBER source for recessions table, and decrease likelihood of data fetch errors.</li>
+</ul>
+</div>
+<div id="backend-changes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#backend-changes" class="anchor"></a>Backend changes</h3>
+<ul>
+<li>pkgdown site now correctly displays Whitney fonts and margin description images</li>
+<li>backend script reorganization</li>
+<li>improvements to pkgdown build github action, including ability to publish a test site</li>
+</ul>
+</div>
+<div id="backward-compatibility-notes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#backward-compatibility-notes" class="anchor"></a>Backward compatibility notes</h3>
+<ul>
+<li><strong>This package will now only render Whitney Fonts in RStudio when RStudio version &gt;= 1.4</strong></li>
+<li>
+<code>finalize_plot</code>’s <code>window</code> mode has been disabled for now, due to inability to use ragg drivers in independent window devices. Use <code>mode = "plot"</code> and click the “Zoom” button in the plot window instead.</li>
+<li>
+<code>cmapplot_globals</code>, the exported list of package constants, has been removed (See new features <code>set_cmapplot_global</code> etc)</li>
+<li>
+<code>integer_breaks</code> removed from package</li>
+</ul>
+</div>
+</div>
     <div id="cmapplot-110" class="section level1">
 <h1 class="page-header" data-toc-text="1.1.0">
 <a href="#cmapplot-110" class="anchor"></a>cmapplot 1.1.0</h1>
@@ -161,9 +208,9 @@
 <li>Separately, this version also creates this <code>NEWS.md</code> file for the pkgdown website.</li>
 </ul>
 <p>Under-the-hood changes to <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code> are documented in PR <a href='https://github.com/CMAP-REPOS/cmapplot/issues/111'>#111</a>, specifically <a href="https://github.com/CMAP-REPOS/cmapplot/pull/111#issuecomment-782779446">here</a>.</p>
-<div id="backward-compatibility-notes" class="section level3">
+<div id="backward-compatibility-notes-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#backward-compatibility-notes" class="anchor"></a>Backward compatibility notes</h3>
+<a href="#backward-compatibility-notes-1" class="anchor"></a>Backward compatibility notes</h3>
 <p>Users who have written code with previous versions of cmapplot should note these known compatibility issues:</p>
 <ul>
 <li>In <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code>, the argument <code>caption_valign</code> has been deprecated and will now issue a message alert (but will still work, for now). Please update your code to use the new argument <code>caption_align</code>.</li>
@@ -188,9 +235,9 @@
 <li>Modified <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code> to accept <code>title_width = 0</code> without causing a fuss. This is a short-term fix, with more improvements coming.</li>
 <li>In <code>cmapplot_globals$consts</code>, eliminated <code>margin_title_r</code>, which created space between the title/caption and plotbox inside the title column. Replaced it with <code>margin_plot_l</code>, which creates the same buffer but does so in the plot column, not the title column. This was necessary to keep an active left-hand margin in situations where <code>title_width = 0</code>.</li>
 </ul>
-<div id="backward-compatibility-notes-1" class="section level3">
+<div id="backward-compatibility-notes-2" class="section level3">
 <h3 class="hasAnchor">
-<a href="#backward-compatibility-notes-1" class="anchor"></a>Backward compatibility notes</h3>
+<a href="#backward-compatibility-notes-2" class="anchor"></a>Backward compatibility notes</h3>
 <p>Users who have written code with previous versions of cmapplot should note these known compatibility issues:</p>
 <ul>
 <li>
