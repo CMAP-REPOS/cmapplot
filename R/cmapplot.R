@@ -87,7 +87,7 @@
         )
 
         packageStartupMessage(paste0(
-          "cmapplot has registered the following fonts for use in this R session:\n  ",
+          "cmapplot has registered the following fonts for use in this R session:\n   ",
           paste(cmapplot_globals$preferred_font, collapse = ", ")
         ))
 
@@ -114,7 +114,7 @@
           options(RStudioGD.backend = "ragg")
           packageStartupMessage(paste(
             "cmapplot has set RStudio graphics to `ragg` for the current session.",
-            "You can make this change permanent:\n  ",
+            "You can make this change permanent:\n   ",
             "Tools > Global Options > General > Graphics > Graphics Device > Backend == 'AGG'."
             ))
         }
@@ -126,7 +126,7 @@
     # If using vanilla R, encourage RStudio installation
     } else {
       packageStartupMessage(paste(
-        "cmapplot requires RStudio to use Whitney fonts in the R plots window.\n",
+        "cmapplot requires RStudio to use Whitney fonts in the R plots window.\n   ",
         "Please install RStudio. <https://www.rstudio.com>"))
     }
   # Otherwise, notify user
