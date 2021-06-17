@@ -45,23 +45,24 @@ viz_gradient <- function(pal, ttl = NULL) {
 
 
 #' Palette Fetcher
+#'
+#' @param pal a name to search for in cmapplot_globals$palettes
+#'
 #' @noRd
 fetch_pal <- function(pal){
     cmapplot_globals$palettes[[which(cmapplot_globals$palettes$name == pal),"colors"]][[1]]
 }
 
+
 #' Continuous palette prep function
 #'
-#' @param palette Choose from 'cmap_gradients' list
+#' @param palette A CMAP palette name
 #' @param reverse Logical; reverse color order?
 #'
 #' @noRd
 cmap_pal_continuous <- function(palette = "reds", reverse = FALSE) {
-    # grab the palette.
     pal <- fetch_pal(palette)
-    if (reverse) {
-        pal <- rev(pal)
-    }
+    if (reverse) { pal <- rev(pal) }
     return(grDevices::colorRampPalette(pal))
 }
 
@@ -102,7 +103,7 @@ cmap_fill_continuous <- function(palette = "reds",
                                  reverse = FALSE,
                                  middle = 0,
                                  ...) {
-    if (substr(palette,1,3) == "div") {
+    if (substr(palette,1,3) == "div") {   ## THIS LINE NEEDS TO CHANGE.
         ggplot2::scale_fill_gradientn(
             colours = cmap_pal_continuous(palette, reverse = reverse)(256),
             rescaler = mid_rescaler2(middle),
