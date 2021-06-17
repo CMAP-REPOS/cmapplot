@@ -31,7 +31,7 @@ viz_gradient <- function(pal, ttl = NULL) {
         # use the palette as the title (unless a custom title has been provided)
         if (is.null(ttl) | missing(ttl)){ ttl <- pal }
         # and extract the palette colors
-        pal <- cmapplot_globals$palettes[[which(cmapplot_globals$palettes$name == pal),"colors"]][[1]]
+        pal <- fetch_pal(pal)
     } else {
         # otherwise, use the object name as the title (unless a custom title has been provided)
         if (is.null(ttl) | missing(ttl)){ ttl <- deparse(substitute(pal)) }
@@ -44,6 +44,12 @@ viz_gradient <- function(pal, ttl = NULL) {
 }
 
 
+#' Palette Fetcher
+#' @noRd
+fetch_pal <- function(pal){
+    cmapplot_globals$palettes[[which(cmapplot_globals$palettes$name == pal),"colors"]][[1]]
+}
+
 #' Continuous palette prep function
 #'
 #' @param palette Choose from 'cmap_gradients' list
@@ -51,7 +57,8 @@ viz_gradient <- function(pal, ttl = NULL) {
 #'
 #' @noRd
 cmap_pal_continuous <- function(palette = "reds", reverse = FALSE) {
-    pal <- cmapplot_globals$palettes[[which(cmapplot_globals$palettes$name == palette),"colors"]][[1]]
+    # grab the palette.
+    pal <- fetch_pal(palette)
     if (reverse) {
         pal <- rev(pal)
     }

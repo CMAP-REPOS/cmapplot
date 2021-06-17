@@ -29,7 +29,7 @@ cmapplot_globals$colors <- list(
 )
 
 #' @importFrom tibble tribble
-#'
+
 # Define CMAP palettes
 cmapplot_globals$palettes <- tibble::tribble(
   ~name, ~type, ~colors,
