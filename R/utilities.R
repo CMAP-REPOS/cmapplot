@@ -157,10 +157,12 @@ fetch_pal <- function(pal,
     name == pal,
     type %in% which
   )
+
   if (return == "exists"){
     return(nrow(df)==1)
+  } else if (nrow(df)==1){
+    return(df[[return]][[1]])
+  } else {
+    return(NULL)
   }
-
-  if (nrow(df) != 1) return(NULL)
-  return(df[[return]][[1]])
 }
