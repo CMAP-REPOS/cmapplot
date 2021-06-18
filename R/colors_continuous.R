@@ -26,8 +26,8 @@
 #' @export
 viz_gradient <- function(pal, ttl = NULL) {
 
-    # if `pal` appears to be a reference to a named cmap palette...
-    if (pal[1] %in% cmapplot_globals$palettes$name) {
+    # if `pal` is a named sequential or divergent CMAP palette...
+    if (fetch_pal(pal[1], c("sequential", "divergent"), "exists")) {
         # use the palette as the title (unless a custom title has been provided)
         if (is.null(ttl) | missing(ttl)){ ttl <- pal }
         # and extract the palette colors
@@ -41,16 +41,6 @@ viz_gradient <- function(pal, ttl = NULL) {
     graphics::image(seq_len(300), 1, as.matrix(seq_len(300)), col = pal_func(300),
                     main = ttl, xlab = "", ylab = "",
                     xaxt = "n", yaxt = "n",  bty = "n")
-}
-
-
-#' Palette Fetcher
-#'
-#' @param pal a name to search for in cmapplot_globals$palettes
-#'
-#' @noRd
-fetch_pal <- function(pal){
-    cmapplot_globals$palettes[[which(cmapplot_globals$palettes$name == pal),"colors"]][[1]]
 }
 
 
@@ -103,17 +93,21 @@ cmap_fill_continuous <- function(palette = "reds",
                                  reverse = FALSE,
                                  middle = 0,
                                  ...) {
-    if (substr(palette,1,3) == "div") {   ## THIS LINE NEEDS TO CHANGE.
+    type <- fetch_pal(palette, return = "type")
+
+    if (type == "divergent") {
         ggplot2::scale_fill_gradientn(
             colours = cmap_pal_continuous(palette, reverse = reverse)(256),
             rescaler = mid_rescaler2(middle),
             ...
         )
-    } else {
+    } else if (type == "sequential"){
         ggplot2::scale_fill_gradientn(
             colours = cmap_pal_continuous(palette, reverse = reverse)(256),
             ...
         )
+    } else {
+        NULL
     }
 }
 
@@ -125,17 +119,21 @@ cmap_color_continuous <- function(palette = "seq_reds",
                                   reverse = FALSE,
                                   middle = 0,
                                   ...) {
-    if (substr(palette,1,3) == "div") {
+    type <- fetch_pal(palette, return = "type")
+
+    if (type == "divergent") {
         ggplot2::scale_colour_gradientn(
             colours = cmap_pal_continuous(palette, reverse = reverse)(256),
             rescaler = mid_rescaler2(middle),
             ...
         )
-    } else {
+    } else if (type == "sequential"){
         ggplot2::scale_colour_gradientn(
             colours = cmap_pal_continuous(palette, reverse = reverse)(256),
             ...
         )
+    } else {
+        NULL
     }
 }
 

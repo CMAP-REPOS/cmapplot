@@ -140,3 +140,27 @@ safe_grobHeight <- function(grob, unitTo = "bigpts", valueOnly = TRUE){
 
   return(grid::convertHeight(grid::grobHeight(grob), unitTo, valueOnly))
 }
+
+
+#' Palette Fetcher
+#'
+#' @param pal a name to search for in cmapplot_globals$palettes
+#' @param which a vector of palette types to consider
+#'
+#' @noRd
+fetch_pal <- function(pal,
+                      which = unique(cmapplot_globals$palettes$type),
+                      return = c("colors", "type", "exists")){
+  return <- match.arg(return)
+  df <- dplyr::filter(
+    cmapplot_globals$palettes,
+    name == pal,
+    type %in% which
+  )
+  if (return == "exists"){
+    return(nrow(df)==1)
+  }
+
+  if (nrow(df) != 1) return(NULL)
+  return(df[[return]][[1]])
+}
