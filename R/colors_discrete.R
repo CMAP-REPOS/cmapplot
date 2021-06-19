@@ -25,10 +25,22 @@
 #'   the \href{https://github.com/ropenscilabs/ochRe}{ochRe package}
 #'
 #' @export
-viz_palette <- function(pal, ttl = deparse(substitute(pal)), num = length(pal)) {
-    if (num <= 0) {
-        stop("'num' should be > 0")
+viz_palette <- function(pal, ttl = NULL, num = NULL) {
+
+    # if `pal` is a named CMAP palette of any type...
+    if (fetch_pal(pal[1], return = "exists")) {
+        # use the palette as the title (unless a custom title has been provided)
+        if (is.null(ttl) | missing(ttl)){ ttl <- pal }
+        # and extract the palette colors
+        pal <- fetch_pal(pal)
+    } else {
+        # otherwise, use the object name as the title (unless a custom title has been provided)
+        if (is.null(ttl) | missing(ttl)){ ttl <- deparse(substitute(pal)) }
     }
+
+    # use the palette's intrinsic length (unless a custom length has been provided)
+    if (is.null(num) | missing(num)){ num <- length(pal) }
+
     pal_func <- grDevices::colorRampPalette(pal)
     graphics::image(seq_len(num), 1, as.matrix(seq_len(num)), col = pal_func(num),
                     main = paste0(ttl, " (", length(pal), " colors in palette, ",
@@ -46,7 +58,7 @@ viz_palette <- function(pal, ttl = deparse(substitute(pal)), num = length(pal)) 
 #'
 #' @noRd
 cmap_pal_discrete <- function(palette = "prosperity", reverse = FALSE) {
-    pal <- cmap_palettes[[palette]]
+    pal <- fetch_pal(palette)
     if (reverse) {
         pal <- rev(pal)
     }
