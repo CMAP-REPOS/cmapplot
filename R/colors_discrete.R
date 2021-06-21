@@ -1,4 +1,4 @@
-#' Vizualizing CMAP color palettes
+#' Visualizing CMAP colors
 #'
 #' The cmapplot package contains a many color palettes extracted from the
 #' larger, official CMAP color palette. Helper functions allow the user to

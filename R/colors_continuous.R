@@ -1,4 +1,4 @@
-#' Visualize CMAP color gradients
+#' Visualizing CMAP colors
 #'
 #' @describeIn viz_palette interpolates the range of colors a sequential or
 #'   divergent palette offers when used on a continuous scale.

@@ -22,7 +22,7 @@ library(tidyverse)
 library(cmapplot)
 ```
 
-There are `r nrow(get_cmapplot_global("palettes"))` color palettes in the cmapplot package, across three categories: discrete, sequential, and divergent. Mirroring the underlying functionality of ggplot2, cmapplot can apply these color palettes as either a `discrete` or `continuous` scales to either the `color` (outline) or `fill` attributes of a ggplot.
+There are `r nrow(get_cmapplot_global("palettes"))` color palettes in the cmapplot package, across three categories: discrete, sequential, and divergent. Mirroring the underlying functionality of ggplot2, cmapplot can apply these color palettes as either `discrete` or `continuous` scales to either the `color` (outline) or `fill` attributes of a ggplot.
 
 ## Using CMAP colors in plots
 
@@ -107,7 +107,7 @@ ggplot(data = df) +
 
 
 ## Available color palettes
-Palettes are stored in a tibble in the `cmapplot_globals` environment. This tibble can be accessed with `get_cmapplot_global("palettes")`, and specific palettes can be visualized in the plot window with `viz_palette()` and `viz_gradient()`. This table lists all palettes currently available in the package:
+Palettes are stored in a tibble in the `cmapplot_globals` environment. This tibble can be accessed with `get_cmapplot_global("palettes")`, with specific details about any specific palette most easily accessed with `fetch_pal()`. Palettes can be visualized in the plot window with `viz_palette()` and `viz_gradient()`. This table lists all palettes currently available in the package:
 
 ```{r palettes, echo = FALSE, results = 'asis'}
 
