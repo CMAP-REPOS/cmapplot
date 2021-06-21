@@ -66,6 +66,11 @@ viz_palette <- function(pal, ttl = NULL, num = NULL) {
 #' @noRd
 cmap_pal_discrete <- function(palette = "prosperity", reverse = FALSE) {
     pal <- fetch_pal(palette)
+
+    if(palette == "race"){
+        message("WARNING: The `race` palette should only be used with `cmap_fill_race` or `cmap_color_race`.")
+    }
+
     if (reverse) {
         pal <- rev(pal)
     }

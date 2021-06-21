@@ -1,5 +1,3 @@
-# Font spec visualization helper function ---------------------------------
-
 #' Font visualization test
 #'
 #' This internal function uses base R graphics to display the five text variants
