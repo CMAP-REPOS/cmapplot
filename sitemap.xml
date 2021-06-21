@@ -25,12 +25,6 @@
     <loc>https://cmap-repos.github.io/cmapplot/reference/cmap_fill_race.html</loc>
   </url>
   <url>
-    <loc>https://cmap-repos.github.io/cmapplot/reference/cmap_gradients.html</loc>
-  </url>
-  <url>
-    <loc>https://cmap-repos.github.io/cmapplot/reference/cmap_palettes.html</loc>
-  </url>
-  <url>
     <loc>https://cmap-repos.github.io/cmapplot/reference/cmapplot.html</loc>
   </url>
   <url>
@@ -80,6 +74,9 @@
   </url>
   <url>
     <loc>https://cmap-repos.github.io/cmapplot/reference/vehicle_ownership.html</loc>
+  </url>
+  <url>
+    <loc>https://cmap-repos.github.io/cmapplot/reference/viz_palette.html</loc>
   </url>
   <url>
     <loc>https://cmap-repos.github.io/cmapplot/articles/colors.html</loc>

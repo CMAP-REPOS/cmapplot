@@ -111,34 +111,16 @@
 
     
     
-<p>Palettes based on the CMAP color palette can be applied directly to ggplot2 graphics. The package contains both discrete and continuous color palettes. Each type of palette can be applied to either the color or fill attributes of a ggplot.</p>
-<div id="continuous-palettes" class="section level2">
+<p>There are 31 color palettes in the cmapplot package, across three categories: discrete, sequential, and divergent. Mirroring the underlying functionality of ggplot2, cmapplot can apply these color palettes as either a <code>discrete</code> or <code>continuous</code> scales to either the <code>color</code> (outline) or <code>fill</code> attributes of a ggplot.</p>
+<div id="using-cmap-colors-in-plots" class="section level2">
 <h2 class="hasAnchor">
-<a href="#continuous-palettes" class="anchor"></a>Continuous palettes</h2>
-<p>Add continuous palettes by adding either the <code><a href="../reference/cmap_fill_continuous.html">cmap_fill_continuous()</a></code> or <code><a href="../reference/cmap_fill_continuous.html">cmap_color_continuous()</a></code> function to your plot construction. For example:</p>
+<a href="#using-cmap-colors-in-plots" class="anchor"></a>Using CMAP colors in plots</h2>
+<div id="discrete-scales" class="section level3">
+<h3 class="hasAnchor">
+<a href="#discrete-scales" class="anchor"></a>Discrete scales</h3>
+<p>Discrete color scales are used to assign colors to discrete bins, such as the lines in a time series line chart. Discrete scale functions work with any palette – discrete, sequential, or divergent. Add a discrete color scale by calling either the <code><a href="../reference/cmap_fill_discrete.html">cmap_fill_discrete()</a></code> or <code><a href="../reference/cmap_fill_discrete.html">cmap_color_discrete()</a></code> function in your plot construction.</p>
+<p>Note that discrete scales will automatically interpolate additional colors if the dataset has more colors than the underlying palette. This can be helpful but is not ideal for finished graphics.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span>
-  <span class="va">percentile_wages</span>,
-  <span class="va">cluster</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Biopharmaceuticals"</span>, <span class="st">"Hospitality and Tourism"</span>, <span class="st">"Paper and Packaging"</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">ggplot</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">geom_point</span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">cluster</span>, y <span class="op">=</span> <span class="va">wage</span>, color <span class="op">=</span> <span class="va">percentile</span><span class="op">)</span>,
-             size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">scale_y_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/label_dollar.html">dollar</a></span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">scale_x_discrete</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_wrap.html">label_wrap</a></span><span class="op">(</span><span class="fl">18</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">coord_flip</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/cmap_fill_continuous.html">cmap_color_continuous</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"seq_red_purple"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Wage percentiles for key clusters"</span><span class="op">)</span></code></pre></div>
-<p><img src="colors_files/figure-html/color_continuous-1.png" width="672" style="display: block; margin: auto;"></p>
-<p>If you’re using a divergent palette, you can specify the midpoint where the divergence begins (default is zero). See <code><a href="../reference/cmap_gradients.html">?cmap_gradients</a></code> for displays of all continuous palettes.</p>
-</div>
-<div id="discrete-palettes" class="section level2">
-<h2 class="hasAnchor">
-<a href="#discrete-palettes" class="anchor"></a>Discrete palettes</h2>
-<p>Add discrete palettes by adding either the <code><a href="../reference/cmap_fill_discrete.html">cmap_fill_discrete()</a></code> or <code><a href="../reference/cmap_fill_discrete.html">cmap_color_discrete()</a></code> function to your plot construction. Note that discrete palettes will automatically interpolate additional colors if the dataset has more colors than the palette. This can be helpful but is not ideal for finished graphics. See <code><a href="../reference/cmap_palettes.html">?cmap_palettes</a></code> for displays of all discrete palettes. These include a set of complementary colors (e.g., the <code>"prosperity"</code> palette), but also discrete versions of the gradients defined above (e.g., a binned blue palette implemented by calling <code>"seq_blues"</code>).</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">grp_over_time</span>, <span class="va">category</span> <span class="op">==</span> <span class="st">"Goods-Producing"</span><span class="op">)</span>
 
 <span class="fu">ggplot</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span><span class="op">)</span> <span class="op">+</span>
@@ -150,11 +132,12 @@
   <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Real GRP of goods-producing clusters over time"</span><span class="op">)</span></code></pre></div>
 <p><img src="colors_files/figure-html/color_discrete-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
-<div id="raceethnicity-palette" class="section level2">
-<h2 class="hasAnchor">
-<a href="#raceethnicity-palette" class="anchor"></a>Race/ethnicity palette</h2>
-<p>If you have a graph with categories based on race and ethnicity, there are functions to apply pre-determined colors for each demographic group: <code><a href="../reference/cmap_fill_race.html">cmap_fill_race()</a></code> and <code><a href="../reference/cmap_fill_race.html">cmap_color_race()</a></code>. In the arguments, specify the case-sensitive name of each group as it appears in your data. The function can be used even if your dataset does not contain every race/ethnicity category — simply omit the parameters for the missing categories.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div id="raceethnicity-scale" class="section level3">
+<h3 class="hasAnchor">
+<a href="#raceethnicity-scale" class="anchor"></a>Race/ethnicity scale</h3>
+<p>In order to maintain a consistent data language, CMAP uses specific colors for displaying data based on race and ethnicity. To map these colors to each demographic group, use <code><a href="../reference/cmap_fill_race.html">cmap_fill_race()</a></code> or <code><a href="../reference/cmap_fill_race.html">cmap_color_race()</a></code>.</p>
+<p>In the arguments, specify the case-sensitive name of each group as it appears in your data. The functions can be used even if your dataset does not contain every race/ethnicity category — simply omit the parameters for the missing categories.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span>
   <span class="va">traded_emp_by_race</span>,
   <span class="va">Race</span> <span class="op">!=</span> <span class="st">"Regional average"</span> <span class="op">&amp;</span> <span class="va">variable</span> <span class="op">==</span> <span class="st">"SpecializedTraded"</span>
@@ -172,9 +155,30 @@
   <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Percent employed in specialized traded clusters, by race"</span><span class="op">)</span></code></pre></div>
 <p><img src="colors_files/figure-html/color_race-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
-<div id="highlighting-categories" class="section level2">
-<h2 class="hasAnchor">
-<a href="#highlighting-categories" class="anchor"></a>Highlighting categories</h2>
+<div id="continuous-scales" class="section level3">
+<h3 class="hasAnchor">
+<a href="#continuous-scales" class="anchor"></a>Continuous scales</h3>
+<p>Continuous color scales work with sequential and divergent palettes. Add a continuous scale by calling either the <code><a href="../reference/cmap_fill_continuous.html">cmap_fill_continuous()</a></code> or <code><a href="../reference/cmap_fill_continuous.html">cmap_color_continuous()</a></code> function in your plot construction. If you’re using a divergent palette, you can specify the midpoint where the divergence begins (default is zero).</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span>
+  <span class="va">percentile_wages</span>,
+  <span class="va">cluster</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Biopharmaceuticals"</span>, <span class="st">"Hospitality and Tourism"</span>, <span class="st">"Paper and Packaging"</span><span class="op">)</span>
+<span class="op">)</span>
+
+<span class="fu">ggplot</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">geom_point</span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">cluster</span>, y <span class="op">=</span> <span class="va">wage</span>, color <span class="op">=</span> <span class="va">percentile</span><span class="op">)</span>,
+             size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">scale_y_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/label_dollar.html">dollar</a></span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">scale_x_discrete</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_wrap.html">label_wrap</a></span><span class="op">(</span><span class="fl">18</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">coord_flip</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/cmap_fill_continuous.html">cmap_color_continuous</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"red_teal"</span>, middle <span class="op">=</span> <span class="fl">50</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Wage percentiles for key clusters"</span><span class="op">)</span></code></pre></div>
+<p><img src="colors_files/figure-html/color_continuous-1.png" width="672" style="display: block; margin: auto;"></p>
+</div>
+<div id="highlighting-categories" class="section level3">
+<h3 class="hasAnchor">
+<a href="#highlighting-categories" class="anchor"></a>Highlighting categories</h3>
 <p>If you want to draw attention to a specific group in your graph, use <code><a href="../reference/cmap_fill_highlight.html">cmap_fill_highlight()</a></code> or <code><a href="../reference/cmap_fill_highlight.html">cmap_color_highlight()</a></code>. This will make your highlighted group one color and all other groups identical in another color. Specify the vector in your data that determines the groups, and then the value of the group to be singled out. Note that this <em>must</em> be the same vector specified in the <code>fill</code>/<code>color</code> aesthetic. The highlight and non-highlight colors have defaults, but can be changed with the <code>color_value</code> and <code>color_other</code> parameters, respectively.</p>
 <p>More than one category can be highlighted as well, by feeding a vector of values into the the <code>value</code> argument. See <code><a href="../reference/cmap_fill_highlight.html">?cmap_fill_highlight</a></code> for details.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -187,6 +191,86 @@
   <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>show.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># Legend is redundant in this example</span>
   <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Annual passenger trips by service, in millions"</span><span class="op">)</span></code></pre></div>
 <p><img src="colors_files/figure-html/color_highlight-1.png" width="672" style="display: block; margin: auto;"></p>
+</div>
+</div>
+<div id="available-color-palettes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#available-color-palettes" class="anchor"></a>Available color palettes</h2>
+<p>Palettes are stored in a tibble in the <code>cmapplot_globals</code> environment. This tibble can be accessed with <code><a href="../reference/get_cmapplot_globals.html">get_cmapplot_global("palettes")</a></code>, and specific palettes can be visualized in the plot window with <code><a href="../reference/viz_gradient.html">viz_palette()</a></code> and <code><a href="../reference/viz_gradient.html">viz_gradient()</a></code>. This table lists all palettes currently available in the package:</p>
+<table class="table">
+<thead><tr class="header">
+<th align="left">Discrete</th>
+<th align="left">Sequential</th>
+<th align="left">Sequential (multi-hue)</th>
+<th align="left">Divergent</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">prosperity</td>
+<td align="left">reds</td>
+<td align="left">yellow_orange_red</td>
+<td align="left">yellow_purple</td>
+</tr>
+<tr class="even">
+<td align="left">community</td>
+<td align="left">oranges</td>
+<td align="left">green_teal_blue</td>
+<td align="left">orange_blue</td>
+</tr>
+<tr class="odd">
+<td align="left">environment</td>
+<td align="left">yellows</td>
+<td align="left">orange_red</td>
+<td align="left">red_teal</td>
+</tr>
+<tr class="even">
+<td align="left">governance</td>
+<td align="left">greens</td>
+<td align="left">yellow_orange</td>
+<td align="left">purple_green</td>
+</tr>
+<tr class="odd">
+<td align="left">mobility</td>
+<td align="left">teals</td>
+<td align="left">yellow_green</td>
+<td align="left">blue_yellow</td>
+</tr>
+<tr class="even">
+<td align="left">legislation</td>
+<td align="left">blues</td>
+<td align="left">green_teal</td>
+<td align="left">teal_orange</td>
+</tr>
+<tr class="odd">
+<td align="left">friday</td>
+<td align="left">purples</td>
+<td align="left">teal_blue</td>
+<td align="left">green_red</td>
+</tr>
+<tr class="even">
+<td align="left">race</td>
+<td align="left">grays</td>
+<td align="left">red_purple</td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<div id="discrete-palettes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#discrete-palettes" class="anchor"></a>Discrete palettes</h3>
+<p>Use these palettes with <code><a href="../reference/cmap_fill_discrete.html">cmap_fill_discrete()</a></code> or <code><a href="../reference/cmap_fill_discrete.html">cmap_color_discrete()</a></code>: <img src="colors_files/figure-html/show_discrete-1.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_discrete-2.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_discrete-3.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_discrete-4.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_discrete-5.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_discrete-6.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_discrete-7.png" width="672" style="display: block; margin: auto;"></p>
+<p>The race palette is a special discrete palette, which should be used with the specific functions <code><a href="../reference/cmap_fill_race.html">cmap_fill_race()</a></code> or <code><a href="../reference/cmap_fill_race.html">cmap_color_race()</a></code>: <img src="colors_files/figure-html/show_discrete_palettes-1.png" width="672" style="display: block; margin: auto;"></p>
+</div>
+<div id="sequential-palettes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#sequential-palettes" class="anchor"></a>Sequential palettes</h3>
+<p>Use these palettes with <code><a href="../reference/cmap_fill_continuous.html">cmap_fill_continuous()</a></code>, <code><a href="../reference/cmap_fill_discrete.html">cmap_fill_discrete()</a></code>, or their <code>color</code> variants. <img src="colors_files/figure-html/show_sequential-1.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-2.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-3.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-4.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-5.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-6.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-7.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-8.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-9.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-10.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-11.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-12.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-13.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-14.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-15.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-16.png" width="672" style="display: block; margin: auto;"></p>
+</div>
+<div id="divergent-palettes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#divergent-palettes" class="anchor"></a>Divergent palettes</h3>
+<p>Use these palettes with <code><a href="../reference/cmap_fill_continuous.html">cmap_fill_continuous()</a></code> <code><a href="../reference/cmap_fill_discrete.html">cmap_fill_discrete()</a></code>, or their <code>color</code> variants. <img src="colors_files/figure-html/show_diverent-1.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_diverent-2.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_diverent-3.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_diverent-4.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_diverent-5.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_diverent-6.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_diverent-7.png" width="672" style="display: block; margin: auto;"></p>
+</div>
 </div>
   </div>
 
