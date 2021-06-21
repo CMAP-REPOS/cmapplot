@@ -1,27 +1,11 @@
-#' CMAP continuous color palettes (gradients)
-#'
-#' Sequential and divergent gradients extracted from the CMAP color palette.
-#'
-#' @examples
-#' # Get names of available continuous palettes.
-#' # (Call viz_gradient(cmap_gradients$name_of_palette) to preview one.)
-#' names(cmap_gradients)
-#'
-#' # Run the following function to visualize *all* continuous palettes
-#' purrr::walk2(cmap_gradients, names(cmap_gradients), viz_gradient)
-#'
-#' @export
-
-
-
 #' Visualize CMAP color gradients
 #'
-#' @param pal = select from cmap_gradients list
-#' @param ttl = display title (optional)
+#' @describeIn viz_palette interpolates the range of colors a sequential or
+#'   divergent palette offers when used on a continuous scale.
 #'
-#' @describeIn cmap_gradients Display CMAP continuous palettes, interpolating
-#'   additional colors as needed. Modeled after viz_palette from the
-#'   \href{https://github.com/ropenscilabs/ochRe}{ochRe package}
+#' @examples
+#' # Vizualize a sequential or divergent palette with interpolation
+#' viz_gradient("reds")
 #'
 #' @export
 viz_gradient <- function(pal, ttl = NULL) {

@@ -1,28 +1,32 @@
-#' CMAP discrete color palettes
+#' Vizualizing CMAP color palettes
 #'
-#' A selection of discrete color palettes from the CMAP color palette. These
-#' include mixed color palettes and discrete versions of the gradients defined
-#' in \code{link{cmap_fill_continuous}}.
+#' The cmapplot package contains a many color palettes extracted from the
+#' larger, official CMAP color palette. Helper functions allow the user to
+#' inspect the various palettes before applying them to plots.
 #'
-#' @examples
-#' # Get names of available discrete palettes.
-#' # (Call viz_palette(cmap_palettes$name_of_palette) to preview one.)
-#' names(cmap_palettes)
+#' Palettes are stored in a tibble the \code{cmapplot_globals} environment. The
+#' user can access this tibble with \code{\link{get_cmapplot_global}}. For more
+#' information about available cmapplot color palettes and how to apply them,
+#' see \code{vignette("colors")}.
 #'
-#' # Run the following function to visualize *all* discrete palettes
-#' purrr::walk2(cmap_palettes, names(cmap_palettes), viz_palette)
+#' These functions are modified with respect from the
+#' \href{https://github.com/ropenscilabs/ochRe}{ochRe package})
 #'
-#' @export
-
-
-#' Print palette for reference
+#' @describeIn viz_palette displays the colors of any cmapplot palette
 #'
-#' @param pal character, vector of (hexadecimal) colors representing a palette
+#' @param pal character, name of a a cmapplot palette, or a vector of colors
+#'   representing a palette
 #' @param ttl character, title to be displayed (the name of the palette)
 #' @param num numeric, the number of colors to display
 #'
-#' @describeIn cmap_palettes Display CMAP palettes. Borrowed with respect from
-#'   the \href{https://github.com/ropenscilabs/ochRe}{ochRe package}
+#' @examples
+#' # Visualize a single palette as individual colors
+#' viz_palette("prosperity")
+#'
+#' # Get names of all available palettes.
+#' as.data.frame(get_cmapplot_global("palettes")[1:2])
+#'
+#' @aliases cmap_palettes cmap_gradients cmap_colors
 #'
 #' @export
 viz_palette <- function(pal, ttl = NULL, num = NULL) {
