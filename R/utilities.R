@@ -144,20 +144,36 @@ safe_grobHeight <- function(grob, unitTo = "bigpts", valueOnly = TRUE){
 
 #' Palette Fetcher
 #'
-#' @param pal a name to search for in cmapplot_globals$palettes
 #' @param which a vector of palette types to consider
+#' @param return Value to return. "colors", the default, returns the palette as
+#'   a vector of colors. "type" returns the palette's type. "Exists" returns
+#'   TRUE or FALSE based on whether the name is found in the palettes table.
 #'
-#' @noRd
+#' @describeIn viz_palette Return details about a palette
+#'
+#' @examples
+#' # Identify the first two colors of the Prosperity Palette
+#' fetch_pal("prosperity")[1:2]
+#'
+#' # Confirm that "reds" is a sequential palette
+#' fetch_pal("reds", which = "sequential", return = "exists")
+#'
+#' @export
 fetch_pal <- function(pal,
                       which = unique(cmapplot_globals$palettes$type),
                       return = c("colors", "type", "exists")){
+  # basics
+  name <- type <- NULL
   return <- match.arg(return)
+
+  # filter palettes
   df <- dplyr::filter(
     cmapplot_globals$palettes,
     name == pal,
     type %in% which
   )
 
+  # construct return
   if (return == "exists"){
     return(nrow(df)==1)
   } else if (nrow(df)==1){

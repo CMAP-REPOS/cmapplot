@@ -195,8 +195,8 @@ p <- ggplot(data = df, mapping = aes(x = TOT_POP_DIFF, y = LF_POP_DIFF)) +
   # Manually adjust point size/color aesthetics and legend items
   scale_size(range = c(5, 25)) +  # Minimum/maximum size of points
   scale_color_manual(
-    values = c(`Increase` = cmap_palettes$legislation[1],  # Modify point colors
-               `Decrease` = cmap_palettes$legislation[2]),
+    values = c(`Increase` = fetch_pal("legislation")[1],  # Modify point colors
+               `Decrease` = fetch_pal("legislation")[2]),
     breaks = c("Increase", "Decrease"),  # Specify order of legend items
     labels = c("Increase in labor force\nparticipation rate",  # Modify legend labels for each color
                "Decrease in labor force\nparticipation rate")  # ("\n" inserts a line break)

@@ -5,12 +5,15 @@
 #' inspect the various palettes before applying them to plots.
 #'
 #' Palettes are stored in a tibble the \code{cmapplot_globals} environment. The
-#' user can access this tibble with \code{\link{get_cmapplot_global}}. For more
-#' information about available cmapplot color palettes and how to apply them,
-#' see \code{vignette("colors")}.
+#' user can access this tibble with \code{\link{get_cmapplot_global}}, but it is
+#' easier to access information about a single palette with \code{fetch_pal}.
 #'
-#' These functions are modified with respect from the
-#' \href{https://github.com/ropenscilabs/ochRe}{ochRe package})
+#' \code{viz_palette} and \code{viz_gradient} draw the palette to the plots
+#' window. These functions are modified with respect from the
+#' \href{https://github.com/ropenscilabs/ochRe}{ochRe package}.
+#'
+#' For more information about available cmapplot color palettes and how to apply
+#' them, see \code{vignette("colors")}.
 #'
 #' @describeIn viz_palette displays the colors of any cmapplot palette
 #'
