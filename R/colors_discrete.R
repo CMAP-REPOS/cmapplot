@@ -15,7 +15,7 @@
 #' For more information about available cmapplot color palettes and how to apply
 #' them, see \code{vignette("colors")}.
 #'
-#' @describeIn viz_palette displays the colors of any cmapplot palette
+#' @describeIn viz_palette Displays the colors of any cmapplot palette
 #'
 #' @param pal character, name of a a cmapplot palette, or a vector of colors
 #'   representing a palette

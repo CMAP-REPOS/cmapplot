@@ -1,6 +1,6 @@
 #' Visualizing CMAP colors
 #'
-#' @describeIn viz_palette interpolates the range of colors a sequential or
+#' @describeIn viz_palette Interpolates the range of colors a sequential or
 #'   divergent palette offers when used on a continuous scale.
 #'
 #' @examples
@@ -41,7 +41,7 @@ cmap_pal_continuous <- function(palette = "reds", reverse = FALSE) {
 }
 
 
-#' internal helper function to rescale. Credit for idea is due to ijlyttle:
+#' Internal helper function to rescale. Credit for idea is due to ijlyttle:
 #  \url{https://github.com/tidyverse/ggplot2/issues/3738#issuecomment-583750802}
 #'
 #' @noRd

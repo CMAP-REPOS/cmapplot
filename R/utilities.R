@@ -147,7 +147,7 @@ safe_grobHeight <- function(grob, unitTo = "bigpts", valueOnly = TRUE){
 #'   a vector of colors. "type" returns the palette's type. "Exists" returns
 #'   TRUE or FALSE based on whether the name is found in the palettes table.
 #'
-#' @describeIn viz_palette Return details about a palette
+#' @describeIn viz_palette Returns details about a palette
 #'
 #' @examples
 #' # Identify the first two colors of the Prosperity Palette

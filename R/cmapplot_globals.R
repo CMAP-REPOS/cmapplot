@@ -68,7 +68,7 @@ cmapplot_globals$palettes <- tibble::tribble(
   "teal_blue",         "sequential", c("#a7efe8", "#72e5e3", "#00becc", "#00778c", "#004e66"),
   "red_purple",        "sequential", c("#efa7a7", "#e5729e", "#cc0099", "#77008c", "#310066"),
 
-  # Multi-hue diverging
+  # Multi-hue divergent
   "yellow_purple", "divergent", c("#8c7200", "#ac8c00", "#cca600", "#d8ba36", "#e5d072", "#e3e8eb",
                                   "#aa72e5", "#8436d8", "#6300cc", "#5300ac", "#44008c"),
   "orange_blue",   "divergent", c("#8c4100", "#ac5000", "#cc5f00", "#d88236", "#e5a872", "#e3e8eb",
