@@ -5,7 +5,7 @@
 #'
 #' @examples
 #' # Vizualize a sequential or divergent palette with interpolation
-#' viz_gradient("reds")
+#' viz_gradient("green_teal_blue")
 #'
 #' @export
 viz_gradient <- function(pal, ttl = NULL) {
