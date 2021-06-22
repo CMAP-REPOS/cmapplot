@@ -63,10 +63,10 @@ divergent palette offers when used on a continuous scale.
 
 \examples{
 # Vizualize a sequential or divergent palette with interpolation
-viz_gradient("reds")
+viz_gradient("green_teal_blue")
 
 # Visualize a single palette as individual colors
-viz_palette("prosperity")
+viz_palette("legislation")
 
 # Get names of all available palettes.
 as.data.frame(get_cmapplot_global("palettes")[1:2])

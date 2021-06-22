@@ -24,7 +24,7 @@
 #'
 #' @examples
 #' # Visualize a single palette as individual colors
-#' viz_palette("prosperity")
+#' viz_palette("legislation")
 #'
 #' # Get names of all available palettes.
 #' as.data.frame(get_cmapplot_global("palettes")[1:2])
