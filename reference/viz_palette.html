@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Visualize CMAP color gradients — viz_gradient • cmapplot</title>
+<title>Visualizing CMAP colors — viz_gradient • cmapplot</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,7 +46,7 @@
 
 
 
-<meta property="og:title" content="Visualize CMAP color gradients — viz_gradient" />
+<meta property="og:title" content="Visualizing CMAP colors — viz_gradient" />
 <meta property="og:description" content="The cmapplot package contains a many color palettes extracted from the
 larger, official CMAP color palette. Helper functions allow the user to
 inspect the various palettes before applying them to plots." />
@@ -145,7 +145,7 @@ inspect the various palettes before applying them to plots." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Visualize CMAP color gradients</h1>
+    <h1>Visualizing CMAP colors</h1>
     <small class="dont-index">Source: <a href='https://github.com/CMAP-REPOS/cmapplot/blob/master/R/colors_continuous.R'><code>R/colors_continuous.R</code></a>, <a href='https://github.com/CMAP-REPOS/cmapplot/blob/master/R/colors_discrete.R'><code>R/colors_discrete.R</code></a>, <a href='https://github.com/CMAP-REPOS/cmapplot/blob/master/R/utilities.R'><code>R/utilities.R</code></a></small>
     <div class="hidden name"><code>viz_palette.Rd</code></div>
     </div>
@@ -162,7 +162,7 @@ inspect the various palettes before applying them to plots.</p>
 
 <span class='fu'>fetch_pal</span><span class='op'>(</span>
   <span class='va'>pal</span>,
-  which <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/unique.html'>unique</a></span><span class='op'>(</span><span class='va'>cmapplot_globals</span><span class='op'>$</span><span class='va'>palettes</span><span class='op'>$</span><span class='va'>type</span><span class='op'>)</span>,
+  which <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"discrete"</span>, <span class='st'>"sequential"</span>, <span class='st'>"divergent"</span><span class='op'>)</span>,
   return <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"colors"</span>, <span class='st'>"type"</span>, <span class='st'>"exists"</span><span class='op'>)</span>
 <span class='op'>)</span></pre>
 
