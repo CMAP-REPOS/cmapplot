@@ -112,6 +112,65 @@
     
     
 <p>There are 31 color palettes in the cmapplot package, across three categories: discrete, sequential, and divergent. Mirroring the underlying functionality of ggplot2, cmapplot can apply these color palettes as either <code>discrete</code> or <code>continuous</code> scales to either the <code>color</code> (outline) or <code>fill</code> attributes of a ggplot.</p>
+<p>This table lists all palettes currently available in the package:</p>
+<table class="table">
+<thead><tr class="header">
+<th align="left">Discrete</th>
+<th align="left">Sequential</th>
+<th align="left">Sequential (multi-hue)</th>
+<th align="left">Divergent</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">prosperity</td>
+<td align="left">reds</td>
+<td align="left">yellow_orange_red</td>
+<td align="left">yellow_purple</td>
+</tr>
+<tr class="even">
+<td align="left">community</td>
+<td align="left">oranges</td>
+<td align="left">green_teal_blue</td>
+<td align="left">orange_blue</td>
+</tr>
+<tr class="odd">
+<td align="left">environment</td>
+<td align="left">yellows</td>
+<td align="left">orange_red</td>
+<td align="left">red_teal</td>
+</tr>
+<tr class="even">
+<td align="left">governance</td>
+<td align="left">greens</td>
+<td align="left">yellow_orange</td>
+<td align="left">purple_green</td>
+</tr>
+<tr class="odd">
+<td align="left">mobility</td>
+<td align="left">teals</td>
+<td align="left">yellow_green</td>
+<td align="left">blue_yellow</td>
+</tr>
+<tr class="even">
+<td align="left">legislation</td>
+<td align="left">blues</td>
+<td align="left">green_teal</td>
+<td align="left">teal_orange</td>
+</tr>
+<tr class="odd">
+<td align="left">friday</td>
+<td align="left">purples</td>
+<td align="left">teal_blue</td>
+<td align="left">green_red</td>
+</tr>
+<tr class="even">
+<td align="left">race</td>
+<td align="left">grays</td>
+<td align="left">red_purple</td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
 <div id="using-cmap-colors-in-plots" class="section level2">
 <h2 class="hasAnchor">
 <a href="#using-cmap-colors-in-plots" class="anchor"></a>Using CMAP colors in plots</h2>
@@ -196,65 +255,7 @@
 <div id="available-color-palettes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#available-color-palettes" class="anchor"></a>Available color palettes</h2>
-<p>Palettes are stored in a tibble in the <code>cmapplot_globals</code> environment. This tibble can be accessed with <code><a href="../reference/get_cmapplot_globals.html">get_cmapplot_global("palettes")</a></code>, with specific details about any specific palette most easily accessed with <code><a href="../reference/viz_gradient.html">fetch_pal()</a></code>. Palettes can be visualized in the plot window with <code><a href="../reference/viz_gradient.html">viz_palette()</a></code> and <code><a href="../reference/viz_gradient.html">viz_gradient()</a></code>. This table lists all palettes currently available in the package:</p>
-<table class="table">
-<thead><tr class="header">
-<th align="left">Discrete</th>
-<th align="left">Sequential</th>
-<th align="left">Sequential (multi-hue)</th>
-<th align="left">Divergent</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">prosperity</td>
-<td align="left">reds</td>
-<td align="left">yellow_orange_red</td>
-<td align="left">yellow_purple</td>
-</tr>
-<tr class="even">
-<td align="left">community</td>
-<td align="left">oranges</td>
-<td align="left">green_teal_blue</td>
-<td align="left">orange_blue</td>
-</tr>
-<tr class="odd">
-<td align="left">environment</td>
-<td align="left">yellows</td>
-<td align="left">orange_red</td>
-<td align="left">red_teal</td>
-</tr>
-<tr class="even">
-<td align="left">governance</td>
-<td align="left">greens</td>
-<td align="left">yellow_orange</td>
-<td align="left">purple_green</td>
-</tr>
-<tr class="odd">
-<td align="left">mobility</td>
-<td align="left">teals</td>
-<td align="left">yellow_green</td>
-<td align="left">blue_yellow</td>
-</tr>
-<tr class="even">
-<td align="left">legislation</td>
-<td align="left">blues</td>
-<td align="left">green_teal</td>
-<td align="left">teal_orange</td>
-</tr>
-<tr class="odd">
-<td align="left">friday</td>
-<td align="left">purples</td>
-<td align="left">teal_blue</td>
-<td align="left">green_red</td>
-</tr>
-<tr class="even">
-<td align="left">race</td>
-<td align="left">grays</td>
-<td align="left">red_purple</td>
-<td align="left"></td>
-</tr>
-</tbody>
-</table>
+<p>Palettes are stored in a tibble in the <code>cmapplot_globals</code> environment. This tibble can be accessed with <code><a href="../reference/get_cmapplot_globals.html">get_cmapplot_global("palettes")</a></code>, with specific details about any specific palette most easily accessed with <code><a href="../reference/viz_gradient.html">fetch_pal()</a></code>. Palettes can be visualized in the plot window with <code><a href="../reference/viz_gradient.html">viz_palette()</a></code> and <code><a href="../reference/viz_gradient.html">viz_gradient()</a></code>.</p>
 <div id="discrete-palettes" class="section level3">
 <h3 class="hasAnchor">
 <a href="#discrete-palettes" class="anchor"></a>Discrete palettes</h3>
