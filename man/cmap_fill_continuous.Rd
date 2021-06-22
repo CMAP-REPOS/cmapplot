@@ -6,11 +6,11 @@
 \alias{cmap_colour_continuous}
 \title{Apply continuous CMAP palettes (gradients) to ggplot2 aesthetics}
 \usage{
-cmap_fill_continuous(palette = "reds", reverse = FALSE, middle = 0, ...)
+cmap_fill_continuous(palette = "blues", reverse = FALSE, middle = 0, ...)
 
-cmap_color_continuous(palette = "seq_reds", reverse = FALSE, middle = 0, ...)
+cmap_color_continuous(palette = "blues", reverse = FALSE, middle = 0, ...)
 
-cmap_colour_continuous(palette = "seq_reds", reverse = FALSE, middle = 0, ...)
+cmap_colour_continuous(palette = "blues", reverse = FALSE, middle = 0, ...)
 }
 \arguments{
 \item{palette}{String; Choose from 'cmap_gradients' list}

@@ -8,7 +8,7 @@
 \alias{cmap_gradients}
 \alias{cmap_colors}
 \alias{fetch_pal}
-\title{Visualize CMAP color gradients}
+\title{Visualizing CMAP colors}
 \usage{
 viz_gradient(pal, ttl = NULL)
 
@@ -16,7 +16,7 @@ viz_palette(pal, ttl = NULL, num = NULL)
 
 fetch_pal(
   pal,
-  which = unique(cmapplot_globals$palettes$type),
+  which = c("discrete", "sequential", "divergent"),
   return = c("colors", "type", "exists")
 )
 }
