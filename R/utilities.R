@@ -158,7 +158,7 @@ safe_grobHeight <- function(grob, unitTo = "bigpts", valueOnly = TRUE){
 #'
 #' @export
 fetch_pal <- function(pal,
-                      which = unique(cmapplot_globals$palettes$type),
+                      which = c("discrete", "sequential", "divergent"), #unique(cmapplot_globals$palettes$type),
                       return = c("colors", "type", "exists")){
   # basics
   name <- type <- NULL
