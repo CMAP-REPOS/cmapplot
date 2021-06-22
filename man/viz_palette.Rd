@@ -8,7 +8,7 @@
 \alias{cmap_gradients}
 \alias{cmap_colors}
 \alias{fetch_pal}
-\title{Visualizing CMAP colors}
+\title{Visualizing CMAP color palettes}
 \usage{
 viz_gradient(pal, ttl = NULL)
 
@@ -68,7 +68,7 @@ viz_gradient("green_teal_blue")
 # Visualize a single palette as individual colors
 viz_palette("legislation")
 
-# Get names of all available palettes.
+# Print names and types of all available palettes
 as.data.frame(get_cmapplot_global("palettes")[1:2])
 
 # Identify the first two colors of the Prosperity Palette

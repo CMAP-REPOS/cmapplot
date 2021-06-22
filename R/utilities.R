@@ -173,9 +173,9 @@ fetch_pal <- function(pal,
   )
 
   # construct return
-  if (return == "exists"){
-    return(nrow(df)==1)
-  } else if (nrow(df)==1){
+  if (return == "exists") {
+    return(nrow(df) == 1)
+  } else if (nrow(df) == 1) {
     return(df[[return]][[1]])
   } else {
     return(NULL)

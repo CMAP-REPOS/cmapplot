@@ -1,4 +1,4 @@
-#' Visualizing CMAP colors
+#' Visualizing CMAP color palettes
 #'
 #' The cmapplot package contains a many color palettes extracted from the
 #' larger, official CMAP color palette. Helper functions allow the user to
@@ -26,7 +26,7 @@
 #' # Visualize a single palette as individual colors
 #' viz_palette("legislation")
 #'
-#' # Get names of all available palettes.
+#' # Print names and types of all available palettes
 #' as.data.frame(get_cmapplot_global("palettes")[1:2])
 #'
 #' @aliases cmap_palettes cmap_gradients cmap_colors
@@ -68,7 +68,7 @@ cmap_pal_discrete <- function(palette = "prosperity", reverse = FALSE) {
     pal <- fetch_pal(palette)
 
     if(palette == "race"){
-        message("WARNING: The `race` palette should only be used with `cmap_fill_race` or `cmap_color_race`.")
+        message("WARNING: The `race` palette should only be used with `cmap_fill_race()` or `cmap_color_race()`.")
     }
 
     if (reverse) {

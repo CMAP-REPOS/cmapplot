@@ -46,7 +46,7 @@ out[is.na(out)] <- ""
 knitr::kable(out)
 ```
 
-## Using CMAP colors in plots
+## Using CMAP color palettes in plots
 
 ### Discrete scales
 
@@ -144,7 +144,7 @@ viz_palette("race")
 ```
 
 ### Sequential palettes
-Use these palettes with `cmap_fill_continuous()`, `cmap_fill_discrete()`, or their `color` variants.
+Use these palettes with `cmap_fill_continuous()`/`cmap_color_continuous()` or `cmap_fill_discrete()`/`cmap_color_discrete()`.
 ```{r show_sequential, echo = FALSE, fig.asp = 300/670}
 nms <- dplyr::filter(get_cmapplot_global("palettes"),  type == "sequential")$name
 purrr::walk(nms, viz_gradient)
@@ -153,13 +153,13 @@ purrr::walk(nms, viz_gradient)
 If you use a sequential palette for a discrete scale, the package will automatically choose colors from across the selected gradient and interpolate additional ones if needed. For example, the `blues` palette is shown below, interpolating nine colors from the initial palette list of seven.
 
 ```{r show_sequential_discrete, echo = FALSE, fig.asp = 300/670}
-viz_palette("blues",num = 9)
+viz_palette("blues", num = 9)
 ```
 
 ### Divergent palettes
-Use these palettes with `cmap_fill_continuous()` `cmap_fill_discrete()`, or their `color` variants. Using these palettes for a discrete scale will behave similarly to the discrete use of `blues` shown above.
+Use these palettes with `cmap_fill_continuous()`/`cmap_color_continuous()` or `cmap_fill_discrete()`/`cmap_color_discrete()`. Using these palettes for a discrete scale will behave similarly to the discrete use of `blues` shown above.
 ```{r show_diverent, echo = FALSE, fig.asp = 300/670}
-nms <- dplyr::filter(get_cmapplot_global("palettes"),  type == "divergent")$name
+nms <- dplyr::filter(get_cmapplot_global("palettes"), type == "divergent")$name
 purrr::walk(nms, viz_gradient)
 ```
 

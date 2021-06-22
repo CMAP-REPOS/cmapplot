@@ -1,4 +1,4 @@
-#' Visualizing CMAP colors
+#' Visualizing CMAP color palettes
 #'
 #' @describeIn viz_palette Interpolates the range of colors a sequential or
 #'   divergent palette offers when used on a continuous scale.
@@ -34,7 +34,7 @@ viz_gradient <- function(pal, ttl = NULL) {
 #' @param reverse Logical; reverse color order?
 #'
 #' @noRd
-cmap_pal_continuous <- function(palette = "reds", reverse = FALSE) {
+cmap_pal_continuous <- function(palette = "blues", reverse = FALSE) {
     pal <- fetch_pal(palette)
     if (reverse) { pal <- rev(pal) }
     return(grDevices::colorRampPalette(pal))
