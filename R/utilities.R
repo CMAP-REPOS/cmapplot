@@ -158,11 +158,12 @@ safe_grobHeight <- function(grob, unitTo = "bigpts", valueOnly = TRUE){
 #'
 #' @export
 fetch_pal <- function(pal,
-                      which = c("discrete", "sequential", "divergent"), #unique(cmapplot_globals$palettes$type),
+                      which = c("discrete", "sequential", "divergent"),
                       return = c("colors", "type", "exists")){
   # basics
   name <- type <- NULL
   return <- match.arg(return)
+  which <- match.arg(which, unique(cmapplot_globals$palettes$type), several.ok = TRUE)
 
   # filter palettes
   df <- dplyr::filter(
