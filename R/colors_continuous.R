@@ -73,7 +73,7 @@ mid_rescaler2 <- function(mid) {
 #' @describeIn cmap_fill_continuous for fill aesthetic
 #'
 #' @export
-cmap_fill_continuous <- function(palette = "reds",
+cmap_fill_continuous <- function(palette = "blues",
                                  reverse = FALSE,
                                  middle = 0,
                                  ...) {
@@ -99,7 +99,7 @@ cmap_fill_continuous <- function(palette = "reds",
 #' @describeIn cmap_fill_continuous for color aesthetic
 #'
 #' @export
-cmap_color_continuous <- function(palette = "seq_reds",
+cmap_color_continuous <- function(palette = "blues",
                                   reverse = FALSE,
                                   middle = 0,
                                   ...) {
