@@ -1,5 +1,3 @@
-# Font spec visualization helper function ---------------------------------
-
 #' Font visualization test
 #'
 #' This internal function uses base R graphics to display the five text variants
@@ -139,4 +137,47 @@ safe_grobHeight <- function(grob, unitTo = "bigpts", valueOnly = TRUE){
   }
 
   return(grid::convertHeight(grid::grobHeight(grob), unitTo, valueOnly))
+}
+
+
+#' Palette Fetcher
+#'
+#' @param which a vector of palette types to consider
+#' @param return Value to return. "colors", the default, returns the palette as
+#'   a vector of colors. "type" returns the palette's type. "Exists" returns
+#'   TRUE or FALSE based on whether the name is found in the palettes table.
+#'
+#' @describeIn viz_palette Returns details about a palette
+#'
+#' @examples
+#' # Identify the first two colors of the Prosperity Palette
+#' fetch_pal("prosperity")[1:2]
+#'
+#' # Confirm that "reds" is a sequential palette
+#' fetch_pal("reds", which = "sequential", return = "exists")
+#'
+#' @export
+fetch_pal <- function(pal,
+                      which = c("discrete", "sequential", "divergent"),
+                      return = c("colors", "type", "exists")){
+  # basics
+  name <- type <- NULL
+  return <- match.arg(return)
+  which <- match.arg(which, unique(cmapplot_globals$palettes$type), several.ok = TRUE)
+
+  # filter palettes
+  df <- dplyr::filter(
+    cmapplot_globals$palettes,
+    name == pal,
+    type %in% which
+  )
+
+  # construct return
+  if (return == "exists") {
+    return(nrow(df) == 1)
+  } else if (nrow(df) == 1) {
+    return(df[[return]][[1]])
+  } else {
+    return(NULL)
+  }
 }

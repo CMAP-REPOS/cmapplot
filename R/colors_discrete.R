@@ -1,62 +1,53 @@
-#' CMAP discrete color palettes
+#' Visualizing CMAP color palettes
 #'
-#' A selection of discrete color palettes from the CMAP color palette. These
-#' include mixed color palettes and discrete versions of the gradients defined
-#' in \code{link{cmap_fill_continuous}}.
+#' The cmapplot package contains a many color palettes extracted from the
+#' larger, official CMAP color palette. Helper functions allow the user to
+#' inspect the various palettes before applying them to plots.
 #'
-#' @examples
-#' # Get names of available discrete palettes.
-#' # (Call viz_palette(cmap_palettes$name_of_palette) to preview one.)
-#' names(cmap_palettes)
+#' Palettes are stored in a tibble the \code{cmapplot_globals} environment. The
+#' user can access this tibble with \code{\link{get_cmapplot_global}}, but it is
+#' easier to access information about a single palette with \code{fetch_pal}.
 #'
-#' # Run the following function to visualize *all* discrete palettes
-#' purrr::walk2(cmap_palettes, names(cmap_palettes), viz_palette)
+#' \code{viz_palette} and \code{viz_gradient} draw the palette to the plots
+#' window. These functions are modified with respect from the
+#' \href{https://github.com/ropenscilabs/ochRe}{ochRe package}.
 #'
-#' @export
-cmap_palettes <- c(
-
-    # Add CMAP gradients to the palettes list (note that we don't add the
-    # palettes to the gradients list since those are not sequential).
-    cmap_gradients,
-
-    # Mixed color palettes
-    list(prosperity = c("#662f00", "#e5d072", "#44008c", "#c8e572", "#c9a7ef"),
-
-         community = c("#cc5f00", "#006b8c", "#e5a872", "#d2efa7", "#662f00"),
-
-         environment = c("#00665c", "#b7e572", "#3f0030",  "#36d8ca", "#006b8c"),
-
-         governance = c("#006b8c", "#efa7a7", "#8c4100", "#00303f", "#cca600", "#a7efe8"),
-
-         mobility = c("#8c0000", "#e5bd72", "#a7efe8", "#6d8692", "#0084ac", "#efa7a7"),
-
-         legislation = c("#00becc", "#cc5f00", "#3f0e00", "#cca600", "#003f8c", "#67ac00"),
-
-         friday = c("#00093f", "#ac8c00", "#475c66", "#e5d072", "#b5c1c8", "#006b8c"),
-
-         race = c(white    = "#75a5d8",
-                  black    = "#84c87e",
-                  hispanic = "#d8ba39",
-                  asian    = "#e77272",
-                  other    = "#607b88")
-
-    )
-)
-
-#' Print palette for reference
+#' For more information about available cmapplot color palettes and how to apply
+#' them, see \code{vignette("colors")}.
 #'
-#' @param pal character, vector of (hexadecimal) colors representing a palette
+#' @describeIn viz_palette Displays the colors of any cmapplot palette
+#'
+#' @param pal character, name of a a cmapplot palette, or a vector of colors
+#'   representing a palette
 #' @param ttl character, title to be displayed (the name of the palette)
 #' @param num numeric, the number of colors to display
 #'
-#' @describeIn cmap_palettes Display CMAP palettes. Borrowed with respect from
-#'   the \href{https://github.com/ropenscilabs/ochRe}{ochRe package}
+#' @examples
+#' # Visualize a single palette as individual colors
+#' viz_palette("legislation")
+#'
+#' # Print names and types of all available palettes
+#' as.data.frame(get_cmapplot_global("palettes")[1:2])
+#'
+#' @aliases cmap_palettes cmap_gradients cmap_colors
 #'
 #' @export
-viz_palette <- function(pal, ttl = deparse(substitute(pal)), num = length(pal)) {
-    if (num <= 0) {
-        stop("'num' should be > 0")
+viz_palette <- function(pal, ttl = NULL, num = NULL) {
+
+    # if `pal` is a named CMAP palette of any type...
+    if (fetch_pal(pal[1], return = "exists")) {
+        # use the palette as the title (unless a custom title has been provided)
+        if (is.null(ttl) | missing(ttl)){ ttl <- pal }
+        # and extract the palette colors
+        pal <- fetch_pal(pal)
+    } else {
+        # otherwise, use the object name as the title (unless a custom title has been provided)
+        if (is.null(ttl) | missing(ttl)){ ttl <- deparse(substitute(pal)) }
     }
+
+    # use the palette's intrinsic length (unless a custom length has been provided)
+    if (is.null(num) | missing(num)){ num <- length(pal) }
+
     pal_func <- grDevices::colorRampPalette(pal)
     graphics::image(seq_len(num), 1, as.matrix(seq_len(num)), col = pal_func(num),
                     main = paste0(ttl, " (", length(pal), " colors in palette, ",
@@ -74,7 +65,12 @@ viz_palette <- function(pal, ttl = deparse(substitute(pal)), num = length(pal)) 
 #'
 #' @noRd
 cmap_pal_discrete <- function(palette = "prosperity", reverse = FALSE) {
-    pal <- cmap_palettes[[palette]]
+    pal <- fetch_pal(palette)
+
+    if(palette == "race"){
+        message("WARNING: The `race` palette should only be used with `cmap_fill_race()` or `cmap_color_race()`.")
+    }
+
     if (reverse) {
         pal <- rev(pal)
     }

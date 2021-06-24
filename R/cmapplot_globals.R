@@ -28,6 +28,63 @@ cmapplot_globals$colors <- list(
   blackish = "#222222"
 )
 
+#' @importFrom tibble tribble
+
+# Define CMAP palettes
+cmapplot_globals$palettes <- tibble::tribble(
+  ~name, ~type, ~colors,
+  # discrete
+  "prosperity",  "discrete", c("#662f00", "#e5d072", "#44008c", "#c8e572", "#c9a7ef"),
+  "community",   "discrete", c("#cc5f00", "#006b8c", "#e5a872", "#d2efa7", "#662f00"),
+  "environment", "discrete", c("#00665c", "#b7e572", "#3f0030",  "#36d8ca", "#006b8c"),
+  "governance",  "discrete", c("#006b8c", "#efa7a7", "#8c4100", "#00303f", "#cca600", "#a7efe8"),
+  "mobility",    "discrete", c("#8c0000", "#e5bd72", "#a7efe8", "#6d8692", "#0084ac", "#efa7a7"),
+  "legislation", "discrete", c("#00becc", "#cc5f00", "#3f0e00", "#cca600", "#003f8c", "#67ac00"),
+  "friday",      "discrete", c("#00093f", "#ac8c00", "#475c66", "#e5d072", "#b5c1c8", "#006b8c"),
+  "race",        "discrete", c(white    = "#75a5d8",
+                               black    = "#84c87e",
+                               hispanic = "#d8ba39",
+                               asian    = "#e77272",
+                               other    = "#607b88"),
+
+  # Single-hue sequential
+  "reds",      "sequential", c("#efa7a7", "#e57272", "#d83636", "#cc0000", "#ac0000", "#8c0000", "#660000"),
+  "oranges",   "sequential", c("#efc9a7", "#e5a872", "#d88236", "#cc5f00", "#ac5000", "#8c4100", "#662f00"),
+  "yellows",   "sequential", c("#efe1a7", "#e5d072", "#d8ba36", "#cca600", "#ac8c00", "#8c7200", "#665300"),
+  "greens",    "sequential", c("#d2efa7", "#b7e572", "#97d836", "#7acc00", "#67ac00", "#548c00", "#3d6600"),
+  "teals",     "sequential", c("#a7efe8", "#72e5db", "#36d8ca", "#00ccb8", "#00ac9c", "#008c7e", "#00665c"),
+  "blues",     "sequential", c("#a7deef", "#72cae5", "#36b2d8", "#009ccc", "#0084ac", "#006b8c", "#004e66"),
+  "purples",   "sequential", c("#c9a7ef", "#aa72e5", "#8436d8", "#6300cc", "#5300ac", "#44008c", "#310066"),
+  "grays",     "sequential", c("#e3e8eb", "#dbe1e4", "#d2d9de", "#c3cdd3", "#b5c1c8", "#a7b5be", "#9daab3",
+                               "#8a9ea8", "#7b929d", "#6d8692", "#5e7a87", "#475c66", "#2f3d44"),
+
+  # Multi-hue sequential
+  "yellow_orange_red", "sequential", c("#efe1a7", "#e5bd72", "#d88236", "#cc3000", "#8c0000"),
+  "green_teal_blue",   "sequential", c("#d2efa7", "#72e584", "#00ccb8", "#00838c", "#004e66"),
+  "orange_red",        "sequential", c("#efc9a7", "#e59a72", "#cc3000", "#8c1000", "#660000"),
+  "yellow_orange",     "sequential", c("#efe1a7", "#e5c672", "#cc8200", "#8c4100", "#662f00"),
+  "yellow_green",      "sequential", c("#f8f4df", "#e5e172", "#b4cc00", "#698c00", "#3d6600"),
+  "green_teal",        "sequential", c("#d2efa7", "#8de572", "#00cc1f", "#008c4b", "#00665c"),
+  "teal_blue",         "sequential", c("#a7efe8", "#72e5e3", "#00becc", "#00778c", "#004e66"),
+  "red_purple",        "sequential", c("#efa7a7", "#e5729e", "#cc0099", "#77008c", "#310066"),
+
+  # Multi-hue divergent
+  "yellow_purple", "divergent", c("#8c7200", "#ac8c00", "#cca600", "#d8ba36", "#e5d072", "#e3e8eb",
+                                  "#aa72e5", "#8436d8", "#6300cc", "#5300ac", "#44008c"),
+  "orange_blue",   "divergent", c("#8c4100", "#ac5000", "#cc5f00", "#d88236", "#e5a872", "#e3e8eb",
+                                  "#72cae5", "#36b2d8", "#009ccc", "#0084ac", "#006b8c"),
+  "red_teal",      "divergent", c("#660000", "#8c0000", "#cc0000", "#d83636", "#e57272", "#e3e8eb",
+                                  "#72e5db", "#36d8ca", "#00ccb8", "#00ac9c", "#008c7e"),
+  "purple_green",  "divergent", c("#44008c", "#5300ac", "#6300cc", "#8436d8", "#aa72e5", "#e3e8eb",
+                                  "#b7e572", "#97d836", "#7acc00", "#67ac00", "#548c00"),
+  "blue_yellow",   "divergent", c("#006b8c", "#0084ac", "#009ccc", "#36b2d8", "#72cae5", "#e3e8eb",
+                                  "#e5d072", "#d8ba36", "#cca600", "#ac8c00", "#8c7200"),
+  "teal_orange",   "divergent", c("#008c7e", "#00ac9c", "#00ccb8", "#36d8ca", "#72e5db", "#e3e8eb",
+                                  "#e5a872", "#d88236", "#cc5f00", "#ac5000", "#8c4100"),
+  "green_red",     "divergent", c("#548c00", "#67ac00", "#7acc00", "#97d836", "#b7e572", "#e3e8eb",
+                                  "#e57272", "#d83636", "#cc0000", "#8c0000", "#660000")
+)
+
 # Establish plotting constants in bigpts (1/72 of inch)
 cmapplot_globals$consts <- list(
   lwd_gridline = 0.3,

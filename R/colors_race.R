@@ -8,7 +8,7 @@
 #'
 #' @noRd
 make_race_palette <- function(white, black, hispanic, asian, other) {
-    race_palette <- cmap_palettes$race
+    race_palette <- fetch_pal("race")
     if (!missing(white)) { names(race_palette)[1] <- white }
     if (!missing(black)) { names(race_palette)[2] <- black }
     if (!missing(hispanic)) { names(race_palette)[3] <- hispanic }

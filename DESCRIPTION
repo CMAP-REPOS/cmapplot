@@ -53,12 +53,12 @@ Imports:
     rstudioapi,
     scales,
     stringr,
-    systemfonts
+    systemfonts,
+    tibble
 Suggests:
     knitr,
     rmarkdown,
     testthat,
-    tibble,
     tidyverse
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr

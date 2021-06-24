@@ -6,10 +6,12 @@ This is a version-level update that includes many fixes and new features and int
 ### New features
 * cmapplot now utilizes the new systemfonts package for custom font rendering, rather than sysfonts on Windows and X11fonts on Mac and other Unix-based machines. In addition, raster exports from `finalize_plot` now rely on the new raster drawing package ragg. These changes improve font accuracy and consistency across platforms. Note that this improvement does not yet extend to svg outputs, but may in the future (#134). 
 * When an axis breaks are 4-digit years, new function `abbr_years` allows the conversion of specific years to 2-digit abbreviations, as is common on some designed CMAP graphics.
-* cmapplot_globals, which contains key package constants, is now an internal environment rather than an exported list. It can be accessed via new functions `get_cmapplot_globals` and `get_cmapplot_global`. Constants can now be overridden by the user for the current session by using `set_cmapplot_global`. Note that this does not yet apply to geom aesthetics set by the package, but may in the future (issue #117).
+* `cmapplot_globals`, which contains key package constants, is now an internal environment rather than an exported list. It can be accessed via new functions `get_cmapplot_globals` and `get_cmapplot_global`. Constants can now be overridden by the user for the current session by using `set_cmapplot_global`. Note that this does not yet apply to geom aesthetics set by the package, but may in the future (issue #117).
+* All palettes programmed into the package have been moved into a tibble at `cmapplot_globals$palettes`. A new function `fetch_pal` can be used to get details about any specific palette. 
 
 ### Bug fixes
 * Continuous color gradients can now be used on discrete color scales. E.g. `cmap_color_discrete` and `cmap_fill_discrete` can now call gradients as well as discrete palettes (see #70 and #119)
+* Nomenclature in help files (e.g. "palette" vs "scale") has been adjusted for clarity.
 * internal table `recessions` has been updated to include the business cycle contraction that began in Feb 202 (no end date for this cycle yet). 
 * `geom_recessions` and related `update_recessions` have been updated to allow for ongoing recessions, improve NBER source for recessions table, and decrease likelihood of data fetch errors. 
 
@@ -22,6 +24,8 @@ This is a version-level update that includes many fixes and new features and int
 * **This package will now only render Whitney Fonts in RStudio when RStudio version >= 1.4**
 * `finalize_plot`'s `window` mode has been disabled for now, due to inability to use ragg drivers in independent window devices. Use `mode = "plot"` and click the "Zoom" button in the plot window instead.
 * `cmapplot_globals`, the exported list of package constants, has been removed (See new features `set_cmapplot_global` etc)
+* Color lists `cmap_palettes` and `cmap_gradients` have been removed (This information has been moved to `cmapplot_globals$palettes`. To access palette colors directly, use, say `fetch_pal("reds")` rather than `cmap_gradients$reds`. 
+* `viz_palette` and `viz_gradient` now take as a first argument either the name of a palette (e.g. `"reds"`) or the color palette itself (e.g. `fetch_pal("reds")`). `viz_palette(cmap_gradient$reds)` no longer works.
 * `integer_breaks` removed from package 
 
 
