@@ -1,5 +1,5 @@
 # cmapplot 1.2.0
-PR # 123
+PR #123
 
 This is a version-level update that includes many fixes and new features and introduces new dependencies, most significantly RStudio 1.4 or greater.
 
