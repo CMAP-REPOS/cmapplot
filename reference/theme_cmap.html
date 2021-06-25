@@ -81,7 +81,7 @@ accordance with CMAP design standards." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -183,10 +183,11 @@ details for unexpected outcomes when using these arguments along with
       <th>hline, vline</th>
       <td><p>Numeric, the location of a strong horizontal or vertical
 line to be added to the plot. Use <code>hline = 0</code>, for example, to place a
-line at y = 0 to differentiate between positive and negative values. The width
-of this line is determined by <code>cmapplot_globals$lwd_strongline</code>. Note that
-on most displays the difference between this line and gridlines is impossible
-to discern in R. The difference will be visible upon export.</p></td>
+line at y = 0 to differentiate between positive and negative values. The
+width of this line is determined by
+<code>cmapplot_globals$consts$lwd_strongline</code>. Note that on most displays
+the difference between this line and gridlines is impossible to discern in
+R. The difference will be visible upon export.</p></td>
     </tr>
     <tr>
       <th>gridlines</th>
@@ -234,8 +235,8 @@ rectangles around all <code>geom_rect()</code> elements for debugging.</p></td>
     <tr>
       <th>overrides</th>
       <td><p>Named list, overrides the default drawing attributes defined
-in <code>cmapplot_globals$consts</code> which are drawn by <code>theme_cmap</code>.
-Units are in bigpts (1/72 of an inch).</p></td>
+in <code>cmapplot_globals$consts</code> which are drawn by
+<code>theme_cmap</code>. Units are in bigpts (1/72 of an inch).</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -250,8 +251,8 @@ function to override any elements of the default CMAP theme.</p></td>
 undesireable outcomes in a ggplot that also invokes <code>coord_flip()</code>. Under
 the hood, <code>theme_cmap(xlab = "foo")</code> both sets <code>ggplot2::xlab =
 "foo"</code> and 'turns on' the ggplot theme element <code>axis.title.x</code>. With
-<code>coord_flip()</code>, the xlab travels with the data (becoming the ylab) but the
-theme modifier stays on the x axis. To solve this, rewrite your ggplot
+<code>coord_flip()</code>, the xlab travels with the data (becoming the ylab) but
+the theme modifier stays on the x axis. To solve this, rewrite your ggplot
 construction to avoid <code>coord_flip()</code> or manually turn off and on the
 correct elements from ggplot2's <code><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></code> function in the
 <code>...</code> of this function.</p>
@@ -293,7 +294,8 @@ correct elements from ggplot2's <code><a href='https://ggplot2.tidyverse.org/ref
 
       <footer>
       <div class="copyright">
-  <p>Developed by Matthew Stern, Sarah Buchhorn, Daniel Comeaux, Martin Menninger, Noel Peterson, Greta Ritzenthaler.</p>
+  <p>Developed by Matthew Stern, Sarah Buchhorn, Daniel Comeaux, Martin Menninger, Noel Peterson, Greta Ritzenthaler, <a href='https://www.cmap.illinois.gov'><img src="https://gist.githubusercontent.com/nmpeterson/c0d9b113b9ddbf17dbf5d3f875d58fb6/raw/08db1b4906b20af2f704e8d80a664b4599bf3cbc/cmap_logo_long.svg" height="28" alt="Chicago Metropolitan Agency for Planning logo">
+</a>.</p>
 </div>
 
 <div class="pkgdown">

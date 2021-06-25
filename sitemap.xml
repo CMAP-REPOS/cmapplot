@@ -4,6 +4,9 @@
     <loc>https://cmap-repos.github.io/cmapplot/index.html</loc>
   </url>
   <url>
+    <loc>https://cmap-repos.github.io/cmapplot/reference/abbr_years.html</loc>
+  </url>
+  <url>
     <loc>https://cmap-repos.github.io/cmapplot/reference/cluster_jobchange.html</loc>
   </url>
   <url>
@@ -22,16 +25,7 @@
     <loc>https://cmap-repos.github.io/cmapplot/reference/cmap_fill_race.html</loc>
   </url>
   <url>
-    <loc>https://cmap-repos.github.io/cmapplot/reference/cmap_gradients.html</loc>
-  </url>
-  <url>
-    <loc>https://cmap-repos.github.io/cmapplot/reference/cmap_palettes.html</loc>
-  </url>
-  <url>
     <loc>https://cmap-repos.github.io/cmapplot/reference/cmapplot.html</loc>
-  </url>
-  <url>
-    <loc>https://cmap-repos.github.io/cmapplot/reference/cmapplot_globals.html</loc>
   </url>
   <url>
     <loc>https://cmap-repos.github.io/cmapplot/reference/customproto.html</loc>
@@ -52,10 +46,10 @@
     <loc>https://cmap-repos.github.io/cmapplot/reference/geom_text_lastonly.html</loc>
   </url>
   <url>
-    <loc>https://cmap-repos.github.io/cmapplot/reference/grp_over_time.html</loc>
+    <loc>https://cmap-repos.github.io/cmapplot/reference/get_cmapplot_globals.html</loc>
   </url>
   <url>
-    <loc>https://cmap-repos.github.io/cmapplot/reference/integer_breaks.html</loc>
+    <loc>https://cmap-repos.github.io/cmapplot/reference/grp_over_time.html</loc>
   </url>
   <url>
     <loc>https://cmap-repos.github.io/cmapplot/reference/peer_grp.html</loc>
@@ -80,6 +74,9 @@
   </url>
   <url>
     <loc>https://cmap-repos.github.io/cmapplot/reference/vehicle_ownership.html</loc>
+  </url>
+  <url>
+    <loc>https://cmap-repos.github.io/cmapplot/reference/viz_palette.html</loc>
   </url>
   <url>
     <loc>https://cmap-repos.github.io/cmapplot/articles/colors.html</loc>

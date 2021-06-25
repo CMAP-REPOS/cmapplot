@@ -82,7 +82,7 @@ by default, both rectangles and text identifying each recession." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -169,6 +169,7 @@ by default, both rectangles and text identifying each recession.</p>
   rect_aes <span class='op'>=</span> <span class='cn'>NULL</span>,
   text_aes <span class='op'>=</span> <span class='cn'>NULL</span>,
   update_recessions <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  show_ongoing <span class='op'>=</span> <span class='cn'>TRUE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -225,12 +226,22 @@ rectangle and text geoms, respectively.</p></td>
     <tr>
       <th>update_recessions</th>
       <td><p>Logical or data frame. <code>FALSE</code>, the default,
-relies on the package's built in recessions table. <code>TRUE</code> calls the
-function <code>update_recessions</code>, which attempts to fetch the
-current recessions table from the NBER website. A custom data table of
-recessions can also be passed to this argument, but it must be structured
-identically to the six-column data table described in the the documentation
-file for the function <code>update_recessions</code>.</p></td>
+relies on the package's built in recessions table, which was last updated in
+March 2021 and is loaded into the <code>sysdata.R</code> file located in the
+<code>R</code> directory. <code>TRUE</code> calls the function
+<code>update_recessions</code>, which attempts to fetch the current recessions
+table from the NBER website. A custom data table of recessions can also be
+passed to this argument, but it must be structured identically to the
+five-column data table described in the the documentation file for the
+function <code>update_recessions</code>.</p></td>
+    </tr>
+    <tr>
+      <th>show_ongoing</th>
+      <td><p>Logical. <code>TRUE</code>, the default, will display an ongoing
+recession that does not yet have a defined end date. If an ongoing recession
+exists, it will be displayed as extending through the maximum extent of the
+graph's data (up to 2200). <code>FALSE</code> will remove the ongoing recession
+from the graph.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -338,7 +349,8 @@ mapping <span class='op'>=</span> <span class='fu'>aes</span><span class='op'>(<
 
       <footer>
       <div class="copyright">
-  <p>Developed by Matthew Stern, Sarah Buchhorn, Daniel Comeaux, Martin Menninger, Noel Peterson, Greta Ritzenthaler.</p>
+  <p>Developed by Matthew Stern, Sarah Buchhorn, Daniel Comeaux, Martin Menninger, Noel Peterson, Greta Ritzenthaler, <a href='https://www.cmap.illinois.gov'><img src="https://gist.githubusercontent.com/nmpeterson/c0d9b113b9ddbf17dbf5d3f875d58fb6/raw/08db1b4906b20af2f704e8d80a664b4599bf3cbc/cmap_logo_long.svg" height="28" alt="Chicago Metropolitan Agency for Planning logo">
+</a>.</p>
 </div>
 
 <div class="pkgdown">

@@ -51,9 +51,8 @@
 your title and caption to the left, add a horizontal line on top, and make
 other adjustments. It can show you the final plot and/or export it as a raster
 or vector file. This function will not apply CMAP design standards to the plot
-itself: use with theme_cmap() for that. Exports from this function use
-Cairo graphics drivers, while drawing within R is done with default (Windows)
-drivers." />
+itself: use with theme_cmap() for that. This function uses ragg drivers
+in R and for raster exports, svg for svg, and cairo_pdf for PDFs." />
 <meta property="og:image" content="https://cmap-repos.github.io/cmapplot/logo.png" />
 
 
@@ -86,7 +85,7 @@ drivers." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -159,9 +158,8 @@ drivers." />
 your title and caption to the left, add a horizontal line on top, and make
 other adjustments. It can show you the final plot and/or export it as a raster
 or vector file. This function will not apply CMAP design standards to the plot
-itself: use with <code><a href='theme_cmap.html'>theme_cmap()</a></code> for that. Exports from this function use
-Cairo graphics drivers, while drawing within R is done with default (Windows)
-drivers.</p>
+itself: use with <code><a href='theme_cmap.html'>theme_cmap()</a></code> for that. This function uses ragg drivers
+in R and for raster exports, svg for svg, and cairo_pdf for PDFs.</p>
     </div>
 
     <pre class="usage"><span class='fu'>finalize_plot</span><span class='op'>(</span>
@@ -228,9 +226,8 @@ plot, 0 aligns left and 1 aligns right. 0.5 aligns center.</p></td>
     <tr>
       <th>mode</th>
       <td><p>Vector, the action(s) to be taken with the plot. View in R with
-<code>plot</code>, the default, or <code>window</code> (<code>window</code> only works on
-computers running Windows). Save using any of the following: <code>png</code>,
-<code>tiff</code>, <code>jpeg</code>, <code>bmp</code>, <code>svg</code>, <code>pdf</code>, <code>ps</code>. Run
+<code>plot</code>, the default. Save using any of the following: <code>png</code>,
+<code>tiff</code>, <code>jpeg</code>, <code>svg</code>, <code>pdf</code>, <code>ps</code>. Run
 multiple simultaneous outputs with a vector, e.g. <code><a href='https://rdrr.io/r/base/c.html'>c("plot", "png",
 "pdf")</a></code>.</p></td>
     </tr>
@@ -326,10 +323,10 @@ function to override any elements of the plot's theme when drawing.</p></td>
 <span class='fu'>finalize_plot</span><span class='op'>(</span><span class='va'>econ_plot</span>,
                <span class='st'>"Cluster-level employment changes in the Chicago MSA, 2001-17"</span>,
                <span class='st'>"Source: Chicago Metropolitan Agency for Planning analysis"</span>,
-               mode <span class='op'>=</span> <span class='st'>"window"</span>,
+               mode <span class='op'>=</span> <span class='st'>"plot"</span>,
                height <span class='op'>=</span> <span class='fl'>6</span>,
                width <span class='op'>=</span> <span class='fl'>8</span>,
-               title_width <span class='op'>=</span> <span class='fl'>2.5</span>,
+               sidebar_width <span class='op'>=</span> <span class='fl'>2.5</span>,
                overrides <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>margin_plot_r <span class='op'>=</span> <span class='fl'>30</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='va'>transit_plot</span> <span class='op'>&lt;-</span> <span class='va'>transit_ridership</span> <span class='op'>%&gt;%</span>
@@ -364,7 +361,8 @@ function to override any elements of the plot's theme when drawing.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Matthew Stern, Sarah Buchhorn, Daniel Comeaux, Martin Menninger, Noel Peterson, Greta Ritzenthaler.</p>
+  <p>Developed by Matthew Stern, Sarah Buchhorn, Daniel Comeaux, Martin Menninger, Noel Peterson, Greta Ritzenthaler, <a href='https://www.cmap.illinois.gov'><img src="https://gist.githubusercontent.com/nmpeterson/c0d9b113b9ddbf17dbf5d3f875d58fb6/raw/08db1b4906b20af2f704e8d80a664b4599bf3cbc/cmap_logo_long.svg" height="28" alt="Chicago Metropolitan Agency for Planning logo">
+</a>.</p>
 </div>
 
 <div class="pkgdown">

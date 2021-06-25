@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -111,7 +111,7 @@
 
     
     
-<p>This vignette is a showcase of cmapplot’s full capabilities by replicating as closely as possible a variety of published CMAP graphics. The sample code here can be used as a starting point for creating a number of common chart types. Before running any of this code, be sure to load the both tidyverse and cmapplot packages with <code><a href="http://tidyverse.tidyverse.org">library(tidyverse)</a></code> and <code><a href="https://cmap-repos.github.io/cmapplot">library(cmapplot)</a></code>.</p>
+<p>This vignette is a showcase of cmapplot’s full capabilities by replicating as closely as possible a variety of published CMAP graphics. The sample code here can be used as a starting point for creating a number of common chart types. Before running any of this code, be sure to load the both tidyverse and cmapplot packages with <code><a href="https://tidyverse.tidyverse.org">library(tidyverse)</a></code> and <code><a href="https://cmap-repos.github.io/cmapplot">library(cmapplot)</a></code>.</p>
 <div id="line-graph" class="section level2">
 <h2 class="hasAnchor">
 <a href="#line-graph" class="anchor"></a>Line graph</h2>
@@ -178,14 +178,12 @@
   
   <span class="co"># Tweak plot layout</span>
   height <span class="op">=</span> <span class="fl">4.5</span>,
-  title_width <span class="op">=</span> <span class="fl">2.6</span>,
+  sidebar_width <span class="op">=</span> <span class="fl">2.6</span>,
   overrides <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
     margin_plot_r <span class="op">=</span> <span class="fl">0</span>,  <span class="co"># Eliminate distance btwn plot and right side of image</span>
     margin_legend_b <span class="op">=</span> <span class="fl">25</span>  <span class="co"># Larger than usual gap between legend and plot</span>
   <span class="op">)</span>
-<span class="op">)</span>
-<span class="co">#&gt; Warning in finalize_plot(plot = p, title = "Cumulative growth in real gross regional product, 2001-19", : The argument `title_width` is deprecated and will be removed in a future release.</span>
-<span class="co">#&gt;   Please update your code to use `sidebar_width` instead.</span></code></pre></div>
+<span class="op">)</span></code></pre></div>
 <p><img src="cookbook_files/figure-html/line-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div id="original-graphic" class="section level4">
@@ -285,8 +283,8 @@
   <span class="co"># Manually adjust point size/color aesthetics and legend items</span>
   <span class="fu">scale_size</span><span class="op">(</span>range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">25</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># Minimum/maximum size of points</span>
   <span class="fu">scale_color_manual</span><span class="op">(</span>
-    values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>`Increase` <span class="op">=</span> <span class="va">cmap_palettes</span><span class="op">$</span><span class="va">legislation</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,  <span class="co"># Modify point colors</span>
-               `Decrease` <span class="op">=</span> <span class="va">cmap_palettes</span><span class="op">$</span><span class="va">legislation</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>,
+    values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>`Increase` <span class="op">=</span> <span class="fu"><a href="../reference/viz_gradient.html">fetch_pal</a></span><span class="op">(</span><span class="st">"legislation"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,  <span class="co"># Modify point colors</span>
+               `Decrease` <span class="op">=</span> <span class="fu"><a href="../reference/viz_gradient.html">fetch_pal</a></span><span class="op">(</span><span class="st">"legislation"</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>,
     breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Increase"</span>, <span class="st">"Decrease"</span><span class="op">)</span>,  <span class="co"># Specify order of legend items</span>
     labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Increase in labor force\nparticipation rate"</span>,  <span class="co"># Modify legend labels for each color</span>
                <span class="st">"Decrease in labor force\nparticipation rate"</span><span class="op">)</span>  <span class="co"># ("\n" inserts a line break)</span>
@@ -487,11 +485,9 @@
     (as of August 19, 2020)."</span>,
     <span class="co"># Note that we used two "&lt;br&gt;" tags to create a line break and empty line </span>
     <span class="co">#  between sources and notes.</span>
-  title_width <span class="op">=</span> <span class="fl">2.4</span>,  <span class="co"># Manually specify title width</span>
+  sidebar_width <span class="op">=</span> <span class="fl">2.4</span>,  <span class="co"># Manually specify sidebar width</span>
   overrides <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>margin_legend_b <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>  <span class="co"># Increase margin below legend</span>
-<span class="op">)</span>
-<span class="co">#&gt; Warning in finalize_plot(plot = p, title = "Average self-response rates in Chicago region census tracts by\n    majority race and ethnicity", : The argument `title_width` is deprecated and will be removed in a future release.</span>
-<span class="co">#&gt;   Please update your code to use `sidebar_width` instead.</span></code></pre></div>
+<span class="op">)</span></code></pre></div>
 <p><img src="cookbook_files/figure-html/clusterbar-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div id="original-graphic-3" class="section level4">
@@ -711,9 +707,7 @@
   plot <span class="op">=</span> <span class="va">p</span>,
   title <span class="op">=</span> <span class="st">"Regional emissions by sector, 2015"</span>,
   caption <span class="op">=</span> <span class="st">"Source: Chicago Metropolitan Agency for Planning."</span>,
-  caption_valign <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span>
-<span class="co">#&gt; Warning in finalize_plot(plot = p, title = "Regional emissions by sector, 2015", : The argument `caption_valign` is deprecated and will be removed in a future release.</span>
-<span class="co">#&gt;   Please update your code to use `caption_align` (with a value between 0-1) instead.</span></code></pre></div>
+  caption_align <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <p><img src="cookbook_files/figure-html/donut-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div id="original-graphic-5" class="section level4">
@@ -802,7 +796,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Matthew Stern, Sarah Buchhorn, Daniel Comeaux, Martin Menninger, Noel Peterson, Greta Ritzenthaler.</p>
+  <p>Developed by Matthew Stern, Sarah Buchhorn, Daniel Comeaux, Martin Menninger, Noel Peterson, Greta Ritzenthaler, <a href="https://www.cmap.illinois.gov"><img src="https://gist.githubusercontent.com/nmpeterson/c0d9b113b9ddbf17dbf5d3f875d58fb6/raw/08db1b4906b20af2f704e8d80a664b4599bf3cbc/cmap_logo_long.svg" height="28" alt="Chicago Metropolitan Agency for Planning logo"></a>.</p>
 </div>
 
 <div class="pkgdown">

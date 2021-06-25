@@ -47,11 +47,12 @@
 
 
 <meta property="og:title" content="Update recessions table — update_recessions" />
-<meta property="og:description" content="The cmapplot package contains an internal dataset of all recessions in
-American history as recorded by the National Bureau of Economic Research
-(NBER). However, users may need to replace the built-in data, such as in the
-event of new recessions and/or changes to the NBER consensus on recession
-dates. This function fetches and reformats this data from the NBER website." />
+<meta property="og:description" content="The cmapplot package contains an internal dataset recessions of all
+recessions in American history as recorded by the National Bureau of Economic
+Research (NBER). However, users may need to replace the built-in data, such as
+in the event of new recessions and/or changes to the NBER consensus on
+recession dates. This function fetches and interprets this data from the NBER
+website." />
 <meta property="og:image" content="https://cmap-repos.github.io/cmapplot/logo.png" />
 
 
@@ -84,7 +85,7 @@ dates. This function fetches and reformats this data from the NBER website." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -153,11 +154,12 @@ dates. This function fetches and reformats this data from the NBER website." />
     </div>
 
     <div class="ref-description">
-    <p>The <code>cmapplot</code> package contains an internal dataset of all recessions in
-American history as recorded by the National Bureau of Economic Research
-(NBER). However, users may need to replace the built-in data, such as in the
-event of new recessions and/or changes to the NBER consensus on recession
-dates. This function fetches and reformats this data from the NBER website.</p>
+    <p>The cmapplot package contains an internal dataset <code>recessions</code> of all
+recessions in American history as recorded by the National Bureau of Economic
+Research (NBER). However, users may need to replace the built-in data, such as
+in the event of new recessions and/or changes to the NBER consensus on
+recession dates. This function fetches and interprets this data from the NBER
+website.</p>
     </div>
 
     <pre class="usage"><span class='fu'>update_recessions</span><span class='op'>(</span>url <span class='op'>=</span> <span class='cn'>NULL</span>, quietly <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
@@ -167,9 +169,10 @@ dates. This function fetches and reformats this data from the NBER website.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>url</th>
-      <td><p>Char, the web location of the NBER machine-readable Excel file.
-The default, <code>NULL</code>, uses the most recently identified URL known to
-the package development team.</p></td>
+      <td><p>Char, the web location of the NBER machine-readable CSV file. The
+default, <code>NULL</code>, uses the most recently identified URL known to the
+package development team, which appears to be the most stable location for
+updates over time.</p></td>
     </tr>
     <tr>
       <th>quietly</th>
@@ -180,17 +183,16 @@ the package development team.</p></td>
 
     <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
 
-    <p><a href='https://www.nber.org/cycles/NBER chronology.xlsx'>https://www.nber.org/cycles/NBER chronology.xlsx</a></p>
+    <p><a href='https://www.nber.org/data/cycles/cycle dates pasted.csv'>https://www.nber.org/data/cycles/cycle dates pasted.csv</a></p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble with the following variables:</p><ul>
+    <p>A data frame with the following variables:</p><ul>
 <li><p><code>start_char, end_char</code>: Chr. Easily readable labels for the beginning
-  and end of the recession</p></li>
-<li><p><code>start_num, end_num</code>: Double. Dates
-  expressed as years, with decimels referring to months. (e.g. April = 4/12 =
-  .333)</p></li>
-<li><p><code>start_date, end_date</code>: Date. Dates expressed in R
-  datetime format, using the first day of the specified month.</p></li>
+ and end of the recession.</p></li>
+<li><p><code>start_date, end_date</code>: Date. Dates
+ expressed in R datetime format, using the first day of the specified month.</p></li>
+<li><p><code>ongoing</code>: Logical. Whether or not the recession is ongoing as of
+ the latest available NBER data.</p></li>
 </ul>
 
 
@@ -201,7 +203,7 @@ the package development team.</p></td>
 <span class='co'># package by running the following code:</span>
 <span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
   <span class='va'>recessions</span> <span class='op'>&lt;-</span> <span class='fu'>update_recessions</span><span class='op'>(</span><span class='op'>)</span>
-  <span class='fu'>usethis</span><span class='fu'>::</span><span class='fu'>use_data</span><span class='op'>(</span><span class='va'>recessions</span>, internal <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+  <span class='fu'>usethis</span><span class='fu'>::</span><span class='fu'>use_data</span><span class='op'>(</span><span class='va'>recessions</span>, internal <span class='op'>=</span> <span class='cn'>TRUE</span>, overwrite <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='op'>}</span>
 
 </div></pre>
@@ -216,7 +218,8 @@ the package development team.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Matthew Stern, Sarah Buchhorn, Daniel Comeaux, Martin Menninger, Noel Peterson, Greta Ritzenthaler.</p>
+  <p>Developed by Matthew Stern, Sarah Buchhorn, Daniel Comeaux, Martin Menninger, Noel Peterson, Greta Ritzenthaler, <a href='https://www.cmap.illinois.gov'><img src="https://gist.githubusercontent.com/nmpeterson/c0d9b113b9ddbf17dbf5d3f875d58fb6/raw/08db1b4906b20af2f704e8d80a664b4599bf3cbc/cmap_logo_long.svg" height="28" alt="Chicago Metropolitan Agency for Planning logo">
+</a>.</p>
 </div>
 
 <div class="pkgdown">
