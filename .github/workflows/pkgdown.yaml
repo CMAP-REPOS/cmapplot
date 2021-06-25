@@ -74,7 +74,7 @@ jobs:
         run: R CMD INSTALL .
 
       - name: Deploy package to live branch
-        if: ${{ github.ref == 'refs/heads/main' }}
+        if: ${{ github.ref == 'refs/heads/master' }}
         run: |
           echo "This is $GITHUB_REF. Deploying to gh-pages branch."
           git config --local user.email "actions@github.com"
@@ -82,7 +82,7 @@ jobs:
           Rscript -e 'pkgdown::deploy_to_branch(clean = TRUE)'
 
       - name: Deploy package to test branch
-        if: ${{ github.ref != 'refs/heads/main' }}
+        if: ${{ github.ref != 'refs/heads/master' }}
         run: |
           echo "This is $GITHUB_REF. Deploying to gh-pages-test branch."
           git config --local user.email "actions@github.com"
