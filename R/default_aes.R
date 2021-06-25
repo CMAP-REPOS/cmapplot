@@ -58,7 +58,7 @@ init_cmap_default_aes <- function () {
 #' style standards, because (at least at the moment) setting geom aesthetic
 #' defaults on a plot-by-plot basis (such as with \code{ggplot2::theme}) is not
 #' possible. The geoms impacted are stored in
-#' \code{cmapplot_globals$geoms_to_change}.
+#' \code{cmapplot_globals$geoms_that_change}.
 #'
 #' These functions are employed implicitly within \code{\link{finalize_plot}} to
 #' apply preferred aesthetic defaults to final outputs. They are only necessary

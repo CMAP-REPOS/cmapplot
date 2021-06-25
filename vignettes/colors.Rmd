@@ -14,19 +14,45 @@ knitr::opts_chunk$set(
   fig.width = 7,
   fig.asp = 400/670,
   fig.retina = 4,
-  fig.align = "center"
+  fig.align = "center",
+  dev = "ragg_png"
 )
 
 library(tidyverse)
 library(cmapplot)
 ```
 
-Palettes based on the CMAP color palette can be applied directly to ggplot2 graphics. The package contains both discrete and continuous color palettes. Each type of palette can be applied to either the color or fill attributes of a ggplot.
+There are `r nrow(get_cmapplot_global("palettes"))` color palettes in the cmapplot package, across three categories: discrete, sequential, and divergent. Mirroring the underlying functionality of ggplot2, cmapplot can apply these color palettes as either `discrete` or `continuous` scales to either the `color` (outline) or `fill` attributes of a ggplot.
 
+This table lists all palettes currently available in the package:
 
-## Discrete palettes
+```{r palettes, echo = FALSE, results = 'asis'}
 
-Add discrete palettes by adding either the `cmap_fill_discrete()` or `cmap_color_discrete()` function to your plot construction. Note that discrete palettes will automatically interpolate additional colors if the dataset has more colors than the palette. This can be helpful but is not ideal for finished graphics. See `?cmap_palettes` for displays of all discrete palettes.
+pals <- get_cmapplot_global("palettes")
+discrete <- filter(pals, type == "discrete")[["name"]]
+sequential1 <- filter(pals, type == "sequential", !stringr::str_detect(name, "_"))[["name"]]
+sequential2 <- filter(pals, type == "sequential", stringr::str_detect(name, "_"))[["name"]]
+divergent <- filter(pals, type == "divergent")[["name"]]
+
+maxlength <- max(length(discrete), length(sequential1), length(sequential2), length(divergent))
+length(discrete) <- length(sequential1) <- length(sequential2) <- length(divergent) <- maxlength
+
+out <- tibble(Discrete = discrete, 
+              Sequential = sequential1,
+              `Sequential (multi-hue)` = sequential2,
+              Divergent = divergent)
+out[is.na(out)] <- ""
+
+knitr::kable(out)
+```
+
+## Using CMAP color palettes in plots
+
+### Discrete scales
+
+Discrete color scales are used to assign colors to discrete bins, such as the lines in a time series line chart. Discrete scale functions work with any palette -- discrete, sequential, or divergent. Add a discrete color scale by calling either the `cmap_fill_discrete()` or `cmap_color_discrete()` function in your plot construction. 
+
+Note that discrete scales will automatically interpolate additional colors if the dataset has more colors than the underlying palette. This can be helpful but is not ideal for finished graphics.
 
 ```{r color_discrete, message = FALSE}
 df <- dplyr::filter(grp_over_time, category == "Goods-Producing")
@@ -40,34 +66,11 @@ ggplot(data = df) +
   ggtitle("Real GRP of goods-producing clusters over time")
 ```
 
+### Race/ethnicity scale
 
-## Continuous palettes
+In order to maintain a consistent data language, CMAP uses specific colors for displaying data based on race and ethnicity. To map these colors to each demographic group, use `cmap_fill_race()` or `cmap_color_race()`. 
 
-Add continuous palettes by adding either the `cmap_fill_continuous()` or `cmap_color_continuous()` function to your plot construction. For example:
-
-```{r color_continuous, message = FALSE}
-df <- dplyr::filter(
-  percentile_wages,
-  cluster %in% c("Biopharmaceuticals", "Hospitality and Tourism", "Paper and Packaging")
-)
-
-ggplot(data = df) +
-  geom_point(mapping = aes(x = cluster, y = wage, color = percentile),
-             size = 5) +
-  scale_y_continuous(labels = scales::dollar) +
-  scale_x_discrete(labels = scales::label_wrap(18)) +
-  coord_flip() +
-  cmap_color_continuous(palette = "seq_red_purple") +
-  theme_cmap() +
-  ggtitle("Wage percentiles for key clusters")
-```
-
-If you're using a divergent palette, you can specify the midpoint where the divergence begins (default is zero). See `?cmap_gradients` for displays of all continuous palettes.
-
-
-## Race/ethnicity palette
-
-If you have a graph with categories based on race and ethnicity, there are functions to apply pre-determined colors for each demographic group: `cmap_fill_race()` and `cmap_color_race()`. In the arguments, specify the case-sensitive name of each group as it appears in your data. The function can be used even if your dataset does not contain every race/ethnicity category — simply omit the parameters for the missing categories.
+In the arguments, specify the case-sensitive name of each group as it appears in your data. The functions can be used even if your dataset does not contain every race/ethnicity category — simply omit the parameters for the missing categories.
 
 ```{r color_race, message = FALSE}
 df <- dplyr::filter(
@@ -87,8 +90,27 @@ ggplot(data = df) +
   ggtitle("Percent employed in specialized traded clusters, by race")
 ```
 
+### Continuous scales
+Continuous color scales work with sequential and divergent palettes. Add a continuous scale by calling either the `cmap_fill_continuous()` or `cmap_color_continuous()` function in your plot construction. If you're using a divergent palette, you can specify the midpoint where the divergence begins (default is zero).
 
-## Highlighting categories
+```{r color_continuous, message = FALSE}
+df <- dplyr::filter(
+  percentile_wages,
+  cluster %in% c("Biopharmaceuticals", "Hospitality and Tourism", "Paper and Packaging")
+)
+
+ggplot(data = df) +
+  geom_point(mapping = aes(x = cluster, y = wage, color = percentile),
+             size = 5) +
+  scale_y_continuous(labels = scales::dollar) +
+  scale_x_discrete(labels = scales::label_wrap(18)) +
+  coord_flip() +
+  cmap_color_continuous(palette = "red_teal", middle = 50) +
+  theme_cmap() +
+  ggtitle("Wage percentiles for key clusters")
+```
+
+### Highlighting categories
 
 If you want to draw attention to a specific group in your graph, use `cmap_fill_highlight()` or `cmap_color_highlight()`. This will make your highlighted group one color and all other groups identical in another color. Specify the vector in your data that determines the groups, and then the value of the group to be singled out. Note that this *must* be the same vector specified in the `fill`/`color` aesthetic. The highlight and non-highlight colors have defaults, but can be changed with the `color_value` and `color_other` parameters, respectively. 
 
@@ -104,3 +126,40 @@ ggplot(data = df) +
   theme_cmap(show.legend = FALSE) +  # Legend is redundant in this example
   ggtitle("Annual passenger trips by service, in millions")
 ```
+
+
+## Available color palettes
+Palettes are stored in a tibble in the `cmapplot_globals` environment. This tibble can be accessed with `get_cmapplot_global("palettes")`, with specific details about any specific palette most easily accessed with `fetch_pal()`. Palettes can be visualized in the plot window with `viz_palette()` and `viz_gradient()`. 
+
+### Discrete palettes
+Use these palettes with `cmap_fill_discrete()` or `cmap_color_discrete()`:
+```{r show_discrete, echo = FALSE, fig.asp = 300/670}
+nms <- dplyr::filter(get_cmapplot_global("palettes"),  type == "discrete", name != "race")$name
+purrr::walk(nms, viz_palette)
+```
+
+The race palette is a special discrete palette, which should be used with the specific functions `cmap_fill_race()` or `cmap_color_race()`:
+```{r show_discrete_palettes, echo = FALSE, fig.asp = 300/670}
+viz_palette("race")
+```
+
+### Sequential palettes
+Use these palettes with `cmap_fill_continuous()`/`cmap_color_continuous()` or `cmap_fill_discrete()`/`cmap_color_discrete()`.
+```{r show_sequential, echo = FALSE, fig.asp = 300/670}
+nms <- dplyr::filter(get_cmapplot_global("palettes"),  type == "sequential")$name
+purrr::walk(nms, viz_gradient)
+```
+
+If you use a sequential palette for a discrete scale, the package will automatically choose colors from across the selected gradient and interpolate additional ones if needed. For example, the `blues` palette is shown below, interpolating nine colors from the initial palette list of seven.
+
+```{r show_sequential_discrete, echo = FALSE, fig.asp = 300/670}
+viz_palette("blues", num = 9)
+```
+
+### Divergent palettes
+Use these palettes with `cmap_fill_continuous()`/`cmap_color_continuous()` or `cmap_fill_discrete()`/`cmap_color_discrete()`. Using these palettes for a discrete scale will behave similarly to the discrete use of `blues` shown above.
+```{r show_diverent, echo = FALSE, fig.asp = 300/670}
+nms <- dplyr::filter(get_cmapplot_global("palettes"), type == "divergent")$name
+purrr::walk(nms, viz_gradient)
+```
+

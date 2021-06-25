@@ -15,7 +15,8 @@ knitr::opts_chunk$set(
   fig.asp = 400/670,
   fig.retina = 4,
   fig.align = "center",
-  out.width = "100%"
+  out.width = "100%",
+  dev = "ragg_png"
 )
 
 library(tidyverse)
@@ -91,7 +92,7 @@ finalize_plot(
   
   # Tweak plot layout
   height = 4.5,
-  title_width = 2.6,
+  sidebar_width = 2.6,
   overrides = list(
     margin_plot_r = 0,  # Eliminate distance btwn plot and right side of image
     margin_legend_b = 25  # Larger than usual gap between legend and plot
@@ -194,8 +195,8 @@ p <- ggplot(data = df, mapping = aes(x = TOT_POP_DIFF, y = LF_POP_DIFF)) +
   # Manually adjust point size/color aesthetics and legend items
   scale_size(range = c(5, 25)) +  # Minimum/maximum size of points
   scale_color_manual(
-    values = c(`Increase` = cmap_palettes$legislation[1],  # Modify point colors
-               `Decrease` = cmap_palettes$legislation[2]),
+    values = c(`Increase` = fetch_pal("legislation")[1],  # Modify point colors
+               `Decrease` = fetch_pal("legislation")[2]),
     breaks = c("Increase", "Decrease"),  # Specify order of legend items
     labels = c("Increase in labor force\nparticipation rate",  # Modify legend labels for each color
                "Decrease in labor force\nparticipation rate")  # ("\n" inserts a line break)
@@ -398,7 +399,7 @@ finalize_plot(
     (as of August 19, 2020).",
     # Note that we used two "<br>" tags to create a line break and empty line 
     #  between sources and notes.
-  title_width = 2.4,  # Manually specify title width
+  sidebar_width = 2.4,  # Manually specify sidebar width
   overrides = list(margin_legend_b = 50)  # Increase margin below legend
 )
 ```
@@ -621,7 +622,7 @@ finalize_plot(
   plot = p,
   title = "Regional emissions by sector, 2015",
   caption = "Source: Chicago Metropolitan Agency for Planning.",
-  caption_valign = "top")
+  caption_align = 1)
 ```
 
 #### Original graphic

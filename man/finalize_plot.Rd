@@ -54,9 +54,8 @@ aligns text to bottom; 1 aligns top. When the caption is located below the
 plot, 0 aligns left and 1 aligns right. 0.5 aligns center.}
 
 \item{mode}{Vector, the action(s) to be taken with the plot. View in R with
-\code{plot}, the default, or \code{window} (\code{window} only works on
-computers running Windows). Save using any of the following: \code{png},
-\code{tiff}, \code{jpeg}, \code{bmp}, \code{svg}, \code{pdf}, \code{ps}. Run
+\code{plot}, the default. Save using any of the following: \code{png},
+\code{tiff}, \code{jpeg}, \code{svg}, \code{pdf}, \code{ps}. Run
 multiple simultaneous outputs with a vector, e.g. \code{c("plot", "png",
 "pdf")}.}
 
@@ -116,9 +115,8 @@ Place a ggplot into a frame defined by CMAP design standards. It will align
 your title and caption to the left, add a horizontal line on top, and make
 other adjustments. It can show you the final plot and/or export it as a raster
 or vector file. This function will not apply CMAP design standards to the plot
-itself: use with \code{theme_cmap()} for that. Exports from this function use
-Cairo graphics drivers, while drawing within R is done with default (Windows)
-drivers.
+itself: use with \code{theme_cmap()} for that. This function uses ragg drivers
+in R and for raster exports, svg for svg, and cairo_pdf for PDFs.
 }
 \examples{
 \dontrun{
@@ -134,10 +132,10 @@ econ_plot <- ggplot(data = cluster_jobchange,
 finalize_plot(econ_plot,
                "Cluster-level employment changes in the Chicago MSA, 2001-17",
                "Source: Chicago Metropolitan Agency for Planning analysis",
-               mode = "window",
+               mode = "plot",
                height = 6,
                width = 8,
-               title_width = 2.5,
+               sidebar_width = 2.5,
                overrides = list(margin_plot_r = 30))
 
 transit_plot <- transit_ridership \%>\%

@@ -19,7 +19,7 @@ certain ggplot2 geoms. This is necessary for geoms to be "themed" to CMAP
 style standards, because (at least at the moment) setting geom aesthetic
 defaults on a plot-by-plot basis (such as with \code{ggplot2::theme}) is not
 possible. The geoms impacted are stored in
-\code{cmapplot_globals$geoms_to_change}.
+\code{cmapplot_globals$geoms_that_change}.
 }
 \details{
 These functions are employed implicitly within \code{\link{finalize_plot}} to

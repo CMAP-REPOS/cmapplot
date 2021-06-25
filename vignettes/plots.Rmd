@@ -14,7 +14,8 @@ knitr::opts_chunk$set(
   fig.width = 7,
   fig.asp = 400/670,
   fig.retina = 4,
-  fig.align = "center"
+  fig.align = "center",
+  dev = "ragg_png"
 )
 
 library(tidyverse)
@@ -82,12 +83,12 @@ p + theme_cmap(ylab = "Annual Ridership (Millions)",
 
 `theme_cmap()` also allows users to easily add tick marks on the x- and/or the y-axes, using the argument `axisticks`. Note that here, some additional manipulation of the y-axis scale is necessary for the axis ticks to touch the lowest horizontal gridline (this is to override `ggplot2`'s default behavior, which expands the scale slightly beyond the extent of the data for aesthetic reasons).
 ```{r mods2, message = FALSE}
-p + scale_y_continuous(breaks = c(0, 200, 400), 
-                       limits = c(-1, 575),
-                       expand = c(0, 0)) + 
+p + geom_line() +
+  scale_y_continuous(breaks = c(0, 200, 400), 
+                     limits = c(-1, 575),
+                     expand = c(0, 0)) + 
   theme_cmap(ylab = "Annual Ridership (Millions)",
-             axisticks = "x") +
-  geom_line()
+             axisticks = "x")
 ```
 
 ### Overriding plotting defaults
@@ -126,6 +127,8 @@ The function `geom_recessions()`, allows for the addition of rectangles (and tex
 
 `ggplot()` always draws geoms *on top* of base plot elements like gridlines. The default fill and alpha values for `geom_recessions()` are the most transparent way possible to achieve CMAP palette color `#002d49` when drawn on a white background — thus impacting the color of the gridlines as little as possible. 
 
+This function relies on the National Bureau of Economic Research's definitions of recessions. Details on how to update these dates, as well as how to provide your own, can be found in `geom_recessions()` and `update_recessions()`. If the most recent recession has not yet been declared over (as is the case in June 2021), the function will default to displaying this ongoing recession from its beginning through the end of the visualized data. If this is not desired (for example, if the visualization is of a projection far into the future), users can remove this ongoing recession by setting `show_ongoing = FALSE`. 
+
 ```{r recessions, message = FALSE}
 q <- ggplot(data = df, 
             mapping = aes(x = year, y = ridership, color = system)) +
@@ -143,13 +146,23 @@ The function `geom_text_lastonly()` allows the user to label only the final poin
 Due to ggplot2's underlying structure, `geom_text()` labels are clipped by the plot's default extent. Often, the right side of the plot will need to be expanded — or plot clipping turned off — for correct display of these labels. `?geom_text_lastonly` describes a number of methods to account for this.    
 
 ```{r textlast, message = FALSE}
-q <- q + geom_text_lastonly(
-  mapping = aes(label = round(ridership, digits = 0)), 
-  add_points = TRUE,
-  nudge_x = 0.5) +
+q <- q + geom_text_lastonly(mapping = aes(label = round(ridership, digits = 0)), 
+                            add_points = TRUE,
+                            nudge_x = 0.5) +
   coord_cartesian(clip = "off")
 
 q
+```
+
+### Abbreviating years in date axes
+
+By default, date axes with units in years display the full year for each axis label (e.g., 2000, 2001, 2002, 2003). In some cases, users may want to abbreviate some, but not all, of these axis labels, such as by maintaining the full year for the first label and abbreviating subsequent labels (e.g., 2000, '01, '02, '03). The function `abbr_years` enables users to do so, defaulting to abbreviating all years but the first. 
+
+This function uses syntax similar to those in the `scales::label_*()` family, and can be applied to a plot via the labels parameters of the `ggplot2::scale_x_continuous` or `ggplot2::scale_x_date()` functions (or their y-axis counterparts). Users can specify which years should be abbreviated by either their value (using `full_by_year`) or their position on the axis (using `full_by_pos`). More details are available in `?abbr_years`.
+
+```{r abbr_years, message = FALSE}
+p + geom_line() + theme_cmap() +
+  scale_x_continuous(labels = abbr_years(full_by_year = c(2000)))
 ```
 
 ### Applying CMAP default aesthetics
@@ -171,10 +184,9 @@ In addition, `theme_cmap()` provides a debug mode in which it draws outlines aro
 
 ```{r debug, message = FALSE}
 ggplot(data = df, 
-            mapping = aes(x = year, y = ridership, color = system)) +
+       mapping = aes(x = year, y = ridership, color = system)) +
   geom_recessions(ymin = 0) +
   geom_line() +
   theme_cmap(ylab = "Annual Ridership (Millions)",
              debug = TRUE)
 ```
-

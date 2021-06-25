@@ -6,11 +6,11 @@
 \alias{cmap_colour_continuous}
 \title{Apply continuous CMAP palettes (gradients) to ggplot2 aesthetics}
 \usage{
-cmap_fill_continuous(palette = "seq_reds", reverse = FALSE, middle = 0, ...)
+cmap_fill_continuous(palette = "blues", reverse = FALSE, middle = 0, ...)
 
-cmap_color_continuous(palette = "seq_reds", reverse = FALSE, middle = 0, ...)
+cmap_color_continuous(palette = "blues", reverse = FALSE, middle = 0, ...)
 
-cmap_colour_continuous(palette = "seq_reds", reverse = FALSE, middle = 0, ...)
+cmap_colour_continuous(palette = "blues", reverse = FALSE, middle = 0, ...)
 }
 \arguments{
 \item{palette}{String; Choose from 'cmap_gradients' list}
@@ -40,6 +40,6 @@ to 0). See \code{\link{cmap_gradients}} for a listing of available gradients.
 ggplot(dplyr::filter(grp_over_time, cluster=="Biopharmaceuticals"),
        aes(x = year, y = realgrp, color = realgrp)) +
     geom_line() +
-    cmap_color_continuous(palette = "seq_red_purple")
+    cmap_color_continuous(palette = "red_purple")
 
 }

@@ -7,8 +7,8 @@
 #'undesireable outcomes in a ggplot that also invokes \code{coord_flip()}. Under
 #'the hood, \code{theme_cmap(xlab = "foo")} both sets \code{ggplot2::xlab =
 #'"foo"} and 'turns on' the ggplot theme element \code{axis.title.x}. With
-#'\code{coord_flip()}, the xlab travels with the data (becoming the ylab) but the
-#'theme modifier stays on the x axis. To solve this, rewrite your ggplot
+#'\code{coord_flip()}, the xlab travels with the data (becoming the ylab) but
+#'the theme modifier stays on the x axis. To solve this, rewrite your ggplot
 #'construction to avoid \code{coord_flip()} or manually turn off and on the
 #'correct elements from ggplot2's \code{\link[ggplot2]{theme}} function in the
 #'\code{...} of this function.
@@ -20,10 +20,11 @@
 #'  \code{coord_flip()}.
 #'@param hline,vline Numeric, the location of a strong horizontal or vertical
 #'  line to be added to the plot. Use \code{hline = 0}, for example, to place a
-#'  line at y = 0 to differentiate between positive and negative values. The width
-#'  of this line is determined by \code{cmapplot_globals$lwd_strongline}. Note that
-#'  on most displays the difference between this line and gridlines is impossible
-#'  to discern in R. The difference will be visible upon export.
+#'  line at y = 0 to differentiate between positive and negative values. The
+#'  width of this line is determined by
+#'  \code{cmapplot_globals$consts$lwd_strongline}. Note that on most displays
+#'  the difference between this line and gridlines is impossible to discern in
+#'  R. The difference will be visible upon export.
 #'@param gridlines Char, the grid lines to be displayed on the chart. If left as
 #'  default, horizontal grid lines will be displayed while vertical grid lines
 #'  will be masked. Acceptable values are "h" (horizontal only), "v" (vertical
@@ -50,8 +51,8 @@
 #'@param debug Bool, Defaults to \code{FALSE}. Set to \code{TRUE} to show
 #'  rectangles around all \code{geom_rect()} elements for debugging.
 #'@param overrides Named list, overrides the default drawing attributes defined
-#'  in \code{cmapplot_globals$consts} which are drawn by \code{\link{theme_cmap}}.
-#'  Units are in bigpts (1/72 of an inch).
+#'  in \code{cmapplot_globals$consts} which are drawn by
+#'  \code{\link{theme_cmap}}. Units are in bigpts (1/72 of an inch).
 #'@param ... pass additional arguments to ggplot2's \code{\link[ggplot2]{theme}}
 #'  function to override any elements of the default CMAP theme.
 #'

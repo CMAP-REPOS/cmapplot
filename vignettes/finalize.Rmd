@@ -15,7 +15,8 @@ knitr::opts_chunk$set(
   fig.asp = 400/670,
   fig.retina = 4,
   fig.align = "center",
-  out.width = "100%"
+  out.width = "100%",
+  dev = "ragg_png"
 )
 
 library(tidyverse)
@@ -55,7 +56,7 @@ In this vignette we will use the final version of the line chart developed in `v
 
 After creating a plot and applying `theme_cmap()`, use `finalize_plot()` to complete the implementation of CMAP design standards. You will probably want to set at least the `title` and `caption`, although the function will extract them from the ggplot if they were specified. 
 
-As you are preparing the plot, you will likely want to view it within R. Do this by leaving leaving the default `mode = "plot"` to send the finished plot to the "Plots" tab within RStudio. Windows users may prefer `mode = "window"`, which draws the plot in a popup window. In both modes, the plot will show up "actual size" (depending on your screen's resolution) surrounded by a grey canvas.
+As you are preparing the plot, you will likely want to view it within R. Do this by leaving leaving the default `mode = "plot"` to send the finished plot to the "Plots" tab within RStudio. The plot will show up "actual size" (depending on your screen's resolution) surrounded by a gray canvas. If you want to view the plot in a separate window, you can select the "Zoom" button at the top left of the plot. This may be especially useful for large plots that cannot easily be displayed within RStudio's default plotting window.
 
 ```{r finalize1, fig.width=11, out.width="100%"}
 finalize_plot(plot = p,
@@ -66,9 +67,9 @@ finalize_plot(plot = p,
 
 ### Exporting a plot
 
-Once you are happy with your plot, export it using `finalize_plot()` with one or more of the write modes `c("svg", "ps", "pdf", "png", "tiff", "jpeg", "bmp")` as well as the filename argument. If Communications staff will be modifying your graphic, they will require one of the vector formats (SVG or PDF). Although many raster formats are available, PNG is likely to look the best. 
+Once you are happy with your plot, export it using `finalize_plot()` with one or more of the write modes `c("svg", "ps", "pdf", "png", "tiff", "jpeg")` as well as the filename argument. If Communications staff will be modifying your graphic, they will require one of the vector formats (preferably PDF). While many raster formats are available, PNG is *strongly* recommended over the others for the best balance of filesize and visual fidelity.
 
-You may specify multiple modes simultaneously using the form `mode = c("png", "pdf", "plot")`. That would export the plot as both a `pdf` and `png`, as well as display it in the plotting window of your R console. 
+You may specify multiple modes simultaneously using the form `mode = c("png", "pdf", "plot")`. That would export the plot as both a PDF and PNG, as well as display it in the plotting window of your R console. 
 
 Some additional notes:
 
@@ -137,9 +138,12 @@ The title and caption blocks take HTML formatting tags, which you can use to man
 ```{r finalize5, message=FALSE}
 # A finalized line graph, with text tweaks
 finalize_plot(plot = p,
-              title = "Annual <br> unlinked passenger trips <br> (in millions)",
-              caption = "Source: Chicago Metropolitan Agency for Planning
-                analysis of <i>Regional Transportation Authority</i> data")
+              title = "Annual <b>unlinked</b> passenger trips<br><i>(in millions)</i>",
+              caption = 'Source: <b><span style="color: purple;"><i>Chicago
+                Metropolitan Agency for Planning</i></span> analysis of
+                <i>RTA<sup>1</sup></i> data.</b>
+                <br><br>
+                <i><sup>1</sup> Regional Transportation Authority</i>')
 ```
 
 ## Advanced customization 
@@ -159,9 +163,9 @@ finalize_plot(plot = p,
 
 ### Overriding plotting constants
 
-Default values in `finalize_plot()` attempt to reflect CMAP design standards using constants defined in `cmapplot_globals$consts`. Users can manually adjust these constants by passing a named list to the `overrides` argument. For example, the chart below uses `overrides` to modify the margin below the title (`margin_title_b`), the margin to the left of the sidebar (`margin_sidebar_l`), and the margin above the legend (`margin_legend_t`).
+Default values in `finalize_plot()` attempt to reflect CMAP design standards using constants. The list of preset values can be accessed by calling `get_cmapplot_globals()`, while individual presets can be accessed using `get_cmapplot_global()`. Users can manually adjust these constants by passing a named list to the `overrides` argument. For example, the chart below uses `overrides` to modify the margin below the title (`margin_title_b`), the margin to the left of the sidebar (`margin_sidebar_l`), and the margin above the legend (`margin_legend_t`).
 
-The [Many, many margins] section of this article describes most of these `consts` visually. To learn more about all possible overrides, see `?cmapplot_globals`.
+The [Many, many margins] section of this article describes most of these `consts` visually. To learn more about all possible overrides, see `?set_cmapplot_global`.
 
 ```{r finalize7, message=FALSE}
 # A finalized plot with some formatting overrides
@@ -191,13 +195,12 @@ finalize_plot(plot = p,
 
 ### Many, many margins
 
-There is a fairly long list of possible margins that can be customized using the `overrides` argument of `finalize_plot()`. You can read more about the available options for customization in `?cmapplot_globals`.
+There is a fairly long list of possible margins that can be customized using the `overrides` argument of `finalize_plot()`. You can read more about the available options for customization in `?set_cmapplot_global`.
 
 Here, the margins are visualized as they impact a finalized plot that has a sidebar:
 
-<img src="./../man/figures/margins1.png" width="100%" style="display: block; margin: auto;"/>
+<img src="./../man/figures/margins1.png" width="100%" style="display: block; margin: auto;">
 
 Here, the same margins are visualized as they impact a finalized plot with no sidebar:
 
-<img src="./../man/figures/margins2.png" width="100%" style="display: block; margin: auto;"/>
-
+<img src="./../man/figures/margins2.png" width="100%" style="display: block; margin: auto;">
