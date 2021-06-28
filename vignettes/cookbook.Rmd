@@ -69,7 +69,8 @@ p <- ggplot(
   
   # Establish an attractive X scale
   scale_x_continuous(
-    breaks = seq(from = min(df$year), to = max(df$year), by = 2),  # Set breaks to every other year
+    breaks = seq(from = min(df$year), to = max(df$year), by = 2), # Set breaks to every other year
+    labels = abbr_years(full_by_year = c(2001, 2019)), # use only full years for the first and last year.
     expand = expansion(add = c(0.5, 1.25))  # Set custom padding for L/R sides of axis 
   ) +
   
@@ -449,8 +450,11 @@ p <- ggplot(data = df, aes(x = YEAR, y = PCT_NONSOV, fill = MODE)) +
                      limits = c(0, 35),
                      breaks = seq(from = 0, to = 35, by = 5)) +
 
-  # Label every bar along x-axis
-  scale_x_continuous(n.breaks = length(unique(df$YEAR))) +
+  # Make the x axis pretty
+  scale_x_continuous(
+    n.breaks = length(unique(df$YEAR)), # Label every bar along x-axis
+    labels = abbr_years() # Use cmapplot function to abbreviate years
+  ) +
 
   # Apply CMAP theme and color palette
   theme_cmap() +
@@ -461,7 +465,7 @@ p <- ggplot(data = df, aes(x = YEAR, y = PCT_NONSOV, fill = MODE)) +
 finalize_plot(
   plot = p,
   title = "Percentage of trips to work via non-single occupancy vehicle
-    (non-SOV) modes, 2009-2018",
+    (non-SOV) modes, 2009-2019",
   caption = "Source: CMAP analysis of American Community Survey (ACS) data
     for the 7-county CMAP region, 1-year estimates.
     <br><br>

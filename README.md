@@ -83,7 +83,7 @@ manager with the command `brew install --cask xquartz`.)
 on a computer with the Whitney family of fonts installed (specifically
 the Book, Medium, and Semibold variants). If installed on a computer
 *without* Whitney, the package will still work, but the fonts will
-default to Calibri (on Windows) or Arial (on macOS/Linux).
+default to your computer’s default sans-serif font (probably Arial).
 
 ## CMAP theme and colors
 
