@@ -23,10 +23,7 @@ cmapplot_globals$fsize <- list(
   text = 8,
   label = 8,
   axis = 8,
-  legend = 10,
-  S = 10,
-  M = 10,
-  L = 10
+  legend = 10
 )
 
 # Define CMAP colors
@@ -112,8 +109,7 @@ cmapplot_globals$consts <- list(
   # margin_plot_l = 10,
   margin_plot_l = 14.4,
   margin_plot_r = 10,
-  # margin_panel_r = 10,
-  margin_panel_r = 0,
+  margin_panel_r = 10,
   leading_title = 1,
   leading_caption = 1
 )

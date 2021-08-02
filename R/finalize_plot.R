@@ -121,9 +121,10 @@
 finalize_plot <- function(plot = NULL,
                           title = "",
                           caption = "",
-                          width = 670/72, # comms spec: 670px @ 72ppi
+                          # width = 670/72, # comms spec: 670px @ 72ppi
+                          width = 7.285, # Comms spec for policy brief
                           height = 400/72, # comms spec: 400px @ 72ppi
-                          sidebar_width = NULL, # if unspecified, default to width/4
+                          sidebar_width = NULL, # if unspecified, default to 1.46
                           caption_align = 0,
                           mode = c("plot"),
                           filename = NULL,
@@ -159,10 +160,12 @@ finalize_plot <- function(plot = NULL,
     sidebar_width <- title_width
     }
 
-  # Set title_width to 25% of total width if unspecified.
+  # # Set title_width to 25% of total width if unspecified.
+  # Set title_width to 1.46 to meet specifications
   # Also force values to be between 0 and width/2.
   if (is.null(sidebar_width)) {
-    sidebar_width <- width / 4
+    # sidebar_width <- width / 4
+    sidebar_width <- 1.46
   } else if (sidebar_width < 0) {
     message("`sidebar_width` cannot be negative. Using 0 instead.")
     sidebar_width <- 0
@@ -197,17 +200,17 @@ finalize_plot <- function(plot = NULL,
   # Validate export parameter, throw error if invalid
   export_format <- match.arg(export_format)
 
-  # Force changes for export format if policy brief
-  if (export_format == "brief") {
-    # Reset sidebar width
-    sidebar_width <- 1.46
-
-    # Force caption to bottom
-    caption_align <- 0
-
-    # Reset total width
-    width <- 5.625 + 0.2 + 1.46
-  }
+  # # Force changes for export format if policy brief
+  # if (export_format == "brief") {
+  #   # Reset sidebar width
+  #   sidebar_width <- 1.46
+  #
+  #   # Force caption to bottom
+  #   caption_align <- 0
+  #
+  #   # Reset total width
+  #   width <- 5.625 + 0.2 + 1.46
+  # }
 
   # mode "window" disabled for now
   # # Remove any `window` mode specified if OS is not Windows
