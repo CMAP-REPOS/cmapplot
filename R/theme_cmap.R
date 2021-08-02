@@ -106,13 +106,8 @@ theme_cmap <- function(
   # create list of plot constants, from globals unless overridden by user
   consts <- utils::modifyList(cmapplot_globals$consts, overrides)
 
-  # Create list of font sizes, selecting the appropriate one based on export type
+  # Create list of font sizes
   fsize <- cmapplot_globals$fsize
-  if (export_format == "brief") {
-    fsize$S <- fsize$S_brief
-    fsize$M <- fsize$M_brief
-    fsize$L <- fsize$L_brief
-  }
 
   # The half-line sets up the basic vertical rhythm of the theme.
   consts[["half_line"]] <- fsize$M / 2
@@ -122,6 +117,13 @@ theme_cmap <- function(
   axislines <- match.arg(axislines)
   axisticks <- match.arg(axisticks)
   export_format <- match.arg(export_format)
+
+  # Change list of font sizes if policy brief
+  if (export_format == "brief") {
+    fsize$S <- fsize$S_brief
+    fsize$M <- fsize$M_brief
+    fsize$L <- fsize$L_brief
+  }
 
   # Introduce elements based on args ---------------------------------
 
