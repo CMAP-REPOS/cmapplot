@@ -18,12 +18,15 @@ cmapplot_globals$font <- list(
 
 # Set common font sizes (pts)
 cmapplot_globals$fsize <- list(
-  S = 11,
-  M = 14,
-  L = 17,
-  S_brief = 10,
-  M_brief = 8,
-  L_brief = 10
+  title = 10,
+  caption = 10,
+  text = 8,
+  label = 8,
+  axis = 8,
+  legend = 10,
+  S = 10,
+  M = 10,
+  L = 10
 )
 
 # Define CMAP colors
@@ -93,7 +96,8 @@ cmapplot_globals$consts <- list(
   lwd_gridline = 0.3,
   lwd_strongline = 1,
   lwd_plotline = 3,
-  lwd_topline = 2,
+  # lwd_topline = 2,
+  lwd_topline = .5,
   length_ticks = 7,
   margin_topline_t = 5,
   margin_title_t = 5,
@@ -103,10 +107,13 @@ cmapplot_globals$consts <- list(
   margin_legend_i = 8,
   margin_legend_b = 10,
   margin_plot_b = 5,
+  # margin_sidebar_l = 0,
   margin_sidebar_l = 2,
-  margin_plot_l = 10,
+  # margin_plot_l = 10,
+  margin_plot_l = 14.4,
   margin_plot_r = 10,
-  margin_panel_r = 10,
+  # margin_panel_r = 10,
+  margin_panel_r = 0,
   leading_title = 1,
   leading_caption = 1
 )

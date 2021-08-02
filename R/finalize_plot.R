@@ -243,12 +243,12 @@ finalize_plot <- function(plot = NULL,
   consts <- utils::modifyList(cmapplot_globals$consts, overrides)
 
   # Modify constants if needed for policy brief export, overriding any user changes
-  if (export_format == "brief") {
-    consts <- utils::modifyList(consts,list(margin_sidebar_l = 0,
-                                            margin_plot_l = 0.2*72,
-                                            margin_panel_r = 0,
-                                            lwd_topline = 0.5))
-  }
+  # if (export_format == "brief") {
+  #   consts <- utils::modifyList(consts,list(margin_sidebar_l = 0,
+  #                                           margin_plot_l = 14.4,
+  #                                           margin_panel_r = 0,
+  #                                           lwd_topline = 0.5))
+  # }
 
   # Add various arguments to constants, with conversions where necessary
   consts <- append(
@@ -260,13 +260,13 @@ finalize_plot <- function(plot = NULL,
     )
   )
 
-  # Create list of font sizes, overriding in case of policy brief format
-  fsize <- cmapplot_globals$fsize
-  if (export_format == "brief") {
-    fsize$S <- fsize$S_brief
-    fsize$M <- fsize$M_brief
-    fsize$L <- fsize$L_brief
-  }
+  # # Create list of font sizes, overriding in case of policy brief format
+  # fsize <- cmapplot_globals$fsize
+  # if (export_format == "brief") {
+  #   fsize$S <- fsize$S_brief
+  #   fsize$M <- fsize$M_brief
+  #   fsize$L <- fsize$L_brief
+  # }
 
   # Validate inheritance parameter, throw error if invalid
   inherit <- match.arg(inherit)
@@ -319,7 +319,7 @@ finalize_plot <- function(plot = NULL,
                             consts$margin_sidebar_l), # left
                           "bigpts"),
       # Set font aesthetic variables
-      gp = grid::gpar(fontsize=fsize$L,
+      gp = grid::gpar(fontsize=cmapplot_globals$fsize$title,
                       fontfamily=cmapplot_globals$font$strong$family,
                       fontface=cmapplot_globals$font$strong$face,
                       lineheight=consts$leading_title,
@@ -349,7 +349,7 @@ finalize_plot <- function(plot = NULL,
                           "bigpts"),
       # Set aesthetic variables
       valign = caption_align,
-      gp = grid::gpar(fontsize = fsize$S,
+      gp = grid::gpar(fontsize = cmapplot_globals$fsize$caption,
                       fontfamily = cmapplot_globals$font$light$family,
                       fontface = cmapplot_globals$font$light$face,
                       lineheight = consts$leading_caption,
@@ -381,7 +381,7 @@ finalize_plot <- function(plot = NULL,
                             consts$margin_plot_l), # left
                           "bigpts"),
       # Set font aesthetic variables
-      gp = grid::gpar(fontsize=fsize$L,
+      gp = grid::gpar(fontsize=cmapplot_globals$fsize$title,
                       fontfamily=cmapplot_globals$font$strong$family,
                       fontface=cmapplot_globals$font$strong$face,
                       lineheight=consts$leading_title,
@@ -412,7 +412,7 @@ finalize_plot <- function(plot = NULL,
                           "bigpts"),
       # Set aesthetic variables
       halign = caption_align,
-      gp = grid::gpar(fontsize = fsize$S,
+      gp = grid::gpar(fontsize = cmapplot_globals$fsize$caption,
                       fontfamily = cmapplot_globals$font$light$family,
                       fontface = cmapplot_globals$font$light$face,
                       lineheight = consts$leading_caption,

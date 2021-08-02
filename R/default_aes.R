@@ -9,33 +9,33 @@
 init_cmap_default_aes <- function () {
   defaults <- list(
     Label = list(
-      family = cmapplot_globals$font$strong$family,
-      fontface = ifelse(cmapplot_globals$font$strong$face == "bold", 2, 1),
-      size = cmapplot_globals$fsize$M/ggplot2::.pt, # pt-to-mm conversion
+      family = cmapplot_globals$font$light$family,
+      fontface = ifelse(cmapplot_globals$font$light$face == "plain", 2, 1),
+      size = cmapplot_globals$fsize$label/ggplot2::.pt, # pt-to-mm conversion
       colour = cmapplot_globals$colors$blackish
     ),
     Line = list(
       size = gg_lwd_convert(cmapplot_globals$consts$lwd_plotline)
     ),
     Text = list(
-      family = cmapplot_globals$font$strong$family,
-      fontface = ifelse(cmapplot_globals$font$strong$face == "bold", 2, 1),
-      size = cmapplot_globals$fsize$M/ggplot2::.pt, # pt-to-mm conversion
+      family = cmapplot_globals$font$light$family,
+      fontface = ifelse(cmapplot_globals$font$light$face == "plain", 2, 1),
+      size = cmapplot_globals$fsize$label/ggplot2::.pt, # pt-to-mm conversion
       colour = cmapplot_globals$colors$blackish
     ),
     TextLast = list(
-      family = cmapplot_globals$font$strong$family,
-      fontface = ifelse(cmapplot_globals$font$strong$face == "bold", 2, 1),
-      size = cmapplot_globals$fsize$M/ggplot2::.pt, # pt-to-mm conversion
+      family = cmapplot_globals$font$light$family,
+      fontface = ifelse(cmapplot_globals$font$light$face == "plain", 2, 1),
+      size = cmapplot_globals$fsize$label/ggplot2::.pt, # pt-to-mm conversion
       colour = cmapplot_globals$colors$blackish
     ),
     PointLast = list(
       size = 2 * gg_lwd_convert(cmapplot_globals$consts$lwd_plotline)
     ),
     RecessionsText = list(
-      family = cmapplot_globals$font$regular$family,
-      fontface = ifelse(cmapplot_globals$font$regular$face == "bold", 2, 1),
-      size = cmapplot_globals$fsize$S/ggplot2::.pt, # pt-to-mm conversion
+      family = cmapplot_globals$font$light$family,
+      fontface = ifelse(cmapplot_globals$font$light$face == "plain", 2, 1),
+      size = cmapplot_globals$fsize$label/ggplot2::.pt, # pt-to-mm conversion
       colour = cmapplot_globals$colors$blackish
     )
   )
