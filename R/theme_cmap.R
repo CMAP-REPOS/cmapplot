@@ -92,6 +92,7 @@ theme_cmap <- function(
   legend.max.columns = NULL,
   debug = FALSE,
   overrides = list(),
+  export_format = c("web","brief"),
   ...
 ) {
 
@@ -105,13 +106,22 @@ theme_cmap <- function(
   # create list of plot constants, from globals unless overridden by user
   consts <- utils::modifyList(cmapplot_globals$consts, overrides)
 
+  # Create list of font sizes, selecting the appropriate one based on export type
+  fsize <- cmapplot_globals$fsize
+  if (export_format == "brief") {
+    fsize$S <- fsize$S_brief
+    fsize$M <- fsize$M_brief
+    fsize$L <- fsize$L_brief
+  }
+
   # The half-line sets up the basic vertical rhythm of the theme.
-  consts[["half_line"]] <- cmapplot_globals$fsize$M / 2
+  consts[["half_line"]] <- fsize$M / 2
 
   # Validate parameters, throw error if invalid
   gridlines <- match.arg(gridlines)
   axislines <- match.arg(axislines)
   axisticks <- match.arg(axisticks)
+  export_format <- match.arg(export_format)
 
   # Introduce elements based on args ---------------------------------
 
@@ -227,10 +237,23 @@ theme_cmap <- function(
     attr[["axis.ticks.length.y"]] <- unit(consts$length_ticks,"bigpts")
   }
 
+  # # Policy brief elements, if specified
+  # if (export_format == "brief") {
+  #   attr[["text"]] <- ggplot2::element_text(
+  #     size = cmapplot_globals$fsize$M_brief
+  #   )
+  #
+  #   attr[["axis.text"]] <- ggplot2::element_text(
+  #     size = cmapplot_globals$fsize$M_brief
+  #   )
+  #
+  #   attr[["legend.key.size"]] <- grid::unit(cmapplot_globals$fsize$M_brief, "pt")
+  # }
+
   # Construct theme elements -----------------------------------------
 
   # add base theme to object list
-  add_to_obj(theme_cmap_base(consts = consts, debug = debug))
+  add_to_obj(theme_cmap_base(consts = consts, fsize = fsize, debug = debug))
 
   # add `attr` theme elements to the list in a new `ggplot2::theme()` object,
   # so that they override `theme_cmap_base()` if needed
@@ -254,6 +277,7 @@ theme_cmap <- function(
 # this is a complete theme built from scratch.
 # it is modeled off of `ggplot2::theme_grey()`
 theme_cmap_base <- function(consts = cmapplot_globals$consts,
+                            fsize = cmapplot_globals$fsize,
                             debug = FALSE
 ) {
 
@@ -274,7 +298,7 @@ theme_cmap_base <- function(consts = cmapplot_globals$consts,
     text = element_text(
       family = cmapplot_globals$font$regular$family,
       face = cmapplot_globals$fgiont$regular$face,
-      size = cmapplot_globals$fsize$M,
+      size = fsize$M,
       color = cmapplot_globals$colors$blackish,
       lineheight = 0.9, hjust = 0.5, vjust = 0.5, angle = 0,
       margin = margin(), debug = debug,
@@ -286,7 +310,7 @@ theme_cmap_base <- function(consts = cmapplot_globals$consts,
     axis.line.y =        NULL,
     axis.text =          element_text(family = cmapplot_globals$font$light$family,
                                       face = cmapplot_globals$font$light$face,
-                                      size = cmapplot_globals$fsize$M),
+                                      size = fsize$M),
     axis.text.x =        element_text(margin = margin(t = consts$half_line / 2), vjust = 1),
     axis.text.x.top =    element_text(margin = margin(b = consts$half_line / 2), vjust = 0),
     axis.text.y =        element_text(margin = margin(r = consts$half_line / 2), hjust = 1),
@@ -306,7 +330,7 @@ theme_cmap_base <- function(consts = cmapplot_globals$consts,
     legend.spacing.y =   grid::unit(consts$margin_legend_i, "bigpts"),
     legend.margin =      margin(l = 0 - consts$half_line),
     legend.key =         element_blank(),
-    legend.key.size =    grid::unit(cmapplot_globals$fsize$M, "pt"), # use pts, not bigpts, to match fontsize
+    legend.key.size =    grid::unit(fsize$M, "pt"), # use pts, not bigpts, to match fontsize
     legend.key.height =  NULL,
     legend.key.width =   NULL,
     legend.text =        NULL,
@@ -346,14 +370,14 @@ theme_cmap_base <- function(consts = cmapplot_globals$consts,
     plot.background =    element_blank(),
     plot.title =         element_text(family = cmapplot_globals$font$strong$family,
                                       face = cmapplot_globals$font$strong$face,
-                                      size = cmapplot_globals$fsize$L,
+                                      size = fsize$L,
                                       hjust = 0, vjust = 1,
                                       margin = margin(b = consts$half_line)),
     plot.title.position = "panel",
     plot.subtitle =      element_blank(),
     plot.caption =       element_text(family = cmapplot_globals$font$light$family,
                                       face = cmapplot_globals$font$light$face,
-                                      size = cmapplot_globals$fsize$S,
+                                      size = fsize$S,
                                       hjust = 1, vjust = 1,
                                       margin = margin(t = consts$half_line)),
     plot.caption.position = "panel",

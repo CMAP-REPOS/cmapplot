@@ -138,6 +138,7 @@ finalize_plot <- function(plot = NULL,
                           use_cmap_aes = TRUE,
                           caption_valign,
                           title_width,
+                          export_format = c("web","brief"),
                           ...
                           ){
 
@@ -193,6 +194,20 @@ finalize_plot <- function(plot = NULL,
     message("`caption_align` must be between 0-1. Using 1 instead.")
     caption_align <- 1
   }
+  # Validate export parameter, throw error if invalid
+  export_format <- match.arg(export_format)
+
+  # Force changes for export format if policy brief
+  if (export_format == "brief") {
+    # Reset sidebar width
+    sidebar_width <- 1.46
+
+    # Force caption to bottom
+    caption_align <- 0
+
+    # Reset total width
+    width <- 5.625 + 0.2 + 1.46
+  }
 
   # mode "window" disabled for now
   # # Remove any `window` mode specified if OS is not Windows
@@ -227,6 +242,14 @@ finalize_plot <- function(plot = NULL,
   # Create list of plot constants, from globals unless overridden by user
   consts <- utils::modifyList(cmapplot_globals$consts, overrides)
 
+  # Modify constants if needed for policy brief export, overriding any user changes
+  if (export_format == "brief") {
+    consts <- utils::modifyList(consts,list(margin_sidebar_l = 0,
+                                            margin_plot_l = 0.2*72,
+                                            margin_panel_r = 0,
+                                            lwd_topline = 0.5))
+  }
+
   # Add various arguments to constants, with conversions where necessary
   consts <- append(
     consts,
@@ -236,6 +259,14 @@ finalize_plot <- function(plot = NULL,
       sidebar_width = grid::convertUnit(unit(sidebar_width, "in"), "bigpts", valueOnly = TRUE)
     )
   )
+
+  # Create list of font sizes, overriding in case of policy brief format
+  fsize <- cmapplot_globals$fsize
+  if (export_format == "brief") {
+    fsize$S <- fsize$S_brief
+    fsize$M <- fsize$M_brief
+    fsize$L <- fsize$L_brief
+  }
 
   # Validate inheritance parameter, throw error if invalid
   inherit <- match.arg(inherit)
@@ -288,7 +319,7 @@ finalize_plot <- function(plot = NULL,
                             consts$margin_sidebar_l), # left
                           "bigpts"),
       # Set font aesthetic variables
-      gp = grid::gpar(fontsize=cmapplot_globals$fsize$L,
+      gp = grid::gpar(fontsize=fsize$L,
                       fontfamily=cmapplot_globals$font$strong$family,
                       fontface=cmapplot_globals$font$strong$face,
                       lineheight=consts$leading_title,
@@ -318,7 +349,7 @@ finalize_plot <- function(plot = NULL,
                           "bigpts"),
       # Set aesthetic variables
       valign = caption_align,
-      gp = grid::gpar(fontsize = cmapplot_globals$fsize$S,
+      gp = grid::gpar(fontsize = fsize$S,
                       fontfamily = cmapplot_globals$font$light$family,
                       fontface = cmapplot_globals$font$light$face,
                       lineheight = consts$leading_caption,
@@ -350,7 +381,7 @@ finalize_plot <- function(plot = NULL,
                             consts$margin_plot_l), # left
                           "bigpts"),
       # Set font aesthetic variables
-      gp = grid::gpar(fontsize=cmapplot_globals$fsize$L,
+      gp = grid::gpar(fontsize=fsize$L,
                       fontfamily=cmapplot_globals$font$strong$family,
                       fontface=cmapplot_globals$font$strong$face,
                       lineheight=consts$leading_title,
@@ -381,7 +412,7 @@ finalize_plot <- function(plot = NULL,
                           "bigpts"),
       # Set aesthetic variables
       halign = caption_align,
-      gp = grid::gpar(fontsize = cmapplot_globals$fsize$S,
+      gp = grid::gpar(fontsize = fsize$S,
                       fontfamily = cmapplot_globals$font$light$family,
                       fontface = cmapplot_globals$font$light$face,
                       lineheight = consts$leading_caption,

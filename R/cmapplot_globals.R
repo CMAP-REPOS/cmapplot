@@ -20,7 +20,10 @@ cmapplot_globals$font <- list(
 cmapplot_globals$fsize <- list(
   S = 11,
   M = 14,
-  L = 17
+  L = 17,
+  S_brief = 10,
+  M_brief = 8,
+  L_brief = 10
 )
 
 # Define CMAP colors
