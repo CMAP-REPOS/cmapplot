@@ -149,7 +149,7 @@
     <div id="cmapplot-120" class="section level1">
 <h1 class="page-header" data-toc-text="1.2.0">
 <a href="#cmapplot-120" class="anchor"></a>cmapplot 1.2.0</h1>
-<p>PR # 123</p>
+<p>PR <a href='https://github.com/CMAP-REPOS/cmapplot/issues/123'>#123</a></p>
 <p>This is a version-level update that includes many fixes and new features and introduces new dependencies, most significantly RStudio 1.4 or greater.</p>
 <div id="new-features" class="section level3">
 <h3 class="hasAnchor">
@@ -191,9 +191,9 @@
 <code>finalize_plot</code>’s <code>window</code> mode has been disabled for now, due to inability to use ragg drivers in independent window devices. Use <code>mode = "plot"</code> and click the “Zoom” button in the plot window instead.</li>
 <li>
 <code>cmapplot_globals</code>, the exported list of package constants, has been removed (See new features <code>set_cmapplot_global</code> etc)</li>
-<li>Color lists <code>cmap_palettes</code> and <code>cmap_gradients</code> have been removed (This information has been moved to <code>cmapplot_globals$palettes</code>. To access palette colors directly, use, say <code><a href="../reference/viz_gradient.html">fetch_pal("reds")</a></code> rather than <code>cmap_gradients$reds</code>.</li>
+<li>Color lists <code>cmap_palettes</code> and <code>cmap_gradients</code> have been removed (This information has been moved to <code>cmapplot_globals$palettes</code>. To access palette colors directly, use, say <code><a href="../reference/viz_palette.html">fetch_pal("reds")</a></code> rather than <code>cmap_gradients$reds</code>.</li>
 <li>
-<code>viz_palette</code> and <code>viz_gradient</code> now take as a first argument either the name of a palette (e.g. <code>"reds"</code>) or the color palette itself (e.g. <code><a href="../reference/viz_gradient.html">fetch_pal("reds")</a></code>). <code><a href="../reference/viz_gradient.html">viz_palette(cmap_gradient$reds)</a></code> no longer works.</li>
+<code>viz_palette</code> and <code>viz_gradient</code> now take as a first argument either the name of a palette (e.g. <code>"reds"</code>) or the color palette itself (e.g. <code><a href="../reference/viz_palette.html">fetch_pal("reds")</a></code>). <code><a href="../reference/viz_palette.html">viz_palette(cmap_gradient$reds)</a></code> no longer works.</li>
 <li>
 <code>integer_breaks</code> removed from package</li>
 </ul>
