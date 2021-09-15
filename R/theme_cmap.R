@@ -134,7 +134,7 @@ theme_cmap <- function(
   # x label, if specified
   if(!is.null(xlab)){
     attr[["axis.title.x"]] <- ggplot2::element_text(
-      margin = ggplot2::margin(t = consts$half_line / 2),
+      margin = ggplot2::margin(t = consts$half_line),
       vjust = 1,
       inherit.blank = FALSE)
 
@@ -145,7 +145,7 @@ theme_cmap <- function(
   if(!is.null(ylab)){
     attr[["axis.title.y"]] <- ggplot2::element_text(
       angle = 90,
-      margin = ggplot2::margin(r = consts$half_line / 2),
+      margin = ggplot2::margin(r = consts$half_line),
       vjust = 1,
       inherit.blank = FALSE)
 
