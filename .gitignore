@@ -8,3 +8,5 @@ doc
 Meta
 Rplots.pdf
 vignettes/*.png
+/doc/
+/Meta/

@@ -504,7 +504,6 @@ Some smaller formatting choices to pay attention to:
 df <- read_csv("https://raw.githubusercontent.com/CMAP-REPOS/cmap_abm_report/master/data/csv37_tours_tod.csv") %>%
   filter(cat != "all") %>%
   mutate(
-    hours = parse_time(hours),
     purpose = fct_rev(recode_factor(factor(cat),
                                     `work` = "Work",
                                     `school` = "School",
