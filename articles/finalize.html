@@ -26,6 +26,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -38,23 +40,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -83,7 +79,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/CMAP-REPOS/cmapplot/">
+  <a href="https://github.com/CMAP-REPOS/cmapplot/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -104,7 +100,7 @@
       <h1 data-toc-skip>Finalizing and exporting CMAP-themed plots</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/CMAP-REPOS/cmapplot/blob/master/vignettes/finalize.Rmd"><code>vignettes/finalize.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/CMAP-REPOS/cmapplot/blob/HEAD/vignettes/finalize.Rmd" class="external-link"><code>vignettes/finalize.Rmd</code></a></small>
       <div class="hidden name"><code>finalize.Rmd</code></div>
 
     </div>
@@ -113,12 +109,12 @@
     
 <p><code><a href="../reference/finalize_plot.html">finalize_plot()</a></code> will place a ggplot into a frame defined by CMAP design standards. It will align your title and caption to the left, add a horizontal line on top, and make other adjustments. It can show you the final plot and/or export it as a raster or vector file. This function will not apply CMAP design standards to the plot itself; use <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code> for that.</p>
 <p>In this vignette we will use the final version of the line chart developed in <code><a href="../articles/plots.html">vignette("plots")</a></code> to describe standard use of the <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code> function. That plot is referenced in the following examples as <code>p</code>. The function has numerous additional customization options built in, accepting 16 (or more) arguments. Refer to the object documentation, <code><a href="../reference/finalize_plot.html">?finalize_plot</a></code>, for detailed information on all arguments.</p>
-<div id="basic-implementation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#basic-implementation" class="anchor"></a>Basic implementation</h2>
-<div id="finalizing-a-plot" class="section level3">
-<h3 class="hasAnchor">
-<a href="#finalizing-a-plot" class="anchor"></a>Finalizing a plot</h3>
+<div class="section level2">
+<h2 id="basic-implementation">Basic implementation<a class="anchor" aria-label="anchor" href="#basic-implementation"></a>
+</h2>
+<div class="section level3">
+<h3 id="finalizing-a-plot">Finalizing a plot<a class="anchor" aria-label="anchor" href="#finalizing-a-plot"></a>
+</h3>
 <p>After creating a plot and applying <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code>, use <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code> to complete the implementation of CMAP design standards. You will probably want to set at least the <code>title</code> and <code>caption</code>, although the function will extract them from the ggplot if they were specified.</p>
 <p>As you are preparing the plot, you will likely want to view it within R. Do this by leaving leaving the default <code>mode = "plot"</code> to send the finished plot to the “Plots” tab within RStudio. The plot will show up “actual size” (depending on your screen’s resolution) surrounded by a gray canvas. If you want to view the plot in a separate window, you can select the “Zoom” button at the top left of the plot. This may be especially useful for large plots that cannot easily be displayed within RStudio’s default plotting window.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -128,14 +124,14 @@
                 analysis of Regional Transportation Authority data"</span><span class="op">)</span></code></pre></div>
 <p><img src="finalize_files/figure-html/finalize1-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
-<div id="exporting-a-plot" class="section level3">
-<h3 class="hasAnchor">
-<a href="#exporting-a-plot" class="anchor"></a>Exporting a plot</h3>
-<p>Once you are happy with your plot, export it using <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code> with one or more of the write modes <code><a href="https://rdrr.io/r/base/c.html">c("svg", "ps", "pdf", "png", "tiff", "jpeg")</a></code> as well as the filename argument. If Communications staff will be modifying your graphic, they will require one of the vector formats (preferably PDF). While many raster formats are available, PNG is <em>strongly</em> recommended over the others for the best balance of filesize and visual fidelity.</p>
+<div class="section level3">
+<h3 id="exporting-a-plot">Exporting a plot<a class="anchor" aria-label="anchor" href="#exporting-a-plot"></a>
+</h3>
+<p>Once you are happy with your plot, export it using <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code> with one or more of the write modes <code>c("svg", "ps", "pdf", "png", "tiff", "jpeg")</code> as well as the filename argument. If Communications staff will be modifying your graphic, they will require one of the vector formats (preferably PDF). While many raster formats are available, PNG is <em>strongly</em> recommended over the others for the best balance of filesize and visual fidelity.</p>
 <p>You may specify multiple modes simultaneously using the form <code>mode = c("png", "pdf", "plot")</code>. That would export the plot as both a PDF and PNG, as well as display it in the plotting window of your R console.</p>
 <p>Some additional notes:</p>
 <ul>
-<li><p>If the full file path is not specified, the file will be exported to your current working directory (check with <code><a href="https://rdrr.io/r/base/getwd.html">getwd()</a></code>, change with <code><a href="https://rdrr.io/r/base/getwd.html">setwd(dir)</a></code>).</p></li>
+<li><p>If the full file path is not specified, the file will be exported to your current working directory (check with <code><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd()</a></code>, change with <code>setwd(dir)</code>).</p></li>
 <li><p>If a file with the name specified already exists in the specified directory, it will not be overwritten unless the user sets <code>overwrite = TRUE</code>.</p></li>
 <li><p>When naming your exports, you may but do not need to include the extension (e.g., <code>filename = "my_chart"</code>). The function will automatically add the appropriate extension to each of your exported files (e.g., <code>"my_chart.pdf"</code>, <code>"my_chart.png"</code>). Leaving off the extension is recommended if you’re specifying multiple export modes in the same call.</p></li>
 </ul>
@@ -145,19 +141,19 @@
               title <span class="op">=</span> <span class="st">"Annual unlinked passenger trips (in millions)"</span>,
               caption <span class="op">=</span> <span class="st">"Source: Chicago Metropolitan Agency for Planning
                 analysis of Regional Transportation Authority data"</span>,
-              mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"png"</span>, <span class="st">"pdf"</span><span class="op">)</span>,
+              mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"png"</span>, <span class="st">"pdf"</span><span class="op">)</span>,
               filename <span class="op">=</span> <span class="st">"finalized_plot"</span><span class="op">)</span></code></pre></div>
 <!-- The next code block IS evaluated to generate the graphic, but its source code is hidden because it does not demonstrate usage of the mode or filename parameters. -->
 <p><img src="finalize_files/figure-html/finalize2-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 </div>
-<div id="basic-customization" class="section level2">
-<h2 class="hasAnchor">
-<a href="#basic-customization" class="anchor"></a>Basic customization</h2>
+<div class="section level2">
+<h2 id="basic-customization">Basic customization<a class="anchor" aria-label="anchor" href="#basic-customization"></a>
+</h2>
 <p>While <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code> can be run successfully with very few arguments, the function allows many further customizations, a number of which are described here.</p>
-<div id="top-level-position-adjustments" class="section level3">
-<h3 class="hasAnchor">
-<a href="#top-level-position-adjustments" class="anchor"></a>Top-level position adjustments</h3>
+<div class="section level3">
+<h3 id="top-level-position-adjustments">Top-level position adjustments<a class="anchor" aria-label="anchor" href="#top-level-position-adjustments"></a>
+</h3>
 <p>In addition to setting the plot’s <code>height</code> and <code>width</code>, <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code> has a number of top-level arguments that impact the final layout. For example, you can change the width of the sidebar, alter caption alignment, or change the graphic’s background color. Changing the background color can be helpful if you know that the graphic will eventually be placed on an inked page.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># A modified finalized plot</span>
@@ -170,9 +166,9 @@
               fill_bg <span class="op">=</span> <span class="st">"cornsilk"</span><span class="op">)</span></code></pre></div>
 <p><img src="finalize_files/figure-html/finalize3-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
-<div id="finalizing-a-plot-with-no-sidebar" class="section level3">
-<h3 class="hasAnchor">
-<a href="#finalizing-a-plot-with-no-sidebar" class="anchor"></a>Finalizing a plot with no sidebar</h3>
+<div class="section level3">
+<h3 id="finalizing-a-plot-with-no-sidebar">Finalizing a plot with no sidebar<a class="anchor" aria-label="anchor" href="#finalizing-a-plot-with-no-sidebar"></a>
+</h3>
 <p>One special case of a top-level position adjustment is removing the sidebar altogether by setting <code>sidebar_width = 0</code>. This is generally preferred when creating graphics to embed in a Word/PDF report (as opposed to a web page or presentation slide). Titles and captions, if specified, are moved to above and below the plot element, respectively. Note that this has an impact on what margins are drawn where. See the section <a href="#many-many-margins">Many, many margins</a> for more on this.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># A finalized line graph, with no sidebar</span>
@@ -183,9 +179,9 @@
               sidebar_width <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></code></pre></div>
 <p><img src="finalize_files/figure-html/finalize4-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
-<div id="title-and-caption-formatting" class="section level3">
-<h3 class="hasAnchor">
-<a href="#title-and-caption-formatting" class="anchor"></a>Title and caption formatting</h3>
+<div class="section level3">
+<h3 id="title-and-caption-formatting">Title and caption formatting<a class="anchor" aria-label="anchor" href="#title-and-caption-formatting"></a>
+</h3>
 <p>The title and caption blocks take HTML formatting tags, which you can use to manually set line breaks and apply other font formatting.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># A finalized line graph, with text tweaks</span>
@@ -199,12 +195,12 @@
 <p><img src="finalize_files/figure-html/finalize5-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 </div>
-<div id="advanced-customization" class="section level2">
-<h2 class="hasAnchor">
-<a href="#advanced-customization" class="anchor"></a>Advanced customization</h2>
-<div id="using-debug-mode-to-fine-tune-your-plot" class="section level3">
-<h3 class="hasAnchor">
-<a href="#using-debug-mode-to-fine-tune-your-plot" class="anchor"></a>Using debug mode to fine-tune your plot</h3>
+<div class="section level2">
+<h2 id="advanced-customization">Advanced customization<a class="anchor" aria-label="anchor" href="#advanced-customization"></a>
+</h2>
+<div class="section level3">
+<h3 id="using-debug-mode-to-fine-tune-your-plot">Using debug mode to fine-tune your plot<a class="anchor" aria-label="anchor" href="#using-debug-mode-to-fine-tune-your-plot"></a>
+</h3>
 <p><code><a href="../reference/finalize_plot.html">finalize_plot()</a></code> has a built-in visual debugging tool that helps the user identify the positions of various elements of the finished graphic and how they relate to one another. Setting <code>debug = TRUE</code> will draw outlines around every rectangular “grob” in the graphic:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># A debugged finalized plot</span>
@@ -215,9 +211,9 @@
               debug <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="finalize_files/figure-html/finalize6-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
-<div id="overriding-plotting-constants" class="section level3">
-<h3 class="hasAnchor">
-<a href="#overriding-plotting-constants" class="anchor"></a>Overriding plotting constants</h3>
+<div class="section level3">
+<h3 id="overriding-plotting-constants">Overriding plotting constants<a class="anchor" aria-label="anchor" href="#overriding-plotting-constants"></a>
+</h3>
 <p>Default values in <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code> attempt to reflect CMAP design standards using constants. The list of preset values can be accessed by calling <code><a href="../reference/get_cmapplot_globals.html">get_cmapplot_globals()</a></code>, while individual presets can be accessed using <code><a href="../reference/get_cmapplot_globals.html">get_cmapplot_global()</a></code>. Users can manually adjust these constants by passing a named list to the <code>overrides</code> argument. For example, the chart below uses <code>overrides</code> to modify the margin below the title (<code>margin_title_b</code>), the margin to the left of the sidebar (<code>margin_sidebar_l</code>), and the margin above the legend (<code>margin_legend_t</code>).</p>
 <p>The <a href="#many-many-margins">Many, many margins</a> section of this article describes most of these <code>consts</code> visually. To learn more about all possible overrides, see <code><a href="../reference/get_cmapplot_globals.html">?set_cmapplot_global</a></code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -227,14 +223,14 @@
               caption <span class="op">=</span> <span class="st">"Source: Chicago Metropolitan Agency for Planning
                 analysis of Regional Transportation Authority data"</span>,
               debug <span class="op">=</span> <span class="cn">TRUE</span>,
-              overrides <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>margin_title_b <span class="op">=</span> <span class="fl">30</span>, 
+              overrides <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>margin_title_b <span class="op">=</span> <span class="fl">30</span>, 
                                margin_sidebar_l <span class="op">=</span> <span class="fl">10</span>,
                                margin_legend_t <span class="op">=</span> <span class="fl">15</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="finalize_files/figure-html/finalize7-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
-<div id="unshifting-the-legend" class="section level3">
-<h3 class="hasAnchor">
-<a href="#unshifting-the-legend" class="anchor"></a>Unshifting the legend</h3>
+<div class="section level3">
+<h3 id="unshifting-the-legend">Unshifting the legend<a class="anchor" aria-label="anchor" href="#unshifting-the-legend"></a>
+</h3>
 <p>By default, <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code> will attempt to extract legend from the ggplot and draw it separately. This allows for justifying the legend to the left edge of the plotting area (<code>ggplot2</code> only allows the legend to left-justify to the y axis). If this attempted shift is unwanted or results in an error, the legend alignment of the original plot can be kept by setting <code>legend_shift = FALSE</code>. Note that in this situation, the debug boxes indicate that <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code> has not separated the legend from the plot.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># A finalized plot with an un-modified legend</span>
@@ -246,14 +242,14 @@
               legend_shift <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><img src="finalize_files/figure-html/finalize8-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
-<div id="many-many-margins" class="section level3">
-<h3 class="hasAnchor">
-<a href="#many-many-margins" class="anchor"></a>Many, many margins</h3>
+<div class="section level3">
+<h3 id="many-many-margins">Many, many margins<a class="anchor" aria-label="anchor" href="#many-many-margins"></a>
+</h3>
 <p>There is a fairly long list of possible margins that can be customized using the <code>overrides</code> argument of <code><a href="../reference/finalize_plot.html">finalize_plot()</a></code>. You can read more about the available options for customization in <code><a href="../reference/get_cmapplot_globals.html">?set_cmapplot_global</a></code>.</p>
 <p>Here, the margins are visualized as they impact a finalized plot that has a sidebar:</p>
-<p><img src="../man/figures/margins1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="../reference/figures/margins1.png" width="100%" style="display: block; margin: auto;"></p>
 <p>Here, the same margins are visualized as they impact a finalized plot with no sidebar:</p>
-<p><img src="../man/figures/margins2.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="../reference/figures/margins2.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 </div>
   </div>
@@ -269,11 +265,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Matthew Stern, Sarah Buchhorn, Daniel Comeaux, Martin Menninger, Noel Peterson, Greta Ritzenthaler, <a href="https://www.cmap.illinois.gov"><img src="https://gist.githubusercontent.com/nmpeterson/c0d9b113b9ddbf17dbf5d3f875d58fb6/raw/08db1b4906b20af2f704e8d80a664b4599bf3cbc/cmap_logo_long.svg" height="28" alt="Chicago Metropolitan Agency for Planning logo"></a>.</p>
+  <p></p>
+<p>Developed by Matthew Stern, Sarah Buchhorn, Daniel Comeaux, Martin Menninger, Noel Peterson, Greta Ritzenthaler, <a href="https://www.cmap.illinois.gov" class="external-link"><img src="https://gist.githubusercontent.com/nmpeterson/c0d9b113b9ddbf17dbf5d3f875d58fb6/raw/08db1b4906b20af2f704e8d80a664b4599bf3cbc/cmap_logo_long.svg" height="28" alt="Chicago Metropolitan Agency for Planning logo"></a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer>
@@ -281,6 +279,8 @@
 
   
 
+
+  
 
   </body>
 </html>
