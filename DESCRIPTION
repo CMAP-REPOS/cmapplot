@@ -3,14 +3,14 @@ Title: CMAP Themes and Color Palettes
 Version: 1.2.0
 Authors@R: c(
     person("Matthew", "Stern",
-           role = c("aut", "cre"),
+           role = "aut",
            email = "mstern@cmap.illinois.gov",
            comment = c(ORCID = "0000-0001-9119-2121")),
     person("Sarah", "Buchhorn",
            role = "aut",
            email = "sbuchhorn@cmap.illinois.gov"),
     person("Daniel", "Comeaux",
-           role = "aut",
+           role = c("aut", "cre"),
            email = "dcomeaux@cmap.illinois.gov",
            comment = c(ORCID = "0000-0002-8412-9092")),
     person("Martin", "Menninger",
