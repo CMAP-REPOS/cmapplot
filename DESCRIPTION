@@ -2,27 +2,25 @@ Package: cmapplot
 Title: CMAP Themes and Color Palettes
 Version: 1.2.0
 Authors@R: c(
-    person("Matthew", "Stern",
-           role = "aut",
-           email = "mstern@cmap.illinois.gov",
-           comment = c(ORCID = "0000-0001-9119-2121")),
-    person("Sarah", "Buchhorn",
-           role = "aut",
-           email = "sbuchhorn@cmap.illinois.gov"),
     person("Daniel", "Comeaux",
            role = c("aut", "cre"),
            email = "dcomeaux@cmap.illinois.gov",
            comment = c(ORCID = "0000-0002-8412-9092")),
+    person("Sarah", "Buchhorn",
+           role = "aut",
+           email = "sbuchhorn@cmap.illinois.gov"),
     person("Martin", "Menninger",
            role = "aut",
            email = "mmenninger@cmap.illinois.gov"),
     person("Noel", "Peterson",
            role = "aut",
-           email = "npeterson@cmap.illinois.gov",
            comment = c(ORCID = "0000-0003-1290-2362")),
     person("Greta", "Ritzenthaler",
            role = "aut",
            email = "gritzenthaler@cmap.illinois.gov"),
+    person("Matthew", "Stern",
+           role = "aut",
+           comment = c(ORCID = "0000-0001-9119-2121")),
     person("Chicago Metropolitan Agency for Planning",
            role = c("cph", "fnd")))
 Description: Provides themes and color scales for 'ggplot2', based on Chicago
