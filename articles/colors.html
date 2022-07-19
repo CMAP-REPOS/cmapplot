@@ -26,6 +26,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -38,23 +40,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -83,7 +79,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/CMAP-REPOS/cmapplot/">
+  <a href="https://github.com/CMAP-REPOS/cmapplot/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -104,7 +100,7 @@
       <h1 data-toc-skip>Applying CMAP color schemes</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/CMAP-REPOS/cmapplot/blob/master/vignettes/colors.Rmd"><code>vignettes/colors.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/CMAP-REPOS/cmapplot/blob/HEAD/vignettes/colors.Rmd" class="external-link"><code>vignettes/colors.Rmd</code></a></small>
       <div class="hidden name"><code>colors.Rmd</code></div>
 
     </div>
@@ -171,107 +167,107 @@
 </tr>
 </tbody>
 </table>
-<div id="using-cmap-color-palettes-in-plots" class="section level2">
-<h2 class="hasAnchor">
-<a href="#using-cmap-color-palettes-in-plots" class="anchor"></a>Using CMAP color palettes in plots</h2>
-<div id="discrete-scales" class="section level3">
-<h3 class="hasAnchor">
-<a href="#discrete-scales" class="anchor"></a>Discrete scales</h3>
+<div class="section level2">
+<h2 id="using-cmap-color-palettes-in-plots">Using CMAP color palettes in plots<a class="anchor" aria-label="anchor" href="#using-cmap-color-palettes-in-plots"></a>
+</h2>
+<div class="section level3">
+<h3 id="discrete-scales">Discrete scales<a class="anchor" aria-label="anchor" href="#discrete-scales"></a>
+</h3>
 <p>Discrete color scales are used to assign colors to discrete bins, such as the lines in a time series line chart. Discrete scale functions work with any palette – discrete, sequential, or divergent. Add a discrete color scale by calling either the <code><a href="../reference/cmap_fill_discrete.html">cmap_fill_discrete()</a></code> or <code><a href="../reference/cmap_fill_discrete.html">cmap_color_discrete()</a></code> function in your plot construction.</p>
 <p>Note that discrete scales will automatically interpolate additional colors if the dataset has more colors than the underlying palette. This can be helpful but is not ideal for finished graphics.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">grp_over_time</span>, <span class="va">category</span> <span class="op">==</span> <span class="st">"Goods-Producing"</span><span class="op">)</span>
-
-<span class="fu">ggplot</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">geom_line</span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">realgrp</span>, color <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span>, 
-            size <span class="op">=</span> <span class="fl">1.25</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">scale_x_continuous</span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">2007</span>, to <span class="op">=</span> <span class="fl">2017</span>, by <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/cmap_fill_discrete.html">cmap_color_discrete</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"community"</span>, reverse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Real GRP of goods-producing clusters over time"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grp_over_time</span>, <span class="va">category</span> <span class="op">==</span> <span class="st">"Goods-Producing"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">realgrp</span>, color <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span>, </span>
+<span>            size <span class="op">=</span> <span class="fl">1.25</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">2007</span>, to <span class="op">=</span> <span class="fl">2017</span>, by <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/cmap_fill_discrete.html">cmap_color_discrete</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"community"</span>, reverse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Real GRP of goods-producing clusters over time"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="colors_files/figure-html/color_discrete-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
-<div id="raceethnicity-scale" class="section level3">
-<h3 class="hasAnchor">
-<a href="#raceethnicity-scale" class="anchor"></a>Race/ethnicity scale</h3>
+<div class="section level3">
+<h3 id="raceethnicity-scale">Race/ethnicity scale<a class="anchor" aria-label="anchor" href="#raceethnicity-scale"></a>
+</h3>
 <p>In order to maintain a consistent data language, CMAP uses specific colors for displaying data based on race and ethnicity. To map these colors to each demographic group, use <code><a href="../reference/cmap_fill_race.html">cmap_fill_race()</a></code> or <code><a href="../reference/cmap_fill_race.html">cmap_color_race()</a></code>.</p>
 <p>In the arguments, specify the case-sensitive name of each group as it appears in your data. The functions can be used even if your dataset does not contain every race/ethnicity category — simply omit the parameters for the missing categories.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span>
-  <span class="va">traded_emp_by_race</span>,
-  <span class="va">Race</span> <span class="op">!=</span> <span class="st">"Regional average"</span> <span class="op">&amp;</span> <span class="va">variable</span> <span class="op">==</span> <span class="st">"SpecializedTraded"</span>
-<span class="op">)</span>
-
-<span class="fu">ggplot</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">geom_col</span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">Race</span>, y <span class="op">=</span> <span class="va">value</span>, fill <span class="op">=</span> <span class="va">Race</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">scale_y_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_percent.html">label_percent</a></span><span class="op">(</span>accuracy <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/cmap_fill_race.html">cmap_fill_race</a></span><span class="op">(</span>white <span class="op">=</span> <span class="st">"White"</span>,
-                 black <span class="op">=</span> <span class="st">"Black"</span>,
-                 hispanic <span class="op">=</span> <span class="st">"Hispanic"</span>,
-                 asian <span class="op">=</span> <span class="st">"Asian"</span>,
-                 other <span class="op">=</span> <span class="st">"Other"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>show.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># Legend is redundant in this example</span>
-  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Percent employed in specialized traded clusters, by race"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
+<span>  <span class="va">traded_emp_by_race</span>,</span>
+<span>  <span class="va">Race</span> <span class="op">!=</span> <span class="st">"Regional average"</span> <span class="op">&amp;</span> <span class="va">variable</span> <span class="op">==</span> <span class="st">"SpecializedTraded"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Race</span>, y <span class="op">=</span> <span class="va">value</span>, fill <span class="op">=</span> <span class="va">Race</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_percent.html" class="external-link">label_percent</a></span><span class="op">(</span>accuracy <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/cmap_fill_race.html">cmap_fill_race</a></span><span class="op">(</span>white <span class="op">=</span> <span class="st">"White"</span>,</span>
+<span>                 black <span class="op">=</span> <span class="st">"Black"</span>,</span>
+<span>                 hispanic <span class="op">=</span> <span class="st">"Hispanic"</span>,</span>
+<span>                 asian <span class="op">=</span> <span class="st">"Asian"</span>,</span>
+<span>                 other <span class="op">=</span> <span class="st">"Other"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>show.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># Legend is redundant in this example</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Percent employed in specialized traded clusters, by race"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="colors_files/figure-html/color_race-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
-<div id="continuous-scales" class="section level3">
-<h3 class="hasAnchor">
-<a href="#continuous-scales" class="anchor"></a>Continuous scales</h3>
+<div class="section level3">
+<h3 id="continuous-scales">Continuous scales<a class="anchor" aria-label="anchor" href="#continuous-scales"></a>
+</h3>
 <p>Continuous color scales work with sequential and divergent palettes. Add a continuous scale by calling either the <code><a href="../reference/cmap_fill_continuous.html">cmap_fill_continuous()</a></code> or <code><a href="../reference/cmap_fill_continuous.html">cmap_color_continuous()</a></code> function in your plot construction. If you’re using a divergent palette, you can specify the midpoint where the divergence begins (default is zero).</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span>
-  <span class="va">percentile_wages</span>,
-  <span class="va">cluster</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Biopharmaceuticals"</span>, <span class="st">"Hospitality and Tourism"</span>, <span class="st">"Paper and Packaging"</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">ggplot</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">geom_point</span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">cluster</span>, y <span class="op">=</span> <span class="va">wage</span>, color <span class="op">=</span> <span class="va">percentile</span><span class="op">)</span>,
-             size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">scale_y_continuous</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/label_dollar.html">dollar</a></span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">scale_x_discrete</span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_wrap.html">label_wrap</a></span><span class="op">(</span><span class="fl">18</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">coord_flip</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/cmap_fill_continuous.html">cmap_color_continuous</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"red_teal"</span>, middle <span class="op">=</span> <span class="fl">50</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Wage percentiles for key clusters"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
+<span>  <span class="va">percentile_wages</span>,</span>
+<span>  <span class="va">cluster</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Biopharmaceuticals"</span>, <span class="st">"Hospitality and Tourism"</span>, <span class="st">"Paper and Packaging"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">cluster</span>, y <span class="op">=</span> <span class="va">wage</span>, color <span class="op">=</span> <span class="va">percentile</span><span class="op">)</span>,</span>
+<span>             size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/dollar_format.html" class="external-link">dollar</a></span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_discrete.html" class="external-link">scale_x_discrete</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_wrap.html" class="external-link">label_wrap</a></span><span class="op">(</span><span class="fl">18</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/cmap_fill_continuous.html">cmap_color_continuous</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"red_teal"</span>, middle <span class="op">=</span> <span class="fl">50</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Wage percentiles for key clusters"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="colors_files/figure-html/color_continuous-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
-<div id="highlighting-categories" class="section level3">
-<h3 class="hasAnchor">
-<a href="#highlighting-categories" class="anchor"></a>Highlighting categories</h3>
+<div class="section level3">
+<h3 id="highlighting-categories">Highlighting categories<a class="anchor" aria-label="anchor" href="#highlighting-categories"></a>
+</h3>
 <p>If you want to draw attention to a specific group in your graph, use <code><a href="../reference/cmap_fill_highlight.html">cmap_fill_highlight()</a></code> or <code><a href="../reference/cmap_fill_highlight.html">cmap_color_highlight()</a></code>. This will make your highlighted group one color and all other groups identical in another color. Specify the vector in your data that determines the groups, and then the value of the group to be singled out. Note that this <em>must</em> be the same vector specified in the <code>fill</code>/<code>color</code> aesthetic. The highlight and non-highlight colors have defaults, but can be changed with the <code>color_value</code> and <code>color_other</code> parameters, respectively.</p>
 <p>More than one category can be highlighted as well, by feeding a vector of values into the the <code>value</code> argument. See <code><a href="../reference/cmap_fill_highlight.html">?cmap_fill_highlight</a></code> for details.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">transit_ridership</span>, <span class="va">year</span> <span class="op">==</span> <span class="fl">2019</span><span class="op">)</span>
-
-<span class="fu">ggplot</span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">geom_col</span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">system</span>, y <span class="op">=</span> <span class="va">ridership</span>, fill <span class="op">=</span> <span class="va">system</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/cmap_fill_highlight.html">cmap_fill_highlight</a></span><span class="op">(</span>field <span class="op">=</span> <span class="va">transit_ridership</span><span class="op">$</span><span class="va">system</span>,
-                      value <span class="op">=</span> <span class="st">"metra"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>show.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># Legend is redundant in this example</span>
-  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Annual passenger trips by service, in millions"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">transit_ridership</span>, <span class="va">year</span> <span class="op">==</span> <span class="fl">2019</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">system</span>, y <span class="op">=</span> <span class="va">ridership</span>, fill <span class="op">=</span> <span class="va">system</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/cmap_fill_highlight.html">cmap_fill_highlight</a></span><span class="op">(</span>field <span class="op">=</span> <span class="va">transit_ridership</span><span class="op">$</span><span class="va">system</span>,</span>
+<span>                      value <span class="op">=</span> <span class="st">"metra"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>show.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># Legend is redundant in this example</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Annual passenger trips by service, in millions"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="colors_files/figure-html/color_highlight-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 </div>
-<div id="available-color-palettes" class="section level2">
-<h2 class="hasAnchor">
-<a href="#available-color-palettes" class="anchor"></a>Available color palettes</h2>
-<p>Palettes are stored in a tibble in the <code>cmapplot_globals</code> environment. This tibble can be accessed with <code><a href="../reference/get_cmapplot_globals.html">get_cmapplot_global("palettes")</a></code>, with specific details about any specific palette most easily accessed with <code><a href="../reference/viz_palette.html">fetch_pal()</a></code>. Palettes can be visualized in the plot window with <code><a href="../reference/viz_palette.html">viz_palette()</a></code> and <code><a href="../reference/viz_palette.html">viz_gradient()</a></code>.</p>
-<div id="discrete-palettes" class="section level3">
-<h3 class="hasAnchor">
-<a href="#discrete-palettes" class="anchor"></a>Discrete palettes</h3>
+<div class="section level2">
+<h2 id="available-color-palettes">Available color palettes<a class="anchor" aria-label="anchor" href="#available-color-palettes"></a>
+</h2>
+<p>Palettes are stored in a tibble in the <code>cmapplot_globals</code> environment. This tibble can be accessed with <code>get_cmapplot_global("palettes")</code>, with specific details about any specific palette most easily accessed with <code><a href="../reference/viz_palette.html">fetch_pal()</a></code>. Palettes can be visualized in the plot window with <code><a href="../reference/viz_palette.html">viz_palette()</a></code> and <code><a href="../reference/viz_palette.html">viz_gradient()</a></code>.</p>
+<div class="section level3">
+<h3 id="discrete-palettes">Discrete palettes<a class="anchor" aria-label="anchor" href="#discrete-palettes"></a>
+</h3>
 <p>Use these palettes with <code><a href="../reference/cmap_fill_discrete.html">cmap_fill_discrete()</a></code> or <code><a href="../reference/cmap_fill_discrete.html">cmap_color_discrete()</a></code>: <img src="colors_files/figure-html/show_discrete-1.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_discrete-2.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_discrete-3.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_discrete-4.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_discrete-5.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_discrete-6.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_discrete-7.png" width="672" style="display: block; margin: auto;"></p>
 <p>The race palette is a special discrete palette, which should be used with the specific functions <code><a href="../reference/cmap_fill_race.html">cmap_fill_race()</a></code> or <code><a href="../reference/cmap_fill_race.html">cmap_color_race()</a></code>: <img src="colors_files/figure-html/show_discrete_palettes-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
-<div id="sequential-palettes" class="section level3">
-<h3 class="hasAnchor">
-<a href="#sequential-palettes" class="anchor"></a>Sequential palettes</h3>
+<div class="section level3">
+<h3 id="sequential-palettes">Sequential palettes<a class="anchor" aria-label="anchor" href="#sequential-palettes"></a>
+</h3>
 <p>Use these palettes with <code><a href="../reference/cmap_fill_continuous.html">cmap_fill_continuous()</a></code>/<code><a href="../reference/cmap_fill_continuous.html">cmap_color_continuous()</a></code> or <code><a href="../reference/cmap_fill_discrete.html">cmap_fill_discrete()</a></code>/<code><a href="../reference/cmap_fill_discrete.html">cmap_color_discrete()</a></code>. <img src="colors_files/figure-html/show_sequential-1.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-2.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-3.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-4.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-5.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-6.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-7.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-8.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-9.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-10.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-11.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-12.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-13.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-14.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-15.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-16.png" width="672" style="display: block; margin: auto;"></p>
 <p>If you use a sequential palette for a discrete scale, the package will automatically choose colors from across the selected gradient and interpolate additional ones if needed. For example, the <code>blues</code> palette is shown below, interpolating nine colors from the initial palette list of seven.</p>
 <p><img src="colors_files/figure-html/show_sequential_discrete-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
-<div id="divergent-palettes" class="section level3">
-<h3 class="hasAnchor">
-<a href="#divergent-palettes" class="anchor"></a>Divergent palettes</h3>
+<div class="section level3">
+<h3 id="divergent-palettes">Divergent palettes<a class="anchor" aria-label="anchor" href="#divergent-palettes"></a>
+</h3>
 <p>Use these palettes with <code><a href="../reference/cmap_fill_continuous.html">cmap_fill_continuous()</a></code>/<code><a href="../reference/cmap_fill_continuous.html">cmap_color_continuous()</a></code> or <code><a href="../reference/cmap_fill_discrete.html">cmap_fill_discrete()</a></code>/<code><a href="../reference/cmap_fill_discrete.html">cmap_color_discrete()</a></code>. Using these palettes for a discrete scale will behave similarly to the discrete use of <code>blues</code> shown above. <img src="colors_files/figure-html/show_diverent-1.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_diverent-2.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_diverent-3.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_diverent-4.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_diverent-5.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_diverent-6.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_diverent-7.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 </div>
@@ -288,11 +284,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Matthew Stern, Sarah Buchhorn, Daniel Comeaux, Martin Menninger, Noel Peterson, Greta Ritzenthaler, <a href="https://www.cmap.illinois.gov"><img src="https://gist.githubusercontent.com/nmpeterson/c0d9b113b9ddbf17dbf5d3f875d58fb6/raw/08db1b4906b20af2f704e8d80a664b4599bf3cbc/cmap_logo_long.svg" height="28" alt="Chicago Metropolitan Agency for Planning logo"></a>.</p>
+  <p></p>
+<p>Developed by Daniel Comeaux, Sarah Buchhorn, Martin Menninger, Noel Peterson, Greta Ritzenthaler, Matthew Stern, <a href="https://www.cmap.illinois.gov" class="external-link"><img src="https://gist.githubusercontent.com/nmpeterson/c0d9b113b9ddbf17dbf5d3f875d58fb6/raw/08db1b4906b20af2f704e8d80a664b4599bf3cbc/cmap_logo_long.svg" height="28" alt="Chicago Metropolitan Agency for Planning logo"></a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
@@ -300,6 +298,8 @@
 
   
 
+
+  
 
   </body>
 </html>

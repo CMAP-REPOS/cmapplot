@@ -1,7 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://cmap-repos.github.io/cmapplot/404.html</loc>
+  </url>
+  <url>
+    <loc>https://cmap-repos.github.io/cmapplot/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://cmap-repos.github.io/cmapplot/LICENSE.html</loc>
+  </url>
+  <url>
+    <loc>https://cmap-repos.github.io/cmapplot/articles/colors.html</loc>
+  </url>
+  <url>
+    <loc>https://cmap-repos.github.io/cmapplot/articles/cookbook.html</loc>
+  </url>
+  <url>
+    <loc>https://cmap-repos.github.io/cmapplot/articles/finalize.html</loc>
+  </url>
+  <url>
+    <loc>https://cmap-repos.github.io/cmapplot/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://cmap-repos.github.io/cmapplot/articles/installation.html</loc>
+  </url>
+  <url>
+    <loc>https://cmap-repos.github.io/cmapplot/articles/plots.html</loc>
+  </url>
+  <url>
+    <loc>https://cmap-repos.github.io/cmapplot/authors.html</loc>
+  </url>
+  <url>
     <loc>https://cmap-repos.github.io/cmapplot/index.html</loc>
+  </url>
+  <url>
+    <loc>https://cmap-repos.github.io/cmapplot/news/index.html</loc>
   </url>
   <url>
     <loc>https://cmap-repos.github.io/cmapplot/reference/abbr_years.html</loc>
@@ -52,6 +85,9 @@
     <loc>https://cmap-repos.github.io/cmapplot/reference/grp_over_time.html</loc>
   </url>
   <url>
+    <loc>https://cmap-repos.github.io/cmapplot/reference/index.html</loc>
+  </url>
+  <url>
     <loc>https://cmap-repos.github.io/cmapplot/reference/peer_grp.html</loc>
   </url>
   <url>
@@ -77,20 +113,5 @@
   </url>
   <url>
     <loc>https://cmap-repos.github.io/cmapplot/reference/viz_palette.html</loc>
-  </url>
-  <url>
-    <loc>https://cmap-repos.github.io/cmapplot/articles/colors.html</loc>
-  </url>
-  <url>
-    <loc>https://cmap-repos.github.io/cmapplot/articles/cookbook.html</loc>
-  </url>
-  <url>
-    <loc>https://cmap-repos.github.io/cmapplot/articles/finalize.html</loc>
-  </url>
-  <url>
-    <loc>https://cmap-repos.github.io/cmapplot/articles/installation.html</loc>
-  </url>
-  <url>
-    <loc>https://cmap-repos.github.io/cmapplot/articles/plots.html</loc>
   </url>
 </urlset>
