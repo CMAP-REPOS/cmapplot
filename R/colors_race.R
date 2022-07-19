@@ -31,7 +31,8 @@ make_race_palette <- function(white, black, hispanic, asian, other) {
 #'
 #' Pick the function depending on the aesthetic of your ggplot object (fill or color).
 #' Specify your dataset's unique race factor names (as case-sensitive strings) in the arguments.
-#' All categories are optional in case your dataset does not have some of them.
+#' All categories are optional in case your dataset does not have some of them, however, at least one
+#' category must be provided.
 #'
 #' @param white Data value to map CMAP's White/Caucasian color onto (case-sensitive).
 #' @param black Data value to map CMAP's Black/African American color onto (case-sensitive).
