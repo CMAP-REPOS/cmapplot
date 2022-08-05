@@ -26,7 +26,8 @@ cmap_colour_race(white, black, hispanic, asian, other)
 \description{
 Pick the function depending on the aesthetic of your ggplot object (fill or color).
 Specify your dataset's unique race factor names (as case-sensitive strings) in the arguments.
-All categories are optional in case your dataset does not have some of them.
+All categories are optional in case your dataset does not have some of them or contains the default
+values of the race palette.
 }
 \section{Functions}{
 \itemize{

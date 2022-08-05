@@ -26,15 +26,15 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Matthew Stern \email{mstern@cmap.illinois.gov} (\href{https://orcid.org/0000-0001-9119-2121}{ORCID})
+\strong{Maintainer}: Daniel Comeaux \email{dcomeaux@cmap.illinois.gov} (\href{https://orcid.org/0000-0002-8412-9092}{ORCID})
 
 Authors:
 \itemize{
   \item Sarah Buchhorn \email{sbuchhorn@cmap.illinois.gov}
-  \item Daniel Comeaux \email{dcomeaux@cmap.illinois.gov} (\href{https://orcid.org/0000-0002-8412-9092}{ORCID})
   \item Martin Menninger \email{mmenninger@cmap.illinois.gov}
-  \item Noel Peterson \email{npeterson@cmap.illinois.gov} (\href{https://orcid.org/0000-0003-1290-2362}{ORCID})
+  \item Noel Peterson (\href{https://orcid.org/0000-0003-1290-2362}{ORCID})
   \item Greta Ritzenthaler \email{gritzenthaler@cmap.illinois.gov}
+  \item Matthew Stern (\href{https://orcid.org/0000-0001-9119-2121}{ORCID})
 }
 
 Other contributors:

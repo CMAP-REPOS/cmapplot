@@ -58,5 +58,5 @@ Suggests:
     rmarkdown,
     testthat,
     tidyverse
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.0
 VignetteBuilder: knitr
