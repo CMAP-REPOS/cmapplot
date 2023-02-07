@@ -1,3 +1,10 @@
+# cmapplot 1.2.1
+PR #143
+
+### Bug fixes
+* `cmap_fill_race` and `cmap_color_race` have been updated to remove unused race/ethnicity categories from chart legend (see issue #142)
+
+
 # cmapplot 1.2.0
 PR #123
 

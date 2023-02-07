@@ -23,6 +23,6 @@ objects. For more information about these, see
 \item \code{GeomTextLast}: Add text to plot for maximum x-value in dataset only.
 
 \item \code{GeomPointLast}: Add points to plot for maximum x-value in dataset only.
-}}
 
+}}
 \keyword{datasets}

@@ -29,13 +29,13 @@ to 0). See \code{\link{cmap_gradients}} for a listing of available gradients.
 }
 \section{Functions}{
 \itemize{
-\item \code{cmap_fill_continuous}: for fill aesthetic
+\item \code{cmap_fill_continuous()}: for fill aesthetic
 
-\item \code{cmap_color_continuous}: for color aesthetic
+\item \code{cmap_color_continuous()}: for color aesthetic
 
-\item \code{cmap_colour_continuous}: for color aesthetic
+\item \code{cmap_colour_continuous()}: for color aesthetic
+
 }}
-
 \examples{
 ggplot(dplyr::filter(grp_over_time, cluster=="Biopharmaceuticals"),
        aes(x = year, y = realgrp, color = realgrp)) +
