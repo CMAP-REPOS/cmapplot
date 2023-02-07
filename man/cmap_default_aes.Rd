@@ -38,13 +38,13 @@ Note: CMAP aesthetic defaults are loaded into
 }
 \section{Functions}{
 \itemize{
-\item \code{apply_cmap_default_aes}: Apply CMAP aesthetic defaults to all ggplots in
+\item \code{apply_cmap_default_aes()}: Apply CMAP aesthetic defaults to all ggplots in
 the current session
 
-\item \code{unapply_cmap_default_aes}: Reset modified geom aesthetics to their values
+\item \code{unapply_cmap_default_aes()}: Reset modified geom aesthetics to their values
 when \code{cmapplot} was first loaded
-}}
 
+}}
 \examples{
 \dontrun{
 g <- ggplot(filter(grp_over_time, category == "Services"),
