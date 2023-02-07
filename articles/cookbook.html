@@ -94,7 +94,7 @@
 
       
 
-      </header><script src="cookbook_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>A cookbook for cmapplot</h1>
@@ -107,15 +107,33 @@
 
     
     
-<p>This vignette is a showcase of cmapplot’s full capabilities by replicating as closely as possible a variety of published CMAP graphics. The sample code here can be used as a starting point for creating a number of common chart types. Before running any of this code, be sure to load the both tidyverse and cmapplot packages with <code><a href="https://tidyverse.tidyverse.org" class="external-link">library(tidyverse)</a></code> and <code><a href="https://cmap-repos.github.io/cmapplot">library(cmapplot)</a></code>.</p>
+<p>This vignette is a showcase of cmapplot’s full capabilities by
+replicating as closely as possible a variety of published CMAP graphics.
+The sample code here can be used as a starting point for creating a
+number of common chart types. Before running any of this code, be sure
+to load the both tidyverse and cmapplot packages with
+<code><a href="https://tidyverse.tidyverse.org" class="external-link">library(tidyverse)</a></code> and <code><a href="https://cmap-repos.github.io/cmapplot">library(cmapplot)</a></code>.</p>
 <div class="section level2">
 <h2 id="line-graph">Line graph<a class="anchor" aria-label="anchor" href="#line-graph"></a>
 </h2>
-<p>Line graphs are useful for showing change over time, and are well-suited for combination with <code><a href="../reference/geom_text_lastonly.html">geom_text_lastonly()</a></code> and <code><a href="../reference/geom_recessions.html">geom_recessions()</a></code> custom geoms. This particular plot also demonstrates the utility of a few other functions from the tidyverse that are quite useful when working with <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot2::ggplot()</a></code>:</p>
+<p>Line graphs are useful for showing change over time, and are
+well-suited for combination with <code><a href="../reference/geom_text_lastonly.html">geom_text_lastonly()</a></code> and
+<code><a href="../reference/geom_recessions.html">geom_recessions()</a></code> custom geoms. This particular plot also
+demonstrates the utility of a few other functions from the tidyverse
+that are quite useful when working with
+<code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot2::ggplot()</a></code>:</p>
 <ul>
-<li><p><code><a href="https://forcats.tidyverse.org/reference/fct_reorder.html" class="external-link">forcats::fct_reorder()</a></code> and <code><a href="https://forcats.tidyverse.org/reference/fct_reorder.html" class="external-link">forcats::fct_reorder2()</a></code> are useful to automatically order of factors within <code>mapping</code>, which establishes legend order. (See also <a href="https://r4ds.had.co.nz/factors.html#modifying-factor-order" class="external-link">the Factors chapter of <em>R for Data Science</em></a>.)</p></li>
-<li><p>functions from the <code>scales</code> package, such as <code><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">scales::percent()</a></code> and <code><a href="https://scales.r-lib.org/reference/label_percent.html" class="external-link">scales::label_percent()</a></code>, which reformat numbers into attractive formats.</p></li>
-<li><p>ggplot2 scale functions, such as <code><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">ggplot2::scale_x_continuous()</a></code>, which allow for control over the extent and breaks of each axis.</p></li>
+<li><p><code><a href="https://forcats.tidyverse.org/reference/fct_reorder.html" class="external-link">forcats::fct_reorder()</a></code> and
+<code><a href="https://forcats.tidyverse.org/reference/fct_reorder.html" class="external-link">forcats::fct_reorder2()</a></code> are useful to automatically order
+of factors within <code>mapping</code>, which establishes legend order.
+(See also <a href="https://r4ds.had.co.nz/factors.html#modifying-factor-order" class="external-link">the
+Factors chapter of <em>R for Data Science</em></a>.)</p></li>
+<li><p>functions from the <code>scales</code> package, such as
+<code><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">scales::percent()</a></code> and <code><a href="https://scales.r-lib.org/reference/label_percent.html" class="external-link">scales::label_percent()</a></code>,
+which reformat numbers into attractive formats.</p></li>
+<li><p>ggplot2 scale functions, such as
+<code><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">ggplot2::scale_x_continuous()</a></code>, which allow for control over
+the extent and breaks of each axis.</p></li>
 </ul>
 <div class="section level4">
 <h4 id="example-code">Example code<a class="anchor" aria-label="anchor" href="#example-code"></a>
@@ -187,13 +205,15 @@
 <h4 id="original-graphic">Original graphic<a class="anchor" aria-label="anchor" href="#original-graphic"></a>
 </h4>
 <p><img src="https://www.dropbox.com/s/xol70o61citlpjj/Cumulative_Growth-01.png?raw=1" width="100%" style="display: block; margin: auto;"></p>
-<p><a href="https://www.cmap.illinois.gov/programs/regional-economic-indicators/trends#Real_Gross_Regional_Product_2017" class="external-link">Source</a> (similar enough, although it hasn’t been updated here in some time.)</p>
+<p><a href="https://www.cmap.illinois.gov/programs/regional-economic-indicators/trends#Real_Gross_Regional_Product_2017" class="external-link">Source</a>
+(similar enough, although it hasn’t been updated here in some time.)</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="area-plot">Area plot<a class="anchor" aria-label="anchor" href="#area-plot"></a>
 </h2>
-<p>Area plots are useful for showing changes in composition over time. (See also: <a href="#stacked-bar-chart">Stacked bar chart</a>.)</p>
+<p>Area plots are useful for showing changes in composition over time.
+(See also: <a href="#stacked-bar-chart">Stacked bar chart</a>.)</p>
 <div class="section level4">
 <h4 id="example-code-1">Example code<a class="anchor" aria-label="anchor" href="#example-code-1"></a>
 </h4>
@@ -244,7 +264,9 @@
 <div class="section level2">
 <h2 id="scatterplot">Scatterplot<a class="anchor" aria-label="anchor" href="#scatterplot"></a>
 </h2>
-<p>Scatterplots show relationships between two numeric variables, plotted on the x- and y-axes. Additionally, color and size can be used to represent additional variables.</p>
+<p>Scatterplots show relationships between two numeric variables,
+plotted on the x- and y-axes. Additionally, color and size can be used
+to represent additional variables.</p>
 <div class="section level4">
 <h4 id="example-code-2">Example code<a class="anchor" aria-label="anchor" href="#example-code-2"></a>
 </h4>
@@ -329,8 +351,12 @@
 <div class="section level2">
 <h2 id="highlighted-bar-chart">Highlighted bar chart<a class="anchor" aria-label="anchor" href="#highlighted-bar-chart"></a>
 </h2>
-<p>The cmapplot package includes functionality for highlighting specified data using a distinct color. This is useful to compare Chicago against peer regions, for example.</p>
-<p>This plot also utilizes <code>geom_label</code>, an alternative to <code>geom_text</code> that draws a rectangle behind each label to help it stand out from gridlines where they overlap.</p>
+<p>The cmapplot package includes functionality for highlighting
+specified data using a distinct color. This is useful to compare Chicago
+against peer regions, for example.</p>
+<p>This plot also utilizes <code>geom_label</code>, an alternative to
+<code>geom_text</code> that draws a rectangle behind each label to help
+it stand out from gridlines where they overlap.</p>
 <div class="section level4">
 <h4 id="example-code-3">Example code<a class="anchor" aria-label="anchor" href="#example-code-3"></a>
 </h4>
@@ -410,9 +436,22 @@
 <div class="section level2">
 <h2 id="clustered-bar-chart">Clustered bar chart<a class="anchor" aria-label="anchor" href="#clustered-bar-chart"></a>
 </h2>
-<p>Clustered bar charts allow for multiple variables to be graphed adjacent to one another for the same category. For example, in the chart below, we show Census self-response rates by demogrphic group, with responses from 2020 adjacent to responses from 2010 for each sub-group.</p>
-<p>Note that <code>ggplot2</code> has two elements that can be used to generate bar charts: <code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col()</a></code> and <code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar()</a></code>. In most cases, <code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col()</a></code> will be correct, as it will graph the values supplied as heights on the x- or y-axis by default. <code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar()</a></code> can do the same, but only if the user sets <code>stat = "identity"</code>.</p>
-<p>The chart below also demonstrates three other <code>ggplot2</code> tools that may be of interest: adding value labels above each of the bars; adding a value line (in this case, the regional average at 69%); and adding an annotation above that line to indicate what that line represents.</p>
+<p>Clustered bar charts allow for multiple variables to be graphed
+adjacent to one another for the same category. For example, in the chart
+below, we show Census self-response rates by demogrphic group, with
+responses from 2020 adjacent to responses from 2010 for each
+sub-group.</p>
+<p>Note that <code>ggplot2</code> has two elements that can be used to
+generate bar charts: <code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col()</a></code> and
+<code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar()</a></code>. In most cases, <code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col()</a></code> will be
+correct, as it will graph the values supplied as heights on the x- or
+y-axis by default. <code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar()</a></code> can do the same, but only if
+the user sets <code>stat = "identity"</code>.</p>
+<p>The chart below also demonstrates three other <code>ggplot2</code>
+tools that may be of interest: adding value labels above each of the
+bars; adding a value line (in this case, the regional average at 69%);
+and adding an annotation above that line to indicate what that line
+represents.</p>
 <div class="section level4">
 <h4 id="example-code-4">Example code<a class="anchor" aria-label="anchor" href="#example-code-4"></a>
 </h4>
@@ -497,7 +536,10 @@
 <div class="section level2">
 <h2 id="stacked-bar-chart">Stacked bar chart<a class="anchor" aria-label="anchor" href="#stacked-bar-chart"></a>
 </h2>
-<p>Stacked bar charts allow for the bars to represent multiple variables: the sub-bars represent individual components of a group, and the total bar height represents the sum of all of the group’s components.</p>
+<p>Stacked bar charts allow for the bars to represent multiple
+variables: the sub-bars represent individual components of a group, and
+the total bar height represents the sum of all of the group’s
+components.</p>
 <div class="section level4">
 <h4 id="example-code-5">Example code<a class="anchor" aria-label="anchor" href="#example-code-5"></a>
 </h4>
@@ -556,9 +598,9 @@
 <span><span class="st">    estimates, since 1-year estimates of mode share are not consistently</span></span>
 <span><span class="st">    available there due to its relatively small population."</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (geom_col).</span></span>
-<span><span class="co">#&gt; Removed 1 rows containing missing values (geom_col).</span></span>
-<span><span class="co">#&gt; Removed 1 rows containing missing values (geom_col).</span></span></code></pre></div>
+<span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_col()`).</span></span>
+<span><span class="co">#&gt; Removed 1 rows containing missing values (`geom_col()`).</span></span>
+<span><span class="co">#&gt; Removed 1 rows containing missing values (`geom_col()`).</span></span></code></pre></div>
 <p><img src="cookbook_files/figure-html/stackbar-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level4">
@@ -571,13 +613,40 @@
 <div class="section level2">
 <h2 id="faceted-histograms">Faceted histograms<a class="anchor" aria-label="anchor" href="#faceted-histograms"></a>
 </h2>
-<p>While statistics such as mean or median are useful for summarizing, they just scratch the surface of trends happening within a large, diverse dataset. Histograms are great for visualizing the distribution of a metric across a large sample. This particular example shows the distribution of tour beginnings and endings over the continuous variable of time. However, the continuous variable has already been made discrete by binning time in half-hour increments and summing the tours in each bin. In cases like this, <code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col()</a></code> is the geom that makes the most sense. If your variable comes in a true continuous form, <code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">geom_histogram()</a></code> is appropriate, and allows flexibility for bin sizes. If your variable is discrete/categorical and has not been summarized, <code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar()</a></code> is the best choice.</p>
-<p>To make histograms even more interesting, split your data up by important categories and visualize them side-by-side to understand how distributions vary for different groups. <code><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid()</a></code> is used here because comparisons are being made across the values of two discrete variables. If you want to split up your graph by only one variable, <code><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap()</a></code> will do.</p>
+<p>While statistics such as mean or median are useful for summarizing,
+they just scratch the surface of trends happening within a large,
+diverse dataset. Histograms are great for visualizing the distribution
+of a metric across a large sample. This particular example shows the
+distribution of tour beginnings and endings over the continuous variable
+of time. However, the continuous variable has already been made discrete
+by binning time in half-hour increments and summing the tours in each
+bin. In cases like this, <code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col()</a></code> is the geom that makes
+the most sense. If your variable comes in a true continuous form,
+<code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">geom_histogram()</a></code> is appropriate, and allows flexibility for
+bin sizes. If your variable is discrete/categorical and has not been
+summarized, <code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar()</a></code> is the best choice.</p>
+<p>To make histograms even more interesting, split your data up by
+important categories and visualize them side-by-side to understand how
+distributions vary for different groups. <code><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid()</a></code> is
+used here because comparisons are being made across the values of two
+discrete variables. If you want to split up your graph by only one
+variable, <code><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap()</a></code> will do.</p>
 <p>Some smaller formatting choices to pay attention to:</p>
 <ul>
-<li><p><code><a href="https://dplyr.tidyverse.org/reference/recode.html" class="external-link">dplyr::recode_factor()</a></code> changes the column labels to “Departure” and “Return” for clarity. <code><a href="https://forcats.tidyverse.org/reference/fct_rev.html" class="external-link">forcats::fct_rev()</a></code> reverses the order in which the factors appear on the graph. Character/text variables can be converted to factors by <code><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor()</a></code> or <code><a href="https://forcats.tidyverse.org/reference/as_factor.html" class="external-link">forcats::as_factor()</a></code> (which use different rules to determine the factor order).</p></li>
-<li><p>Similar to graphs above which needed special formatting on their axis labels, <code><a href="https://ggplot2.tidyverse.org/reference/scale_date.html" class="external-link">ggplot2::scale_x_time()</a></code> is used to manage the range, breaks, and labels of the x-axis, specifically when that axis represents time.</p></li>
-<li><p><code><a href="https://lubridate.tidyverse.org/reference/hms.html" class="external-link">lubridate::hm()</a></code> converts strings into time period objects. Lubridate is a very useful package if you need to manage dates and times. Learn more about it in <a href="https://r4ds.had.co.nz/dates-and-times.html" class="external-link"><em>R for Data Science</em></a>.</p></li>
+<li><p><code><a href="https://dplyr.tidyverse.org/reference/recode.html" class="external-link">dplyr::recode_factor()</a></code> changes the column labels to
+“Departure” and “Return” for clarity. <code><a href="https://forcats.tidyverse.org/reference/fct_rev.html" class="external-link">forcats::fct_rev()</a></code>
+reverses the order in which the factors appear on the graph.
+Character/text variables can be converted to factors by
+<code><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor()</a></code> or <code><a href="https://forcats.tidyverse.org/reference/as_factor.html" class="external-link">forcats::as_factor()</a></code> (which use
+different rules to determine the factor order).</p></li>
+<li><p>Similar to graphs above which needed special formatting on their
+axis labels, <code><a href="https://ggplot2.tidyverse.org/reference/scale_date.html" class="external-link">ggplot2::scale_x_time()</a></code> is used to manage the
+range, breaks, and labels of the x-axis, specifically when that axis
+represents time.</p></li>
+<li><p><code><a href="https://lubridate.tidyverse.org/reference/hms.html" class="external-link">lubridate::hm()</a></code> converts strings into time period
+objects. Lubridate is a very useful package if you need to manage dates
+and times. Learn more about it in <a href="https://r4ds.had.co.nz/dates-and-times.html" class="external-link"><em>R for Data
+Science</em></a>.</p></li>
 </ul>
 <div class="section level4">
 <h4 id="example-code-6">Example code<a class="anchor" aria-label="anchor" href="#example-code-6"></a>
@@ -658,7 +727,11 @@
 <div class="section level2">
 <h2 id="donut-chart-or-pie-chart">Donut chart (or pie chart)<a class="anchor" aria-label="anchor" href="#donut-chart-or-pie-chart"></a>
 </h2>
-<p>The donut chart is a CMAP favorite for visualizing percentages of a whole. It is a variant of the pie chart, where the center has been replaced by a hole. While ggplot2 does not have a native geom for donut or pie charts, they can be constructed with a combination of <code><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html" class="external-link">geom_rect()</a></code> and <code><a href="https://ggplot2.tidyverse.org/reference/coord_polar.html" class="external-link">coord_polar()</a></code>.</p>
+<p>The donut chart is a CMAP favorite for visualizing percentages of a
+whole. It is a variant of the pie chart, where the center has been
+replaced by a hole. While ggplot2 does not have a native geom for donut
+or pie charts, they can be constructed with a combination of
+<code><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html" class="external-link">geom_rect()</a></code> and <code><a href="https://ggplot2.tidyverse.org/reference/coord_polar.html" class="external-link">coord_polar()</a></code>.</p>
 <div class="section level4">
 <h4 id="example-code-7">Example code<a class="anchor" aria-label="anchor" href="#example-code-7"></a>
 </h4>
@@ -677,7 +750,7 @@
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>    fraction <span class="op">=</span> <span class="va">EMISSIONS</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">EMISSIONS</span><span class="op">)</span>,</span>
 <span>    xmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html" class="external-link">cumsum</a></span><span class="op">(</span><span class="va">fraction</span><span class="op">)</span>,</span>
-<span>    xmin <span class="op">=</span> <span class="fu">lag</span><span class="op">(</span><span class="va">xmax</span>, default <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span>    xmin <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">xmax</span>, default <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill<span class="op">=</span><span class="va">SECTOR</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -723,7 +796,12 @@
 <div class="section level2">
 <h2 id="race-and-ethnicity-time-series-line-graph">Race and ethnicity time series line graph<a class="anchor" aria-label="anchor" href="#race-and-ethnicity-time-series-line-graph"></a>
 </h2>
-<p>Given CMAP’s focus on inclusive growth, many of our graphics depict data by race and ethnicity. Notably, several of the ON TO 2050 indicators track trends over time by race and ethnicity. For these cases, the cmapplot package includes a special race/ethnicity color palette that can be applied to the <code>color</code> or <code>fill</code> aesthetics of any geom.</p>
+<p>Given CMAP’s focus on inclusive growth, many of our graphics depict
+data by race and ethnicity. Notably, several of the ON TO 2050
+indicators track trends over time by race and ethnicity. For these
+cases, the cmapplot package includes a special race/ethnicity color
+palette that can be applied to the <code>color</code> or
+<code>fill</code> aesthetics of any geom.</p>
 <div class="section level4">
 <h4 id="example-code-8">Example code<a class="anchor" aria-label="anchor" href="#example-code-8"></a>
 </h4>
@@ -777,9 +855,9 @@
 <span>  caption <span class="op">=</span> <span class="st">"Source: CMAP analysis of American Community Survey data, 1-year</span></span>
 <span><span class="st">    estimates."</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Removed 5 rows containing missing values (geom_text_last).</span></span>
-<span><span class="co">#&gt; Removed 5 rows containing missing values (geom_text_last).</span></span>
-<span><span class="co">#&gt; Removed 5 rows containing missing values (geom_text_last).</span></span></code></pre></div>
+<span><span class="co">#&gt; Warning: Removed 5 rows containing missing values (`geom_text_last()`).</span></span>
+<span><span class="co">#&gt; Removed 5 rows containing missing values (`geom_text_last()`).</span></span>
+<span><span class="co">#&gt; Removed 5 rows containing missing values (`geom_text_last()`).</span></span></code></pre></div>
 <p><img src="cookbook_files/figure-html/racepalette-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level4">
@@ -808,7 +886,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
