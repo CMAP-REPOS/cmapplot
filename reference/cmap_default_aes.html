@@ -22,7 +22,7 @@ cmapplot_globals$geoms_that_change.'><meta property="og:image" content="https://
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.1</span>
       </span>
     </div>
 
@@ -85,15 +85,16 @@ possible. The geoms impacted are stored in
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">apply_cmap_default_aes</span><span class="op">(</span>quietly <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="fu">unapply_cmap_default_aes</span><span class="op">(</span>quietly <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">apply_cmap_default_aes</span><span class="op">(</span>quietly <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">unapply_cmap_default_aes</span><span class="op">(</span>quietly <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>quietly</dt>
 <dd><p>Should the function suppress confirmation message?</p></dd>
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -112,45 +113,45 @@ was loaded), use <code>unapply_cmap_default_aes</code>.</p>
     <div id="functions">
     <h2>Functions</h2>
     
-<ul><li><p><code>apply_cmap_default_aes</code>: Apply CMAP aesthetic defaults to all ggplots in
+<ul><li><p><code>apply_cmap_default_aes()</code>: Apply CMAP aesthetic defaults to all ggplots in
 the current session</p></li>
-<li><p><code>unapply_cmap_default_aes</code>: Reset modified geom aesthetics to their values
+<li><p><code>unapply_cmap_default_aes()</code>: Reset modified geom aesthetics to their values
 when <code>cmapplot</code> was first loaded</p></li>
 </ul></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grp_over_time</span>, <span class="va">category</span> <span class="op">==</span> <span class="st">"Services"</span><span class="op">)</span>,</span>
-<span class="r-in">            <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">realgrp</span>, color <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu"><a href="geom_recessions.html">geom_recessions</a></span><span class="op">(</span>ymax <span class="op">=</span> <span class="fl">0.4</span>, text_nudge_x <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu"><a href="theme_cmap.html">theme_cmap</a></span><span class="op">(</span>hline <span class="op">=</span> <span class="fl">0</span>,</span>
-<span class="r-in">             axislines <span class="op">=</span> <span class="st">"x"</span>,</span>
-<span class="r-in">             legend.max.columns <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Change in gross regional product over time"</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span><span class="st">"Year"</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">2007</span>, <span class="fl">2017</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html" class="external-link">coord_cartesian</a></span><span class="op">(</span>clip <span class="op">=</span> <span class="st">"off"</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in"><span class="fu"><a href="geom_text_lastonly.html">geom_text_lastonly</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">realgrp</span><span class="op">)</span>, add_points <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># print normally</span></span>
-<span class="r-in"><span class="va">g</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># overwrite `default_aes`</span></span>
-<span class="r-in"><span class="fu">apply_cmap_default_aes</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">g</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># reset `default_aes`</span></span>
-<span class="r-in"><span class="fu">unapply_cmap_default_aes</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">g</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># finalize alters the defaults implicitly, but then resets them automatically.</span></span>
-<span class="r-in"><span class="fu"><a href="finalize_plot.html">finalize_plot</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># you can also use `finalize` without these modifications</span></span>
-<span class="r-in"><span class="fu"><a href="finalize_plot.html">finalize_plot</a></span><span class="op">(</span><span class="va">g</span>, use_cmap_aes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grp_over_time</span>, <span class="va">category</span> <span class="op">==</span> <span class="st">"Services"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>            <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">realgrp</span>, color <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="geom_recessions.html">geom_recessions</a></span><span class="op">(</span>ymax <span class="op">=</span> <span class="fl">0.4</span>, text_nudge_x <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="theme_cmap.html">theme_cmap</a></span><span class="op">(</span>hline <span class="op">=</span> <span class="fl">0</span>,</span></span>
+<span class="r-in"><span>             axislines <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>             legend.max.columns <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Change in gross regional product over time"</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span><span class="st">"Year"</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">2007</span>, <span class="fl">2017</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html" class="external-link">coord_cartesian</a></span><span class="op">(</span>clip <span class="op">=</span> <span class="st">"off"</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="geom_text_lastonly.html">geom_text_lastonly</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">realgrp</span><span class="op">)</span>, add_points <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># print normally</span></span></span>
+<span class="r-in"><span><span class="va">g</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># overwrite `default_aes`</span></span></span>
+<span class="r-in"><span><span class="fu">apply_cmap_default_aes</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">g</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># reset `default_aes`</span></span></span>
+<span class="r-in"><span><span class="fu">unapply_cmap_default_aes</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">g</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># finalize alters the defaults implicitly, but then resets them automatically.</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="finalize_plot.html">finalize_plot</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># you can also use `finalize` without these modifications</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="finalize_plot.html">finalize_plot</a></span><span class="op">(</span><span class="va">g</span>, use_cmap_aes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -165,7 +166,7 @@ when <code>cmapplot</code> was first loaded</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

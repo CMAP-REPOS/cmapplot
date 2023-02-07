@@ -22,7 +22,7 @@ in R and for raster exports, svg for svg, and cairo_pdf for PDFs."><meta propert
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.1</span>
       </span>
     </div>
 
@@ -85,29 +85,29 @@ in R and for raster exports, svg for svg, and cairo_pdf for PDFs.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">finalize_plot</span><span class="op">(</span>
-  plot <span class="op">=</span> <span class="cn">NULL</span>,
-  title <span class="op">=</span> <span class="st">""</span>,
-  caption <span class="op">=</span> <span class="st">""</span>,
-  width <span class="op">=</span> <span class="fl">670</span><span class="op">/</span><span class="fl">72</span>,
-  height <span class="op">=</span> <span class="fl">400</span><span class="op">/</span><span class="fl">72</span>,
-  sidebar_width <span class="op">=</span> <span class="cn">NULL</span>,
-  caption_align <span class="op">=</span> <span class="fl">0</span>,
-  mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"plot"</span><span class="op">)</span>,
-  filename <span class="op">=</span> <span class="cn">NULL</span>,
-  overwrite <span class="op">=</span> <span class="cn">FALSE</span>,
-  ppi <span class="op">=</span> <span class="fl">300</span>,
-  fill_bg <span class="op">=</span> <span class="st">"white"</span>,
-  fill_canvas <span class="op">=</span> <span class="st">"gray90"</span>,
-  overrides <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  inherit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"tc"</span>, <span class="st">"t"</span>, <span class="st">"c"</span>, <span class="st">"none"</span><span class="op">)</span>,
-  legend_shift <span class="op">=</span> <span class="cn">TRUE</span>,
-  debug <span class="op">=</span> <span class="cn">FALSE</span>,
-  use_cmap_aes <span class="op">=</span> <span class="cn">TRUE</span>,
-  <span class="va">caption_valign</span>,
-  <span class="va">title_width</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">finalize_plot</span><span class="op">(</span></span>
+<span>  plot <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  title <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  caption <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  width <span class="op">=</span> <span class="fl">670</span><span class="op">/</span><span class="fl">72</span>,</span>
+<span>  height <span class="op">=</span> <span class="fl">400</span><span class="op">/</span><span class="fl">72</span>,</span>
+<span>  sidebar_width <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  caption_align <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"plot"</span><span class="op">)</span>,</span>
+<span>  filename <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  overwrite <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  ppi <span class="op">=</span> <span class="fl">300</span>,</span>
+<span>  fill_bg <span class="op">=</span> <span class="st">"white"</span>,</span>
+<span>  fill_canvas <span class="op">=</span> <span class="st">"gray90"</span>,</span>
+<span>  overrides <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  inherit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"tc"</span>, <span class="st">"t"</span>, <span class="st">"c"</span>, <span class="st">"none"</span><span class="op">)</span>,</span>
+<span>  legend_shift <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  debug <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  use_cmap_aes <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">caption_valign</span>,</span>
+<span>  <span class="va">title_width</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -116,50 +116,72 @@ in R and for raster exports, svg for svg, and cairo_pdf for PDFs.</p>
 <dd><p>ggplot object, the variable name of the plot you have created that
 you want to finalize. If null (the default), the most recent plot will be
 retrieved via <code><a href="https://ggplot2.tidyverse.org/reference/last_plot.html" class="external-link">ggplot2::last_plot()</a></code>.</p></dd>
+
+
 <dt>title, caption</dt>
 <dd><p>Char, the text you want to appear in the title and
 caption blocks. If empty, any non-Null values from <code>plot</code> will be
 retrieved. These blocks take html formatting, so manual text breaks can be
 created with <code>&lt;br&gt;</code> and formatting can be changed with <code>&lt;span&gt;</code>.</p></dd>
+
+
 <dt>width, height</dt>
 <dd><p>Numeric, the dimensions for the output image, including
 the title. Units in inches, which interacts with <code>ppi</code> to define the
 pixel dimensions of raster outputs. Default is 9.31 inches wide (670/72) and
 5.56 inches tall (400/72), to match Comms specification for web graphics.</p></dd>
+
+
 <dt>sidebar_width</dt>
 <dd><p>Numeric, the width in inches for the sidebar. If
 unspecified, use 25 percent of the total output width (per Comms guidance).
 If set to 0, the title, if present, is moved above the topline and the
 caption, if present, is moved to below the plot.</p></dd>
+
+
 <dt>caption_align</dt>
 <dd><p>Numeric, alignment of the caption text. When the caption
 is in the title column (when <code>sidebar_width &gt; 0</code>), 0 (the default)
 aligns text to bottom; 1 aligns top. When the caption is located below the
 plot, 0 aligns left and 1 aligns right. 0.5 aligns center.</p></dd>
+
+
 <dt>mode</dt>
 <dd><p>Vector, the action(s) to be taken with the plot. View in R with
 <code>plot</code>, the default. Save using any of the following: <code>png</code>,
 <code>tiff</code>, <code>jpeg</code>, <code>svg</code>, <code>pdf</code>, <code>ps</code>. Run
 multiple simultaneous outputs with a vector, e.g. <code>c("plot", "png",
 "pdf")</code>.</p></dd>
+
+
 <dt>filename</dt>
 <dd><p>Char, the file path and name you want the plot to be saved to.
 You may specify an extension to use. If you don't, the correct extension
 will be added for you.</p></dd>
+
+
 <dt>overwrite</dt>
 <dd><p>Bool, set to <code>TRUE</code> if you would like the function to
 overwrite existing files by the same name. The default is <code>FALSE</code>.</p></dd>
+
+
 <dt>ppi</dt>
 <dd><p>Numeric, the resolution of exported images (pixels per inch).
 Default = 300.</p></dd>
+
+
 <dt>fill_bg, fill_canvas</dt>
 <dd><p>Char, strings that represent colors R can
 interpret. They are used to fill behind and around the finished plot,
 respectively.</p></dd>
+
+
 <dt>overrides</dt>
 <dd><p>Named list, overrides the default drawing attributes defined
 in <code>cmapplot_globals$consts</code> which are drawn by
 <code>finalize_plot</code>. Units are in bigpts (1/72 of an inch).</p></dd>
+
+
 <dt>inherit</dt>
 <dd><p>Char, a string of characters that represent which elements of
 the underlying ggplot object the function should attempt to inherit if not
@@ -168,75 +190,90 @@ replace blank titles and captions with those from the underlying plot
 object. Acceptable values are "t" (inherit title only), "c" (inherit caption
 only), "tc" (the default, inherit both title and caption), and "none"
 (inherit nothing).</p></dd>
+
+
 <dt>legend_shift</dt>
 <dd><p>Bool, <code>TRUE</code>, the default, attempts to align the
 legend all the way left (on top of the y axis labels) per CMAP design
 standards. <code>FALSE</code> maintains the alignment used in the original plot.</p></dd>
+
+
 <dt>debug</dt>
 <dd><p>Bool, <code>TRUE</code> enables outlines around components of finalized
 plot. Defaults to <code>FALSE</code>.</p></dd>
+
+
 <dt>use_cmap_aes</dt>
 <dd><p>Bool, <code>TRUE</code>, the default, temporarily implements
 CMAP default aesthetic settings for geoms (see
 <code><a href="cmap_default_aes.html">apply_cmap_default_aes</a></code>) for the present plot.</p></dd>
+
+
 <dt>caption_valign</dt>
 <dd><p>This is deprecated as of cmapplot 1.1.0 and will be
 removed in future releases. Replace with <code>caption_align</code> argument.</p></dd>
+
+
 <dt>title_width</dt>
 <dd><p>This is deprecated as of cmapplot 1.1.1 and will be removed
 in future releases. Replace with <code>sidebar_width</code> argument.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Pass additional arguments to ggplot2's <code><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></code>
 function to override any elements of the plot's theme when drawing.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>This function invisibly returns the finished graphic as a gTree
+    
+
+<p>This function invisibly returns the finished graphic as a gTree
  object. If stored (e.g. <code>g &lt;- finalize_plot(...)</code>), the gTree can be
  drawn later with <code>grid</code> (e.g. <code>grid::grid.draw(g)</code>).</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="va">econ_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">cluster_jobchange</span>,</span>
-<span class="r-in">                    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span>
-<span class="r-in">                      y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html" class="external-link">reorder</a></span><span class="op">(</span><span class="va">name</span>, <span class="va">jobchange</span><span class="op">)</span>,</span>
-<span class="r-in">                      x <span class="op">=</span> <span class="va">jobchange</span>,</span>
-<span class="r-in">                      fill <span class="op">=</span> <span class="va">category</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu"><a href="theme_cmap.html">theme_cmap</a></span><span class="op">(</span>gridlines <span class="op">=</span> <span class="st">"v"</span>, vline <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/comma.html" class="external-link">comma</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">finalize_plot</span><span class="op">(</span><span class="va">econ_plot</span>,</span>
-<span class="r-in">               <span class="st">"Cluster-level employment changes in the Chicago MSA, 2001-17"</span>,</span>
-<span class="r-in">               <span class="st">"Source: Chicago Metropolitan Agency for Planning analysis"</span>,</span>
-<span class="r-in">               mode <span class="op">=</span> <span class="st">"plot"</span>,</span>
-<span class="r-in">               height <span class="op">=</span> <span class="fl">6</span>,</span>
-<span class="r-in">               width <span class="op">=</span> <span class="fl">8</span>,</span>
-<span class="r-in">               sidebar_width <span class="op">=</span> <span class="fl">2.5</span>,</span>
-<span class="r-in">               overrides <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>margin_plot_r <span class="op">=</span> <span class="fl">30</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">transit_plot</span> <span class="op">&lt;-</span> <span class="va">transit_ridership</span> <span class="op">%&gt;%</span></span>
-<span class="r-in">  <span class="fu">mutate</span><span class="op">(</span>system <span class="op">=</span> <span class="fu">case_when</span><span class="op">(</span></span>
-<span class="r-in">    <span class="va">system</span> <span class="op">==</span> <span class="st">"cta_bus"</span> <span class="op">~</span> <span class="st">"CTA (Bus)"</span>,</span>
-<span class="r-in">    <span class="va">system</span> <span class="op">==</span> <span class="st">"cta_rail"</span> <span class="op">~</span> <span class="st">"CTA (Rail)"</span>,</span>
-<span class="r-in">    <span class="va">system</span> <span class="op">==</span> <span class="st">"metra"</span> <span class="op">~</span> <span class="st">"Metra"</span>,</span>
-<span class="r-in">    <span class="va">system</span> <span class="op">==</span> <span class="st">"pace"</span> <span class="op">~</span> <span class="st">"Pace"</span>,</span>
-<span class="r-in">    <span class="va">system</span> <span class="op">==</span> <span class="st">"pace_ada"</span> <span class="op">~</span> <span class="st">"Paratransit"</span></span>
-<span class="r-in">  <span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span class="r-in">  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">ridership</span>, color <span class="op">=</span> <span class="va">system</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu"><a href="theme_cmap.html">theme_cmap</a></span><span class="op">(</span>legend.max.columns <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">finalize_plot</span><span class="op">(</span><span class="va">transit_plot</span>,</span>
-<span class="r-in">              <span class="st">"Transit ridership in the RTA region over time, 1980-2019</span>
-<span class="r-in">              (in millions)"</span>,</span>
-<span class="r-in">              <span class="st">"Source: Chicago Metropolitan Agency for Planning</span>
-<span class="r-in">              analysis of data from the Regional Transportation Authority"</span>,</span>
-<span class="r-in">              mode<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"plot"</span>, <span class="st">"pdf"</span><span class="op">)</span>,</span>
-<span class="r-in">              filename <span class="op">=</span> <span class="st">"foo"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">econ_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">cluster_jobchange</span>,</span></span>
+<span class="r-in"><span>                    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>                      y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html" class="external-link">reorder</a></span><span class="op">(</span><span class="va">name</span>, <span class="va">jobchange</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                      x <span class="op">=</span> <span class="va">jobchange</span>,</span></span>
+<span class="r-in"><span>                      fill <span class="op">=</span> <span class="va">category</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="theme_cmap.html">theme_cmap</a></span><span class="op">(</span>gridlines <span class="op">=</span> <span class="st">"v"</span>, vline <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/comma.html" class="external-link">comma</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">finalize_plot</span><span class="op">(</span><span class="va">econ_plot</span>,</span></span>
+<span class="r-in"><span>               <span class="st">"Cluster-level employment changes in the Chicago MSA, 2001-17"</span>,</span></span>
+<span class="r-in"><span>               <span class="st">"Source: Chicago Metropolitan Agency for Planning analysis"</span>,</span></span>
+<span class="r-in"><span>               mode <span class="op">=</span> <span class="st">"plot"</span>,</span></span>
+<span class="r-in"><span>               height <span class="op">=</span> <span class="fl">6</span>,</span></span>
+<span class="r-in"><span>               width <span class="op">=</span> <span class="fl">8</span>,</span></span>
+<span class="r-in"><span>               sidebar_width <span class="op">=</span> <span class="fl">2.5</span>,</span></span>
+<span class="r-in"><span>               overrides <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>margin_plot_r <span class="op">=</span> <span class="fl">30</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">transit_plot</span> <span class="op">&lt;-</span> <span class="va">transit_ridership</span> <span class="op">%&gt;%</span></span></span>
+<span class="r-in"><span>  <span class="fu">mutate</span><span class="op">(</span>system <span class="op">=</span> <span class="fu">case_when</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="va">system</span> <span class="op">==</span> <span class="st">"cta_bus"</span> <span class="op">~</span> <span class="st">"CTA (Bus)"</span>,</span></span>
+<span class="r-in"><span>    <span class="va">system</span> <span class="op">==</span> <span class="st">"cta_rail"</span> <span class="op">~</span> <span class="st">"CTA (Rail)"</span>,</span></span>
+<span class="r-in"><span>    <span class="va">system</span> <span class="op">==</span> <span class="st">"metra"</span> <span class="op">~</span> <span class="st">"Metra"</span>,</span></span>
+<span class="r-in"><span>    <span class="va">system</span> <span class="op">==</span> <span class="st">"pace"</span> <span class="op">~</span> <span class="st">"Pace"</span>,</span></span>
+<span class="r-in"><span>    <span class="va">system</span> <span class="op">==</span> <span class="st">"pace_ada"</span> <span class="op">~</span> <span class="st">"Paratransit"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">ridership</span>, color <span class="op">=</span> <span class="va">system</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="theme_cmap.html">theme_cmap</a></span><span class="op">(</span>legend.max.columns <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">finalize_plot</span><span class="op">(</span><span class="va">transit_plot</span>,</span></span>
+<span class="r-in"><span>              <span class="st">"Transit ridership in the RTA region over time, 1980-2019</span></span></span>
+<span class="r-in"><span><span class="st">              (in millions)"</span>,</span></span>
+<span class="r-in"><span>              <span class="st">"Source: Chicago Metropolitan Agency for Planning</span></span></span>
+<span class="r-in"><span><span class="st">              analysis of data from the Regional Transportation Authority"</span>,</span></span>
+<span class="r-in"><span>              mode<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"plot"</span>, <span class="st">"pdf"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>              filename <span class="op">=</span> <span class="st">"foo"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -251,7 +288,7 @@ function to override any elements of the plot's theme when drawing.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

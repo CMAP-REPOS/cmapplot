@@ -22,7 +22,7 @@ website."><meta property="og:image" content="https://cmap-repos.github.io/cmappl
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.1</span>
       </span>
     </div>
 
@@ -85,7 +85,7 @@ website.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">update_recessions</span><span class="op">(</span>url <span class="op">=</span> <span class="cn">NULL</span>, quietly <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">update_recessions</span><span class="op">(</span>url <span class="op">=</span> <span class="cn">NULL</span>, quietly <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="source">
@@ -99,13 +99,18 @@ website.</p>
 default, <code>NULL</code>, uses the most recently identified URL known to the
 package development team, which appears to be the most stable location for
 updates over time.</p></dd>
+
+
 <dt>quietly</dt>
 <dd><p>Logical, suppresses messages produced by
 <code><a href="https://rdrr.io/r/utils/download.file.html" class="external-link">utils::download.file</a></code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A data frame with the following variables:</p><ul><li><p><code>start_char, end_char</code>: Chr. Easily readable labels for the beginning
+    
+
+<p>A data frame with the following variables:</p><ul><li><p><code>start_char, end_char</code>: Chr. Easily readable labels for the beginning
  and end of the recession.</p></li>
 <li><p><code>start_date, end_date</code>: Date. Dates
  expressed in R datetime format, using the first day of the specified month.</p></li>
@@ -115,17 +120,17 @@ updates over time.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">recessions</span> <span class="op">&lt;-</span> <span class="fu">update_recessions</span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">recessions</span> <span class="op">&lt;-</span> <span class="fu">update_recessions</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>cannot open URL 'http://data.nber.org/data/cycles/cycle%20dates%20pasted.csv': HTTP status was '404 Not Found'</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> WARNING: Fetch or processing failed. `NULL` returned.</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># package maintainers can update the internal dataset from within</span></span>
-<span class="r-in"><span class="co"># package by running the following code:</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="va">recessions</span> <span class="op">&lt;-</span> <span class="fu">update_recessions</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in">  <span class="fu">usethis</span><span class="fu">::</span><span class="fu">use_data</span><span class="op">(</span><span class="va">recessions</span>, internal <span class="op">=</span> <span class="cn">TRUE</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># package maintainers can update the internal dataset from within</span></span></span>
+<span class="r-in"><span><span class="co"># package by running the following code:</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">recessions</span> <span class="op">&lt;-</span> <span class="fu">update_recessions</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">usethis</span><span class="fu">::</span><span class="fu">use_data</span><span class="op">(</span><span class="va">recessions</span>, internal <span class="op">=</span> <span class="cn">TRUE</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -140,7 +145,7 @@ updates over time.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

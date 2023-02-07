@@ -19,7 +19,7 @@ to 0). See cmap_gradients for a listing of available gradients."><meta property=
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.1</span>
       </span>
     </div>
 
@@ -79,41 +79,48 @@ to 0). See <code><a href="viz_palette.html">cmap_gradients</a></code> for a list
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">cmap_fill_continuous</span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"blues"</span>, reverse <span class="op">=</span> <span class="cn">FALSE</span>, middle <span class="op">=</span> <span class="fl">0</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">cmap_color_continuous</span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"blues"</span>, reverse <span class="op">=</span> <span class="cn">FALSE</span>, middle <span class="op">=</span> <span class="fl">0</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="fu">cmap_colour_continuous</span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"blues"</span>, reverse <span class="op">=</span> <span class="cn">FALSE</span>, middle <span class="op">=</span> <span class="fl">0</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cmap_fill_continuous</span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"blues"</span>, reverse <span class="op">=</span> <span class="cn">FALSE</span>, middle <span class="op">=</span> <span class="fl">0</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cmap_color_continuous</span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"blues"</span>, reverse <span class="op">=</span> <span class="cn">FALSE</span>, middle <span class="op">=</span> <span class="fl">0</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cmap_colour_continuous</span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"blues"</span>, reverse <span class="op">=</span> <span class="cn">FALSE</span>, middle <span class="op">=</span> <span class="fl">0</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>palette</dt>
 <dd><p>String; Choose from 'cmap_gradients' list</p></dd>
+
+
 <dt>reverse</dt>
 <dd><p>Logical; Reverse color order?</p></dd>
+
+
 <dt>middle</dt>
 <dd><p>Numeric; Sets midpoint for diverging color palettes. Default =
 0.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional parameters passed on to the scale type</p></dd>
+
 </dl></div>
     <div id="functions">
     <h2>Functions</h2>
     
-<ul><li><p><code>cmap_fill_continuous</code>: for fill aesthetic</p></li>
-<li><p><code>cmap_color_continuous</code>: for color aesthetic</p></li>
-<li><p><code>cmap_colour_continuous</code>: for color aesthetic</p></li>
+<ul><li><p><code>cmap_fill_continuous()</code>: for fill aesthetic</p></li>
+<li><p><code>cmap_color_continuous()</code>: for color aesthetic</p></li>
+<li><p><code>cmap_colour_continuous()</code>: for color aesthetic</p></li>
 </ul></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grp_over_time</span>, <span class="va">cluster</span><span class="op">==</span><span class="st">"Biopharmaceuticals"</span><span class="op">)</span>,</span>
-<span class="r-in">       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">realgrp</span>, color <span class="op">=</span> <span class="va">realgrp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">    <span class="fu">cmap_color_continuous</span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"red_purple"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grp_over_time</span>, <span class="va">cluster</span><span class="op">==</span><span class="st">"Biopharmaceuticals"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">realgrp</span>, color <span class="op">=</span> <span class="va">realgrp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>    <span class="fu">cmap_color_continuous</span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"red_purple"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="cmap_fill_continuous-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -128,7 +135,7 @@ to 0). See <code><a href="viz_palette.html">cmap_gradients</a></code> for a list
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

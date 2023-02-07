@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.1</span>
       </span>
     </div>
 
@@ -94,7 +94,7 @@
 
       
 
-      </header><script src="cookbook_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>A cookbook for cmapplot</h1>
@@ -107,216 +107,238 @@
 
     
     
-<p>This vignette is a showcase of cmapplot’s full capabilities by replicating as closely as possible a variety of published CMAP graphics. The sample code here can be used as a starting point for creating a number of common chart types. Before running any of this code, be sure to load the both tidyverse and cmapplot packages with <code><a href="https://tidyverse.tidyverse.org" class="external-link">library(tidyverse)</a></code> and <code><a href="https://cmap-repos.github.io/cmapplot">library(cmapplot)</a></code>.</p>
+<p>This vignette is a showcase of cmapplot’s full capabilities by
+replicating as closely as possible a variety of published CMAP graphics.
+The sample code here can be used as a starting point for creating a
+number of common chart types. Before running any of this code, be sure
+to load the both tidyverse and cmapplot packages with
+<code><a href="https://tidyverse.tidyverse.org" class="external-link">library(tidyverse)</a></code> and <code><a href="https://cmap-repos.github.io/cmapplot">library(cmapplot)</a></code>.</p>
 <div class="section level2">
 <h2 id="line-graph">Line graph<a class="anchor" aria-label="anchor" href="#line-graph"></a>
 </h2>
-<p>Line graphs are useful for showing change over time, and are well-suited for combination with <code><a href="../reference/geom_text_lastonly.html">geom_text_lastonly()</a></code> and <code><a href="../reference/geom_recessions.html">geom_recessions()</a></code> custom geoms. This particular plot also demonstrates the utility of a few other functions from the tidyverse that are quite useful when working with <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot2::ggplot()</a></code>:</p>
+<p>Line graphs are useful for showing change over time, and are
+well-suited for combination with <code><a href="../reference/geom_text_lastonly.html">geom_text_lastonly()</a></code> and
+<code><a href="../reference/geom_recessions.html">geom_recessions()</a></code> custom geoms. This particular plot also
+demonstrates the utility of a few other functions from the tidyverse
+that are quite useful when working with
+<code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot2::ggplot()</a></code>:</p>
 <ul>
-<li><p><code><a href="https://forcats.tidyverse.org/reference/fct_reorder.html" class="external-link">forcats::fct_reorder()</a></code> and <code><a href="https://forcats.tidyverse.org/reference/fct_reorder.html" class="external-link">forcats::fct_reorder2()</a></code> are useful to automatically order of factors within <code>mapping</code>, which establishes legend order. (See also <a href="https://r4ds.had.co.nz/factors.html#modifying-factor-order" class="external-link">the Factors chapter of <em>R for Data Science</em></a>.)</p></li>
-<li><p>functions from the <code>scales</code> package, such as <code><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">scales::percent()</a></code> and <code><a href="https://scales.r-lib.org/reference/label_percent.html" class="external-link">scales::label_percent()</a></code>, which reformat numbers into attractive formats.</p></li>
-<li><p>ggplot2 scale functions, such as <code><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">ggplot2::scale_x_continuous()</a></code>, which allow for control over the extent and breaks of each axis.</p></li>
+<li><p><code><a href="https://forcats.tidyverse.org/reference/fct_reorder.html" class="external-link">forcats::fct_reorder()</a></code> and
+<code><a href="https://forcats.tidyverse.org/reference/fct_reorder.html" class="external-link">forcats::fct_reorder2()</a></code> are useful to automatically order
+of factors within <code>mapping</code>, which establishes legend order.
+(See also <a href="https://r4ds.had.co.nz/factors.html#modifying-factor-order" class="external-link">the
+Factors chapter of <em>R for Data Science</em></a>.)</p></li>
+<li><p>functions from the <code>scales</code> package, such as
+<code><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">scales::percent()</a></code> and <code><a href="https://scales.r-lib.org/reference/label_percent.html" class="external-link">scales::label_percent()</a></code>,
+which reformat numbers into attractive formats.</p></li>
+<li><p>ggplot2 scale functions, such as
+<code><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">ggplot2::scale_x_continuous()</a></code>, which allow for control over
+the extent and breaks of each axis.</p></li>
 </ul>
 <div class="section level4">
 <h4 id="example-code">Example code<a class="anchor" aria-label="anchor" href="#example-code"></a>
 </h4>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Get example dataset, and create a relative GRP field</span>
-<span class="va">df</span> <span class="op">&lt;-</span> <span class="va">peer_grp</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">area</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>indexed <span class="op">=</span> <span class="va">grp</span> <span class="op">/</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/nth.html" class="external-link">first</a></span><span class="op">(</span><span class="va">grp</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span>
-
-
-<span class="co"># Create line plot</span>
-<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">df</span>,
-  mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>
-    x <span class="op">=</span> <span class="va">year</span>,
-    y <span class="op">=</span> <span class="va">indexed</span>,
-    color <span class="op">=</span> <span class="fu">fct_reorder2</span><span class="op">(</span><span class="va">area</span>, <span class="va">year</span>, <span class="va">indexed</span><span class="op">)</span>,  <span class="co"># Order legend by last `indexed` value in last `year`</span>
-    label <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">percent</a></span><span class="op">(</span><span class="va">indexed</span>, accuracy <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>  <span class="co"># Format labels as percents with no decimals</span>
-  <span class="op">)</span>
-<span class="op">)</span> <span class="op">+</span>
-  
-  <span class="co"># Add geoms, making sure to keep recessions under lines</span>
-  <span class="fu"><a href="../reference/geom_recessions.html">geom_recessions</a></span><span class="op">(</span>ymin <span class="op">=</span> <span class="fl">0</span>, ymax <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>lineend <span class="op">=</span> <span class="st">"round"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/geom_text_lastonly.html">geom_text_lastonly</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  
-  <span class="co"># Establish an attractive Y scale</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>
-    labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_percent.html" class="external-link">label_percent</a></span><span class="op">(</span>accuracy <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,
-    expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html" class="external-link">expansion</a></span><span class="op">(</span>add <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>  <span class="co"># No padding beyond specified limits</span>
-  <span class="op">)</span> <span class="op">+</span>
-  
-  <span class="co"># Establish an attractive X scale</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>
-    breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">year</span><span class="op">)</span>, to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">year</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>, <span class="co"># Set breaks to every other year</span>
-    labels <span class="op">=</span> <span class="fu"><a href="../reference/abbr_years.html">abbr_years</a></span><span class="op">(</span>full_by_year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2001</span>, <span class="fl">2019</span><span class="op">)</span><span class="op">)</span>, <span class="co"># use only full years for the first and last year.</span>
-    expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html" class="external-link">expansion</a></span><span class="op">(</span>add <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">1.25</span><span class="op">)</span><span class="op">)</span>  <span class="co"># Set custom padding for L/R sides of axis </span>
-  <span class="op">)</span> <span class="op">+</span>
-  
-  <span class="co"># Apply CMAP theme and color palette</span>
-  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>
-    overrides <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>margin_panel_r <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>  <span class="co"># Shrink distance btwn gridlines ending and plotting extent</span>
-  <span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/cmap_fill_discrete.html">cmap_color_discrete</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"legislation"</span><span class="op">)</span>
-  
-
-<span class="co"># Create final plot</span>
-<span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>
-  plot <span class="op">=</span> <span class="va">p</span>,
-  title <span class="op">=</span> <span class="st">"Cumulative growth in real gross regional product, 2001-19"</span>,
-  caption <span class="op">=</span> <span class="st">"Note: Index year 2001.
-    &lt;br&gt;&lt;br&gt;
-    Source: Chicago Metropolitan Agency for Planning analysis of U.S. Bureau
-    of Economic Analysis and Economic Modeling Specialists International data
-    (Emsi 2020.4)."</span>,
-  
-  <span class="co"># Tweak plot layout</span>
-  height <span class="op">=</span> <span class="fl">4.5</span>,
-  sidebar_width <span class="op">=</span> <span class="fl">2.6</span>,
-  overrides <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-    margin_plot_r <span class="op">=</span> <span class="fl">0</span>,  <span class="co"># Eliminate distance btwn plot and right side of image</span>
-    margin_legend_b <span class="op">=</span> <span class="fl">25</span>  <span class="co"># Larger than usual gap between legend and plot</span>
-  <span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Get example dataset, and create a relative GRP field</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">peer_grp</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">area</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>indexed <span class="op">=</span> <span class="va">grp</span> <span class="op">/</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/nth.html" class="external-link">first</a></span><span class="op">(</span><span class="va">grp</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># Create line plot</span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">df</span>,</span>
+<span>  mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span>
+<span>    x <span class="op">=</span> <span class="va">year</span>,</span>
+<span>    y <span class="op">=</span> <span class="va">indexed</span>,</span>
+<span>    color <span class="op">=</span> <span class="fu">fct_reorder2</span><span class="op">(</span><span class="va">area</span>, <span class="va">year</span>, <span class="va">indexed</span><span class="op">)</span>,  <span class="co"># Order legend by last `indexed` value in last `year`</span></span>
+<span>    label <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">percent</a></span><span class="op">(</span><span class="va">indexed</span>, accuracy <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>  <span class="co"># Format labels as percents with no decimals</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span> <span class="op">+</span></span>
+<span>  </span>
+<span>  <span class="co"># Add geoms, making sure to keep recessions under lines</span></span>
+<span>  <span class="fu"><a href="../reference/geom_recessions.html">geom_recessions</a></span><span class="op">(</span>ymin <span class="op">=</span> <span class="fl">0</span>, ymax <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>lineend <span class="op">=</span> <span class="st">"round"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/geom_text_lastonly.html">geom_text_lastonly</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  </span>
+<span>  <span class="co"># Establish an attractive Y scale</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span></span>
+<span>    labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_percent.html" class="external-link">label_percent</a></span><span class="op">(</span>accuracy <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>    expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html" class="external-link">expansion</a></span><span class="op">(</span>add <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>  <span class="co"># No padding beyond specified limits</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  </span>
+<span>  <span class="co"># Establish an attractive X scale</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span></span>
+<span>    breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">year</span><span class="op">)</span>, to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">year</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>, <span class="co"># Set breaks to every other year</span></span>
+<span>    labels <span class="op">=</span> <span class="fu"><a href="../reference/abbr_years.html">abbr_years</a></span><span class="op">(</span>full_by_year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2001</span>, <span class="fl">2019</span><span class="op">)</span><span class="op">)</span>, <span class="co"># use only full years for the first and last year.</span></span>
+<span>    expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html" class="external-link">expansion</a></span><span class="op">(</span>add <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">1.25</span><span class="op">)</span><span class="op">)</span>  <span class="co"># Set custom padding for L/R sides of axis </span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  </span>
+<span>  <span class="co"># Apply CMAP theme and color palette</span></span>
+<span>  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span></span>
+<span>    overrides <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>margin_panel_r <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>  <span class="co"># Shrink distance btwn gridlines ending and plotting extent</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/cmap_fill_discrete.html">cmap_color_discrete</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"legislation"</span><span class="op">)</span></span>
+<span>  </span>
+<span></span>
+<span><span class="co"># Create final plot</span></span>
+<span><span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span></span>
+<span>  plot <span class="op">=</span> <span class="va">p</span>,</span>
+<span>  title <span class="op">=</span> <span class="st">"Cumulative growth in real gross regional product, 2001-19"</span>,</span>
+<span>  caption <span class="op">=</span> <span class="st">"Note: Index year 2001.</span></span>
+<span><span class="st">    &lt;br&gt;&lt;br&gt;</span></span>
+<span><span class="st">    Source: Chicago Metropolitan Agency for Planning analysis of U.S. Bureau</span></span>
+<span><span class="st">    of Economic Analysis and Economic Modeling Specialists International data</span></span>
+<span><span class="st">    (Emsi 2020.4)."</span>,</span>
+<span>  </span>
+<span>  <span class="co"># Tweak plot layout</span></span>
+<span>  height <span class="op">=</span> <span class="fl">4.5</span>,</span>
+<span>  sidebar_width <span class="op">=</span> <span class="fl">2.6</span>,</span>
+<span>  overrides <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    margin_plot_r <span class="op">=</span> <span class="fl">0</span>,  <span class="co"># Eliminate distance btwn plot and right side of image</span></span>
+<span>    margin_legend_b <span class="op">=</span> <span class="fl">25</span>  <span class="co"># Larger than usual gap between legend and plot</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="cookbook_files/figure-html/line-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level4">
 <h4 id="original-graphic">Original graphic<a class="anchor" aria-label="anchor" href="#original-graphic"></a>
 </h4>
 <p><img src="https://www.dropbox.com/s/xol70o61citlpjj/Cumulative_Growth-01.png?raw=1" width="100%" style="display: block; margin: auto;"></p>
-<p><a href="https://www.cmap.illinois.gov/programs/regional-economic-indicators/trends#Real_Gross_Regional_Product_2017" class="external-link">Source</a> (similar enough, although it hasn’t been updated here in some time.)</p>
+<p><a href="https://www.cmap.illinois.gov/programs/regional-economic-indicators/trends#Real_Gross_Regional_Product_2017" class="external-link">Source</a>
+(similar enough, although it hasn’t been updated here in some time.)</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="area-plot">Area plot<a class="anchor" aria-label="anchor" href="#area-plot"></a>
 </h2>
-<p>Area plots are useful for showing changes in composition over time. (See also: <a href="#stacked-bar-chart">Stacked bar chart</a>.)</p>
+<p>Area plots are useful for showing changes in composition over time.
+(See also: <a href="#stacked-bar-chart">Stacked bar chart</a>.)</p>
 <div class="section level4">
 <h4 id="example-code-1">Example code<a class="anchor" aria-label="anchor" href="#example-code-1"></a>
 </h4>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Get &amp; format example dataset</span>
-<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">cmapplot</span><span class="fu">::</span><span class="va"><a href="../reference/transit_ridership.html">transit_ridership</a></span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ridership</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="co"># Remove entries with no ridership (in this case, </span>
-                            <span class="co">#  values before PACE ADA is broken out in the data)</span>
-  
-  <span class="co"># Change system names to desired legend output</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>system <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/recode.html" class="external-link">recode</a></span><span class="op">(</span><span class="va">system</span>, 
-                         <span class="st">"cta_bus"</span> <span class="op">=</span> <span class="st">"CTA Bus"</span>,
-                         <span class="st">"cta_rail"</span> <span class="op">=</span> <span class="st">"CTA Rail"</span>,
-                         <span class="st">"metra"</span> <span class="op">=</span> <span class="st">"Metra"</span>,
-                         <span class="st">"pace"</span> <span class="op">=</span> <span class="st">"Pace"</span>,
-                         <span class="st">"pace_ada"</span> <span class="op">=</span> <span class="st">"Pace ADA"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  
-  <span class="co"># Make into factor with defined order for plotting (top to bottom)</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>system <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">system</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>
-    <span class="st">"Pace ADA"</span>, <span class="st">"Pace"</span>, <span class="st">"Metra"</span>, <span class="st">"CTA Rail"</span>, <span class="st">"CTA Bus"</span>
-  <span class="op">)</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># Create area plot</span>
-<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>, mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">ridership</span>, fill <span class="op">=</span> <span class="va">system</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  
-  <span class="co"># Add the area plot</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html" class="external-link">geom_area</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  
-  <span class="co"># Add the desired color palette</span>
-  <span class="fu"><a href="../reference/cmap_fill_discrete.html">cmap_fill_discrete</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"legislation"</span><span class="op">)</span> <span class="op">+</span>
-  
-  <span class="co"># Apply the CMAP theme</span>
-  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>gridlines <span class="op">=</span> <span class="st">"hv"</span><span class="op">)</span> <span class="op">+</span>
-  
-  <span class="co"># Reverse the order of the legend (optional)</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html" class="external-link">guide_legend</a></span><span class="op">(</span>reverse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-
-
-<span class="co"># Create final plot</span>
-<span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>
-  plot <span class="op">=</span> <span class="va">p</span>,
-  title <span class="op">=</span> <span class="st">"Annual unlinked passenger trips on Regional Transportation Authority
-    systems over time, by service board (in millions)."</span>,
-  caption <span class="op">=</span> <span class="st">"Source: CMAP analysis of RTA data."</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Get &amp; format example dataset</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">cmapplot</span><span class="fu">::</span><span class="va"><a href="../reference/transit_ridership.html">transit_ridership</a></span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ridership</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="co"># Remove entries with no ridership (in this case, </span></span>
+<span>                            <span class="co">#  values before PACE ADA is broken out in the data)</span></span>
+<span>  </span>
+<span>  <span class="co"># Change system names to desired legend output</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>system <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/recode.html" class="external-link">recode</a></span><span class="op">(</span><span class="va">system</span>, </span>
+<span>                         <span class="st">"cta_bus"</span> <span class="op">=</span> <span class="st">"CTA Bus"</span>,</span>
+<span>                         <span class="st">"cta_rail"</span> <span class="op">=</span> <span class="st">"CTA Rail"</span>,</span>
+<span>                         <span class="st">"metra"</span> <span class="op">=</span> <span class="st">"Metra"</span>,</span>
+<span>                         <span class="st">"pace"</span> <span class="op">=</span> <span class="st">"Pace"</span>,</span>
+<span>                         <span class="st">"pace_ada"</span> <span class="op">=</span> <span class="st">"Pace ADA"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  </span>
+<span>  <span class="co"># Make into factor with defined order for plotting (top to bottom)</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>system <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">system</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"Pace ADA"</span>, <span class="st">"Pace"</span>, <span class="st">"Metra"</span>, <span class="st">"CTA Rail"</span>, <span class="st">"CTA Bus"</span></span>
+<span>  <span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Create area plot</span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>, mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">ridership</span>, fill <span class="op">=</span> <span class="va">system</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  </span>
+<span>  <span class="co"># Add the area plot</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html" class="external-link">geom_area</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  </span>
+<span>  <span class="co"># Add the desired color palette</span></span>
+<span>  <span class="fu"><a href="../reference/cmap_fill_discrete.html">cmap_fill_discrete</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"legislation"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  </span>
+<span>  <span class="co"># Apply the CMAP theme</span></span>
+<span>  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>gridlines <span class="op">=</span> <span class="st">"hv"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  </span>
+<span>  <span class="co"># Reverse the order of the legend (optional)</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html" class="external-link">guide_legend</a></span><span class="op">(</span>reverse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># Create final plot</span></span>
+<span><span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span></span>
+<span>  plot <span class="op">=</span> <span class="va">p</span>,</span>
+<span>  title <span class="op">=</span> <span class="st">"Annual unlinked passenger trips on Regional Transportation Authority</span></span>
+<span><span class="st">    systems over time, by service board (in millions)."</span>,</span>
+<span>  caption <span class="op">=</span> <span class="st">"Source: CMAP analysis of RTA data."</span><span class="op">)</span></span></code></pre></div>
 <p><img src="cookbook_files/figure-html/area-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="scatterplot">Scatterplot<a class="anchor" aria-label="anchor" href="#scatterplot"></a>
 </h2>
-<p>Scatterplots show relationships between two numeric variables, plotted on the x- and y-axes. Additionally, color and size can be used to represent additional variables.</p>
+<p>Scatterplots show relationships between two numeric variables,
+plotted on the x- and y-axes. Additionally, color and size can be used
+to represent additional variables.</p>
 <div class="section level4">
 <h4 id="example-code-2">Example code<a class="anchor" aria-label="anchor" href="#example-code-2"></a>
 </h4>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Create example dataset</span>
-<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>
-  REGION <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Boston"</span>, <span class="st">"Chicago"</span>, <span class="st">"Los Angeles"</span>, <span class="st">"New York"</span>, <span class="st">"Washington, D.C."</span><span class="op">)</span>,
-  TOT_POP_DIFF <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">41695</span>, <span class="op">-</span><span class="fl">114387</span>, <span class="fl">110955</span>, <span class="fl">322308</span>, <span class="fl">198931</span><span class="op">)</span>,
-  LF_POP_DIFF <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">46296</span>, <span class="op">-</span><span class="fl">68524</span>, <span class="fl">113307</span>, <span class="fl">315163</span>, <span class="fl">173036</span><span class="op">)</span>,
-  LF_RATE_DIFF_MAG <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5349653</span>, <span class="fl">0.684531</span>, <span class="fl">0.4036736</span>, <span class="fl">0.5853668</span>, <span class="fl">0.0386677</span><span class="op">)</span>,
-  LF_RATE_DIFF_DIR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Increase"</span>, <span class="st">"Increase"</span>, <span class="st">"Increase"</span>, <span class="st">"Increase"</span>, <span class="st">"Decrease"</span><span class="op">)</span>
-<span class="op">)</span>
-
-
-<span class="co"># Create scatterplot</span>
-<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>, mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">TOT_POP_DIFF</span>, y <span class="op">=</span> <span class="va">LF_POP_DIFF</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-
-  <span class="co"># Apply CMAP theme with optional arguments</span>
-  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>
-    xlab <span class="op">=</span> <span class="st">"Change in population aged 25-54"</span>,  <span class="co"># Label x-axis</span>
-    ylab <span class="op">=</span> <span class="st">"Change in size of labor force aged 25-54"</span>,  <span class="co"># Label y-axis</span>
-    hline <span class="op">=</span> <span class="fl">0</span>, vline <span class="op">=</span> <span class="fl">0</span>,  <span class="co"># Add horizontal and vertical origin lines at 0</span>
-    gridlines <span class="op">=</span> <span class="st">"hv"</span>  <span class="co"># Include both horizontal and vertical gridlines</span>
-  <span class="op">)</span> <span class="op">+</span>
-
-  <span class="co"># Adding points after theme_cmap() puts points in front of origin lines</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>
-    size <span class="op">=</span> <span class="va">LF_RATE_DIFF_MAG</span>,  <span class="co"># Associate point size with a variable</span>
-    color <span class="op">=</span> <span class="va">LF_RATE_DIFF_DIR</span>  <span class="co"># Associate point color with a variable</span>
-  <span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">REGION</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># Label each point with its name</span>
-
-  <span class="co"># Manually adjust point size/color aesthetics and legend items</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_size.html" class="external-link">scale_size</a></span><span class="op">(</span>range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">25</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># Minimum/maximum size of points</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span>
-    values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>`Increase` <span class="op">=</span> <span class="fu"><a href="../reference/viz_palette.html">fetch_pal</a></span><span class="op">(</span><span class="st">"legislation"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,  <span class="co"># Modify point colors</span>
-               `Decrease` <span class="op">=</span> <span class="fu"><a href="../reference/viz_palette.html">fetch_pal</a></span><span class="op">(</span><span class="st">"legislation"</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>,
-    breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Increase"</span>, <span class="st">"Decrease"</span><span class="op">)</span>,  <span class="co"># Specify order of legend items</span>
-    labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Increase in labor force\nparticipation rate"</span>,  <span class="co"># Modify legend labels for each color</span>
-               <span class="st">"Decrease in labor force\nparticipation rate"</span><span class="op">)</span>  <span class="co"># ("\n" inserts a line break)</span>
-  <span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span>size <span class="op">=</span> <span class="st">"none"</span>,  <span class="co"># Omit size aesthetic from legend</span>
-         color <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html" class="external-link">guide_legend</a></span><span class="op">(</span>override.aes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># Increase legend point size</span>
-
-  <span class="co"># Adjust gridlines and their labels</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_number.html" class="external-link">label_comma</a></span><span class="op">(</span><span class="op">)</span>,  <span class="co"># Format x-axis numbers with commas</span>
-                     limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">200000</span>, <span class="fl">400000</span><span class="op">)</span>,     <span class="co"># Set x-axis limits</span>
-                     n.breaks <span class="op">=</span> <span class="fl">7</span>,                    <span class="co"># Set number of gridlines on x-axis</span>
-                     expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html" class="external-link">expansion</a></span><span class="op">(</span>mult <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># No padding beyond specified limits</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_number.html" class="external-link">label_comma</a></span><span class="op">(</span><span class="op">)</span>,  <span class="co"># Format y-axis numbers with commas</span>
-                     limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">200000</span>, <span class="fl">400000</span><span class="op">)</span>,     <span class="co"># Set y-axis limits</span>
-                     n.breaks <span class="op">=</span> <span class="fl">7</span>,                    <span class="co"># Set number of gridlines on y-axis</span>
-                     expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html" class="external-link">expansion</a></span><span class="op">(</span>mult <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># No padding beyond specified limits</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>
-    angle <span class="op">=</span> <span class="fl">45</span>,   <span class="co"># Set an angle for the x-axis numbers,</span>
-    hjust <span class="op">=</span> <span class="fl">1</span>,    <span class="co"># a horizontal justification (between 0-1, trial &amp; error),</span>
-    vjust <span class="op">=</span> <span class="fl">1</span>     <span class="co"># and a vertical justification (between 0-1, trial &amp; error).</span>
-  <span class="op">)</span><span class="op">)</span>
-
-
-<span class="co"># Create final plot</span>
-<span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>
-  plot <span class="op">=</span> <span class="va">p</span>,
-  title <span class="op">=</span> <span class="st">"Changes in population, size of labor force, and labor force
-    participation rate among prime working age residents (ages 25-54), Chicago
-    and select Metropolitan Statistical Areas, 2006-10 to 2013-17"</span>,
-  caption <span class="op">=</span> <span class="st">"Size of bubble represents the absolute value of percentage point
-    change in labor force participation rate.
-    &lt;br&gt;&lt;br&gt;
-    Source: Chicago Metropolitan Agency for Planning analysis of American
-    Community Survey data, five-year estimates, 2006-10 and 2013-17."</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Create example dataset</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
+<span>  REGION <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Boston"</span>, <span class="st">"Chicago"</span>, <span class="st">"Los Angeles"</span>, <span class="st">"New York"</span>, <span class="st">"Washington, D.C."</span><span class="op">)</span>,</span>
+<span>  TOT_POP_DIFF <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">41695</span>, <span class="op">-</span><span class="fl">114387</span>, <span class="fl">110955</span>, <span class="fl">322308</span>, <span class="fl">198931</span><span class="op">)</span>,</span>
+<span>  LF_POP_DIFF <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">46296</span>, <span class="op">-</span><span class="fl">68524</span>, <span class="fl">113307</span>, <span class="fl">315163</span>, <span class="fl">173036</span><span class="op">)</span>,</span>
+<span>  LF_RATE_DIFF_MAG <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5349653</span>, <span class="fl">0.684531</span>, <span class="fl">0.4036736</span>, <span class="fl">0.5853668</span>, <span class="fl">0.0386677</span><span class="op">)</span>,</span>
+<span>  LF_RATE_DIFF_DIR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Increase"</span>, <span class="st">"Increase"</span>, <span class="st">"Increase"</span>, <span class="st">"Increase"</span>, <span class="st">"Decrease"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># Create scatterplot</span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>, mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">TOT_POP_DIFF</span>, y <span class="op">=</span> <span class="va">LF_POP_DIFF</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span></span>
+<span>  <span class="co"># Apply CMAP theme with optional arguments</span></span>
+<span>  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span></span>
+<span>    xlab <span class="op">=</span> <span class="st">"Change in population aged 25-54"</span>,  <span class="co"># Label x-axis</span></span>
+<span>    ylab <span class="op">=</span> <span class="st">"Change in size of labor force aged 25-54"</span>,  <span class="co"># Label y-axis</span></span>
+<span>    hline <span class="op">=</span> <span class="fl">0</span>, vline <span class="op">=</span> <span class="fl">0</span>,  <span class="co"># Add horizontal and vertical origin lines at 0</span></span>
+<span>    gridlines <span class="op">=</span> <span class="st">"hv"</span>  <span class="co"># Include both horizontal and vertical gridlines</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span></span>
+<span>  <span class="co"># Adding points after theme_cmap() puts points in front of origin lines</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span>
+<span>    size <span class="op">=</span> <span class="va">LF_RATE_DIFF_MAG</span>,  <span class="co"># Associate point size with a variable</span></span>
+<span>    color <span class="op">=</span> <span class="va">LF_RATE_DIFF_DIR</span>  <span class="co"># Associate point color with a variable</span></span>
+<span>  <span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">REGION</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># Label each point with its name</span></span>
+<span></span>
+<span>  <span class="co"># Manually adjust point size/color aesthetics and legend items</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_size.html" class="external-link">scale_size</a></span><span class="op">(</span>range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">25</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># Minimum/maximum size of points</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span></span>
+<span>    values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>`Increase` <span class="op">=</span> <span class="fu"><a href="../reference/viz_palette.html">fetch_pal</a></span><span class="op">(</span><span class="st">"legislation"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,  <span class="co"># Modify point colors</span></span>
+<span>               `Decrease` <span class="op">=</span> <span class="fu"><a href="../reference/viz_palette.html">fetch_pal</a></span><span class="op">(</span><span class="st">"legislation"</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>    breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Increase"</span>, <span class="st">"Decrease"</span><span class="op">)</span>,  <span class="co"># Specify order of legend items</span></span>
+<span>    labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Increase in labor force\nparticipation rate"</span>,  <span class="co"># Modify legend labels for each color</span></span>
+<span>               <span class="st">"Decrease in labor force\nparticipation rate"</span><span class="op">)</span>  <span class="co"># ("\n" inserts a line break)</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span>size <span class="op">=</span> <span class="st">"none"</span>,  <span class="co"># Omit size aesthetic from legend</span></span>
+<span>         color <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html" class="external-link">guide_legend</a></span><span class="op">(</span>override.aes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># Increase legend point size</span></span>
+<span></span>
+<span>  <span class="co"># Adjust gridlines and their labels</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_number.html" class="external-link">label_comma</a></span><span class="op">(</span><span class="op">)</span>,  <span class="co"># Format x-axis numbers with commas</span></span>
+<span>                     limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">200000</span>, <span class="fl">400000</span><span class="op">)</span>,     <span class="co"># Set x-axis limits</span></span>
+<span>                     n.breaks <span class="op">=</span> <span class="fl">7</span>,                    <span class="co"># Set number of gridlines on x-axis</span></span>
+<span>                     expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html" class="external-link">expansion</a></span><span class="op">(</span>mult <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># No padding beyond specified limits</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_number.html" class="external-link">label_comma</a></span><span class="op">(</span><span class="op">)</span>,  <span class="co"># Format y-axis numbers with commas</span></span>
+<span>                     limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">200000</span>, <span class="fl">400000</span><span class="op">)</span>,     <span class="co"># Set y-axis limits</span></span>
+<span>                     n.breaks <span class="op">=</span> <span class="fl">7</span>,                    <span class="co"># Set number of gridlines on y-axis</span></span>
+<span>                     expand <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expansion.html" class="external-link">expansion</a></span><span class="op">(</span>mult <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># No padding beyond specified limits</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span></span>
+<span>    angle <span class="op">=</span> <span class="fl">45</span>,   <span class="co"># Set an angle for the x-axis numbers,</span></span>
+<span>    hjust <span class="op">=</span> <span class="fl">1</span>,    <span class="co"># a horizontal justification (between 0-1, trial &amp; error),</span></span>
+<span>    vjust <span class="op">=</span> <span class="fl">1</span>     <span class="co"># and a vertical justification (between 0-1, trial &amp; error).</span></span>
+<span>  <span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># Create final plot</span></span>
+<span><span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span></span>
+<span>  plot <span class="op">=</span> <span class="va">p</span>,</span>
+<span>  title <span class="op">=</span> <span class="st">"Changes in population, size of labor force, and labor force</span></span>
+<span><span class="st">    participation rate among prime working age residents (ages 25-54), Chicago</span></span>
+<span><span class="st">    and select Metropolitan Statistical Areas, 2006-10 to 2013-17"</span>,</span>
+<span>  caption <span class="op">=</span> <span class="st">"Size of bubble represents the absolute value of percentage point</span></span>
+<span><span class="st">    change in labor force participation rate.</span></span>
+<span><span class="st">    &lt;br&gt;&lt;br&gt;</span></span>
+<span><span class="st">    Source: Chicago Metropolitan Agency for Planning analysis of American</span></span>
+<span><span class="st">    Community Survey data, five-year estimates, 2006-10 and 2013-17."</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="cookbook_files/figure-html/scatter-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level4">
@@ -329,75 +351,79 @@
 <div class="section level2">
 <h2 id="highlighted-bar-chart">Highlighted bar chart<a class="anchor" aria-label="anchor" href="#highlighted-bar-chart"></a>
 </h2>
-<p>The cmapplot package includes functionality for highlighting specified data using a distinct color. This is useful to compare Chicago against peer regions, for example.</p>
-<p>This plot also utilizes <code>geom_label</code>, an alternative to <code>geom_text</code> that draws a rectangle behind each label to help it stand out from gridlines where they overlap.</p>
+<p>The cmapplot package includes functionality for highlighting
+specified data using a distinct color. This is useful to compare Chicago
+against peer regions, for example.</p>
+<p>This plot also utilizes <code>geom_label</code>, an alternative to
+<code>geom_text</code> that draws a rectangle behind each label to help
+it stand out from gridlines where they overlap.</p>
 <div class="section level4">
 <h4 id="example-code-3">Example code<a class="anchor" aria-label="anchor" href="#example-code-3"></a>
 </h4>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Create example dataset</span>
-<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>
-  REGION <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Boston"</span>, <span class="st">"Chicago"</span>, <span class="st">"Los Angeles"</span>, <span class="st">"New York"</span>, <span class="st">"Washington, D.C."</span><span class="op">)</span>,
-  MED_HH_INC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">77809</span>, <span class="fl">63327</span>, <span class="fl">62216</span>, <span class="fl">69211</span>, <span class="fl">93804</span><span class="op">)</span>
-<span class="op">)</span>
-
-
-<span class="co"># Create highlighted bar chart</span>
-<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>,
-            mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>
-              x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html" class="external-link">reorder</a></span><span class="op">(</span><span class="va">REGION</span>, <span class="op">-</span><span class="va">MED_HH_INC</span><span class="op">)</span>, <span class="co"># Order race by decreasing income</span>
-              y <span class="op">=</span> <span class="va">MED_HH_INC</span>
-            <span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-
-  <span class="co"># Add bars</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">REGION</span><span class="op">)</span>,  <span class="co"># Fill must be set for a highlighted chart</span>
-           width <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span>
-
-  <span class="co"># Add horizontal line at specified value</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">55322</span><span class="op">)</span> <span class="op">+</span>
-
-  <span class="co"># Label bars. `geom_label` draws a rectangle behind the label, to prevent </span>
-  <span class="co"># overlap with gridlines</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_label</a></span><span class="op">(</span>
-    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>
-      y <span class="op">=</span> <span class="va">MED_HH_INC</span> <span class="op">+</span> <span class="fl">2600</span>,  <span class="co"># Offset by trial &amp; error</span>
-      label <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_dollar.html" class="external-link">label_dollar</a></span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="va">MED_HH_INC</span><span class="op">)</span>  <span class="co"># Format labels as dollars</span>
-    <span class="op">)</span>,
-    hjust <span class="op">=</span> <span class="fl">.5</span>,  <span class="co"># Center label (0 = left aligned, 1 = right aligned)</span>
-    label.size <span class="op">=</span> <span class="fl">0</span> <span class="co"># necessary to not draw a line around the label box</span>
-  <span class="op">)</span> <span class="op">+</span>
-
-  <span class="co"># Annotate the horizontal line</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html" class="external-link">annotate</a></span><span class="op">(</span>
-    geom <span class="op">=</span> <span class="st">"text"</span>,
-    x <span class="op">=</span> <span class="fl">5.6</span>, y <span class="op">=</span> <span class="fl">52822</span>, <span class="co"># Specify position of annotation (trial &amp; error)</span>
-    label <span class="op">=</span> <span class="st">"U.S. Average $55,322"</span>,
-    hjust <span class="op">=</span> <span class="fl">1</span> <span class="co"># Right align the text</span>
-  <span class="op">)</span> <span class="op">+</span>
-
-  <span class="co"># Wrap long labels along the x-axis</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_discrete.html" class="external-link">scale_x_discrete</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_wrap.html" class="external-link">label_wrap</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-
-  <span class="co"># Format y-axis numbers as percentages, and set axis limits</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_dollar.html" class="external-link">label_dollar</a></span><span class="op">(</span><span class="op">)</span>,
-                     limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100000</span><span class="op">)</span>,
-                     breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">0</span>, to <span class="op">=</span> <span class="fl">100000</span>, by <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-
-  <span class="co"># Apply CMAP theme and color palette</span>
-  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/cmap_fill_highlight.html">cmap_fill_highlight</a></span><span class="op">(</span>field <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">REGION</span>, value <span class="op">=</span> <span class="st">"Chicago"</span><span class="op">)</span> <span class="op">+</span>
-
-  <span class="co"># Omit fill aesthetic from legend</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span>
-
-
-<span class="co"># Create final plot</span>
-<span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>
-  plot <span class="op">=</span> <span class="va">p</span>,
-  title <span class="op">=</span> <span class="st">"Median household income in select metropolitan statistical areas, 2016"</span>,
-  caption <span class="op">=</span> <span class="st">"Source: Chicago Metropolitan Agency for Planning analysis of U.S.
-    Census Bureau data."</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Create example dataset</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
+<span>  REGION <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Boston"</span>, <span class="st">"Chicago"</span>, <span class="st">"Los Angeles"</span>, <span class="st">"New York"</span>, <span class="st">"Washington, D.C."</span><span class="op">)</span>,</span>
+<span>  MED_HH_INC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">77809</span>, <span class="fl">63327</span>, <span class="fl">62216</span>, <span class="fl">69211</span>, <span class="fl">93804</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># Create highlighted bar chart</span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>,</span>
+<span>            mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span>
+<span>              x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html" class="external-link">reorder</a></span><span class="op">(</span><span class="va">REGION</span>, <span class="op">-</span><span class="va">MED_HH_INC</span><span class="op">)</span>, <span class="co"># Order race by decreasing income</span></span>
+<span>              y <span class="op">=</span> <span class="va">MED_HH_INC</span></span>
+<span>            <span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span></span>
+<span>  <span class="co"># Add bars</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">REGION</span><span class="op">)</span>,  <span class="co"># Fill must be set for a highlighted chart</span></span>
+<span>           width <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span></span>
+<span></span>
+<span>  <span class="co"># Add horizontal line at specified value</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">55322</span><span class="op">)</span> <span class="op">+</span></span>
+<span></span>
+<span>  <span class="co"># Label bars. `geom_label` draws a rectangle behind the label, to prevent </span></span>
+<span>  <span class="co"># overlap with gridlines</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_label</a></span><span class="op">(</span></span>
+<span>    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span>
+<span>      y <span class="op">=</span> <span class="va">MED_HH_INC</span> <span class="op">+</span> <span class="fl">2600</span>,  <span class="co"># Offset by trial &amp; error</span></span>
+<span>      label <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_dollar.html" class="external-link">label_dollar</a></span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="va">MED_HH_INC</span><span class="op">)</span>  <span class="co"># Format labels as dollars</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    hjust <span class="op">=</span> <span class="fl">.5</span>,  <span class="co"># Center label (0 = left aligned, 1 = right aligned)</span></span>
+<span>    label.size <span class="op">=</span> <span class="fl">0</span> <span class="co"># necessary to not draw a line around the label box</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span></span>
+<span>  <span class="co"># Annotate the horizontal line</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html" class="external-link">annotate</a></span><span class="op">(</span></span>
+<span>    geom <span class="op">=</span> <span class="st">"text"</span>,</span>
+<span>    x <span class="op">=</span> <span class="fl">5.6</span>, y <span class="op">=</span> <span class="fl">52822</span>, <span class="co"># Specify position of annotation (trial &amp; error)</span></span>
+<span>    label <span class="op">=</span> <span class="st">"U.S. Average $55,322"</span>,</span>
+<span>    hjust <span class="op">=</span> <span class="fl">1</span> <span class="co"># Right align the text</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span></span>
+<span>  <span class="co"># Wrap long labels along the x-axis</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_discrete.html" class="external-link">scale_x_discrete</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_wrap.html" class="external-link">label_wrap</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span></span>
+<span>  <span class="co"># Format y-axis numbers as percentages, and set axis limits</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_dollar.html" class="external-link">label_dollar</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>                     limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100000</span><span class="op">)</span>,</span>
+<span>                     breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">0</span>, to <span class="op">=</span> <span class="fl">100000</span>, by <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span></span>
+<span>  <span class="co"># Apply CMAP theme and color palette</span></span>
+<span>  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/cmap_fill_highlight.html">cmap_fill_highlight</a></span><span class="op">(</span>field <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">REGION</span>, value <span class="op">=</span> <span class="st">"Chicago"</span><span class="op">)</span> <span class="op">+</span></span>
+<span></span>
+<span>  <span class="co"># Omit fill aesthetic from legend</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># Create final plot</span></span>
+<span><span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span></span>
+<span>  plot <span class="op">=</span> <span class="va">p</span>,</span>
+<span>  title <span class="op">=</span> <span class="st">"Median household income in select metropolitan statistical areas, 2016"</span>,</span>
+<span>  caption <span class="op">=</span> <span class="st">"Source: Chicago Metropolitan Agency for Planning analysis of U.S.</span></span>
+<span><span class="st">    Census Bureau data."</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="cookbook_files/figure-html/highlightbar-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level4">
@@ -410,81 +436,94 @@
 <div class="section level2">
 <h2 id="clustered-bar-chart">Clustered bar chart<a class="anchor" aria-label="anchor" href="#clustered-bar-chart"></a>
 </h2>
-<p>Clustered bar charts allow for multiple variables to be graphed adjacent to one another for the same category. For example, in the chart below, we show Census self-response rates by demogrphic group, with responses from 2020 adjacent to responses from 2010 for each sub-group.</p>
-<p>Note that <code>ggplot2</code> has two elements that can be used to generate bar charts: <code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col()</a></code> and <code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar()</a></code>. In most cases, <code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col()</a></code> will be correct, as it will graph the values supplied as heights on the x- or y-axis by default. <code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar()</a></code> can do the same, but only if the user sets <code>stat = "identity"</code>.</p>
-<p>The chart below also demonstrates three other <code>ggplot2</code> tools that may be of interest: adding value labels above each of the bars; adding a value line (in this case, the regional average at 69%); and adding an annotation above that line to indicate what that line represents.</p>
+<p>Clustered bar charts allow for multiple variables to be graphed
+adjacent to one another for the same category. For example, in the chart
+below, we show Census self-response rates by demogrphic group, with
+responses from 2020 adjacent to responses from 2010 for each
+sub-group.</p>
+<p>Note that <code>ggplot2</code> has two elements that can be used to
+generate bar charts: <code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col()</a></code> and
+<code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar()</a></code>. In most cases, <code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col()</a></code> will be
+correct, as it will graph the values supplied as heights on the x- or
+y-axis by default. <code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar()</a></code> can do the same, but only if
+the user sets <code>stat = "identity"</code>.</p>
+<p>The chart below also demonstrates three other <code>ggplot2</code>
+tools that may be of interest: adding value labels above each of the
+bars; adding a value line (in this case, the regional average at 69%);
+and adding an annotation above that line to indicate what that line
+represents.</p>
 <div class="section level4">
 <h4 id="example-code-4">Example code<a class="anchor" aria-label="anchor" href="#example-code-4"></a>
 </h4>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Create example dataset</span>
-<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>
-  RACE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"White"</span>, <span class="st">"White"</span>, <span class="st">"No majority"</span>, <span class="st">"No majority"</span>, <span class="st">"Asian"</span>, <span class="st">"Asian"</span>, <span class="st">"Hispanic"</span>, <span class="st">"Hispanic"</span>, <span class="st">"Black"</span>, <span class="st">"Black"</span><span class="op">)</span>,
-  YEAR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2010"</span>, <span class="st">"2020"</span>, <span class="st">"2010"</span>, <span class="st">"2020"</span>, <span class="st">"2010"</span>, <span class="st">"2020"</span>, <span class="st">"2010"</span>, <span class="st">"2020"</span>, <span class="st">"2010"</span>, <span class="st">"2020"</span><span class="op">)</span>,
-  RESPONSE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.760</span>, <span class="fl">.761</span>, <span class="fl">.670</span>, <span class="fl">.671</span>, <span class="fl">.634</span>, <span class="fl">.605</span>, <span class="fl">.625</span>, <span class="fl">.550</span>, <span class="fl">.580</span>, <span class="fl">.550</span><span class="op">)</span>
-<span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>LABEL <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"%i%%"</span>, <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">RESPONSE</span> <span class="op">*</span> <span class="fl">100</span>,<span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-
-
-<span class="co"># Create clustered bar chart</span>
-<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>,
-            mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>
-              x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html" class="external-link">reorder</a></span><span class="op">(</span><span class="va">RACE</span>, <span class="op">-</span><span class="va">RESPONSE</span><span class="op">)</span>, <span class="co"># Order race by decreasing response rate</span>
-              y <span class="op">=</span> <span class="va">RESPONSE</span>, fill <span class="op">=</span> <span class="va">YEAR</span>
-            <span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  
-  <span class="co"># Add gap between bars in same cluster</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">0.65</span>,  <span class="co"># Width should be less than position_dodge(width)</span>
-           position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_dodge.html" class="external-link">position_dodge</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># Difference of 0.05 is usually sufficient</span>
-  
-  <span class="co"># Add horizontal dashed line at specified value</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">.69</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span>, color <span class="op">=</span> <span class="st">"gray"</span><span class="op">)</span> <span class="op">+</span>
-  
-  <span class="co"># Add and format value labels for each bar on the graph</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text</a></span><span class="op">(</span>
-    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>
-      label <span class="op">=</span> <span class="va">LABEL</span>,
-      y <span class="op">=</span> <span class="va">RESPONSE</span> <span class="op">+</span> <span class="fl">.025</span><span class="op">)</span>,  <span class="co"># Shift upward to eliminate overlap</span>
-    position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_dodge.html" class="external-link">position_dodge</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span>,  <span class="co"># Match geom_col's width</span>
-    hjust <span class="op">=</span> <span class="fl">.5</span>  <span class="co"># Center label (0 = left aligned, 1 = right aligned)</span>
-  <span class="op">)</span> <span class="op">+</span>
-  
-  <span class="co"># Annotate the dashed line</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html" class="external-link">annotate</a></span><span class="op">(</span>
-    geom <span class="op">=</span> <span class="st">"text"</span>,
-    x <span class="op">=</span> <span class="fl">5.6</span>, y <span class="op">=</span> <span class="fl">0.715</span>, <span class="co"># Specify position of annotation (trial &amp; error)</span>
-    label <span class="op">=</span> <span class="st">"2020 Chicago region average: 69%"</span>,
-    hjust <span class="op">=</span> <span class="fl">1</span>, <span class="co"># Right align the text</span>
-    color <span class="op">=</span> <span class="st">"gray"</span> <span class="co"># set the color of the text (here, matched to above)</span>
-  <span class="op">)</span> <span class="op">+</span>
-  
-  <span class="co"># Format y-axis numbers as percentages</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_percent.html" class="external-link">label_percent</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  
-  <span class="co"># Apply CMAP theme and color palette</span>
-  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/cmap_fill_discrete.html">cmap_fill_discrete</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"governance"</span><span class="op">)</span>
-
-
-<span class="co"># Create final plot</span>
-<span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>
-  plot <span class="op">=</span> <span class="va">p</span>,
-  title <span class="op">=</span> <span class="st">"Average self-response rates in Chicago region census tracts by
-    majority race and ethnicity"</span>,
-  caption <span class="op">=</span> <span class="st">"Note: These figures are weighted averages based on tract-level
-    response rates and housing unit totals. This analysis relies on data from
-    the U.S. Census Bureau's American Community Survey and leverages Census
-    designations of race and ethnicity. This includes the term 'Hispanic,'
-    which in this context refers to residents of any race who categorized
-    themselves as Hispanic. See 'About the data' below for more detail.
-    &lt;br&gt;&lt;br&gt;
-    Sources: CMAP analysis of U.S. Census Bureau data&lt;br&gt;
-    (as of August 19, 2020)."</span>,
-    <span class="co"># Note that we used two "&lt;br&gt;" tags to create a line break and empty line </span>
-    <span class="co">#  between sources and notes.</span>
-  sidebar_width <span class="op">=</span> <span class="fl">2.4</span>,  <span class="co"># Manually specify sidebar width</span>
-  overrides <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>margin_legend_b <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>  <span class="co"># Increase margin below legend</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Create example dataset</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
+<span>  RACE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"White"</span>, <span class="st">"White"</span>, <span class="st">"No majority"</span>, <span class="st">"No majority"</span>, <span class="st">"Asian"</span>, <span class="st">"Asian"</span>, <span class="st">"Hispanic"</span>, <span class="st">"Hispanic"</span>, <span class="st">"Black"</span>, <span class="st">"Black"</span><span class="op">)</span>,</span>
+<span>  YEAR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2010"</span>, <span class="st">"2020"</span>, <span class="st">"2010"</span>, <span class="st">"2020"</span>, <span class="st">"2010"</span>, <span class="st">"2020"</span>, <span class="st">"2010"</span>, <span class="st">"2020"</span>, <span class="st">"2010"</span>, <span class="st">"2020"</span><span class="op">)</span>,</span>
+<span>  RESPONSE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.760</span>, <span class="fl">.761</span>, <span class="fl">.670</span>, <span class="fl">.671</span>, <span class="fl">.634</span>, <span class="fl">.605</span>, <span class="fl">.625</span>, <span class="fl">.550</span>, <span class="fl">.580</span>, <span class="fl">.550</span><span class="op">)</span></span>
+<span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>LABEL <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"%i%%"</span>, <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">RESPONSE</span> <span class="op">*</span> <span class="fl">100</span>,<span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># Create clustered bar chart</span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>,</span>
+<span>            mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span>
+<span>              x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html" class="external-link">reorder</a></span><span class="op">(</span><span class="va">RACE</span>, <span class="op">-</span><span class="va">RESPONSE</span><span class="op">)</span>, <span class="co"># Order race by decreasing response rate</span></span>
+<span>              y <span class="op">=</span> <span class="va">RESPONSE</span>, fill <span class="op">=</span> <span class="va">YEAR</span></span>
+<span>            <span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  </span>
+<span>  <span class="co"># Add gap between bars in same cluster</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">0.65</span>,  <span class="co"># Width should be less than position_dodge(width)</span></span>
+<span>           position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_dodge.html" class="external-link">position_dodge</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># Difference of 0.05 is usually sufficient</span></span>
+<span>  </span>
+<span>  <span class="co"># Add horizontal dashed line at specified value</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">.69</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span>, color <span class="op">=</span> <span class="st">"gray"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  </span>
+<span>  <span class="co"># Add and format value labels for each bar on the graph</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text</a></span><span class="op">(</span></span>
+<span>    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span>
+<span>      label <span class="op">=</span> <span class="va">LABEL</span>,</span>
+<span>      y <span class="op">=</span> <span class="va">RESPONSE</span> <span class="op">+</span> <span class="fl">.025</span><span class="op">)</span>,  <span class="co"># Shift upward to eliminate overlap</span></span>
+<span>    position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_dodge.html" class="external-link">position_dodge</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span>,  <span class="co"># Match geom_col's width</span></span>
+<span>    hjust <span class="op">=</span> <span class="fl">.5</span>  <span class="co"># Center label (0 = left aligned, 1 = right aligned)</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  </span>
+<span>  <span class="co"># Annotate the dashed line</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html" class="external-link">annotate</a></span><span class="op">(</span></span>
+<span>    geom <span class="op">=</span> <span class="st">"text"</span>,</span>
+<span>    x <span class="op">=</span> <span class="fl">5.6</span>, y <span class="op">=</span> <span class="fl">0.715</span>, <span class="co"># Specify position of annotation (trial &amp; error)</span></span>
+<span>    label <span class="op">=</span> <span class="st">"2020 Chicago region average: 69%"</span>,</span>
+<span>    hjust <span class="op">=</span> <span class="fl">1</span>, <span class="co"># Right align the text</span></span>
+<span>    color <span class="op">=</span> <span class="st">"gray"</span> <span class="co"># set the color of the text (here, matched to above)</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  </span>
+<span>  <span class="co"># Format y-axis numbers as percentages</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_percent.html" class="external-link">label_percent</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  </span>
+<span>  <span class="co"># Apply CMAP theme and color palette</span></span>
+<span>  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/cmap_fill_discrete.html">cmap_fill_discrete</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"governance"</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># Create final plot</span></span>
+<span><span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span></span>
+<span>  plot <span class="op">=</span> <span class="va">p</span>,</span>
+<span>  title <span class="op">=</span> <span class="st">"Average self-response rates in Chicago region census tracts by</span></span>
+<span><span class="st">    majority race and ethnicity"</span>,</span>
+<span>  caption <span class="op">=</span> <span class="st">"Note: These figures are weighted averages based on tract-level</span></span>
+<span><span class="st">    response rates and housing unit totals. This analysis relies on data from</span></span>
+<span><span class="st">    the U.S. Census Bureau's American Community Survey and leverages Census</span></span>
+<span><span class="st">    designations of race and ethnicity. This includes the term 'Hispanic,'</span></span>
+<span><span class="st">    which in this context refers to residents of any race who categorized</span></span>
+<span><span class="st">    themselves as Hispanic. See 'About the data' below for more detail.</span></span>
+<span><span class="st">    &lt;br&gt;&lt;br&gt;</span></span>
+<span><span class="st">    Sources: CMAP analysis of U.S. Census Bureau data&lt;br&gt;</span></span>
+<span><span class="st">    (as of August 19, 2020)."</span>,</span>
+<span>    <span class="co"># Note that we used two "&lt;br&gt;" tags to create a line break and empty line </span></span>
+<span>    <span class="co">#  between sources and notes.</span></span>
+<span>  sidebar_width <span class="op">=</span> <span class="fl">2.4</span>,  <span class="co"># Manually specify sidebar width</span></span>
+<span>  overrides <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>margin_legend_b <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>  <span class="co"># Increase margin below legend</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="cookbook_files/figure-html/clusterbar-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level4">
@@ -497,68 +536,71 @@
 <div class="section level2">
 <h2 id="stacked-bar-chart">Stacked bar chart<a class="anchor" aria-label="anchor" href="#stacked-bar-chart"></a>
 </h2>
-<p>Stacked bar charts allow for the bars to represent multiple variables: the sub-bars represent individual components of a group, and the total bar height represents the sum of all of the group’s components.</p>
+<p>Stacked bar charts allow for the bars to represent multiple
+variables: the sub-bars represent individual components of a group, and
+the total bar height represents the sum of all of the group’s
+components.</p>
 <div class="section level4">
 <h4 id="example-code-5">Example code<a class="anchor" aria-label="anchor" href="#example-code-5"></a>
 </h4>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Get &amp; format example dataset from ON TO 2050 indicators GitHub repository</span>
-<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">read_csv</span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/CMAP-REPOS/ONTO2050-indicators/master/non-single-occupancy-modes/non-single-occupancy-modes.csv"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu">pivot_longer</span><span class="op">(</span>cols <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"PCT_NONSOV"</span><span class="op">)</span>,
-               names_to <span class="op">=</span> <span class="st">"MODE"</span>,
-               names_prefix <span class="op">=</span> <span class="st">"PCT_NONSOV_"</span>,
-               values_to <span class="op">=</span> <span class="st">"PCT_NONSOV"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">MODE</span> <span class="op">!=</span> <span class="st">"TOTAL"</span>,
-         <span class="va">ACTUAL_OR_TARGET</span> <span class="op">==</span> <span class="st">"Actual"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>MODE <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/recode.html" class="external-link">recode</a></span><span class="op">(</span><span class="va">MODE</span>,
-                       <span class="st">"CARPOOL"</span> <span class="op">=</span> <span class="st">"Carpool"</span>,
-                       <span class="st">"TRANSIT"</span> <span class="op">=</span> <span class="st">"Public transportation"</span>,
-                       <span class="st">"BIKE"</span> <span class="op">=</span> <span class="st">"Bicycle"</span>,
-                       <span class="st">"WALK"</span> <span class="op">=</span> <span class="st">"Walk"</span>,
-                       <span class="st">"HOME"</span> <span class="op">=</span> <span class="st">"Work at home"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>MODE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">MODE</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>
-    <span class="st">"Work at home"</span>, <span class="st">"Walk"</span>, <span class="st">"Bicycle"</span>, <span class="st">"Public transportation"</span>, <span class="st">"Carpool"</span>
-  <span class="op">)</span><span class="op">)</span><span class="op">)</span>
-
-
-<span class="co"># Create stacked bar chart</span>
-<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">YEAR</span>, y <span class="op">=</span> <span class="va">PCT_NONSOV</span>, fill <span class="op">=</span> <span class="va">MODE</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-
-  <span class="co"># Add bars</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-
-  <span class="co"># Format y-axis numbers as percentages, and set axis limits</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_percent.html" class="external-link">label_percent</a></span><span class="op">(</span>accuracy <span class="op">=</span> <span class="fl">1</span>, scale <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,
-                     limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">35</span><span class="op">)</span>,
-                     breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">0</span>, to <span class="op">=</span> <span class="fl">35</span>, by <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-
-  <span class="co"># Make the x axis pretty</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>
-    n.breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">YEAR</span><span class="op">)</span><span class="op">)</span>, <span class="co"># Label every bar along x-axis</span>
-    labels <span class="op">=</span> <span class="fu"><a href="../reference/abbr_years.html">abbr_years</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Use cmapplot function to abbreviate years</span>
-  <span class="op">)</span> <span class="op">+</span>
-
-  <span class="co"># Apply CMAP theme and color palette</span>
-  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/cmap_fill_discrete.html">cmap_fill_discrete</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"legislation"</span><span class="op">)</span>
-
-
-<span class="co"># Create final plot</span>
-<span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>
-  plot <span class="op">=</span> <span class="va">p</span>,
-  title <span class="op">=</span> <span class="st">"Percentage of trips to work via non-single occupancy vehicle
-    (non-SOV) modes, 2009-2019"</span>,
-  caption <span class="op">=</span> <span class="st">"Source: CMAP analysis of American Community Survey (ACS) data
-    for the 7-county CMAP region, 1-year estimates.
-    &lt;br&gt;&lt;br&gt;
-    Note: The Kendall County portion of this data is based on ACS 5-year
-    estimates, since 1-year estimates of mode share are not consistently
-    available there due to its relatively small population."</span>
-<span class="op">)</span>
-<span class="co">#&gt; Warning: Removed 1 rows containing missing values (geom_col).</span>
-<span class="co">#&gt; Removed 1 rows containing missing values (geom_col).</span>
-<span class="co">#&gt; Removed 1 rows containing missing values (geom_col).</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Get &amp; format example dataset from ON TO 2050 indicators GitHub repository</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">read_csv</span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/CMAP-REPOS/ONTO2050-indicators/master/non-single-occupancy-modes/non-single-occupancy-modes.csv"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu">pivot_longer</span><span class="op">(</span>cols <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"PCT_NONSOV"</span><span class="op">)</span>,</span>
+<span>               names_to <span class="op">=</span> <span class="st">"MODE"</span>,</span>
+<span>               names_prefix <span class="op">=</span> <span class="st">"PCT_NONSOV_"</span>,</span>
+<span>               values_to <span class="op">=</span> <span class="st">"PCT_NONSOV"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">MODE</span> <span class="op">!=</span> <span class="st">"TOTAL"</span>,</span>
+<span>         <span class="va">ACTUAL_OR_TARGET</span> <span class="op">==</span> <span class="st">"Actual"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>MODE <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/recode.html" class="external-link">recode</a></span><span class="op">(</span><span class="va">MODE</span>,</span>
+<span>                       <span class="st">"CARPOOL"</span> <span class="op">=</span> <span class="st">"Carpool"</span>,</span>
+<span>                       <span class="st">"TRANSIT"</span> <span class="op">=</span> <span class="st">"Public transportation"</span>,</span>
+<span>                       <span class="st">"BIKE"</span> <span class="op">=</span> <span class="st">"Bicycle"</span>,</span>
+<span>                       <span class="st">"WALK"</span> <span class="op">=</span> <span class="st">"Walk"</span>,</span>
+<span>                       <span class="st">"HOME"</span> <span class="op">=</span> <span class="st">"Work at home"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>MODE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">MODE</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"Work at home"</span>, <span class="st">"Walk"</span>, <span class="st">"Bicycle"</span>, <span class="st">"Public transportation"</span>, <span class="st">"Carpool"</span></span>
+<span>  <span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># Create stacked bar chart</span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">YEAR</span>, y <span class="op">=</span> <span class="va">PCT_NONSOV</span>, fill <span class="op">=</span> <span class="va">MODE</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span></span>
+<span>  <span class="co"># Add bars</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span></span>
+<span>  <span class="co"># Format y-axis numbers as percentages, and set axis limits</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_percent.html" class="external-link">label_percent</a></span><span class="op">(</span>accuracy <span class="op">=</span> <span class="fl">1</span>, scale <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>                     limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">35</span><span class="op">)</span>,</span>
+<span>                     breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">0</span>, to <span class="op">=</span> <span class="fl">35</span>, by <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span></span>
+<span>  <span class="co"># Make the x axis pretty</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span></span>
+<span>    n.breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">YEAR</span><span class="op">)</span><span class="op">)</span>, <span class="co"># Label every bar along x-axis</span></span>
+<span>    labels <span class="op">=</span> <span class="fu"><a href="../reference/abbr_years.html">abbr_years</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Use cmapplot function to abbreviate years</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span></span>
+<span>  <span class="co"># Apply CMAP theme and color palette</span></span>
+<span>  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/cmap_fill_discrete.html">cmap_fill_discrete</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"legislation"</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># Create final plot</span></span>
+<span><span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span></span>
+<span>  plot <span class="op">=</span> <span class="va">p</span>,</span>
+<span>  title <span class="op">=</span> <span class="st">"Percentage of trips to work via non-single occupancy vehicle</span></span>
+<span><span class="st">    (non-SOV) modes, 2009-2019"</span>,</span>
+<span>  caption <span class="op">=</span> <span class="st">"Source: CMAP analysis of American Community Survey (ACS) data</span></span>
+<span><span class="st">    for the 7-county CMAP region, 1-year estimates.</span></span>
+<span><span class="st">    &lt;br&gt;&lt;br&gt;</span></span>
+<span><span class="st">    Note: The Kendall County portion of this data is based on ACS 5-year</span></span>
+<span><span class="st">    estimates, since 1-year estimates of mode share are not consistently</span></span>
+<span><span class="st">    available there due to its relatively small population."</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_col()`).</span></span>
+<span><span class="co">#&gt; Removed 1 rows containing missing values (`geom_col()`).</span></span>
+<span><span class="co">#&gt; Removed 1 rows containing missing values (`geom_col()`).</span></span></code></pre></div>
 <p><img src="cookbook_files/figure-html/stackbar-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level4">
@@ -571,146 +613,177 @@
 <div class="section level2">
 <h2 id="faceted-histograms">Faceted histograms<a class="anchor" aria-label="anchor" href="#faceted-histograms"></a>
 </h2>
-<p>While statistics such as mean or median are useful for summarizing, they just scratch the surface of trends happening within a large, diverse dataset. Histograms are great for visualizing the distribution of a metric across a large sample. This particular example shows the distribution of tour beginnings and endings over the continuous variable of time. However, the continuous variable has already been made discrete by binning time in half-hour increments and summing the tours in each bin. In cases like this, <code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col()</a></code> is the geom that makes the most sense. If your variable comes in a true continuous form, <code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">geom_histogram()</a></code> is appropriate, and allows flexibility for bin sizes. If your variable is discrete/categorical and has not been summarized, <code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar()</a></code> is the best choice.</p>
-<p>To make histograms even more interesting, split your data up by important categories and visualize them side-by-side to understand how distributions vary for different groups. <code><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid()</a></code> is used here because comparisons are being made across the values of two discrete variables. If you want to split up your graph by only one variable, <code><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap()</a></code> will do.</p>
+<p>While statistics such as mean or median are useful for summarizing,
+they just scratch the surface of trends happening within a large,
+diverse dataset. Histograms are great for visualizing the distribution
+of a metric across a large sample. This particular example shows the
+distribution of tour beginnings and endings over the continuous variable
+of time. However, the continuous variable has already been made discrete
+by binning time in half-hour increments and summing the tours in each
+bin. In cases like this, <code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col()</a></code> is the geom that makes
+the most sense. If your variable comes in a true continuous form,
+<code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html" class="external-link">geom_histogram()</a></code> is appropriate, and allows flexibility for
+bin sizes. If your variable is discrete/categorical and has not been
+summarized, <code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar()</a></code> is the best choice.</p>
+<p>To make histograms even more interesting, split your data up by
+important categories and visualize them side-by-side to understand how
+distributions vary for different groups. <code><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid()</a></code> is
+used here because comparisons are being made across the values of two
+discrete variables. If you want to split up your graph by only one
+variable, <code><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap()</a></code> will do.</p>
 <p>Some smaller formatting choices to pay attention to:</p>
 <ul>
-<li><p><code><a href="https://dplyr.tidyverse.org/reference/recode.html" class="external-link">dplyr::recode_factor()</a></code> changes the column labels to “Departure” and “Return” for clarity. <code><a href="https://forcats.tidyverse.org/reference/fct_rev.html" class="external-link">forcats::fct_rev()</a></code> reverses the order in which the factors appear on the graph. Character/text variables can be converted to factors by <code><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor()</a></code> or <code><a href="https://forcats.tidyverse.org/reference/as_factor.html" class="external-link">forcats::as_factor()</a></code> (which use different rules to determine the factor order).</p></li>
-<li><p>Similar to graphs above which needed special formatting on their axis labels, <code><a href="https://ggplot2.tidyverse.org/reference/scale_date.html" class="external-link">ggplot2::scale_x_time()</a></code> is used to manage the range, breaks, and labels of the x-axis, specifically when that axis represents time.</p></li>
-<li><p><code><a href="https://lubridate.tidyverse.org/reference/hms.html" class="external-link">lubridate::hm()</a></code> converts strings into time period objects. Lubridate is a very useful package if you need to manage dates and times. Learn more about it in <a href="https://r4ds.had.co.nz/dates-and-times.html" class="external-link"><em>R for Data Science</em></a>.</p></li>
+<li><p><code><a href="https://dplyr.tidyverse.org/reference/recode.html" class="external-link">dplyr::recode_factor()</a></code> changes the column labels to
+“Departure” and “Return” for clarity. <code><a href="https://forcats.tidyverse.org/reference/fct_rev.html" class="external-link">forcats::fct_rev()</a></code>
+reverses the order in which the factors appear on the graph.
+Character/text variables can be converted to factors by
+<code><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor()</a></code> or <code><a href="https://forcats.tidyverse.org/reference/as_factor.html" class="external-link">forcats::as_factor()</a></code> (which use
+different rules to determine the factor order).</p></li>
+<li><p>Similar to graphs above which needed special formatting on their
+axis labels, <code><a href="https://ggplot2.tidyverse.org/reference/scale_date.html" class="external-link">ggplot2::scale_x_time()</a></code> is used to manage the
+range, breaks, and labels of the x-axis, specifically when that axis
+represents time.</p></li>
+<li><p><code><a href="https://lubridate.tidyverse.org/reference/hms.html" class="external-link">lubridate::hm()</a></code> converts strings into time period
+objects. Lubridate is a very useful package if you need to manage dates
+and times. Learn more about it in <a href="https://r4ds.had.co.nz/dates-and-times.html" class="external-link"><em>R for Data
+Science</em></a>.</p></li>
 </ul>
 <div class="section level4">
 <h4 id="example-code-6">Example code<a class="anchor" aria-label="anchor" href="#example-code-6"></a>
 </h4>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Get &amp; format example dataset from ABM validation report GitHub repository</span>
-<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">read_csv</span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/CMAP-REPOS/cmap_abm_report/master/data/csv37_tours_tod.csv"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">cat</span> <span class="op">!=</span> <span class="st">"all"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>
-    purpose <span class="op">=</span> <span class="fu">fct_rev</span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/recode.html" class="external-link">recode_factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">cat</span><span class="op">)</span>,
-                                    `work` <span class="op">=</span> <span class="st">"Work"</span>,
-                                    `school` <span class="op">=</span> <span class="st">"School"</span>,
-                                    .default <span class="op">=</span> <span class="st">"Other Purposes"</span>,
-                                    .ordered <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,
-    dep_arr <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/recode.html" class="external-link">recode_factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">subgroup</span><span class="op">)</span>,
-                            `Model-Depart` <span class="op">=</span> <span class="st">"Departure"</span>,
-                            `Survey-Depart` <span class="op">=</span> <span class="st">"Departure"</span>,
-                            `Model-Arrive` <span class="op">=</span> <span class="st">"Return"</span>,
-                            `Survey-Arrive` <span class="op">=</span> <span class="st">"Return"</span>,
-                            .ordered <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,
-    obs_mod <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/recode.html" class="external-link">recode_factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">subgroup</span><span class="op">)</span>,
-                            `Model-Depart` <span class="op">=</span> <span class="st">"Modeled"</span>,
-                            `Model-Arrive` <span class="op">=</span> <span class="st">"Modeled"</span>,
-                            `Survey-Depart` <span class="op">=</span> <span class="st">"Observed"</span>,
-                            `Survey-Arrive` <span class="op">=</span> <span class="st">"Observed"</span>,
-                            .ordered <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-  <span class="op">)</span>
-
-<span class="co"># Create faceted histograms</span>
-<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>, mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">hours</span>, y <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  
-  <span class="co"># Add histogram bars</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span>  <span class="co"># Or geom_histogram() if data is not already grouped</span>
-    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">purpose</span><span class="op">)</span>  <span class="co"># Color bars by tour purpose</span>
-  <span class="op">)</span> <span class="op">+</span>
-  
-  <span class="co"># Facet by departure/arrival and modeled/observed</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span>rows <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">obs_mod</span><span class="op">)</span>, cols <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">dep_arr</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  
-  <span class="co"># Apply CMAP theme and color palette</span>
-  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>
-    hline <span class="op">=</span> <span class="fl">0</span>,  <span class="co"># Add origin line at 0 for aesthetic reasons</span>
-    gridlines <span class="op">=</span> <span class="st">"hv"</span>,  <span class="co"># Show horizontal and vertical gridlines</span>
-    
-    <span class="co"># Supply an optional "..." argument passed to ggplot2::theme()</span>
-    strip.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>
-      hjust <span class="op">=</span> <span class="fl">0.5</span>  <span class="co"># Center facet labels at axis midpoint</span>
-    <span class="op">)</span>
-  <span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/cmap_fill_discrete.html">cmap_fill_discrete</a></span><span class="op">(</span><span class="st">"friday"</span>, reverse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span>
-  
-  <span class="co"># Adjust axis scales/labels</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_number.html" class="external-link">label_comma</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_date.html" class="external-link">scale_x_time</a></span><span class="op">(</span>
-    limits <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/hms.html" class="external-link">hm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"05:00"</span>, <span class="st">"22:00"</span><span class="op">)</span><span class="op">)</span>,
-    breaks <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/hms.html" class="external-link">hm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"06:00"</span>, <span class="st">"09:00"</span>, <span class="st">"12:00"</span>, <span class="st">"15:00"</span>, <span class="st">"18:00"</span>, <span class="st">"21:00"</span><span class="op">)</span><span class="op">)</span>,
-    labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"6a"</span>, <span class="st">"9a"</span>, <span class="st">"12p"</span>, <span class="st">"3p"</span>, <span class="st">"6p"</span>, <span class="st">"9p"</span><span class="op">)</span>
-  <span class="op">)</span> <span class="op">+</span>
-  
-  <span class="co"># Reverse legend order</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html" class="external-link">guide_legend</a></span><span class="op">(</span>reverse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-  
-<span class="co"># Create  final plot</span>
-<span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>
-  plot <span class="op">=</span> <span class="va">p</span>,
-  title <span class="op">=</span> <span class="st">"Modeled vs. observed tour departure and return times by purpose in
-    CMAP's Activity-Based Model"</span>,
-  caption <span class="op">=</span> <span class="st">"Note: A tour is a chain of trips that begin at and return to the
-    same location. Frequencies are given in half-hour intervals.
-    &lt;br&gt;&lt;br&gt;
-    Modeled source: CMAP activity-based model, 2010 scenario.
-    &lt;br&gt;&lt;br&gt;
-    Observed source: Travel Tracker Survey, 2007-2008."</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Get &amp; format example dataset from ABM validation report GitHub repository</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">read_csv</span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/CMAP-REPOS/cmap_abm_report/master/data/csv37_tours_tod.csv"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">cat</span> <span class="op">!=</span> <span class="st">"all"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>    purpose <span class="op">=</span> <span class="fu">fct_rev</span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/recode.html" class="external-link">recode_factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">cat</span><span class="op">)</span>,</span>
+<span>                                    `work` <span class="op">=</span> <span class="st">"Work"</span>,</span>
+<span>                                    `school` <span class="op">=</span> <span class="st">"School"</span>,</span>
+<span>                                    .default <span class="op">=</span> <span class="st">"Other Purposes"</span>,</span>
+<span>                                    .ordered <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    dep_arr <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/recode.html" class="external-link">recode_factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">subgroup</span><span class="op">)</span>,</span>
+<span>                            `Model-Depart` <span class="op">=</span> <span class="st">"Departure"</span>,</span>
+<span>                            `Survey-Depart` <span class="op">=</span> <span class="st">"Departure"</span>,</span>
+<span>                            `Model-Arrive` <span class="op">=</span> <span class="st">"Return"</span>,</span>
+<span>                            `Survey-Arrive` <span class="op">=</span> <span class="st">"Return"</span>,</span>
+<span>                            .ordered <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    obs_mod <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/recode.html" class="external-link">recode_factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">subgroup</span><span class="op">)</span>,</span>
+<span>                            `Model-Depart` <span class="op">=</span> <span class="st">"Modeled"</span>,</span>
+<span>                            `Model-Arrive` <span class="op">=</span> <span class="st">"Modeled"</span>,</span>
+<span>                            `Survey-Depart` <span class="op">=</span> <span class="st">"Observed"</span>,</span>
+<span>                            `Survey-Arrive` <span class="op">=</span> <span class="st">"Observed"</span>,</span>
+<span>                            .ordered <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Create faceted histograms</span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>, mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">hours</span>, y <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  </span>
+<span>  <span class="co"># Add histogram bars</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span>  <span class="co"># Or geom_histogram() if data is not already grouped</span></span>
+<span>    mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">purpose</span><span class="op">)</span>  <span class="co"># Color bars by tour purpose</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  </span>
+<span>  <span class="co"># Facet by departure/arrival and modeled/observed</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span>rows <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">obs_mod</span><span class="op">)</span>, cols <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">dep_arr</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  </span>
+<span>  <span class="co"># Apply CMAP theme and color palette</span></span>
+<span>  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span></span>
+<span>    hline <span class="op">=</span> <span class="fl">0</span>,  <span class="co"># Add origin line at 0 for aesthetic reasons</span></span>
+<span>    gridlines <span class="op">=</span> <span class="st">"hv"</span>,  <span class="co"># Show horizontal and vertical gridlines</span></span>
+<span>    </span>
+<span>    <span class="co"># Supply an optional "..." argument passed to ggplot2::theme()</span></span>
+<span>    strip.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span></span>
+<span>      hjust <span class="op">=</span> <span class="fl">0.5</span>  <span class="co"># Center facet labels at axis midpoint</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/cmap_fill_discrete.html">cmap_fill_discrete</a></span><span class="op">(</span><span class="st">"friday"</span>, reverse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  </span>
+<span>  <span class="co"># Adjust axis scales/labels</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_number.html" class="external-link">label_comma</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_date.html" class="external-link">scale_x_time</a></span><span class="op">(</span></span>
+<span>    limits <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/hms.html" class="external-link">hm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"05:00"</span>, <span class="st">"22:00"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    breaks <span class="op">=</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/hms.html" class="external-link">hm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"06:00"</span>, <span class="st">"09:00"</span>, <span class="st">"12:00"</span>, <span class="st">"15:00"</span>, <span class="st">"18:00"</span>, <span class="st">"21:00"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"6a"</span>, <span class="st">"9a"</span>, <span class="st">"12p"</span>, <span class="st">"3p"</span>, <span class="st">"6p"</span>, <span class="st">"9p"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  </span>
+<span>  <span class="co"># Reverse legend order</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html" class="external-link">guide_legend</a></span><span class="op">(</span>reverse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span>  </span>
+<span><span class="co"># Create  final plot</span></span>
+<span><span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span></span>
+<span>  plot <span class="op">=</span> <span class="va">p</span>,</span>
+<span>  title <span class="op">=</span> <span class="st">"Modeled vs. observed tour departure and return times by purpose in</span></span>
+<span><span class="st">    CMAP's Activity-Based Model"</span>,</span>
+<span>  caption <span class="op">=</span> <span class="st">"Note: A tour is a chain of trips that begin at and return to the</span></span>
+<span><span class="st">    same location. Frequencies are given in half-hour intervals.</span></span>
+<span><span class="st">    &lt;br&gt;&lt;br&gt;</span></span>
+<span><span class="st">    Modeled source: CMAP activity-based model, 2010 scenario.</span></span>
+<span><span class="st">    &lt;br&gt;&lt;br&gt;</span></span>
+<span><span class="st">    Observed source: Travel Tracker Survey, 2007-2008."</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="cookbook_files/figure-html/histogram-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="donut-chart-or-pie-chart">Donut chart (or pie chart)<a class="anchor" aria-label="anchor" href="#donut-chart-or-pie-chart"></a>
 </h2>
-<p>The donut chart is a CMAP favorite for visualizing percentages of a whole. It is a variant of the pie chart, where the center has been replaced by a hole. While ggplot2 does not have a native geom for donut or pie charts, they can be constructed with a combination of <code><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html" class="external-link">geom_rect()</a></code> and <code><a href="https://ggplot2.tidyverse.org/reference/coord_polar.html" class="external-link">coord_polar()</a></code>.</p>
+<p>The donut chart is a CMAP favorite for visualizing percentages of a
+whole. It is a variant of the pie chart, where the center has been
+replaced by a hole. While ggplot2 does not have a native geom for donut
+or pie charts, they can be constructed with a combination of
+<code><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html" class="external-link">geom_rect()</a></code> and <code><a href="https://ggplot2.tidyverse.org/reference/coord_polar.html" class="external-link">coord_polar()</a></code>.</p>
 <div class="section level4">
 <h4 id="example-code-7">Example code<a class="anchor" aria-label="anchor" href="#example-code-7"></a>
 </h4>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Create example dataset</span>
-<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>
-  SECTOR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Stationary energy"</span>, <span class="st">"Transportation"</span>, <span class="st">"Waste"</span><span class="op">)</span>,
-  EMISSIONS <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">81.9</span>, <span class="fl">34.3</span>, <span class="fl">3.2</span><span class="op">)</span>
-<span class="op">)</span>
-
-
-<span class="co"># Create donut chart</span>
-<span class="va">p</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-
-  <span class="co"># Compute temporary variables needed for constructing the donut segments</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>
-    fraction <span class="op">=</span> <span class="va">EMISSIONS</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">EMISSIONS</span><span class="op">)</span>,
-    xmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html" class="external-link">cumsum</a></span><span class="op">(</span><span class="va">fraction</span><span class="op">)</span>,
-    xmin <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">xmax</span>, default <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
-  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill<span class="op">=</span><span class="va">SECTOR</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-
-    <span class="co"># Create donut segments as rectangles of proportional width, fixed height</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html" class="external-link">geom_rect</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>xmin <span class="op">=</span> <span class="va">xmin</span>, xmax <span class="op">=</span> <span class="va">xmax</span>,
-                            ymin <span class="op">=</span> <span class="fl">2</span>, ymax <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-
-    <span class="co"># Add formatted labels to center of each donut segment</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"%.0f%%"</span>, <span class="va">fraction</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span>,
-                            x <span class="op">=</span> <span class="op">(</span><span class="va">xmax</span><span class="op">+</span><span class="va">xmin</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span>,
-                            y <span class="op">=</span> <span class="fl">2.5</span><span class="op">)</span>,
-              color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># Change label color</span>
-
-    <span class="co"># Switch from rectangular to circular grid, centered at y=0</span>
-    <span class="co"># `start` (in radians) by trial and error to match original graphic</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_polar.html" class="external-link">coord_polar</a></span><span class="op">(</span>start <span class="op">=</span> <span class="fl">4.88</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">ylim</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># Without this, result would be a pie chart</span>
-
-    <span class="co"># Apply CMAP theme (without gridlines) and a color palette</span>
-    <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>gridline <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="../reference/cmap_fill_discrete.html">cmap_fill_discrete</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"community"</span><span class="op">)</span> <span class="op">+</span>
-
-    <span class="co"># Turn off axis labels</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-
-
-<span class="co"># Create final plot</span>
-<span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>
-  plot <span class="op">=</span> <span class="va">p</span>,
-  title <span class="op">=</span> <span class="st">"Regional emissions by sector, 2015"</span>,
-  caption <span class="op">=</span> <span class="st">"Source: Chicago Metropolitan Agency for Planning."</span>,
-  caption_align <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Create example dataset</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
+<span>  SECTOR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Stationary energy"</span>, <span class="st">"Transportation"</span>, <span class="st">"Waste"</span><span class="op">)</span>,</span>
+<span>  EMISSIONS <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">81.9</span>, <span class="fl">34.3</span>, <span class="fl">3.2</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># Create donut chart</span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span></span>
+<span>  <span class="co"># Compute temporary variables needed for constructing the donut segments</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>    fraction <span class="op">=</span> <span class="va">EMISSIONS</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">EMISSIONS</span><span class="op">)</span>,</span>
+<span>    xmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html" class="external-link">cumsum</a></span><span class="op">(</span><span class="va">fraction</span><span class="op">)</span>,</span>
+<span>    xmin <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">xmax</span>, default <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill<span class="op">=</span><span class="va">SECTOR</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span></span>
+<span>    <span class="co"># Create donut segments as rectangles of proportional width, fixed height</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html" class="external-link">geom_rect</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>xmin <span class="op">=</span> <span class="va">xmin</span>, xmax <span class="op">=</span> <span class="va">xmax</span>,</span>
+<span>                            ymin <span class="op">=</span> <span class="fl">2</span>, ymax <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span></span>
+<span>    <span class="co"># Add formatted labels to center of each donut segment</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"%.0f%%"</span>, <span class="va">fraction</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span>,</span>
+<span>                            x <span class="op">=</span> <span class="op">(</span><span class="va">xmax</span><span class="op">+</span><span class="va">xmin</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span>,</span>
+<span>                            y <span class="op">=</span> <span class="fl">2.5</span><span class="op">)</span>,</span>
+<span>              color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># Change label color</span></span>
+<span></span>
+<span>    <span class="co"># Switch from rectangular to circular grid, centered at y=0</span></span>
+<span>    <span class="co"># `start` (in radians) by trial and error to match original graphic</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_polar.html" class="external-link">coord_polar</a></span><span class="op">(</span>start <span class="op">=</span> <span class="fl">4.88</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">ylim</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># Without this, result would be a pie chart</span></span>
+<span></span>
+<span>    <span class="co"># Apply CMAP theme (without gridlines) and a color palette</span></span>
+<span>    <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>gridline <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="../reference/cmap_fill_discrete.html">cmap_fill_discrete</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"community"</span><span class="op">)</span> <span class="op">+</span></span>
+<span></span>
+<span>    <span class="co"># Turn off axis labels</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># Create final plot</span></span>
+<span><span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span></span>
+<span>  plot <span class="op">=</span> <span class="va">p</span>,</span>
+<span>  title <span class="op">=</span> <span class="st">"Regional emissions by sector, 2015"</span>,</span>
+<span>  caption <span class="op">=</span> <span class="st">"Source: Chicago Metropolitan Agency for Planning."</span>,</span>
+<span>  caption_align <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <p><img src="cookbook_files/figure-html/donut-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level4">
@@ -723,63 +796,68 @@
 <div class="section level2">
 <h2 id="race-and-ethnicity-time-series-line-graph">Race and ethnicity time series line graph<a class="anchor" aria-label="anchor" href="#race-and-ethnicity-time-series-line-graph"></a>
 </h2>
-<p>Given CMAP’s focus on inclusive growth, many of our graphics depict data by race and ethnicity. Notably, several of the ON TO 2050 indicators track trends over time by race and ethnicity. For these cases, the cmapplot package includes a special race/ethnicity color palette that can be applied to the <code>color</code> or <code>fill</code> aesthetics of any geom.</p>
+<p>Given CMAP’s focus on inclusive growth, many of our graphics depict
+data by race and ethnicity. Notably, several of the ON TO 2050
+indicators track trends over time by race and ethnicity. For these
+cases, the cmapplot package includes a special race/ethnicity color
+palette that can be applied to the <code>color</code> or
+<code>fill</code> aesthetics of any geom.</p>
 <div class="section level4">
 <h4 id="example-code-8">Example code<a class="anchor" aria-label="anchor" href="#example-code-8"></a>
 </h4>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Get &amp; format example dataset from ON TO 2050 indicators GitHub repository</span>
-<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">read_csv</span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/CMAP-REPOS/ONTO2050-indicators/master/household-income-race-ethnicity/household-income-race-ethnicity.csv"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu">pivot_longer</span><span class="op">(</span>cols <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"MED_HH_INC"</span><span class="op">)</span>,
-               names_to <span class="op">=</span> <span class="st">"RACE_ETH"</span>,
-               names_prefix <span class="op">=</span> <span class="st">"MED_HH_INC_"</span>,
-               values_to <span class="op">=</span> <span class="st">"MED_HH_INC"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>RACE_ETH <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/recode.html" class="external-link">recode</a></span><span class="op">(</span><span class="va">RACE_ETH</span>,
-                           <span class="st">"ALL"</span> <span class="op">=</span> <span class="st">"All"</span>,
-                           <span class="st">"ASIAN"</span> <span class="op">=</span> <span class="st">"Asian"</span>,
-                           <span class="st">"BLACK"</span> <span class="op">=</span> <span class="st">"Black"</span>,
-                           <span class="st">"HISPANIC"</span> <span class="op">=</span> <span class="st">"Hispanic"</span>,
-                           <span class="st">"WHITE"</span> <span class="op">=</span> <span class="st">"White (non-Hispanic)"</span><span class="op">)</span><span class="op">)</span>
-
-
-<span class="co"># Create line graph with race/ethnicity palette</span>
-<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>, mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">YEAR</span>, y <span class="op">=</span> <span class="va">MED_HH_INC</span>, color <span class="op">=</span> <span class="va">RACE_ETH</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-
-  <span class="co"># Add lines and label final value with dollar formatting</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/geom_text_lastonly.html">geom_text_lastonly</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_dollar.html" class="external-link">label_dollar</a></span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="va">MED_HH_INC</span><span class="op">)</span><span class="op">)</span>,
-                     add_points <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span>
-
-  <span class="co"># Don't clip labels</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html" class="external-link">coord_cartesian</a></span><span class="op">(</span>clip <span class="op">=</span> <span class="st">"off"</span><span class="op">)</span> <span class="op">+</span>
-
-  <span class="co"># Manually set axis limits and format y-axis labels as dollars</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2005</span>, <span class="fl">2020</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100000</span><span class="op">)</span>,
-                     breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">0</span>, to <span class="op">=</span> <span class="fl">100000</span>, by <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span>,
-                     labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_dollar.html" class="external-link">label_dollar</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-
-  <span class="co"># Apply CMAP theme and apply race/ethnicity palette</span>
-  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/cmap_fill_race.html">cmap_color_race</a></span><span class="op">(</span>white <span class="op">=</span> <span class="st">"White (non-Hispanic)"</span>,
-                  black <span class="op">=</span> <span class="st">"Black"</span>,
-                  hispanic <span class="op">=</span> <span class="st">"Hispanic"</span>,
-                  asian <span class="op">=</span> <span class="st">"Asian"</span>,
-                  other <span class="op">=</span> <span class="st">"All"</span><span class="op">)</span>
-
-
-<span class="co"># Create final plot</span>
-<span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>
-  plot <span class="op">=</span> <span class="va">p</span>,
-  title <span class="op">=</span> <span class="st">"Median household income by race and ethnicity, 2006-2019, in 2016
-    inflation-adjusted dollars"</span>,
-  caption <span class="op">=</span> <span class="st">"Source: CMAP analysis of American Community Survey data, 1-year
-    estimates."</span>
-<span class="op">)</span>
-<span class="co">#&gt; Warning: Removed 5 rows containing missing values (geom_text_last).</span>
-<span class="co">#&gt; Removed 5 rows containing missing values (geom_text_last).</span>
-<span class="co">#&gt; Removed 5 rows containing missing values (geom_text_last).</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Get &amp; format example dataset from ON TO 2050 indicators GitHub repository</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">read_csv</span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/CMAP-REPOS/ONTO2050-indicators/master/household-income-race-ethnicity/household-income-race-ethnicity.csv"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu">pivot_longer</span><span class="op">(</span>cols <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"MED_HH_INC"</span><span class="op">)</span>,</span>
+<span>               names_to <span class="op">=</span> <span class="st">"RACE_ETH"</span>,</span>
+<span>               names_prefix <span class="op">=</span> <span class="st">"MED_HH_INC_"</span>,</span>
+<span>               values_to <span class="op">=</span> <span class="st">"MED_HH_INC"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>RACE_ETH <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/recode.html" class="external-link">recode</a></span><span class="op">(</span><span class="va">RACE_ETH</span>,</span>
+<span>                           <span class="st">"ALL"</span> <span class="op">=</span> <span class="st">"All"</span>,</span>
+<span>                           <span class="st">"ASIAN"</span> <span class="op">=</span> <span class="st">"Asian"</span>,</span>
+<span>                           <span class="st">"BLACK"</span> <span class="op">=</span> <span class="st">"Black"</span>,</span>
+<span>                           <span class="st">"HISPANIC"</span> <span class="op">=</span> <span class="st">"Hispanic"</span>,</span>
+<span>                           <span class="st">"WHITE"</span> <span class="op">=</span> <span class="st">"White (non-Hispanic)"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># Create line graph with race/ethnicity palette</span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>, mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">YEAR</span>, y <span class="op">=</span> <span class="va">MED_HH_INC</span>, color <span class="op">=</span> <span class="va">RACE_ETH</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span></span>
+<span>  <span class="co"># Add lines and label final value with dollar formatting</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/geom_text_lastonly.html">geom_text_lastonly</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_dollar.html" class="external-link">label_dollar</a></span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="va">MED_HH_INC</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                     add_points <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span></span>
+<span></span>
+<span>  <span class="co"># Don't clip labels</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html" class="external-link">coord_cartesian</a></span><span class="op">(</span>clip <span class="op">=</span> <span class="st">"off"</span><span class="op">)</span> <span class="op">+</span></span>
+<span></span>
+<span>  <span class="co"># Manually set axis limits and format y-axis labels as dollars</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2005</span>, <span class="fl">2020</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100000</span><span class="op">)</span>,</span>
+<span>                     breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">0</span>, to <span class="op">=</span> <span class="fl">100000</span>, by <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span>,</span>
+<span>                     labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/label_dollar.html" class="external-link">label_dollar</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span></span>
+<span>  <span class="co"># Apply CMAP theme and apply race/ethnicity palette</span></span>
+<span>  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/cmap_fill_race.html">cmap_color_race</a></span><span class="op">(</span>white <span class="op">=</span> <span class="st">"White (non-Hispanic)"</span>,</span>
+<span>                  black <span class="op">=</span> <span class="st">"Black"</span>,</span>
+<span>                  hispanic <span class="op">=</span> <span class="st">"Hispanic"</span>,</span>
+<span>                  asian <span class="op">=</span> <span class="st">"Asian"</span>,</span>
+<span>                  other <span class="op">=</span> <span class="st">"All"</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># Create final plot</span></span>
+<span><span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span></span>
+<span>  plot <span class="op">=</span> <span class="va">p</span>,</span>
+<span>  title <span class="op">=</span> <span class="st">"Median household income by race and ethnicity, 2006-2019, in 2016</span></span>
+<span><span class="st">    inflation-adjusted dollars"</span>,</span>
+<span>  caption <span class="op">=</span> <span class="st">"Source: CMAP analysis of American Community Survey data, 1-year</span></span>
+<span><span class="st">    estimates."</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Removed 5 rows containing missing values (`geom_text_last()`).</span></span>
+<span><span class="co">#&gt; Removed 5 rows containing missing values (`geom_text_last()`).</span></span>
+<span><span class="co">#&gt; Removed 5 rows containing missing values (`geom_text_last()`).</span></span></code></pre></div>
 <p><img src="cookbook_files/figure-html/racepalette-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level4">
@@ -808,7 +886,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

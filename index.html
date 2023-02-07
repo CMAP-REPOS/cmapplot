@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.1</span>
       </span>
     </div>
 
@@ -101,6 +101,7 @@
 <div class="page-header"><h1 id="cmapplot-">cmapplot <img src="reference/figures/logo.png" align="right" alt="cmapplot logo" width="128"><a class="anchor" aria-label="anchor" href="#cmapplot-"></a>
 </h1></div>
 <!-- badges: start -->
+
 <p>This R package provides themes, color scales, and other custom functions for <a href="https://github.com/tidyverse/ggplot2" class="external-link">ggplot2</a>, based on Chicago Metropolitan Agency for Planning (CMAP) design guidelines.</p>
 <p>CMAP staff who are interested in using this package, or merely staying in the loop, are encouraged to join the <a href="https://teams.microsoft.com/l/team/19%3ad705bfd7596a4518b588ad529d2367c8%40thread.skype/conversations?groupId=d7bab529-9c30-441e-9db6-4edfdca8202c&amp;tenantId=43b185b9-e6d9-45a5-8e36-4c08dc0ab1a2" class="external-link">R team</a> in Microsoft Teams and follow the “cmapplot” channel.</p>
 <div class="section level2">
@@ -122,11 +123,11 @@
 </h2>
 <p>Run the following to install or update cmapplot:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Install current version from GitHub</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"CMAP-REPOS/cmapplot"</span>, build_vignettes<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="co">## Then load the package as you would any other</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cmap-repos.github.io/cmapplot">cmapplot</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Install current version from GitHub</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"CMAP-REPOS/cmapplot"</span>, build_vignettes<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Then load the package as you would any other</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cmap-repos.github.io/cmapplot">cmapplot</a></span><span class="op">)</span></span></code></pre></div>
 <p>For more detailed information about installing the package, particularly on a CMAP-issued computer, see <a href="https://cmap-repos.github.io/cmapplot/articles/installation.html">this article</a>.</p>
 <p>To install on macOS, users must install <a href="https://www.xquartz.org" class="external-link">XQuartz</a> before cmapplot can be loaded. (This can be easily accomplished via the <a href="https://brew.sh" class="external-link">Homebrew</a> package manager with the command <code>brew install --cask xquartz</code>.)</p>
 <p><strong>A note about fonts</strong>: The cmapplot package works best when installed on a computer with the Whitney family of fonts installed (specifically the Book, Medium, and Semibold variants). If installed on a computer <em>without</em> Whitney, the package will still work, but the fonts will default to your computer’s default sans-serif font (probably Arial).</p>
@@ -136,16 +137,16 @@
 </h2>
 <p>The function <code><a href="reference/theme_cmap.html">theme_cmap()</a></code> returns a complete ggplot2 theme that can be added to a ggplot code block (similar to <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">ggplot2::theme_minimal()</a></code> or <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">ggplot2::theme_bw()</a></code>). Additionally, <code><a href="reference/theme_cmap.html">theme_cmap()</a></code> accepts a variety of arguments to additionally customize the theme output. CMAP color functions apply colors from the CMAP color palette to the plot.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pop_and_laborforce_by_age</span>, 
-       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">value</span>,
-           y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/interaction.html" class="external-link">interaction</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">variable</span>, sep <span class="op">=</span> <span class="st">" "</span><span class="op">)</span>,
-           fill <span class="op">=</span> <span class="va">age</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span>position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_stack.html" class="external-link">position_stack</a></span><span class="op">(</span>reverse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">percent</a></span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>xlab <span class="op">=</span> <span class="st">"Percent"</span>,
-             gridlines <span class="op">=</span> <span class="st">"v"</span>,
-             vline <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="reference/cmap_fill_discrete.html">cmap_fill_discrete</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"environment"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pop_and_laborforce_by_age</span>, </span>
+<span>       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">value</span>,</span>
+<span>           y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/interaction.html" class="external-link">interaction</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">variable</span>, sep <span class="op">=</span> <span class="st">" "</span><span class="op">)</span>,</span>
+<span>           fill <span class="op">=</span> <span class="va">age</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span>position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_stack.html" class="external-link">position_stack</a></span><span class="op">(</span>reverse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">percent</a></span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>xlab <span class="op">=</span> <span class="st">"Percent"</span>,</span>
+<span>             gridlines <span class="op">=</span> <span class="st">"v"</span>,</span>
+<span>             vline <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/cmap_fill_discrete.html">cmap_fill_discrete</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"environment"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-theme-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
@@ -153,9 +154,9 @@
 </h2>
 <p>The function <code><a href="reference/finalize_plot.html">finalize_plot()</a></code> places a ggplot within a frame defined by CMAP design standards. It provides a variety of customization options via arguments, and allows for in-R viewing and/or exporting in various formats.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Regional population and labor force participation"</span>,
-              caption <span class="op">=</span> <span class="st">"Data from the American Community Survey"</span>,
-              width <span class="op">=</span> <span class="fl">7</span>, height <span class="op">=</span> <span class="fl">4.25</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Regional population and labor force participation"</span>,</span>
+<span>              caption <span class="op">=</span> <span class="st">"Data from the American Community Survey"</span>,</span>
+<span>              width <span class="op">=</span> <span class="fl">7</span>, height <span class="op">=</span> <span class="fl">4.25</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-finalize-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
@@ -230,7 +231,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

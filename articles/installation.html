@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.1</span>
       </span>
     </div>
 
@@ -94,7 +94,7 @@
 
       
 
-      </header><script src="installation_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Installing cmapplot on a CMAP computer</h1>
@@ -107,34 +107,63 @@
 
     
     
-<p>This vignette provides an overview of how to install cmapplot, with a specific focus on CMAP-issued computers. This guide presumes that the user does <em>not</em> have administrator privileges.</p>
+<p>This vignette provides an overview of how to install cmapplot, with a
+specific focus on CMAP-issued computers. This guide presumes that the
+user does <em>not</em> have administrator privileges.</p>
 <div class="section level2">
 <h2 id="prerequisites">Prerequisites<a class="anchor" aria-label="anchor" href="#prerequisites"></a>
 </h2>
-<p>Your CMAP computer should already have both R and RStudio installed. If it does not, please submit an IT helpdesk request to install them. (While you can install RStudio on your own by <a href="https://rstudio.com/products/rstudio/download/#download" class="external-link">downloading</a> the .zip – <em>not</em> .exe – version, installing R itself requires administrator privileges).</p>
-<p>Once you have working versions of R and RStudio on your computer, you will also need to download an additional utility called Rtools. You can download the installation file for Rtools <a href="https://cran.rstudio.com/bin/windows/Rtools/" class="external-link">here</a>. Because of IT restrictions, you will need to choose an installation folder that you have write access to. The Rtools installer defaults to <strong>C:\rtools40</strong>, which is fine. However, if you do not want to install it there, you may create another folder in your own user sub-directory (e.g. <strong>C:\Users\your_username\rtools</strong>).</p>
-<p>Finally, before you can install cmapplot, you will need to download and install the “devtools” and “tidyverse” packages. You can install them by running the following code in RStudio:</p>
+<p>Your CMAP computer should already have both R and RStudio installed.
+If it does not, please submit an IT helpdesk request to install them.
+(While you can install RStudio on your own by <a href="https://rstudio.com/products/rstudio/download/#download" class="external-link">downloading</a>
+the .zip – <em>not</em> .exe – version, installing R itself requires
+administrator privileges).</p>
+<p>Once you have working versions of R and RStudio on your computer, you
+will also need to download an additional utility called Rtools. You can
+download the installation file for Rtools <a href="https://cran.rstudio.com/bin/windows/Rtools/" class="external-link">here</a>. Because of
+IT restrictions, you will need to choose an installation folder that you
+have write access to. The Rtools installer defaults to
+<strong>C:\rtools40</strong>, which is fine. However, if you do not want
+to install it there, you may create another folder in your own user
+sub-directory (e.g. <strong>C:\Users\your_username\rtools</strong>).</p>
+<p>Finally, before you can install cmapplot, you will need to download
+and install the “devtools” and “tidyverse” packages. You can install
+them by running the following code in RStudio:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Install devtools &amp; tidyverse</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"devtools"</span>, <span class="st">"tidyverse"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Install devtools &amp; tidyverse</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"devtools"</span>, <span class="st">"tidyverse"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="installing-and-loading-cmapplot">Installing and loading cmapplot<a class="anchor" aria-label="anchor" href="#installing-and-loading-cmapplot"></a>
 </h2>
-<p>Once you have successfully downloaded and installed Rtools and the “devtools” and “tidyverse” packages, you are ready to install cmapplot. Run the following code to install and load cmapplot:</p>
+<p>Once you have successfully downloaded and installed Rtools and the
+“devtools” and “tidyverse” packages, you are ready to install cmapplot.
+Run the following code to install and load cmapplot:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Install/update cmapplot from GitHub</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"CMAP-REPOS/cmapplot"</span>, build_vignettes<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="co">## Load cmapplot</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cmap-repos.github.io/cmapplot">cmapplot</a></span><span class="op">)</span></code></pre></div>
-<p>After completing these steps, your computer should be ready to use and export graphics using cmapplot.</p>
+<code class="sourceCode R"><span><span class="co">## Install/update cmapplot from GitHub</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"CMAP-REPOS/cmapplot"</span>, build_vignettes<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Load cmapplot</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cmap-repos.github.io/cmapplot">cmapplot</a></span><span class="op">)</span></span></code></pre></div>
+<p>After completing these steps, your computer should be ready to use
+and export graphics using cmapplot.</p>
 </div>
 <div class="section level2">
 <h2 id="cmap-fonts">CMAP fonts<a class="anchor" aria-label="anchor" href="#cmap-fonts"></a>
 </h2>
-<p>CMAP’s design standards require the usage of the Whitney typeface. Whitney is not freely available, but rather requires a license. On CMAP computers, which should already have the Whitney font family installed, cmapplot will use Whitney without any issues. If you receive a warning that Whitney is not installed when you load the package, please verify that the Whitney fonts (specifically, the Book, Medium and Semibold variants) are installed. If they are not, please submit an IT helpdesk request to get them installed. If the Whitney font family <em>is</em> already installed and you are receiving the warning message, please reach out to a member of the cmapplot development team.</p>
-<p>Non-CMAP users will have to license Whitney on their own, or else use cmapplot without. The package will default to your system’s default sans-serif font, which is likely Arial.</p>
+<p>CMAP’s design standards require the usage of the Whitney typeface.
+Whitney is not freely available, but rather requires a license. On CMAP
+computers, which should already have the Whitney font family installed,
+cmapplot will use Whitney without any issues. If you receive a warning
+that Whitney is not installed when you load the package, please verify
+that the Whitney fonts (specifically, the Book, Medium and Semibold
+variants) are installed. If they are not, please submit an IT helpdesk
+request to get them installed. If the Whitney font family <em>is</em>
+already installed and you are receiving the warning message, please
+reach out to a member of the cmapplot development team.</p>
+<p>Non-CMAP users will have to license Whitney on their own, or else use
+cmapplot without. The package will default to your system’s default
+sans-serif font, which is likely Arial.</p>
 </div>
   </div>
 
@@ -155,7 +184,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

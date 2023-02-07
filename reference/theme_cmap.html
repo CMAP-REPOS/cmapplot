@@ -18,7 +18,7 @@ accordance with CMAP design standards."><meta property="og:image" content="https
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.1</span>
       </span>
     </div>
 
@@ -77,20 +77,20 @@ accordance with CMAP design standards.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">theme_cmap</span><span class="op">(</span>
-  xlab <span class="op">=</span> <span class="cn">NULL</span>,
-  ylab <span class="op">=</span> <span class="cn">NULL</span>,
-  hline <span class="op">=</span> <span class="cn">NULL</span>,
-  vline <span class="op">=</span> <span class="cn">NULL</span>,
-  gridlines <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"h"</span>, <span class="st">"v"</span>, <span class="st">"hv"</span>, <span class="st">"none"</span><span class="op">)</span>,
-  axislines <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"xy"</span><span class="op">)</span>,
-  axisticks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"xy"</span><span class="op">)</span>,
-  show.legend <span class="op">=</span> <span class="cn">TRUE</span>,
-  legend.max.columns <span class="op">=</span> <span class="cn">NULL</span>,
-  debug <span class="op">=</span> <span class="cn">FALSE</span>,
-  overrides <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">theme_cmap</span><span class="op">(</span></span>
+<span>  xlab <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ylab <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  hline <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  vline <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  gridlines <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"h"</span>, <span class="st">"v"</span>, <span class="st">"hv"</span>, <span class="st">"none"</span><span class="op">)</span>,</span>
+<span>  axislines <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"xy"</span><span class="op">)</span>,</span>
+<span>  axisticks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"xy"</span><span class="op">)</span>,</span>
+<span>  show.legend <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  legend.max.columns <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  debug <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  overrides <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -100,6 +100,8 @@ accordance with CMAP design standards.</p>
 respectively. If unspecified, the axis label will be left off the graph. See
 details for unexpected outcomes when using these arguments along with
 <code><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip()</a></code>.</p></dd>
+
+
 <dt>hline, vline</dt>
 <dd><p>Numeric, the location of a strong horizontal or vertical
 line to be added to the plot. Use <code>hline = 0</code>, for example, to place a
@@ -108,15 +110,21 @@ width of this line is determined by
 <code>cmapplot_globals$consts$lwd_strongline</code>. Note that on most displays
 the difference between this line and gridlines is impossible to discern in
 R. The difference will be visible upon export.</p></dd>
+
+
 <dt>gridlines</dt>
 <dd><p>Char, the grid lines to be displayed on the chart. If left as
 default, horizontal grid lines will be displayed while vertical grid lines
 will be masked. Acceptable values are "h" (horizontal only), "v" (vertical
 only), "hv" (both horizontal and vertical), and "none" (neither).</p></dd>
+
+
 <dt>axislines</dt>
 <dd><p>Char, the axis lines to be displayed on the chart. Acceptable
 values are "x" (x axis only), "y" (y axis only), "xy" (both axes), and
 "none" (neither, the default).</p></dd>
+
+
 <dt>axisticks</dt>
 <dd><p>Char, the axis ticks to be displayed on the chart. Acceptable
 values are "x" (x axis only), "y" (y axis only), "xy" (both axes), and
@@ -124,9 +132,13 @@ values are "x" (x axis only), "y" (y axis only), "xy" (both axes), and
 expanding the range of displayed data, this may need to be accompanied by a
 call to <code>expand = c(0, 0)</code> within an appropriate <code>scale_*_*</code>
 argument in order for ticks to appear to touch the outermost gridline(s).</p></dd>
+
+
 <dt>show.legend</dt>
 <dd><p>Bool, <code>TRUE</code> is the default. <code>FALSE</code> to hide the
 legend.</p></dd>
+
+
 <dt>legend.max.columns</dt>
 <dd><p>Integer, the maximum number of columns in the
 legend. If no value is set, the chart will rely on `ggplot`'s default and
@@ -136,16 +148,23 @@ and/or lengthy. Note that `ggplot` will still auto-adjust in ways that may
 mean the total number of columns is less than the maximum (e.g., if there
 are five items in a legend with four columns as the maximum, the output will
 be one row of three and another row of two).</p></dd>
+
+
 <dt>debug</dt>
 <dd><p>Bool, Defaults to <code>FALSE</code>. Set to <code>TRUE</code> to show
 rectangles around all <code><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html" class="external-link">geom_rect()</a></code> elements for debugging.</p></dd>
+
+
 <dt>overrides</dt>
 <dd><p>Named list, overrides the default drawing attributes defined
 in <code>cmapplot_globals$consts</code> which are drawn by
 <code>theme_cmap</code>. Units are in bigpts (1/72 of an inch).</p></dd>
+
+
 <dt>...</dt>
 <dd><p>pass additional arguments to ggplot2's <code><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></code>
 function to override any elements of the default CMAP theme.</p></dd>
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -162,30 +181,30 @@ correct elements from ggplot2's <code><a href="https://ggplot2.tidyverse.org/ref
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># The only way to place the origin line (`hline`, `vline`) behind any data geoms</span></span>
-<span class="r-in"><span class="co"># is to or place `theme_cmap()` before the geoms:</span></span>
-<span class="r-in"> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">grp_over_time</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">realgrp</span>, color <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">   <span class="fu">theme_cmap</span><span class="op">(</span>hline <span class="op">=</span> <span class="fl">0</span>, ylab <span class="op">=</span> <span class="st">"Percent change"</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/breaks_pretty.html" class="external-link">breaks_pretty</a></span><span class="op">(</span><span class="fl">11</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"> <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">traded_emp_by_race</span>, <span class="va">variable</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SpecializedTraded"</span>,</span>
-<span class="r-in">   <span class="st">"UnspecializedTraded"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html" class="external-link">reorder</a></span><span class="op">(</span><span class="va">Race</span>, <span class="op">-</span><span class="va">value</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">value</span>, fill <span class="op">=</span> <span class="va">variable</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span>position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_stack.html" class="external-link">position_stack</a></span><span class="op">(</span>reverse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">percent</a></span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">   <span class="fu">theme_cmap</span><span class="op">(</span>hline <span class="op">=</span> <span class="fl">0</span>, ylab <span class="op">=</span> <span class="st">"This is the y axis"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html" class="external-link">reorder</a></span><span class="op">(</span><span class="va">Race</span>, <span class="op">-</span><span class="va">value</span><span class="op">)</span>, x <span class="op">=</span> <span class="va">value</span>, fill <span class="op">=</span> <span class="va">variable</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span>position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_stack.html" class="external-link">position_stack</a></span><span class="op">(</span>reverse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">percent</a></span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">   <span class="fu">theme_cmap</span><span class="op">(</span>vline <span class="op">=</span> <span class="fl">0</span>, gridlines <span class="op">=</span> <span class="st">"v"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># The only way to place the origin line (`hline`, `vline`) behind any data geoms</span></span></span>
+<span class="r-in"><span><span class="co"># is to or place `theme_cmap()` before the geoms:</span></span></span>
+<span class="r-in"><span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">grp_over_time</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">realgrp</span>, color <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>   <span class="fu">theme_cmap</span><span class="op">(</span>hline <span class="op">=</span> <span class="fl">0</span>, ylab <span class="op">=</span> <span class="st">"Percent change"</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/breaks_pretty.html" class="external-link">breaks_pretty</a></span><span class="op">(</span><span class="fl">11</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">traded_emp_by_race</span>, <span class="va">variable</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SpecializedTraded"</span>,</span></span>
+<span class="r-in"><span>   <span class="st">"UnspecializedTraded"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html" class="external-link">reorder</a></span><span class="op">(</span><span class="va">Race</span>, <span class="op">-</span><span class="va">value</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">value</span>, fill <span class="op">=</span> <span class="va">variable</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span>position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_stack.html" class="external-link">position_stack</a></span><span class="op">(</span>reverse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">percent</a></span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>   <span class="fu">theme_cmap</span><span class="op">(</span>hline <span class="op">=</span> <span class="fl">0</span>, ylab <span class="op">=</span> <span class="st">"This is the y axis"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html" class="external-link">reorder</a></span><span class="op">(</span><span class="va">Race</span>, <span class="op">-</span><span class="va">value</span><span class="op">)</span>, x <span class="op">=</span> <span class="va">value</span>, fill <span class="op">=</span> <span class="va">variable</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span>position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_stack.html" class="external-link">position_stack</a></span><span class="op">(</span>reverse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">percent</a></span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>   <span class="fu">theme_cmap</span><span class="op">(</span>vline <span class="op">=</span> <span class="fl">0</span>, gridlines <span class="op">=</span> <span class="st">"v"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -200,7 +219,7 @@ correct elements from ggplot2's <code><a href="https://ggplot2.tidyverse.org/ref
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

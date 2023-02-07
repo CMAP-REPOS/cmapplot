@@ -21,7 +21,7 @@ convenience function, converting from any unit all the way to ggplot units."><me
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.1</span>
       </span>
     </div>
 
@@ -83,9 +83,9 @@ convenience function, converting from any unit all the way to ggplot units.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="va">.lwd</span>
-
-<span class="fu">gg_lwd_convert</span><span class="op">(</span><span class="va">value</span>, unit <span class="op">=</span> <span class="st">"bigpts"</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="va">.lwd</span></span>
+<span></span>
+<span><span class="fu">gg_lwd_convert</span><span class="op">(</span><span class="va">value</span>, unit <span class="op">=</span> <span class="st">"bigpts"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="format">
@@ -96,10 +96,13 @@ convenience function, converting from any unit all the way to ggplot units.</p>
     <h2>Arguments</h2>
     <dl><dt>value</dt>
 <dd><p>Numeric, the value to be converted.</p></dd>
+
+
 <dt>unit</dt>
 <dd><p>Char, the unit of the value to be converted. Can be any of the
 units accepted by <code><a href="https://rdrr.io/r/grid/unit.html" class="external-link">grid::unit()</a></code>, including "bigpts", "pt", "mm", and
 "in". Default is <code>bigpts</code>.</p></dd>
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -117,7 +120,7 @@ font sizes outside the plot area: e.g. axis titles, etc.</p>
     <div id="functions">
     <h2>Functions</h2>
     
-<ul><li><p><code>gg_lwd_convert</code>: Function to convert from any unit directly to ggplot2's
+<ul><li><p><code>gg_lwd_convert()</code>: Function to convert from any unit directly to ggplot2's
 preferred millimeters.</p></li>
 </ul></div>
     <div id="see-also">
@@ -129,19 +132,21 @@ preferred millimeters.</p></li>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html" class="external-link">coord_cartesian</a></span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in"></span>
-<span class="r-in">  <span class="co"># a green line 3 points wide</span></span>
-<span class="r-in">  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">1</span>, color <span class="op">=</span> <span class="st">"green"</span>, size <span class="op">=</span> <span class="fu">gg_lwd_convert</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in"></span>
-<span class="r-in">  <span class="co"># black text of size 24 points</span></span>
-<span class="r-in">  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html" class="external-link">annotate</a></span><span class="op">(</span><span class="st">"text"</span>, <span class="op">-</span><span class="fl">2</span>, <span class="fl">0</span>, label <span class="op">=</span> <span class="st">"text"</span>, size <span class="op">=</span> <span class="fl">24</span><span class="op">/</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="va"><a href="https://ggplot2.tidyverse.org/reference/graphical-units.html" class="external-link">.pt</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># a blue line 6 points wide, drawn over the plot with  the `grid` package</span></span>
-<span class="r-in"><span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/grid.lines.html" class="external-link">grid.lines</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fl">0.4</span>, gp <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/gpar.html" class="external-link">gpar</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"blue"</span>, lwd <span class="op">=</span> <span class="fl">6</span> <span class="op">/</span> <span class="va">.lwd</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html" class="external-link">coord_cartesian</a></span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># a green line 3 points wide</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">1</span>, color <span class="op">=</span> <span class="st">"green"</span>, size <span class="op">=</span> <span class="fu">gg_lwd_convert</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># black text of size 24 points</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html" class="external-link">annotate</a></span><span class="op">(</span><span class="st">"text"</span>, <span class="op">-</span><span class="fl">2</span>, <span class="fl">0</span>, label <span class="op">=</span> <span class="st">"text"</span>, size <span class="op">=</span> <span class="fl">24</span><span class="op">/</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="va"><a href="https://ggplot2.tidyverse.org/reference/graphical-units.html" class="external-link">.pt</a></span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Please use `linewidth` instead.</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># a blue line 6 points wide, drawn over the plot with  the `grid` package</span></span></span>
+<span class="r-in"><span><span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/grid.lines.html" class="external-link">grid.lines</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fl">0.4</span>, gp <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/gpar.html" class="external-link">gpar</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"blue"</span>, lwd <span class="op">=</span> <span class="fl">6</span> <span class="op">/</span> <span class="va">.lwd</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="dot-lwd-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -156,7 +161,7 @@ preferred millimeters.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
