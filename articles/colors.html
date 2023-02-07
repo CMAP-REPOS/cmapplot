@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.1</span>
       </span>
     </div>
 
@@ -211,7 +211,9 @@ colors to each demographic group, use <code><a href="../reference/cmap_fill_race
 <p>In the arguments, specify the case-sensitive name of each group as it
 appears in your data. The functions can be used even if your dataset
 does not contain every race/ethnicity category — simply omit the
-parameters for the missing categories.</p>
+parameters for the missing categories. Likewise, if your dataset already
+contains the default race/ethnicity categories (case-sensitive)
+specified in the race palette, no arguments have to be provided.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
 <span>  <span class="va">traded_emp_by_race</span>,</span>
