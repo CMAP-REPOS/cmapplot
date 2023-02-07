@@ -8,21 +8,32 @@
 #'
 #' @noRd
 make_race_palette <- function(white, black, hispanic, asian, other) {
-    race_palette <- fetch_pal("race")
-    if (!missing(white)) { names(race_palette)[1] <- white }
-    if (!missing(black)) { names(race_palette)[2] <- black }
-    if (!missing(hispanic)) { names(race_palette)[3] <- hispanic }
-    if (!missing(asian)) { names(race_palette)[4] <- asian }
-    if (!missing(other)) { names(race_palette)[5] <- other }
-    return(race_palette)
-}
 
+    race_palette <- fetch_pal("race")
+    pal <- c()
+
+    if (missing(white) & missing(black) & missing(hispanic) & missing(asian) & missing(other)) {
+      pal <- race_palette # if no parameters specified, return default race palette
+    } else {
+
+      passed <- unlist(as.list(match.call())[-1]) # vector of args actually passed
+
+      for (i in names(race_palette)) {
+        if (i %in% names(passed)) {
+          pal[passed[i]] <- race_palette[i]
+        }
+      }
+    }
+
+    return (pal)
+}
 
 #' Apply official CMAP race/ethnicity chart colors to ggplot2 aesthetics
 #'
 #' Pick the function depending on the aesthetic of your ggplot object (fill or color).
 #' Specify your dataset's unique race factor names (as case-sensitive strings) in the arguments.
-#' All categories are optional in case your dataset does not have some of them.
+#' All categories are optional in case your dataset does not have some of them or contains the default
+#' values of the race palette.
 #'
 #' @param white Data value to map CMAP's White/Caucasian color onto (case-sensitive).
 #' @param black Data value to map CMAP's Black/African American color onto (case-sensitive).
@@ -41,7 +52,8 @@ make_race_palette <- function(white, black, hispanic, asian, other) {
 #' @describeIn cmap_fill_race For fill aesthetic
 #' @export
 cmap_fill_race <- function(white, black, hispanic, asian, other) {
-    race_palette <- make_race_palette(white, black, hispanic, asian, other)
+    .args <- as.list(match.call()[-1])
+    race_palette <- do.call(make_race_palette, .args)
     ggplot2::scale_fill_manual(values = race_palette)
 }
 
@@ -49,7 +61,8 @@ cmap_fill_race <- function(white, black, hispanic, asian, other) {
 #' @describeIn cmap_fill_race For color aesthetic
 #' @export
 cmap_color_race <- function(white, black, hispanic, asian, other) {
-    race_palette <- make_race_palette(white, black, hispanic, asian, other)
+    .args <- as.list(match.call()[-1])
+    race_palette <- do.call(make_race_palette, .args)
     ggplot2::scale_color_manual(values = race_palette)
 }
 

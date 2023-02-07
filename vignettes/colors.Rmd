@@ -70,7 +70,7 @@ ggplot(data = df) +
 
 In order to maintain a consistent data language, CMAP uses specific colors for displaying data based on race and ethnicity. To map these colors to each demographic group, use `cmap_fill_race()` or `cmap_color_race()`. 
 
-In the arguments, specify the case-sensitive name of each group as it appears in your data. The functions can be used even if your dataset does not contain every race/ethnicity category — simply omit the parameters for the missing categories.
+In the arguments, specify the case-sensitive name of each group as it appears in your data. The functions can be used even if your dataset does not contain every race/ethnicity category — simply omit the parameters for the missing categories. Likewise, if your dataset already contains the default race/ethnicity categories (case-sensitive) specified in the race palette, no arguments have to be provided.
 
 ```{r color_race, message = FALSE}
 df <- dplyr::filter(

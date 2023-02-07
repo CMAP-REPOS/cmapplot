@@ -42,10 +42,10 @@ font sizes outside the plot area: e.g. axis titles, etc.
 }
 \section{Functions}{
 \itemize{
-\item \code{gg_lwd_convert}: Function to convert from any unit directly to ggplot2's
+\item \code{gg_lwd_convert()}: Function to convert from any unit directly to ggplot2's
 preferred millimeters.
-}}
 
+}}
 \examples{
 ggplot() + coord_cartesian(xlim = c(-3, 3), ylim = c(-3, 3)) +
 
