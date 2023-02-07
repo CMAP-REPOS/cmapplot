@@ -31,13 +31,13 @@ values of the race palette.
 }
 \section{Functions}{
 \itemize{
-\item \code{cmap_fill_race}: For fill aesthetic
+\item \code{cmap_fill_race()}: For fill aesthetic
 
-\item \code{cmap_color_race}: For color aesthetic
+\item \code{cmap_color_race()}: For color aesthetic
 
-\item \code{cmap_colour_race}: For color aesthetic
+\item \code{cmap_colour_race()}: For color aesthetic
+
 }}
-
 \examples{
 ggplot(dplyr::filter(traded_emp_by_race, Race!="Regional average" &
                      variable=="SpecializedTraded")) +

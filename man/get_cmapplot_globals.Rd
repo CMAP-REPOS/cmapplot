@@ -32,13 +32,13 @@ helper functions described here provide the user access if needed.
 }
 \section{Functions}{
 \itemize{
-\item \code{get_cmapplot_globals}: Get the entire environment as a list.
+\item \code{get_cmapplot_globals()}: Get the entire environment as a list.
 
-\item \code{get_cmapplot_global}: Get a specific global value
+\item \code{get_cmapplot_global()}: Get a specific global value
 
-\item \code{set_cmapplot_global}: Set a specific global value
+\item \code{set_cmapplot_global()}: Set a specific global value
+
 }}
-
 \section{Plot Constants}{
  The primary portion of these global variables of
  interest to the user is \code{cmapplot_globals$consts}, a list of default

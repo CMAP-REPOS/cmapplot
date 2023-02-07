@@ -57,13 +57,13 @@ value(s) to highlight and some generic "Other" label.
 }
 \section{Functions}{
 \itemize{
-\item \code{cmap_fill_highlight}: For fill aesthetic
+\item \code{cmap_fill_highlight()}: For fill aesthetic
 
-\item \code{cmap_color_highlight}: For color aesthetic
+\item \code{cmap_color_highlight()}: For color aesthetic
 
-\item \code{cmap_colour_highlight}: For color aesthetic, if you're British
+\item \code{cmap_colour_highlight()}: For color aesthetic, if you're British
+
 }}
-
 \examples{
 p <- ggplot(data = dplyr::filter(transit_ridership, year=="2019"),
             mapping = aes(x = system, y = ridership, fill = system)) +

@@ -27,13 +27,13 @@ color). See \code{link{cmap_palettes}} for a listing of available gradients.
 }
 \section{Functions}{
 \itemize{
-\item \code{cmap_fill_discrete}: For fill aesthetic
+\item \code{cmap_fill_discrete()}: For fill aesthetic
 
-\item \code{cmap_color_discrete}: For color aesthetic
+\item \code{cmap_color_discrete()}: For color aesthetic
 
-\item \code{cmap_colour_discrete}: For color aesthetic
+\item \code{cmap_colour_discrete()}: For color aesthetic
+
 }}
-
 \examples{
 ggplot(pop_and_laborforce_by_age, aes(x = variable, y = value, fill = age)) +
    geom_col(position = position_stack(reverse = TRUE)) +

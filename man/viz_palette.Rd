@@ -53,14 +53,14 @@ them, see \code{vignette("colors")}.
 }
 \section{Functions}{
 \itemize{
-\item \code{viz_gradient}: Interpolates the range of colors a sequential or
+\item \code{viz_gradient()}: Interpolates the range of colors a sequential or
 divergent palette offers when used on a continuous scale.
 
-\item \code{viz_palette}: Displays the colors of any cmapplot palette
+\item \code{viz_palette()}: Displays the colors of any cmapplot palette
 
-\item \code{fetch_pal}: Returns details about a palette
+\item \code{fetch_pal()}: Returns details about a palette
+
 }}
-
 \examples{
 # Vizualize a sequential or divergent palette with interpolation
 viz_gradient("green_teal_blue")
