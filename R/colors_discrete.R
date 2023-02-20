@@ -48,7 +48,16 @@ viz_palette <- function(pal, ttl = NULL, num = NULL) {
     # use the palette's intrinsic length (unless a custom length has been provided)
     if (is.null(num) | missing(num)){ num <- length(pal) }
 
-    pal_func <- grDevices::colorRampPalette(pal)
+    pal_func <-
+      function(n) {
+
+        if (n > length(pal)) {
+          grDevices::colorRampPalette(pal)(n)
+        }
+
+        else pal[1:n]
+      }
+
     graphics::image(seq_len(num), 1, as.matrix(seq_len(num)), col = pal_func(num),
                     main = paste0(ttl, " (", length(pal), " colors in palette, ",
                                   num, " displayed)"),
@@ -61,10 +70,11 @@ viz_palette <- function(pal, ttl = NULL, num = NULL) {
 #'   defined in the 'cmap_gradients' list (gradients will be automatically
 #'   converted into discrete bins)
 #' @param reverse Logical; reverse color order?
+#' @param gradient Logical; is this palette a color gradient?
 #' @param ... Additional parameters passed on to the scale type
 #'
 #' @noRd
-cmap_pal_discrete <- function(palette = "prosperity", reverse = FALSE) {
+cmap_pal_discrete <- function(palette = "prosperity", reverse = FALSE, gradient = FALSE) {
     pal <- fetch_pal(palette)
 
     if(palette == "race"){
@@ -74,7 +84,33 @@ cmap_pal_discrete <- function(palette = "prosperity", reverse = FALSE) {
     if (reverse) {
         pal <- rev(pal)
     }
-    return(grDevices::colorRampPalette(pal))
+    return(
+      function(n) {
+
+        if (gradient == TRUE) {
+          grDevices::colorRampPalette(pal)(n)
+        }
+
+        else {
+          if (n > length(pal)) {
+
+            message(paste("WARNING: The palette you selected has",
+                          length(pal),
+                          "colors, but your graphic has",
+                          n,
+                          "colors. cmapplot will interpolate additional colors, but please note that this is no longer aligned with CMAP design standards. Alternatively, if you need more than",
+                          length(pal),
+                          "colors for exploratory purposes, use ggplot2::scale_fill_discrete() or ggplot2::scale_color_discrete()."
+            )
+            )
+
+            grDevices::colorRampPalette(pal)(n)
+          }
+
+          else pal[1:n]
+        }
+      }
+    )
 }
 
 #' Apply discrete CMAP palettes to ggplot2 aesthetics
@@ -86,6 +122,7 @@ cmap_pal_discrete <- function(palette = "prosperity", reverse = FALSE) {
 #'   defined in the 'cmap_gradients' list (gradients will be automatically
 #'   converted into discrete bins)
 #' @param reverse Logical; reverse color order?
+#' @param gradient Logical; is this palette a color gradient?
 #' @param ... Additional parameters passed on to the scale type
 #'
 #' @examples
@@ -100,20 +137,20 @@ cmap_pal_discrete <- function(palette = "prosperity", reverse = FALSE) {
 #'
 #' @describeIn cmap_fill_discrete For fill aesthetic
 #' @export
-cmap_fill_discrete <- function(palette = "prosperity", reverse = FALSE, ...) {
+cmap_fill_discrete <- function(palette = "prosperity", reverse = FALSE, gradient = FALSE, ...) {
     ggplot2::discrete_scale(
         "fill", "cmap_palettes",
-        palette = cmap_pal_discrete(palette, reverse = reverse),
+        palette = cmap_pal_discrete(palette, reverse = reverse, gradient = gradient),
         ...
     )
 }
 
 #' @describeIn cmap_fill_discrete For color aesthetic
 #' @export
-cmap_color_discrete <- function(palette = "prosperity", reverse = FALSE, ...) {
+cmap_color_discrete <- function(palette = "prosperity", reverse = FALSE, gradient = FALSE, ...) {
     ggplot2::discrete_scale(
         "colour", "cmap_palettes",
-        palette = cmap_pal_discrete(palette, reverse = reverse),
+        palette = cmap_pal_discrete(palette, reverse = reverse, gradient = gradient),
         ...
     )
 }
