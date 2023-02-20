@@ -87,11 +87,16 @@ cmap_pal_discrete <- function(palette = "prosperity", reverse = FALSE, gradient 
     return(
       function(n) {
 
+        # For gradients, interpolate to make a continuous gradient with
+        # consistent end points
         if (gradient == TRUE) {
           grDevices::colorRampPalette(pal)(n)
         }
 
+        # For everything else (discrete palettes)...
         else {
+          # If the number of colors exceeds the palette, interpolate but issue a
+          # warning
           if (n > length(pal)) {
 
             message(paste("WARNING: The palette you selected has",
@@ -107,6 +112,8 @@ cmap_pal_discrete <- function(palette = "prosperity", reverse = FALSE, gradient 
             grDevices::colorRampPalette(pal)(n)
           }
 
+          # Otherwise, select the palette colors in order up to the desired
+          # number
           else pal[1:n]
         }
       }
