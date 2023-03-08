@@ -22,7 +22,7 @@ jobs:
       - uses: r-lib/actions/setup-pandoc@v2
 
       - name: Checkout CMAP fonts repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: CMAP-REPOS/cmap-fonts
           token: ${{ secrets.CMAP_REPO_FULL_ACCESS }}
