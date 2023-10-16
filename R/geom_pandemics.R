@@ -29,15 +29,6 @@
 #'  Defaults to \code{FALSE}.
 #'@param rect_aes,text_aes Named list, additional aesthetics to send to the
 #'  rectangle and text geoms, respectively.
-#'@param update_pandemics Logical or data frame. \code{FALSE}, the default,
-#'  relies on the package's built in pandemics table, which was last updated in
-#'  August 2023 and is loaded into the \code{pandata.R} file located in the
-#'  \code{R} directory. \code{TRUE} calls the function
-#'  \code{update_pandemics}, which attempts to fetch the current pandemics
-#'  table from the NBER website. A custom data table of pandemics can also be
-#'  passed to this argument, but it must be structured identically to the
-#'  six-column data table described in the the documentation file for the
-#'  function \code{update_pandemics}.
 #'@param show_ongoing Logical. \code{TRUE}, the default, will display an ongoing
 #'  pandemic that does not yet have a defined end date. If an ongoing pandemic
 #'  exists, it will be displayed as extending through the maximum extent of the
@@ -140,13 +131,12 @@ geom_pandemics <- function(xformat = "numeric",
                             show.legend = FALSE,
                             rect_aes = NULL,
                             text_aes = NULL,
-                            update_pandemics = FALSE,
                             show_ongoing = TRUE,
                             ...) {
   
-  # build pandemics table for use in function, but hide it in a list
+  # load pandemics table for use in function, but hide it in a list
   # because of ggplot's requirement that parameters be of length 1
-  pandem_table <- list(build_pandemics(update_pandemics))
+  pandem_table <- load(pandemics.rda)
   
   # return a series of gg objects to ggplot
   list(
@@ -202,41 +192,6 @@ geom_pandemics <- function(xformat = "numeric",
     )
   )
   
-}
-
-
-# internal function used to define pandemics table for use
-build_pandemics <- function(update_pandemics){
-  if(is.logical(update_pandemics)){
-    # if TRUE
-    if(update_pandemics){
-      message("Trying to update pandemics...")
-      updated_pandemics <- suppressWarnings(update_pandemics(quietly = TRUE))
-      
-      # If updated_pandemics is returned as NULL, use the default table
-      if (is.null(updated_pandemics)) {
-        message("Could not update pandemics. Using built-in pandemics table...")
-        return(pandemics)
-      }
-      
-      message("Successfully fetched from NBER")
-      return(updated_pandemics)
-      # if FALSE
-    } else {
-      return(pandemics)
-    }
-    # if DATAFRAME
-  }else if(is.data.frame(update_pandemics)){
-    # confirm that table has correct structure
-    if(!identical(update_pandemics[NA,][1,], pandemics[NA,][1,])){
-      message("Pandemic table may not have correct format (See `?update_pandemics`). Attempting anyway...")
-    }
-    return(update_pandemics)
-    # OTHERWISE
-  }else{
-    message("`update_pandemics` must be TRUE, FALSE, or a data frame. Using built-in pandemics table...")
-    return(pandemics)
-  }
 }
 
 #' @importFrom lubridate decimal_date
@@ -431,97 +386,3 @@ GeomPandemicsText <- ggproto(
   
   draw_key = draw_key_text
 )
-
-
-#'Update pandemics table
-#'
-#'The cmapplot package contains an internal dataset \code{pandemics} of all
-#'pandemics in American history as recorded by the National Bureau of Economic
-#'Research (NBER). However, users may need to replace the built-in data, such as
-#'in the event of new pandemics and/or changes to the NBER consensus on
-#'pandemic dates. This function fetches and interprets this data from the NBER
-#'website.
-#'
-#'@param url Char, the web location of the NBER machine-readable CSV file. The
-#'  default, \code{NULL}, uses the most recently identified URL known to the
-#'  package development team, which appears to be the most stable location for
-#'  updates over time.
-#'@param quietly Logical, suppresses messages produced by
-#'  \code{utils::download.file}.
-#'
-#'@return A data frame with the following variables: \itemize{ \item
-#'  \code{start_char, end_char}: Chr. Easily readable labels for the beginning
-#'  and end of the pandemic. \item \code{start_date, end_date}: Date. Dates
-#'  expressed in R datetime format, using the first day of the specified month.
-#'  \item \code{ongoing}: Logical. Whether or not the pandemic is ongoing as of
-#'  the latest available NBER data. }
-#'
-#'@source \url{https://www.nber.org/data/cycles/cycle dates pasted.csv}
-#'
-#' @examples
-#' pandemics <- update_pandemics()
-#'
-#' # package maintainers can update the internal dataset from within
-#' # package by running the following code:
-#' \dontrun{
-#'   pandemics <- update_pandemics()
-#'   usethis::use_data(pandemics, internal = TRUE, overwrite = TRUE)
-#' }
-#'
-#'@export
-update_pandemics <- function(url = NULL, quietly = FALSE){
-  
-  # Use default URL if user does not override
-  if (is_null(url) | missing(url)) {
-    url <- "http://data.nber.org/data/cycles/cycle%20dates%20pasted.csv"
-  }
-  
-  # locally bind variable names
-  start_char <- end_char <- start_date <- end_date <- ongoing <- index <- peak <- trough <- NULL
-  
-  return(
-    # attempt to download and format pandemics table
-    tryCatch({
-      pandemics <- read.csv(url) %>%
-        # drop first row trough
-        dplyr::slice(-1) %>%
-        # convert peaks and troughs...
-        dplyr::mutate(
-          # ...to R dates
-          start_date = as.Date(peak),
-          end_date = as.Date(trough),
-          # ... and clean char strings
-          start_char = format(start_date, "%b %Y"),
-          end_char = format(end_date, "%b %Y")) %>%
-        # confirm ascending and create row number
-        dplyr::arrange(start_date) %>%
-        mutate(index = row_number()) %>%
-        mutate(
-          # Flag unfinished pandemics
-          ongoing = case_when(
-            is.na(end_date) & index == max(.$index) ~ T,
-            TRUE ~ F),
-          # set ongoing pandemic to arbitrary future date
-          end_date = case_when(
-            ongoing ~ as.Date("2200-01-01"),
-            TRUE ~ end_date),
-          # mark ongoing pandemic in char field
-          end_char = case_when(
-            ongoing ~ "Ongoing",
-            TRUE ~ end_char)
-        ) %>%
-        # clean up
-        select(start_char, end_char, start_date, end_date, ongoing)
-      
-      if (!quietly) {message("Successfully fetched from NBER")}
-      
-      # Return pandemics
-      pandemics
-    },
-    error = function(cond){
-      if (!quietly) message("WARNING: Fetch or processing failed. `NULL` returned.")
-      return(NULL)
-    }
-    )
-  )
-}

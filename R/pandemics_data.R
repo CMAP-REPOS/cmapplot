@@ -1,7 +1,7 @@
 pandemics <- data.frame(name = c("COVID-19"),
                         start_char = c("Mar 2020"),
                         end_char = c("May 2023"),
-                        start_date = c("3/11/2020"),
+                        start_date = c("3/13/2020"),
                         end_date = c("5/11/2023"),
                         ongoing = c(FALSE))
 
