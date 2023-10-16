@@ -454,7 +454,7 @@ GeomRecessionsText <- ggproto(
 #'  \item \code{ongoing}: Logical. Whether or not the recession is ongoing as of
 #'  the latest available NBER data. }
 #'
-#'@source \url{https://www.nber.org/data/cycles/cycle dates pasted.csv}
+#'@source \url{https://www.nber.org/sites/default/files/2023-03/BCDC_spreadsheet_for_website.xlsx}
 #'
 #' @examples
 #' recessions <- update_recessions()
@@ -471,7 +471,7 @@ update_recessions <- function(url = NULL, quietly = FALSE){
 
   # Use default URL if user does not override
   if (is_null(url) | missing(url)) {
-    url <- "http://data.nber.org/data/cycles/cycle%20dates%20pasted.csv"
+    url <- "https://www.nber.org/sites/default/files/2023-03/BCDC_spreadsheet_for_website.xlsx"
   }
 
   # locally bind variable names
@@ -480,7 +480,7 @@ update_recessions <- function(url = NULL, quietly = FALSE){
   return(
     # attempt to download and format recessions table
     tryCatch({
-      recessions <- read.csv(url) %>%
+      recessions <- readxl::read_xlsx(url) %>%
         # drop first row trough
         dplyr::slice(-1) %>%
         # convert peaks and troughs...
