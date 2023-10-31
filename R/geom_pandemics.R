@@ -136,7 +136,7 @@ geom_pandemics <- function(xformat = "numeric",
   
   # load pandemics table for use in function, but hide it in a list
   # because of ggplot's requirement that parameters be of length 1
-  pandem_table <- load(pandemics.rda)
+  pandem_table <- load("pandemics.rda")
   
   # return a series of gg objects to ggplot
   list(
