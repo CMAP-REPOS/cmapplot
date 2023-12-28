@@ -222,7 +222,7 @@ filter_pandemics <- function(min, max, xformat, show_ongoing, pandem_table){
   if (!show_ongoing) {pandem_table <- dplyr::filter(pandem_table, ongoing == F)}
 
   # use xformat to create correct "start" and "end" vars...
-  if (xformat == "Date") {
+  if (xformat == "date") {
     # ... by renaming existing date fields (for date axis)
     pandemics <- dplyr::rename(pandem_table, start = start_date, end = end_date)
   } else {
