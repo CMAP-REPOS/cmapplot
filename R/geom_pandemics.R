@@ -89,8 +89,6 @@
 #'   scale_x_date() +
 #'   theme_minimal()
 #'
-#'@importFrom utils read.csv
-#'
 #'@seealso \itemize{ \item \url{https://ggplot2-book.org/extensions.html} \item
 #'  \url{https://github.com/brodieG/ggbg/blob/development/inst/doc/extensions.html#stat-compute}
 #'   \item \url{https://rpubs.com/hadley/97970} \item
