@@ -4,7 +4,7 @@
 \alias{update_recessions}
 \title{Update recessions table}
 \source{
-\url{https://www.nber.org/data/cycles/cycle dates pasted.csv}
+\url{https://www.nber.org/sites/default/files/2023-03/BCDC_spreadsheet_for_website.xlsx}
 }
 \usage{
 update_recessions(url = NULL, quietly = FALSE)

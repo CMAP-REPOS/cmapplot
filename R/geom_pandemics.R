@@ -1,9 +1,9 @@
 #'Add health pandemics to time series graphs
 #'
 #'\code{geom_pandemics} returns one or two ggplot geoms that add rectangles
-#'representing health pandemics (like COVID-19) to a plot.
-#'It will either return only rectangles or, by default,
-#'both rectangles and text identifying each pandemic.
+#'representing health pandemics (like COVID-19) to a plot. It will either return
+#'only rectangles or, by default, both rectangles and text identifying each
+#'pandemic. It uses the same approach as \code{geom_recessions}.
 #'
 #'@param xformat Char, a string indicating whether the x axis of the primary
 #'  data being graphed is in integer or date format. This argument will
@@ -29,6 +29,12 @@
 #'  Defaults to \code{FALSE}.
 #'@param rect_aes,text_aes Named list, additional aesthetics to send to the
 #'  rectangle and text geoms, respectively.
+#'@param update_pandemics Logical or data frame. \code{FALSE}, the default,
+#'  relies on the package's built in pandemics table, which was last updated in
+#'  January 2024 and is loaded into the \code{sysdata.R} file located in the
+#'  \code{R} directory. A custom data table of recessions can also be
+#'  passed to this argument, but it must be structured identically to the
+#'  six-column data table created in \code{pandemics_data.R}.
 #'@param show_ongoing Logical. \code{TRUE}, the default, will display an ongoing
 #'  pandemic that does not yet have a defined end date. If an ongoing pandemic
 #'  exists, it will be displayed as extending through the maximum extent of the
@@ -58,13 +64,12 @@
 #'  the hints found here:
 #'  \url{https://stackoverflow.com/questions/6672374/convert-rgb-to-rgba-over-white}.
 #'
-#'
 #'@section Under the hood: This function calls two custom geoms, constructed
 #'  with ggproto. The custom GeomPandemics and GeomPandemicsText are modified
 #'  versions of GeomRect and GeomText, respectively. The only variations to each
 #'  occur in \code{default_aes}, \code{required_aes}, and \code{setup_data}
 #'  arguments. These variations allow the the primary dataframe (specified in
-#'  \code{ggplot(data = XXX)}) to filter the pandemics displayed.
+#'  \code{ggplot(data = XXX)}) to filter the recessions displayed.
 #'
 #' @examples
 #' grp_goods <- dplyr::filter(grp_over_time, category == "Goods-Producing")
@@ -123,6 +128,7 @@
 geom_pandemics <- function(xformat = "numeric",
                             text = TRUE,
                             label = paste(" ", pandemics$name, " Pandemic"),
+                            # label = " Pandemic",
                             ymin = -Inf,
                             ymax = Inf,
                             fill = "#002d49",
@@ -130,14 +136,15 @@ geom_pandemics <- function(xformat = "numeric",
                             text_nudge_y = 0,
                             show.legend = FALSE,
                             rect_aes = NULL,
+                            update_pandemics = FALSE,
                             text_aes = NULL,
                             show_ongoing = TRUE,
                             ...) {
-  
+
   # load pandemics table for use in function, but hide it in a list
   # because of ggplot's requirement that parameters be of length 1
-  pandem_table <- load("pandemics.rda")
-  
+  pandem_table <- list(build_pandemics(update_pandemics))
+
   # return a series of gg objects to ggplot
   list(
     layer(
@@ -191,22 +198,57 @@ geom_pandemics <- function(xformat = "numeric",
       list(values = c("Pandemic" = fill), if (show.legend) {guide = "legend"})
     )
   )
-  
+
 }
 
+# internal function used to define pandemics table for use
+build_pandemics <- function(update_pandemics){
+  if(is.logical(update_pandemics)){
+    # if TRUE
+    if(update_pandemics){
+      message("Automatic updating is not currently supported. Please use the
+              default pandemics table or supply your own as a data frame. Using
+              built-in pandemics table.")
+      # updated_recessions <- suppressWarnings(update_recessions(quietly = TRUE))
+      #
+      # # If updated_recessions is returned as NULL, use the default table
+      # if (is.null(updated_recessions)) {
+      #   message("Could not update recessions. Using built-in recessions table...")
+        return(pandemics)
+      # }
+
+      # message("Successfully fetched from NBER")
+      # return(updated_recessions)
+      # if FALSE
+    } else {
+      return(pandemics)
+    }
+    # if DATAFRAME
+  }else if(is.data.frame(update_pandemics)){
+    # confirm that table has correct structure
+    if(!identical(update_pandemics[NA,][1,], pandemics[NA,][1,])){
+      message("Pandemic table may not have correct format (See `?update_pandemics`). Attempting anyway...")
+    }
+    return(update_pandemics)
+    # OTHERWISE
+  }else{
+    message("`update_pandemics` must be TRUE, FALSE, or a data frame. Using built-in pandemics table...")
+    return(pandemics)
+  }
+}
 #' @importFrom lubridate decimal_date
 
 # Internal function designed to filter the built-in pandemics table
 filter_pandemics <- function(min, max, xformat, show_ongoing, pandem_table){
   # Bind local variables to function
   end_num <- start_num <- end_date <- start_date <- end <- start <- ongoing <- NULL
-  
+
   # unwrap pandem_table from list
   pandem_table <- pandem_table[[1]]
-  
+
   # Filtering out ongoing pandemics if specified
   if (!show_ongoing) {pandem_table <- dplyr::filter(pandem_table, ongoing == F)}
-  
+
   # use xformat to create correct "start" and "end" vars...
   if (xformat == "Date") {
     # ... by renaming existing date fields (for date axis)
@@ -222,17 +264,17 @@ filter_pandemics <- function(min, max, xformat, show_ongoing, pandem_table){
       end = lubridate::decimal_date(end_date)
     )
   }
-  
+
   # Remove pandemics outside of range
   pandemics <- dplyr::filter(pandemics, end > min & start < max)
-  
+
   # If `min` or `max` fall in  middle of a pandemic, modify pandemic to end at specified term.
   pandemics <- dplyr::transmute(
     pandemics,
     start = if_else(start < min, min, as.numeric(start)),
     end = if_else(end > max, max, as.numeric(end)),
   )
-  
+
   return(pandemics)
 }
 
@@ -247,9 +289,9 @@ NULL
 GeomPandemics <- ggproto(
   "GeomPandemics", Geom,
   default_aes = aes(colour = NA, alpha = 0.11, size = 0.5, linetype = 1, na.rm = TRUE),
-  
+
   required_aes = c("xformat", "ymin", "ymax", "show_ongoing", "pandem_table" ,"fill"),
-  
+
   # replace `data` with `pandemics`, filtered by `data`
   setup_data = function(data, params) {
     #filter pandemics based on date parameters from `data` and return it. This overwrites `data`.
@@ -257,7 +299,7 @@ GeomPandemics <- ggproto(
                               xformat = params$xformat,
                               show_ongoing = params$show_ongoing,
                               pandem_table = params$pandem_table)
-    
+
     # set up data for GeomRect
     data <- dplyr::transmute(
       data,
@@ -270,25 +312,25 @@ GeomPandemics <- ggproto(
       # re-establish dummy aesthetic, needed for legend entry
       fill = "Pandemic"
     )
-    
+
     return(data)
   },
-  
+
   # remainder untouched from `geom_rect`:
   draw_panel = function(self, data, panel_params, coord, linejoin = "mitre") {
-    
+
     if (!coord$is_linear()) {
       aesthetics <- setdiff(
         names(data), c("x", "y", "xmin", "xmax", "ymin", "ymax")
       )
-      
+
       polys <- lapply(split(data, seq_len(nrow(data))), function(row) {
         poly <- rect_to_poly(row$xmin, row$xmax, row$ymin, row$ymax)
         aes <- new_data_frame(row[aesthetics])[rep(1,5), ]
-        
+
         GeomPolygon$draw_panel(cbind(poly, aes), panel_params, coord)
       })
-      
+
       ggname("bar", do.call("grobTree", polys))
     } else {
       coords <- coord$transform(data, panel_params)
@@ -311,7 +353,7 @@ GeomPandemics <- ggproto(
       ))
     }
   },
-  
+
   draw_key = draw_key_polygon
 )
 
@@ -322,16 +364,16 @@ GeomPandemics <- ggproto(
 #' @export
 GeomPandemicsText <- ggproto(
   "GeomPandemicsText", Geom,
-  
+
   required_aes = c("xformat", "label",  "show_ongoing", "pandem_table", "y"),
-  
+
   default_aes = aes(
     colour = "black", size = 3.88, alpha = NA, family = "", fontface = 1, lineheight = 1.2,
     xformat = NULL, angle = 270, parse = FALSE,
     check_overlap = FALSE, na.rm = TRUE,
     hjust = "left", vjust = "bottom"
   ),
-  
+
   # replace `data` with `pandemics`, filtered by `data`
   setup_data = function(data, params) {
     #filter pandemics based on date parameters from `data` and return it. This overwrites `data`.
@@ -339,7 +381,7 @@ GeomPandemicsText <- ggproto(
                               xformat = params$xformat,
                               show_ongoing = params$show_ongoing,
                               pandem_table = params$pandem_table)
-    
+
     # set up data for GeomRect
     data <- dplyr::transmute(
       data,
@@ -348,10 +390,10 @@ GeomPandemicsText <- ggproto(
       PANEL = 1,
       group = -1
     )
-    
+
     return(data)
   },
-  
+
   # remainder untouched from `geom_text`:
   draw_panel = function(data, panel_params, coord, parse = FALSE,
                         na.rm = FALSE, check_overlap = FALSE) {
@@ -359,7 +401,7 @@ GeomPandemicsText <- ggproto(
     if (parse) {
       lab <- parse_safe(as.character(lab))
     }
-    
+
     data <- coord$transform(data, panel_params)
     if (is.character(data$vjust)) {
       data$vjust <- compute_just(data$vjust, data$y)
@@ -367,7 +409,7 @@ GeomPandemicsText <- ggproto(
     if (is.character(data$hjust)) {
       data$hjust <- compute_just(data$hjust, data$x)
     }
-    
+
     textGrob(
       lab,
       data$x, data$y, default.units = "native",
@@ -383,6 +425,6 @@ GeomPandemicsText <- ggproto(
       check.overlap = check_overlap
     )
   },
-  
+
   draw_key = draw_key_text
 )

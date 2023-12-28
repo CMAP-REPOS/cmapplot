@@ -1,12 +1,12 @@
-pandemics <- data.frame(name = c("COVID-19"),
-                        start_char = c("Mar 2020"),
+pandemics <- data.frame(start_char = c("Mar 2020"),
                         end_char = c("May 2023"),
                         start_date = c("3/13/2020"),
                         end_date = c("5/11/2023"),
-                        ongoing = c(FALSE))
+                        ongoing = c(FALSE),
+                        name = c("COVID-19"))
 
-pandemics <- 
-  pandemics %>% 
+pandemics <-
+  pandemics %>%
   mutate(start_date = as.Date(start_date, format = "%m/%d/%Y"),
          end_date = as.Date(end_date, format = "%m/%d/%Y"))
 
