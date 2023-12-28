@@ -30,7 +30,7 @@ currently accept one of \code{c("numeric", "date")}.}
 as a recession.}
 
 \item{label}{Char, the text to label each recession. Defaults to " Recession".
-(The space is a more consistent y axix buffer than text_nudge_y because it
+(The space is a more consistent y axis buffer than text_nudge_y because it
 not relative to the scale of the y axis.)}
 
 \item{ymin, ymax}{Numeric, The height of the recession rectangles. Defaults to

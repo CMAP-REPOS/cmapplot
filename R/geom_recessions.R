@@ -10,7 +10,7 @@
 #'@param text Logical, whether or not to include labels that identify each box
 #'  as a recession.
 #'@param label Char, the text to label each recession. Defaults to " Recession".
-#'  (The space is a more consistent y axix buffer than text_nudge_y because it
+#'  (The space is a more consistent y axis buffer than text_nudge_y because it
 #'  not relative to the scale of the y axis.)
 #'@param ymin,ymax Numeric, The height of the recession rectangles. Defaults to
 #'  -Inf and +Inf. Override to the top and bottom gridlines to implement ideal
