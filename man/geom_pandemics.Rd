@@ -123,7 +123,7 @@ ggplot(df, mapping = aes(x = year_dec, y = value)) +
 
 # A plot with a date-based x axis
 ggplot(df, mapping = aes(x = year_date, y = value)) +
-  geom_rpandemics(xformat = "date", show.legend = TRUE) +
+  geom_pandemics(xformat = "date", show.legend = TRUE) +
   geom_line(aes(color = var)) +
   scale_x_date() +
   theme_minimal()
