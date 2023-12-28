@@ -7,7 +7,7 @@
 geom_pandemics(
   xformat = "numeric",
   text = TRUE,
-  label = " Pandemic",
+  label = paste(" ", pandemics$name, " Pandemic"),
   ymin = -Inf,
   ymax = Inf,
   fill = "#002d49",
@@ -111,35 +111,7 @@ pandemic. It uses the same approach as \code{geom_recessions}.
 }
 
 \examples{
-grp_goods <- dplyr::filter(grp_over_time, category == "Goods-Producing")
-grp_goods <- dplyr::mutate(grp_goods, year2 = as.Date(lubridate::date_decimal(year)))
-
-# INTEGER X AXIS:
-ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
-  geom_pandemics() +
-  geom_line() +
-  scale_x_continuous("Year") +
-  theme_minimal()
-
-# DATE X AXIS:
-ggplot(data = grp_goods,
-mapping = aes(x = year2, y = realgrp, color = cluster)) +
-  geom_pandemics(xformat = "date") +
-  geom_line() +
-  scale_x_date("Year") +
-  theme_minimal()
-
-# MODIFIED AESTHETICS:
-ggplot(grp_over_time, aes(x = year, y = realgrp)) +
-  geom_pandemics(show.legend = TRUE, fill = "blue", text = FALSE,
-                  rect_aes = list(alpha = 1, color = "red")) +
-  geom_line(aes(color = cluster)) +
-  scale_x_continuous("Year") +
-  theme_minimal()
-
-
-# BELOW EXAMPLES SHOW MORE THAN 1 PANDEMIC
-df <- data.frame(year_dec=1950:1999, value=rnorm(100), var=c(rep("A", 50), rep("B", 50)))
+df <- data.frame(year_dec=1975:2024, value=rnorm(100), var=c(rep("A", 50), rep("B", 50)))
 df$year_date <- as.Date(lubridate::date_decimal(df$year_dec))
 
 # A plot with an integer-based x axis
