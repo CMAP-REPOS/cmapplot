@@ -41,7 +41,7 @@ recessions <- update_recessions()
 # package by running the following code:
 \dontrun{
   recessions <- update_recessions()
-  usethis::use_data(recessions, internal = TRUE, overwrite = TRUE)
+  save(recessions, file = "R/recessions.rda")
 }
 
 }
