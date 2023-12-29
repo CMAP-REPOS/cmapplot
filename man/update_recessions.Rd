@@ -40,8 +40,8 @@ recessions <- update_recessions()
 # package maintainers can update the internal dataset from within
 # package by running the following code:
 \dontrun{
-  recessions <- update_recessions()
-  save(recessions, file = "R/recessions.rda")
+ recessions <- update_recessions()
+ usethis::use_data(recessions, pandemics, internal = TRUE, overwrite = TRUE)
 }
 
 }

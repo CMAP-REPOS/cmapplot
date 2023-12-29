@@ -750,8 +750,8 @@ GeomPandemicsText <- ggproto(
 #' # package maintainers can update the internal dataset from within
 #' # package by running the following code:
 #' \dontrun{
-#'   recessions <- update_recessions()
-#'   save(recessions, file = "R/recessions.rda")
+#'  recessions <- update_recessions()
+#'  usethis::use_data(recessions, pandemics, internal = TRUE, overwrite = TRUE)
 #' }
 #'
 #'@export
@@ -833,5 +833,5 @@ update_recessions <- function(url = NULL, quietly = FALSE){
 #'   mutate(start_date = as.Date(start_date, format = "%m/%d/%Y"),
 #'          end_date = as.Date(end_date, format = "%m/%d/%Y"))
 #'
-#' save(pandemics, file = "R/pandemics.rda")
+#'  usethis::use_data(recessions, pandemics, internal = TRUE, overwrite = TRUE)
 #' }
