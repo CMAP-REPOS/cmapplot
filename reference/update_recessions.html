@@ -90,7 +90,7 @@ website.</p>
 
     <div id="source">
     <h2>Source</h2>
-    <p><a href="https://data.nber.org/data/cycles/business_cycle_dates.json" class="external-link">https://data.nber.org/data/cycles/business_cycle_dates.json</a></p>
+    <p><a href="https://www.nber.org/data/cycles/cycle%20dates%20pasted.csv" class="external-link">https://www.nber.org/data/cycles/cycle dates pasted.csv</a></p>
     </div>
     <div id="arguments">
     <h2>Arguments</h2>
@@ -121,13 +121,14 @@ updates over time.</p></dd>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">recessions</span> <span class="op">&lt;-</span> <span class="fu">update_recessions</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Successfully fetched from NBER</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>cannot open URL 'http://data.nber.org/data/cycles/cycle%20dates%20pasted.csv': HTTP status was '404 Not Found'</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> WARNING: Fetch or processing failed. `NULL` returned.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># package maintainers can update the internal dataset from within</span></span></span>
 <span class="r-in"><span><span class="co"># package by running the following code:</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span> <span class="va">recessions</span> <span class="op">&lt;-</span> <span class="fu">update_recessions</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span> <span class="fu">usethis</span><span class="fu">::</span><span class="fu">use_data</span><span class="op">(</span><span class="va">recessions</span>, <span class="va">pandemics</span>, internal <span class="op">=</span> <span class="cn">TRUE</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">recessions</span> <span class="op">&lt;-</span> <span class="fu">update_recessions</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">usethis</span><span class="fu">::</span><span class="fu">use_data</span><span class="op">(</span><span class="va">recessions</span>, internal <span class="op">=</span> <span class="cn">TRUE</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
