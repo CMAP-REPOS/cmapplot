@@ -171,23 +171,23 @@ rectangle and text geoms, respectively.</p></dd>
 <dd><p>Logical or data frame. <code>FALSE</code>, the default, relies on the
 package's built in tables. The recessions table was last updated in December
 2023 and is loaded into the <code>recessions.rda</code> file located in the
-<code>R</code> directory. The pandemics table is hard coded and was last
-updated in December 2023. It is loaded into the <code>pandemics.rda</code> file
-located in the <code>R</code> directory. For recessions only, <code>TRUE</code> calls
-the function <code>update_recessions</code>, which attempts to fetch the current
-recessions table from the NBER website. A custom data table of pandemics or
-recessions can also be passed to this argument, but it must be structured
-identically to the data table embedded in the package, described in the the
+<code>R</code> directory. The pandemics table is hard coded and was last updated
+in December 2023. It is loaded into the <code>pandemics.rda</code> file located in
+the <code>R</code> directory. For recessions only, <code>TRUE</code> calls the function
+<code>update_recessions</code>, which attempts to fetch the current recessions
+table from the NBER website. A custom data table of pandemics or recessions
+can also be passed to this argument, but it must be structured identically
+to the data table embedded in the package, described in the the
 documentation file for the function <code>update_recessions</code> or matching the
 format for the hard-coded pandemics table included below.</p></dd>
 
 
 <dt>show_ongoing</dt>
 <dd><p>Logical. <code>TRUE</code>, the default, will display an ongoing
-recession or pandemic that does not yet have a defined end date. If an ongoing recession or pandemic
-exists, it will be displayed as extending through the maximum extent of the
-graph's data (up to 2200). <code>FALSE</code> will remove the ongoing recession or pandemic
-from the graph.</p></dd>
+recession or pandemic that does not yet have a defined end date. If an
+ongoing recession or pandemic exists, it will be displayed as extending
+through the maximum extent of the graph's data (up to 2200). <code>FALSE</code>
+will remove the ongoing recession or pandemic from the graph.</p></dd>
 
 
 <dt>update_recessions</dt>
