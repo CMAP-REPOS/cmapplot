@@ -6,11 +6,26 @@
 \alias{cmap_colour_discrete}
 \title{Apply discrete CMAP palettes to ggplot2 aesthetics}
 \usage{
-cmap_fill_discrete(palette = "prosperity", reverse = FALSE, ...)
+cmap_fill_discrete(
+  palette = "prosperity",
+  reverse = FALSE,
+  gradient = FALSE,
+  ...
+)
 
-cmap_color_discrete(palette = "prosperity", reverse = FALSE, ...)
+cmap_color_discrete(
+  palette = "prosperity",
+  reverse = FALSE,
+  gradient = FALSE,
+  ...
+)
 
-cmap_colour_discrete(palette = "prosperity", reverse = FALSE, ...)
+cmap_colour_discrete(
+  palette = "prosperity",
+  reverse = FALSE,
+  gradient = FALSE,
+  ...
+)
 }
 \arguments{
 \item{palette}{Choose from 'cmap_palettes' list, or use one of the gradients
@@ -18,6 +33,8 @@ defined in the 'cmap_gradients' list (gradients will be automatically
 converted into discrete bins)}
 
 \item{reverse}{Logical; reverse color order?}
+
+\item{gradient}{Logical; is this palette a color gradient?}
 
 \item{...}{Additional parameters passed on to the scale type}
 }
