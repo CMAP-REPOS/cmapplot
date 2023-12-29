@@ -32,20 +32,20 @@
 #'@param update Logical or data frame. \code{FALSE}, the default, relies on the
 #'  package's built in tables. The recessions table was last updated in December
 #'  2023 and is loaded into the \code{recessions.rda} file located in the
-#'  \code{R} directory. The pandemics table is hard coded and was last
-#'  updated in December 2023. It is loaded into the \code{pandemics.rda} file
-#'  located in the \code{R} directory. For recessions only, \code{TRUE} calls
-#'  the function \code{update_recessions}, which attempts to fetch the current
-#'  recessions table from the NBER website. A custom data table of pandemics or
-#'  recessions can also be passed to this argument, but it must be structured
-#'  identically to the data table embedded in the package, described in the the
+#'  \code{R} directory. The pandemics table is hard coded and was last updated
+#'  in December 2023. It is loaded into the \code{pandemics.rda} file located in
+#'  the \code{R} directory. For recessions only, \code{TRUE} calls the function
+#'  \code{update_recessions}, which attempts to fetch the current recessions
+#'  table from the NBER website. A custom data table of pandemics or recessions
+#'  can also be passed to this argument, but it must be structured identically
+#'  to the data table embedded in the package, described in the the
 #'  documentation file for the function \code{update_recessions} or matching the
 #'  format for the hard-coded pandemics table included below.
 #'@param show_ongoing Logical. \code{TRUE}, the default, will display an ongoing
-#'  recession or pandemic that does not yet have a defined end date. If an ongoing recession or pandemic
-#'  exists, it will be displayed as extending through the maximum extent of the
-#'  graph's data (up to 2200). \code{FALSE} will remove the ongoing recession or pandemic
-#'  from the graph.
+#'  recession or pandemic that does not yet have a defined end date. If an
+#'  ongoing recession or pandemic exists, it will be displayed as extending
+#'  through the maximum extent of the graph's data (up to 2200). \code{FALSE}
+#'  will remove the ongoing recession or pandemic from the graph.
 #'@param update_recessions This parameter is deprecated and will be removed in a
 #'  future release. Please use the \code{update} parameter.
 #'@param ... additional aesthetics to send to BOTH the rectangle and text geoms.
@@ -232,7 +232,8 @@ geom_recessions <- function(xformat = "numeric",
         )
       )
     },
-    # apply the fill color to values where fill="Recession". Push this to the legend if called for.
+    # apply the fill color to values where fill="Recession". Push this to the
+    # legend if called for.
     do.call(
       scale_fill_manual,
       list(values = c("Recession" = fill), if (show.legend) {guide = "legend"})
@@ -411,7 +412,8 @@ filter_table <- function(min, max, xformat, show_ongoing, data_table){
   # Remove recessions/pandemics outside of range
   output <- dplyr::filter(output, end > min & start < max)
 
-  # If `min` or `max` fall in  middle of a recession, modify recession/pandemic to end at specified term.
+  # If `min` or `max` fall in  middle of a recession, modify recession/pandemic
+  # to end at specified term.
   output <- dplyr::transmute(
     output,
     start = if_else(start < min, min, as.numeric(start)),
@@ -437,7 +439,8 @@ GeomRecessions <- ggproto(
 
   # replace `data` with `recessions`, filtered by `data`
   setup_data = function(data, params) {
-    #filter recessions based on date parameters from `data` and return it. This overwrites `data`.
+    #filter recessions based on date parameters from `data` and return it. This
+    #overwrites `data`.
     data <- filter_table(min = min(data$x), max = max(data$x),
                               xformat = params$xformat,
                               show_ongoing = params$show_ongoing,
@@ -489,8 +492,9 @@ GeomRecessions <- ggproto(
           lwd = coords$size * .pt,
           lty = coords$linetype,
           linejoin = linejoin,
-          # `lineend` is a workaround for Windows and intentionally kept unexposed
-          # as an argument. (c.f. https://github.com/tidyverse/ggplot2/issues/3037#issuecomment-457504667)
+          # `lineend` is a workaround for Windows and intentionally kept
+          # unexposed as an argument. (c.f.
+          # https://github.com/tidyverse/ggplot2/issues/3037#issuecomment-457504667)
           lineend = if (identical(linejoin, "round")) "round" else "square"
         )
       ))
@@ -519,7 +523,8 @@ GeomRecessionsText <- ggproto(
 
   # replace `data` with `recessions`, filtered by `data`
   setup_data = function(data, params) {
-    #filter recessions based on date parameters from `data` and return it. This overwrites `data`.
+    #filter recessions based on date parameters from `data` and return it. This
+    #overwrites `data`.
     data <- filter_table(min = min(data$x), max = max(data$x),
                               xformat = params$xformat,
                               show_ongoing = params$show_ongoing,
@@ -584,7 +589,8 @@ GeomPandemics <- ggproto(
 
   # replace `data` with `pandemics`, filtered by `data`
   setup_data = function(data, params) {
-    #filter pandemics based on date parameters from `data` and return it. This overwrites `data`.
+    #filter pandemics based on date parameters from `data` and return it. This
+    #overwrites `data`.
     data <- filter_table(min = min(data$x), max = max(data$x),
                              xformat = params$xformat,
                              show_ongoing = params$show_ongoing,
@@ -636,8 +642,9 @@ GeomPandemics <- ggproto(
           lwd = coords$size * .pt,
           lty = coords$linetype,
           linejoin = linejoin,
-          # `lineend` is a workaround for Windows and intentionally kept unexposed
-          # as an argument. (c.f. https://github.com/tidyverse/ggplot2/issues/3037#issuecomment-457504667)
+          # `lineend` is a workaround for Windows and intentionally kept
+          # unexposed as an argument. (c.f.
+          # https://github.com/tidyverse/ggplot2/issues/3037#issuecomment-457504667)
           lineend = if (identical(linejoin, "round")) "round" else "square"
         )
       ))
@@ -666,7 +673,8 @@ GeomPandemicsText <- ggproto(
 
   # replace `data` with `pandemics`, filtered by `data`
   setup_data = function(data, params) {
-    #filter pandemics based on date parameters from `data` and return it. This overwrites `data`.
+    #filter pandemics based on date parameters from `data` and return it. This
+    #overwrites `data`.
     data <- filter_table(min = min(data$x), max = max(data$x),
                              xformat = params$xformat,
                              show_ongoing = params$show_ongoing,
@@ -815,9 +823,10 @@ update_recessions <- function(url = NULL, quietly = FALSE){
 #'
 #'Update pandemics table
 #'
-#'The cmapplot package contains an internal dataset \code{pandemics}, which currently features the dates for the COVID-19 pandemic. However, users may need to replace the built-in data, such as
-#'in the event of new pandemics and/or changes to the  consensus on
-#'pandemic dates.
+#'The cmapplot package contains an internal dataset \code{pandemics}, which
+#'currently features the dates for the COVID-19 pandemic. However, users may
+#'need to replace the built-in data, such as in the event of new pandemics
+#'and/or changes to the  consensus on pandemic dates.
 #'
 #' # Source data for pandemics (do not run unless updating)
 #' \dontrun{
