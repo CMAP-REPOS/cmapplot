@@ -254,16 +254,18 @@ of rectangles (and text, if desired) representing US economic
 recessions. Similar to the <code>hline</code> example above,
 <code><a href="../reference/geom_recessions.html">geom_recessions()</a></code> should be added before the plot’s primary
 geom (<code><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line()</a></code>) so that lines are drawn on top of
-recession rectangles.</p>
+recession rectangles. A complementary <code><a href="../reference/geom_recessions.html">geom_pandemics()</a></code>
+function allows for similar portrayals of the COVID-19 pandemic and
+other potential future pandemics.</p>
 <p><code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot()</a></code> always draws geoms <em>on top</em> of base plot
 elements like gridlines. The default fill and alpha values for
 <code><a href="../reference/geom_recessions.html">geom_recessions()</a></code> are the most transparent way possible to
 achieve CMAP palette color <code>#002d49</code> when drawn on a white
 background — thus impacting the color of the gridlines as little as
 possible.</p>
-<p>This function relies on the National Bureau of Economic Research’s
-definitions of recessions. Details on how to update these dates, as well
-as how to provide your own, can be found in
+<p>The recession function relies on the National Bureau of Economic
+Research’s definitions of recessions. Details on how to update these
+dates, as well as how to provide your own, can be found in
 <code><a href="../reference/geom_recessions.html">geom_recessions()</a></code> and <code><a href="../reference/update_recessions.html">update_recessions()</a></code>. If
 the most recent recession has not yet been declared over (as is the case
 in June 2021), the function will default to displaying this ongoing
