@@ -25,9 +25,9 @@
 #'   displayed as described in \code{?plotmath}.
 #' @param nudge_x,nudge_y Horizontal and vertical adjustment to nudge labels by.
 #'   Useful for offsetting text from points, particularly on discrete scales.
-#'   Cannot be jointy specified with \code{position}.
+#'   Cannot be jointly specified with \code{position}.
 #' @param position Position adjustment, either as a string, or the result of a
-#'   call to a position adjustment function. Cannot be jointy specified with
+#'   call to a position adjustment function. Cannot be jointly specified with
 #'   \code{nudge_x} or \code{nudge_y}.
 #' @param check_overlap If \code{TRUE}, text that overlaps previous text in the
 #'   same layer will not be plotted. \code{check_overlap} happens at draw time
@@ -76,8 +76,16 @@ geom_text_lastonly <- function(mapping = NULL, data = NULL,
                       ...
                       )
 {
+  # Create a position function using specified nudge coordinates.
   if (is.null(position)) {
     position_lab <- position_nudge(nudge_x, nudge_y)
+    position_pt <- position_identity()
+  }
+  # Allow for a position override function, e.g., `position_jitter()`. Note that
+  # in most cases, it will be easier to manually adjust labels to preferred
+  # locations using the nudge functions.
+  else {
+    position_lab <- position
     position_pt <- position_identity()
   }
 
