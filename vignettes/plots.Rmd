@@ -123,11 +123,11 @@ The cmapplot package also includes two custom geoms that allow the user to easil
 
 ### Include US recessions as a backdrop
 
-The function `geom_recessions()`, allows for the addition of rectangles (and text, if desired) representing US economic recessions. Similar to the `hline` example above, `geom_recessions()` should be added before the plot's primary geom (`geom_line()`) so that lines are drawn on top of recession rectangles. 
+The function `geom_recessions()`, allows for the addition of rectangles (and text, if desired) representing US economic recessions. Similar to the `hline` example above, `geom_recessions()` should be added before the plot's primary geom (`geom_line()`) so that lines are drawn on top of recession rectangles. A complementary `geom_pandemics()` function allows for similar portrayals of the COVID-19 pandemic and other potential future pandemics.
 
 `ggplot()` always draws geoms *on top* of base plot elements like gridlines. The default fill and alpha values for `geom_recessions()` are the most transparent way possible to achieve CMAP palette color `#002d49` when drawn on a white background — thus impacting the color of the gridlines as little as possible. 
 
-This function relies on the National Bureau of Economic Research's definitions of recessions. Details on how to update these dates, as well as how to provide your own, can be found in `geom_recessions()` and `update_recessions()`. If the most recent recession has not yet been declared over (as is the case in June 2021), the function will default to displaying this ongoing recession from its beginning through the end of the visualized data. If this is not desired (for example, if the visualization is of a projection far into the future), users can remove this ongoing recession by setting `show_ongoing = FALSE`. 
+The recession function relies on the National Bureau of Economic Research's definitions of recessions. Details on how to update these dates, as well as how to provide your own, can be found in `geom_recessions()` and `update_recessions()`. If the most recent recession has not yet been declared over (as is the case in June 2021), the function will default to displaying this ongoing recession from its beginning through the end of the visualized data. If this is not desired (for example, if the visualization is of a projection far into the future), users can remove this ongoing recession by setting `show_ongoing = FALSE`. 
 
 ```{r recessions, message = FALSE}
 q <- ggplot(data = df, 

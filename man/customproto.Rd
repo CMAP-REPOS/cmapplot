@@ -5,6 +5,8 @@
 \alias{customproto}
 \alias{GeomRecessions}
 \alias{GeomRecessionsText}
+\alias{GeomPandemics}
+\alias{GeomPandemicsText}
 \alias{GeomTextLast}
 \alias{GeomPointLast}
 \title{Custom ggproto classes}
@@ -19,6 +21,10 @@ objects. For more information about these, see
 \item \code{GeomRecessions}: Add recession bars to plot.
 
 \item \code{GeomRecessionsText}: Add recession bar labels to plot.
+
+\item \code{GeomPandemics}: Add pandemic bars to plot.
+
+\item \code{GeomPandemicsText}: Add pandemic bar labels to plot.
 
 \item \code{GeomTextLast}: Add text to plot for maximum x-value in dataset only.
 

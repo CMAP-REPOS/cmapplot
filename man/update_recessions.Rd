@@ -4,7 +4,7 @@
 \alias{update_recessions}
 \title{Update recessions table}
 \source{
-\url{https://www.nber.org/data/cycles/cycle dates pasted.csv}
+\url{https://data.nber.org/data/cycles/business_cycle_dates.json}
 }
 \usage{
 update_recessions(url = NULL, quietly = FALSE)
@@ -40,8 +40,8 @@ recessions <- update_recessions()
 # package maintainers can update the internal dataset from within
 # package by running the following code:
 \dontrun{
-  recessions <- update_recessions()
-  usethis::use_data(recessions, internal = TRUE, overwrite = TRUE)
+ recessions <- update_recessions()
+ usethis::use_data(recessions, pandemics, internal = TRUE, overwrite = TRUE)
 }
 
 }
