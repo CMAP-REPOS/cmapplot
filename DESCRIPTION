@@ -21,6 +21,9 @@ Authors@R: c(
     person("Matthew", "Stern",
            role = "aut",
            comment = c(ORCID = "0000-0001-9119-2121")),
+    person("Sean", "Connelly",
+           role = "aut",
+           email = "sconnelly@cmap.illinois.gov"),
     person("Chicago Metropolitan Agency for Planning",
            role = c("cph", "fnd")))
 Description: Provides themes and color scales for 'ggplot2', based on Chicago
