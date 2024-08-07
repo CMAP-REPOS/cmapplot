@@ -119,7 +119,7 @@
 #'   geom_text_lastonly(add_points=TRUE, text_aes=list(fontface="bold"), point_aes=list(size=2.5))
 #'
 #' @export
-geom_text_lastonly <- function(mapping = NULL, data = NULL,
+geom_text_lastonly_new <- function(mapping = NULL, data = NULL,
                       stat = "identity", position = NULL,
                       parse = FALSE,
                       box.padding = 0.25,
@@ -329,7 +329,7 @@ GeomTextLast <- ggproto(
       data$hjust <- compute_just(data$hjust, data$x, data$y, data$angle)
     }
 
-    ggname("geom_text_lastonly", gTree(
+    ggname("geom_text_lastonly_new", gTree(
       limits = limits,
       data = data,
       lab = data$label,
