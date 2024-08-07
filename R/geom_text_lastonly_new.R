@@ -1,6 +1,6 @@
-#' Text (Last Only)
+#' Text (Last Only) New
 #'
-#' Label only the last point(s) on a plot. \code{geom_text_lastonly()} can be
+#' Label only the last point(s) on a plot. \code{geom_text_lastonly_new()} can be
 #' used instead of \code{ggplot2::geom_text()} when only the last point(s)
 #' should be labeled. This is accomplished by identifying the maximum value of
 #' \code{x} in \code{data} and applying a filter to omit records where \code{x}
@@ -108,7 +108,7 @@
 #'   labs(title="Random lines") +
 #'   scale_y_continuous("Percentage of absolutely nothing") +
 #'   scale_x_continuous("Year") +
-#'   geom_text_lastonly()
+#'   geom_text_lastonly_new()
 #'
 #' # With points, label formatting and x-axis expansion
 #' ggplot(df, aes(x=year, y=value, color=var, label=sprintf("%.1f%%", 100*value))) +
@@ -116,7 +116,7 @@
 #'   labs(title="Random lines") +
 #'   scale_y_continuous("Percentage of absolutely nothing", labels=scales::percent) +
 #'   scale_x_continuous("Year", expand=expansion(mult=c(0.05, 0.10))) +
-#'   geom_text_lastonly(add_points=TRUE, text_aes=list(fontface="bold"), point_aes=list(size=2.5))
+#'   geom_text_lastonly_new(add_points=TRUE, text_aes=list(fontface="bold"), point_aes=list(size=2.5))
 #'
 #' @export
 geom_text_lastonly_new <- function(mapping = NULL, data = NULL,
@@ -176,7 +176,7 @@ geom_text_lastonly_new <- function(mapping = NULL, data = NULL,
       data = data,
       mapping = mapping,
       stat = stat,
-      geom = GeomTextLast,
+      geom = GeomTextLastNew,
       position = position_lab,
       show.legend = show.legend,
       inherit.aes = inherit.aes,
@@ -224,8 +224,8 @@ NULL
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomTextLast <- ggproto(
-  "GeomTextLast", Geom,
+GeomTextLastNew <- ggproto(
+  "GeomTextLastNew", Geom,
   required_aes = c("x", "y"),
 
   default_aes = aes(
@@ -345,7 +345,7 @@ GeomTextLast <- ggproto(
       direction = direction,
       seed = seed,
       verbose = verbose,
-      cl = "textrepeltree"
+      cl = "textlastrepel"
     ))
   },
 
@@ -356,7 +356,7 @@ GeomTextLast <- ggproto(
 #' @param x A grid grobTree.
 #' @export
 #' @noRd
-makeContent.textrepeltree <- function(x) {
+makeContent.textlastrepel <- function(x) {
 
   # The padding around each bounding box.
   box_padding_x <- convertWidth(x$box.padding, "native", valueOnly = TRUE)
@@ -668,7 +668,7 @@ makeTextRepelGrobs <- function(
   grobs
 }
 
-# GeomTextLast helper functions
+# GeomTextLastNew helper functions
 # copied from ggplot2
 compute_just <- function(just, a, b = a, angle = 0) {
   #  As justification direction is relative to the text, not the plotting area
