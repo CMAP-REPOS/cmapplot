@@ -11,7 +11,7 @@
 #'
 #' @name cmapplot
 #' @docType package
-#' @import dplyr ggplot2 graphics grDevices grid gridtext ragg rlang scales systemfonts
+#' @import dplyr ggplot2 graphics grDevices grid gridtext Rcpp ragg rlang scales systemfonts
 #' @importFrom glue glue glue_collapse
 #' @keywords internal
 "_PACKAGE"
