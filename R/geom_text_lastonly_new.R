@@ -133,8 +133,13 @@ geom_text_lastonly <- function(mapping = NULL, data = NULL,
                       max.overlaps = getOption("ggrepel.max.overlaps", default = 10),
                       nudge_x = 0.25,
                       nudge_y = 0,
+                      xlim = c(NA, NA),
+                      ylim = c(NA, NA),
+                      show.legend = FALSE,
                       check_overlap = FALSE,
-                      na.rm = FALSE,
+                      direction = c("both","y","x"),
+                      seed = NA,
+                      verbose = FALSE,
                       show.legend = FALSE,
                       inherit.aes = TRUE,
                       add_points = FALSE,
@@ -797,11 +802,6 @@ GeomPointLast <- ggproto(
 )
 
 # GeomPointLast helper functions
-ggname <- function(prefix, grob) {
-  grob$name <- grobName(grob, prefix)
-  grob
-}
-
 translate_shape_string <- function(shape_string) {
   # strings of length 0 or 1 are interpreted as symbols by grid
   if (nchar(shape_string[1]) <= 1) {

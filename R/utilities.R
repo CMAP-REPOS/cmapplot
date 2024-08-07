@@ -182,7 +182,15 @@ fetch_pal <- function(pal,
   }
 }
 
-## GGrepel utility functions
+
+
+# ggrepel utility functions -----------------------------------------------
+
+ggname <- function(prefix, grob) {
+  grob$name <- grobName(grob, prefix)
+  grob
+}
+
 with_seed_null <- function(seed, code) {
   if (is.null(seed)) {
     code
