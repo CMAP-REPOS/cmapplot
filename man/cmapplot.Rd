@@ -2,8 +2,8 @@
 % Please edit documentation in R/cmapplot.R
 \docType{package}
 \name{cmapplot}
-\alias{cmapplot}
 \alias{cmapplot-package}
+\alias{cmapplot}
 \title{cmapplot}
 \description{
 This package contains extra palettes, themes and geoms for \pkg{ggplot2},
@@ -35,6 +35,7 @@ Authors:
   \item Noel Peterson (\href{https://orcid.org/0000-0003-1290-2362}{ORCID})
   \item Greta Ritzenthaler \email{gritzenthaler@cmap.illinois.gov}
   \item Matthew Stern (\href{https://orcid.org/0000-0001-9119-2121}{ORCID})
+  \item Sean Connelly \email{sconnelly@cmap.illinois.gov}
 }
 
 Other contributors:
