@@ -231,7 +231,7 @@ GeomTextLastNew <- ggproto(
   default_aes = aes(
     colour = "black", size = 3.88, angle = 0, label = NA,
     alpha = NA, family = "", fontface = 1, lineheight = 1.2,
-    hjust = 0.5, vjust = 0.5, point.size = 1,
+    hjust = 0, vjust = 0.5, point.size = 1,
     segment.linetype = 1, segment.colour = "transparent",
     segment.size = 0.75, segment.alpha = NULL,
     segment.curvature = 0, segment.angle = 90, segment.ncp = 1,
