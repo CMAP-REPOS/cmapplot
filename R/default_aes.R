@@ -29,6 +29,12 @@ init_cmap_default_aes <- function () {
       size = cmapplot_globals$fsize$M/ggplot2::.pt, # pt-to-mm conversion
       colour = cmapplot_globals$colors$blackish
     ),
+    TextLastNew = list(
+      family = cmapplot_globals$font$strong$family,
+      fontface = ifelse(cmapplot_globals$font$strong$face == "bold", 2, 1),
+      size = cmapplot_globals$fsize$M/ggplot2::.pt, # pt-to-mm conversion
+      colour = cmapplot_globals$colors$blackish
+    ),
     PointLast = list(
       size = 2 * gg_lwd_convert(cmapplot_globals$consts$lwd_plotline)
     ),

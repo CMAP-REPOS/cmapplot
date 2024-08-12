@@ -114,6 +114,7 @@ cmapplot_globals$geoms_that_change <- c(
   "Line",
   "Text",
   "TextLast",
+  "TextLastNew",
   "PointLast",
   "RecessionsText"
 )
