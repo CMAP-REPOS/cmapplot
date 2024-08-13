@@ -29,7 +29,7 @@ init_cmap_default_aes <- function () {
       size = cmapplot_globals$fsize$M/ggplot2::.pt, # pt-to-mm conversion
       colour = cmapplot_globals$colors$blackish
     ),
-    TextLastNew = list(
+    TextLastRepel = list(
       family = cmapplot_globals$font$strong$family,
       fontface = ifelse(cmapplot_globals$font$strong$face == "bold", 2, 1),
       size = cmapplot_globals$fsize$M/ggplot2::.pt, # pt-to-mm conversion

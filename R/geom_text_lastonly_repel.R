@@ -1,6 +1,6 @@
 #' Text (Last Only) New
 #'
-#' Label only the last point(s) on a plot. \code{geom_text_lastonly_new()} can be
+#' Label only the last point(s) on a plot. \code{geom_text_lastonly_repel()} can be
 #' used instead of \code{ggplot2::geom_text()} when only the last point(s)
 #' should be labeled. This is accomplished by identifying the maximum value of
 #' \code{x} in \code{data} and applying a filter to omit records where \code{x}
@@ -108,7 +108,7 @@
 #'   labs(title="Random lines") +
 #'   scale_y_continuous("Percentage of absolutely nothing") +
 #'   scale_x_continuous("Year") +
-#'   geom_text_lastonly_new()
+#'   geom_text_lastonly_repel()
 #'
 #' # With points, label formatting and x-axis expansion
 #' ggplot(df, aes(x=year, y=value, color=var, label=sprintf("%.1f%%", 100*value))) +
@@ -116,10 +116,10 @@
 #'   labs(title="Random lines") +
 #'   scale_y_continuous("Percentage of absolutely nothing", labels=scales::percent) +
 #'   scale_x_continuous("Year", expand=expansion(mult=c(0.05, 0.10))) +
-#'   geom_text_lastonly_new(add_points=TRUE, text_aes=list(fontface="bold"), point_aes=list(size=2.5))
+#'   geom_text_lastonly_repel(add_points=TRUE, text_aes=list(fontface="bold"), point_aes=list(size=2.5))
 #'
 #' @export
-geom_text_lastonly_new <- function(mapping = NULL, data = NULL,
+geom_text_lastonly_repel <- function(mapping = NULL, data = NULL,
                       stat = "identity", position = NULL,
                       parse = FALSE,
                       box.padding = 0.25,
@@ -176,7 +176,7 @@ geom_text_lastonly_new <- function(mapping = NULL, data = NULL,
       data = data,
       mapping = mapping,
       stat = stat,
-      geom = GeomTextLastNew,
+      geom = GeomTextLastRepel,
       position = position_lab,
       show.legend = show.legend,
       inherit.aes = inherit.aes,
@@ -224,8 +224,8 @@ NULL
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomTextLastNew <- ggproto(
-  "GeomTextLastNew", Geom,
+GeomTextLastRepel <- ggproto(
+  "GeomTextLastRepel", Geom,
   required_aes = c("x", "y"),
 
   default_aes = aes(
@@ -330,7 +330,7 @@ GeomTextLastNew <- ggproto(
       data$hjust <- compute_just(data$hjust, data$x, data$y, data$angle)
     }
 
-    ggname("geom_text_lastonly_new", gTree(
+    ggname("geom_text_lastonly_repel", gTree(
       limits = limits,
       data = data,
       lab = data$label,
@@ -671,7 +671,7 @@ makeTextRepelGrobs <- function(
   grobs
 }
 
-# GeomTextLastNew helper functions
+# GeomTextLastRepel helper functions
 # copied from ggplot2
 compute_just <- function(just, a, b = a, angle = 0) {
   #  As justification direction is relative to the text, not the plotting area
