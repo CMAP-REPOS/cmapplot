@@ -25,7 +25,7 @@ geom_text_lastonly_repel(
   ylim = c(NA, NA),
   na.rm = FALSE,
   check_overlap = FALSE,
-  direction = c("both", "y", "x"),
+  direction = c("y", "x", "both"),
   seed = NA,
   verbose = FALSE,
   show.legend = FALSE,

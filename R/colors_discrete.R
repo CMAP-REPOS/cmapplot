@@ -60,11 +60,11 @@ viz_palette <- function(pal, ttl = NULL, num = NULL) {
 #' @param palette Choose from 'cmap_palettes' list, or use one of the gradients
 #'   defined in the 'cmap_gradients' list (gradients will be automatically
 #'   converted into discrete bins)
-#' @param reverse Logical; reverse color order?
+#' @param reverse Logical; reverse color order?cma
 #' @param ... Additional parameters passed on to the scale type
 #'
 #' @noRd
-cmap_pal_discrete <- function(palette = "prosperity", reverse = FALSE) {
+cmap_pal_discrete <- function(palette = "main", reverse = FALSE) {
     pal <- fetch_pal(palette)
 
     if(palette == "race"){
@@ -74,7 +74,7 @@ cmap_pal_discrete <- function(palette = "prosperity", reverse = FALSE) {
     if (reverse) {
         pal <- rev(pal)
     }
-    return(grDevices::colorRampPalette(pal))
+    return(scales::manual_pal(pal))
 }
 
 #' Apply discrete CMAP palettes to ggplot2 aesthetics
@@ -100,7 +100,7 @@ cmap_pal_discrete <- function(palette = "prosperity", reverse = FALSE) {
 #'
 #' @describeIn cmap_fill_discrete For fill aesthetic
 #' @export
-cmap_fill_discrete <- function(palette = "prosperity", reverse = FALSE, ...) {
+cmap_fill_discrete <- function(palette = "main", reverse = FALSE, ...) {
     ggplot2::discrete_scale(
         "fill", "cmap_palettes",
         palette = cmap_pal_discrete(palette, reverse = reverse),
@@ -110,7 +110,7 @@ cmap_fill_discrete <- function(palette = "prosperity", reverse = FALSE, ...) {
 
 #' @describeIn cmap_fill_discrete For color aesthetic
 #' @export
-cmap_color_discrete <- function(palette = "prosperity", reverse = FALSE, ...) {
+cmap_color_discrete <- function(palette = "main", reverse = FALSE, ...) {
     ggplot2::discrete_scale(
         "colour", "cmap_palettes",
         palette = cmap_pal_discrete(palette, reverse = reverse),

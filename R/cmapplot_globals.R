@@ -34,6 +34,7 @@ cmapplot_globals$colors <- list(
 cmapplot_globals$palettes <- tibble::tribble(
   ~name, ~type, ~colors,
   # discrete
+  "main",        "discrete", c("#1E478E", "#6DAE4F", "#D3B42B", "#008FD5", "#CA3428", "#ADE0EE", "#3E6730" , "#D0E4A4"),
   "prosperity",  "discrete", c("#662f00", "#e5d072", "#44008c", "#c8e572", "#c9a7ef"),
   "community",   "discrete", c("#cc5f00", "#006b8c", "#e5a872", "#d2efa7", "#662f00"),
   "environment", "discrete", c("#00665c", "#b7e572", "#3f0030",  "#36d8ca", "#006b8c"),
@@ -41,11 +42,11 @@ cmapplot_globals$palettes <- tibble::tribble(
   "mobility",    "discrete", c("#8c0000", "#e5bd72", "#a7efe8", "#6d8692", "#0084ac", "#efa7a7"),
   "legislation", "discrete", c("#00becc", "#cc5f00", "#3f0e00", "#cca600", "#003f8c", "#67ac00"),
   "friday",      "discrete", c("#00093f", "#ac8c00", "#475c66", "#e5d072", "#b5c1c8", "#006b8c"),
-  "race",        "discrete", c(white    = "#75a5d8",
-                               black    = "#84c87e",
-                               hispanic = "#d8ba39",
-                               asian    = "#e77272",
-                               other    = "#607b88"),
+  "race",        "discrete", c(white    = "#008FD5",
+                               black    = "#6DAE4F",
+                               hispanic = "#D3B42B",
+                               asian    = "#CA3428",
+                               other    = "#2D4147"),
 
   # Single-hue sequential
   "reds",      "sequential", c("#efa7a7", "#e57272", "#d83636", "#cc0000", "#ac0000", "#8c0000", "#660000"),
