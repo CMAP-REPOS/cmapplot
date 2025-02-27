@@ -2,7 +2,8 @@
 % Please edit documentation in R/geom_recessions.R
 \name{geom_recessions}
 \alias{geom_recessions}
-\title{Add recessions to time series graphs}
+\alias{geom_pandemics}
+\title{Add recessions and/or pandemics to time series graphs}
 \usage{
 geom_recessions(
   xformat = "numeric",
@@ -16,7 +17,25 @@ geom_recessions(
   show.legend = FALSE,
   rect_aes = NULL,
   text_aes = NULL,
-  update_recessions = FALSE,
+  update = FALSE,
+  show_ongoing = TRUE,
+  update_recessions,
+  ...
+)
+
+geom_pandemics(
+  xformat = "numeric",
+  text = TRUE,
+  label = paste(" ", pandemics$name, " Pandemic"),
+  ymin = -Inf,
+  ymax = Inf,
+  fill = "#002d49",
+  text_nudge_x = 0.2,
+  text_nudge_y = 0,
+  show.legend = FALSE,
+  rect_aes = NULL,
+  update = FALSE,
+  text_aes = NULL,
   show_ongoing = TRUE,
   ...
 )
@@ -27,17 +46,18 @@ data being graphed is in integer or date format. This argument will
 currently accept one of \code{c("numeric", "date")}.}
 
 \item{text}{Logical, whether or not to include labels that identify each box
-as a recession.}
+as a recession/pandemic.}
 
-\item{label}{Char, the text to label each recession. Defaults to " Recession".
-(The space is a more consistent y axix buffer than text_nudge_y because it
-not relative to the scale of the y axis.)}
+\item{label}{Char, the text to label each recession or pandemic. Defaults to "
+Recession" or " [Name] Pandemic". (The space is a more consistent y axis
+buffer than text_nudge_y because it not relative to the scale of the y
+axis.)}
 
-\item{ymin, ymax}{Numeric, The height of the recession rectangles. Defaults to
+\item{ymin, ymax}{Numeric, The height of the rectangles. Defaults to
 -Inf and +Inf. Override to the top and bottom gridlines to implement ideal
 CMAP design standards.}
 
-\item{fill}{Char, the fill color for the recession rectangles. Defaults to
+\item{fill}{Char, the fill color for the rectangles. Defaults to
 \code{#002d49} for compliance with CMAP design standards.}
 
 \item{text_nudge_x, text_nudge_y}{Numeric, the amount to shift the labels along
@@ -53,34 +73,48 @@ Defaults to \code{FALSE}.}
 \item{rect_aes, text_aes}{Named list, additional aesthetics to send to the
 rectangle and text geoms, respectively.}
 
-\item{update_recessions}{Logical or data frame. \code{FALSE}, the default,
-relies on the package's built in recessions table, which was last updated in
-March 2021 and is loaded into the \code{sysdata.R} file located in the
-\code{R} directory. \code{TRUE} calls the function
+\item{update}{Logical or data frame. \code{FALSE}, the default, relies on the
+package's built in tables. The recessions table was last updated in December
+2023 and is loaded into the \code{recessions.rda} file located in the
+\code{R} directory. The pandemics table is hard coded and was last updated
+in December 2023. It is loaded into the \code{pandemics.rda} file located in
+the \code{R} directory. For recessions only, \code{TRUE} calls the function
 \code{update_recessions}, which attempts to fetch the current recessions
-table from the NBER website. A custom data table of recessions can also be
-passed to this argument, but it must be structured identically to the
-five-column data table described in the the documentation file for the
-function \code{update_recessions}.}
+table from the NBER website. A custom data table of pandemics or recessions
+can also be passed to this argument, but it must be structured identically
+to the data table embedded in the package, described in the the
+documentation file for the function \code{update_recessions} or matching the
+format for the hard-coded pandemics table included below.}
 
 \item{show_ongoing}{Logical. \code{TRUE}, the default, will display an ongoing
-recession that does not yet have a defined end date. If an ongoing recession
-exists, it will be displayed as extending through the maximum extent of the
-graph's data (up to 2200). \code{FALSE} will remove the ongoing recession
-from the graph.}
+recession or pandemic that does not yet have a defined end date. If an
+ongoing recession or pandemic exists, it will be displayed as extending
+through the maximum extent of the graph's data (up to 2200). \code{FALSE}
+will remove the ongoing recession or pandemic from the graph.}
+
+\item{update_recessions}{This parameter is deprecated and will be removed in a
+future release. Please use the \code{update} parameter.}
 
 \item{...}{additional aesthetics to send to BOTH the rectangle and text geoms.}
 }
 \description{
-\code{geom_recessions} returns one or two ggplot geoms that add rectangles
-representing recessions to a plot. It will either return only rectangles or,
-by default, both rectangles and text identifying each recession.
+\code{geom_recessions} and \code{geom_pandemics} return one or two ggplot
+geoms that add rectangles representing specified time periods (recessions or
+pandemics) to a plot. It will either return only rectangles or, by default,
+both rectangles and text identifying each pandemic or recession.
 }
+\section{Functions}{
+\itemize{
+\item \code{geom_recessions()}: for recessions
+
+\item \code{geom_pandemics()}: for pandemics
+
+}}
 \section{Important notes}{
  If \code{show.legend = TRUE} you must place any
  categorical aesthetics (e.g. color, size) specific to the primary data in
  the geom(s) used to display that data. Otherwise, the legend will inherit
- aesthetics from geom_recessions.
+ aesthetics from geom_recessions or geom_pandemics.
 
  It is best to place this object before your primary geom (likely
  \code{geom_line()}) in your code, so that ggplot draws it behind the primary
@@ -92,7 +126,7 @@ by default, both rectangles and text identifying each recession.
  \code{#e3e8eb}. The rectangle geom has default fill and alpha values of
  \code{#002d49} and \code{0.11} built into the function. These replicate the
  palette color at the highest possible transparency. This is done because
- there is no known way to place the recession geom behind the graph's grid
+ there is no known way to place the geom behind the graph's grid
  lines. The default therefore produces the approved CMAP color while altering
  the appearance of any overlapping grid lines as little as possible. These
  can be overridden, but separately. Override fill using the top-level
@@ -103,12 +137,13 @@ by default, both rectangles and text identifying each recession.
 }
 
 \section{Under the hood}{
- This function calls two custom geoms, constructed
- with ggproto. The custom GeomRecessions and GeomRecessionsText are modified
- versions of GeomRect and GeomText, respectively. The only variations to each
- occur in \code{default_aes}, \code{required_aes}, and \code{setup_data}
- arguments. These variations allow the the primary dataframe (specified in
- \code{ggplot(data = XXX)}) to filter the recessions displayed.
+ This function calls two sets of custom geoms,
+ constructed with ggproto. The custom GeomRecessions and GeomRecessionsText
+ (and similar for Pandemics) are modified versions of GeomRect and GeomText,
+ respectively. The only variations to each occur in \code{default_aes},
+ \code{required_aes}, and \code{setup_data} arguments. These variations allow
+ the the primary dataframe (specified in \code{ggplot(data = XXX)}) to filter
+ the recessions displayed.
 }
 
 \examples{
@@ -153,6 +188,24 @@ ggplot(df, mapping = aes(x = year_dec, y = value)) +
 # A plot with a date-based x axis
 ggplot(df, mapping = aes(x = year_date, y = value)) +
   geom_recessions(xformat = "date", show.legend = TRUE) +
+  geom_line(aes(color = var)) +
+  scale_x_date() +
+  theme_minimal()
+
+# BELOW EXAMPLES SHOW PANDEMICS
+df <- data.frame(year_dec=1975:2024, value=rnorm(100), var=c(rep("A", 50), rep("B", 50)))
+df$year_date <- as.Date(lubridate::date_decimal(df$year_dec))
+
+# A plot with an integer-based x axis
+ggplot(df, mapping = aes(x = year_dec, y = value)) +
+  geom_pandemics() +
+  geom_line(aes(color = var)) +
+  scale_x_continuous("Year") +
+  theme_minimal()
+
+# A plot with a date-based x axis
+ggplot(df, mapping = aes(x = year_date, y = value)) +
+  geom_pandemics(xformat = "date", show.legend = TRUE) +
   geom_line(aes(color = var)) +
   scale_x_date() +
   theme_minimal()

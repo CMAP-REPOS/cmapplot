@@ -46,6 +46,7 @@ Imports:
     grid,
     gridExtra,
     gridtext,
+    jsonlite,
     lubridate,
     magrittr,
     purrr,
