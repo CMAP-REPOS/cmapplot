@@ -471,7 +471,7 @@ update_recessions <- function(url = NULL, quietly = FALSE){
 
   # Use default URL if user does not override
   if (is_null(url) | missing(url)) {
-    url <- "http://data.nber.org/data/cycles/cycle%20dates%20pasted.csv"
+    url <- "http://data.nber.org/data/cycles/20210719_cycle_dates_pasted.csv"
   }
 
   # locally bind variable names
@@ -501,7 +501,7 @@ update_recessions <- function(url = NULL, quietly = FALSE){
             TRUE ~ F),
           # set ongoing recession to arbitrary future date
           end_date = case_when(
-            ongoing ~ as.Date("2200-01-01"),
+            ongoing ~ as.Date("2500-01-01"),
             TRUE ~ end_date),
           # mark ongoing recession in char field
           end_char = case_when(

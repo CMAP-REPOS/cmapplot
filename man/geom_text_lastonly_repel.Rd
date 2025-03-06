@@ -145,7 +145,15 @@ Code was mostly copied from the source of \code{ggrepel::geom_text_repel()} and
 \code{ggplot2::geom_point()}.
 }
 \examples{
-df <- data.frame(year=2010:2020, value=runif(22), var=c(rep("A", 11), rep("B", 11)))
+library(tidyverse)
+
+df <- transit_ridership \%>\%
+ filter(system != "pace_ada") \%>\%
+ mutate(system = recode_factor(system,
+                              cta_bus = "CTA bus",
+                              cta_rail = "CTA rail",
+                               metra = "Metra",
+                               pace = "Pace"))
 
 # Without points, label formatting or x-axis expansion
 ggplot(df, aes(x=year, y=value, color=var)) +
@@ -153,7 +161,7 @@ ggplot(df, aes(x=year, y=value, color=var)) +
   labs(title="Random lines") +
   scale_y_continuous("Percentage of absolutely nothing") +
   scale_x_continuous("Year") +
-  geom_text_lastonly_repel()
+  geom_text_lastonly()
 
 # With points, label formatting and x-axis expansion
 ggplot(df, aes(x=year, y=value, color=var, label=sprintf("\%.1f\%\%", 100*value))) +
@@ -161,6 +169,6 @@ ggplot(df, aes(x=year, y=value, color=var, label=sprintf("\%.1f\%\%", 100*value)
   labs(title="Random lines") +
   scale_y_continuous("Percentage of absolutely nothing", labels=scales::percent) +
   scale_x_continuous("Year", expand=expansion(mult=c(0.05, 0.10))) +
-  geom_text_lastonly_repel(add_points=TRUE, text_aes=list(fontface="bold"), point_aes=list(size=2.5))
+  geom_text_lastonly(add_points=TRUE, text_aes=list(fontface="bold"), point_aes=list(size=2.5))
 
 }
