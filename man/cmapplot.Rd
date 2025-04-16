@@ -26,16 +26,16 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Daniel Comeaux \email{dcomeaux@cmap.illinois.gov} (\href{https://orcid.org/0000-0002-8412-9092}{ORCID})
+\strong{Maintainer}: Sean Connelly \email{sconnelly@cmap.illinois.gov}
 
 Authors:
 \itemize{
-  \item Sarah Buchhorn \email{sbuchhorn@cmap.illinois.gov}
+  \item Daniel Comeaux (\href{https://orcid.org/0000-0002-8412-9092}{ORCID})
+  \item Sarah Buchhorn
   \item Martin Menninger \email{mmenninger@cmap.illinois.gov}
   \item Noel Peterson (\href{https://orcid.org/0000-0003-1290-2362}{ORCID})
-  \item Greta Ritzenthaler \email{gritzenthaler@cmap.illinois.gov}
+  \item Greta Ritzenthaler
   \item Matthew Stern (\href{https://orcid.org/0000-0001-9119-2121}{ORCID})
-  \item Sean Connelly \email{sconnelly@cmap.illinois.gov}
 }
 
 Other contributors:

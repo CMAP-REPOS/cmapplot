@@ -11,6 +11,8 @@
 #'
 #' @examples
 #'
+#' library(ggrepel)
+#'
 #' df <- data.frame(
 #'   x = c(1,3,2,5),
 #'   y = c("a","c","d","c")

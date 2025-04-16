@@ -16,6 +16,8 @@ position of text labels before they are repelled from data points.
 }
 \examples{
 
+library(ggrepel)
+
 df <- data.frame(
   x = c(1,3,2,5),
   y = c("a","c","d","c")
