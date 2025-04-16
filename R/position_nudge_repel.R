@@ -7,6 +7,8 @@
 #' @param x,y Amount of horizontal and vertical distance to move. Same units
 #'   as the data on the x and y axes.
 #'
+#' @noRd
+#'
 #' @export
 #'
 #' @examples

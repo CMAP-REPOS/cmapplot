@@ -1,4 +1,4 @@
-#' Text (Last Only) New
+#' Text (Last Only) Repel
 #'
 #' Label only the last point(s) on a plot. \code{geom_text_lastonly_repel()} can be
 #' used instead of \code{ggplot2::geom_text()} when only the last point(s)
