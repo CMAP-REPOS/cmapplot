@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.2</span>
       </span>
     </div>
 
@@ -138,9 +138,9 @@ the extent and breaks of each axis.</p></li>
 </h4>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get example dataset, and create a relative GRP field</span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">peer_grp</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">area</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">mutate</span><span class="op">(</span>indexed <span class="op">=</span> <span class="va">grp</span> <span class="op">/</span> <span class="fu">first</span><span class="op">(</span><span class="va">grp</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">peer_grp</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">area</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>indexed <span class="op">=</span> <span class="va">grp</span> <span class="op">/</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/nth.html" class="external-link">first</a></span><span class="op">(</span><span class="va">grp</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span></span>
 <span></span>
 <span></span>
 <span><span class="co"># Create line plot</span></span>
@@ -149,7 +149,7 @@ the extent and breaks of each axis.</p></li>
 <span>  mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span>
 <span>    x <span class="op">=</span> <span class="va">year</span>,</span>
 <span>    y <span class="op">=</span> <span class="va">indexed</span>,</span>
-<span>    color <span class="op">=</span> <span class="fu">fct_reorder2</span><span class="op">(</span><span class="va">area</span>, <span class="va">year</span>, <span class="va">indexed</span><span class="op">)</span>,  <span class="co"># Order legend by last `indexed` value in last `year`</span></span>
+<span>    color <span class="op">=</span> <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_reorder.html" class="external-link">fct_reorder2</a></span><span class="op">(</span><span class="va">area</span>, <span class="va">year</span>, <span class="va">indexed</span><span class="op">)</span>,  <span class="co"># Order legend by last `indexed` value in last `year`</span></span>
 <span>    label <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">percent</a></span><span class="op">(</span><span class="va">indexed</span>, accuracy <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>  <span class="co"># Format labels as percents with no decimals</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span> <span class="op">+</span></span>
@@ -217,20 +217,20 @@ the extent and breaks of each axis.</p></li>
 </h4>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get &amp; format example dataset</span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">cmapplot</span><span class="fu">::</span><span class="va"><a href="../reference/transit_ridership.html">transit_ridership</a></span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ridership</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># Remove entries with no ridership (in this case, </span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">cmapplot</span><span class="fu">::</span><span class="va"><a href="../reference/transit_ridership.html">transit_ridership</a></span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ridership</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="co"># Remove entries with no ridership (in this case, </span></span>
 <span>                            <span class="co">#  values before PACE ADA is broken out in the data)</span></span>
 <span>  </span>
 <span>  <span class="co"># Change system names to desired legend output</span></span>
-<span>  <span class="fu">mutate</span><span class="op">(</span>system <span class="op">=</span> <span class="fu">recode</span><span class="op">(</span><span class="va">system</span>, </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>system <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/recode.html" class="external-link">recode</a></span><span class="op">(</span><span class="va">system</span>, </span>
 <span>                         <span class="st">"cta_bus"</span> <span class="op">=</span> <span class="st">"CTA Bus"</span>,</span>
 <span>                         <span class="st">"cta_rail"</span> <span class="op">=</span> <span class="st">"CTA Rail"</span>,</span>
 <span>                         <span class="st">"metra"</span> <span class="op">=</span> <span class="st">"Metra"</span>,</span>
 <span>                         <span class="st">"pace"</span> <span class="op">=</span> <span class="st">"Pace"</span>,</span>
-<span>                         <span class="st">"pace_ada"</span> <span class="op">=</span> <span class="st">"Pace ADA"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>                         <span class="st">"pace_ada"</span> <span class="op">=</span> <span class="st">"Pace ADA"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  </span>
 <span>  <span class="co"># Make into factor with defined order for plotting (top to bottom)</span></span>
-<span>  <span class="fu">mutate</span><span class="op">(</span>system <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">system</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>system <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">system</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>    <span class="st">"Pace ADA"</span>, <span class="st">"Pace"</span>, <span class="st">"Metra"</span>, <span class="st">"CTA Rail"</span>, <span class="st">"CTA Bus"</span></span>
 <span>  <span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -270,7 +270,7 @@ to represent additional variables.</p>
 </h4>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create example dataset</span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
 <span>  REGION <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Boston"</span>, <span class="st">"Chicago"</span>, <span class="st">"Los Angeles"</span>, <span class="st">"New York"</span>, <span class="st">"Washington, D.C."</span><span class="op">)</span>,</span>
 <span>  TOT_POP_DIFF <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">41695</span>, <span class="op">-</span><span class="fl">114387</span>, <span class="fl">110955</span>, <span class="fl">322308</span>, <span class="fl">198931</span><span class="op">)</span>,</span>
 <span>  LF_POP_DIFF <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">46296</span>, <span class="op">-</span><span class="fl">68524</span>, <span class="fl">113307</span>, <span class="fl">315163</span>, <span class="fl">173036</span><span class="op">)</span>,</span>
@@ -360,7 +360,7 @@ it stand out from gridlines where they overlap.</p>
 </h4>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create example dataset</span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
 <span>  REGION <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Boston"</span>, <span class="st">"Chicago"</span>, <span class="st">"Los Angeles"</span>, <span class="st">"New York"</span>, <span class="st">"Washington, D.C."</span><span class="op">)</span>,</span>
 <span>  MED_HH_INC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">77809</span>, <span class="fl">63327</span>, <span class="fl">62216</span>, <span class="fl">69211</span>, <span class="fl">93804</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
@@ -455,12 +455,12 @@ represents.</p>
 </h4>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create example dataset</span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
 <span>  RACE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"White"</span>, <span class="st">"White"</span>, <span class="st">"No majority"</span>, <span class="st">"No majority"</span>, <span class="st">"Asian"</span>, <span class="st">"Asian"</span>, <span class="st">"Hispanic"</span>, <span class="st">"Hispanic"</span>, <span class="st">"Black"</span>, <span class="st">"Black"</span><span class="op">)</span>,</span>
 <span>  YEAR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2010"</span>, <span class="st">"2020"</span>, <span class="st">"2010"</span>, <span class="st">"2020"</span>, <span class="st">"2010"</span>, <span class="st">"2020"</span>, <span class="st">"2010"</span>, <span class="st">"2020"</span>, <span class="st">"2010"</span>, <span class="st">"2020"</span><span class="op">)</span>,</span>
 <span>  RESPONSE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.760</span>, <span class="fl">.761</span>, <span class="fl">.670</span>, <span class="fl">.671</span>, <span class="fl">.634</span>, <span class="fl">.605</span>, <span class="fl">.625</span>, <span class="fl">.550</span>, <span class="fl">.580</span>, <span class="fl">.550</span><span class="op">)</span></span>
-<span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">mutate</span><span class="op">(</span>LABEL <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"%i%%"</span>, <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">RESPONSE</span> <span class="op">*</span> <span class="fl">100</span>,<span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>LABEL <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"%i%%"</span>, <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">RESPONSE</span> <span class="op">*</span> <span class="fl">100</span>,<span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span></span>
 <span><span class="co"># Create clustered bar chart</span></span>
@@ -543,21 +543,21 @@ components.</p>
 </h4>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get &amp; format example dataset from ON TO 2050 indicators GitHub repository</span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">read_csv</span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/CMAP-REPOS/ONTO2050-indicators/master/non-single-occupancy-modes/non-single-occupancy-modes.csv"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">as_tibble</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">pivot_longer</span><span class="op">(</span>cols <span class="op">=</span> <span class="fu">starts_with</span><span class="op">(</span><span class="st">"PCT_NONSOV"</span><span class="op">)</span>,</span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/CMAP-REPOS/ONTO2050-indicators/master/non-single-occupancy-modes/non-single-occupancy-modes.csv"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span>cols <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"PCT_NONSOV"</span><span class="op">)</span>,</span>
 <span>               names_to <span class="op">=</span> <span class="st">"MODE"</span>,</span>
 <span>               names_prefix <span class="op">=</span> <span class="st">"PCT_NONSOV_"</span>,</span>
-<span>               values_to <span class="op">=</span> <span class="st">"PCT_NONSOV"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">MODE</span> <span class="op">!=</span> <span class="st">"TOTAL"</span>,</span>
-<span>         <span class="va">ACTUAL_OR_TARGET</span> <span class="op">==</span> <span class="st">"Actual"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">mutate</span><span class="op">(</span>MODE <span class="op">=</span> <span class="fu">recode</span><span class="op">(</span><span class="va">MODE</span>,</span>
+<span>               values_to <span class="op">=</span> <span class="st">"PCT_NONSOV"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">MODE</span> <span class="op">!=</span> <span class="st">"TOTAL"</span>,</span>
+<span>         <span class="va">ACTUAL_OR_TARGET</span> <span class="op">==</span> <span class="st">"Actual"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>MODE <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/recode.html" class="external-link">recode</a></span><span class="op">(</span><span class="va">MODE</span>,</span>
 <span>                       <span class="st">"CARPOOL"</span> <span class="op">=</span> <span class="st">"Carpool"</span>,</span>
 <span>                       <span class="st">"TRANSIT"</span> <span class="op">=</span> <span class="st">"Public transportation"</span>,</span>
 <span>                       <span class="st">"BIKE"</span> <span class="op">=</span> <span class="st">"Bicycle"</span>,</span>
 <span>                       <span class="st">"WALK"</span> <span class="op">=</span> <span class="st">"Walk"</span>,</span>
-<span>                       <span class="st">"HOME"</span> <span class="op">=</span> <span class="st">"Work at home"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">mutate</span><span class="op">(</span>MODE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">MODE</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>                       <span class="st">"HOME"</span> <span class="op">=</span> <span class="st">"Work at home"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>MODE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">MODE</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>    <span class="st">"Work at home"</span>, <span class="st">"Walk"</span>, <span class="st">"Bicycle"</span>, <span class="st">"Public transportation"</span>, <span class="st">"Carpool"</span></span>
 <span>  <span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -596,11 +596,11 @@ components.</p>
 <span><span class="st">    estimates, since 1-year estimates of mode share are not consistently</span></span>
 <span><span class="st">    available there due to its relatively small population."</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Removed 1 row containing missing values or values outside the scale range</span></span>
+<span><span class="co">#&gt; Warning: Removed 3 rows containing missing values or values outside the scale range</span></span>
 <span><span class="co">#&gt; (`geom_col()`).</span></span>
-<span><span class="co">#&gt; Removed 1 row containing missing values or values outside the scale range</span></span>
+<span><span class="co">#&gt; Removed 3 rows containing missing values or values outside the scale range</span></span>
 <span><span class="co">#&gt; (`geom_col()`).</span></span>
-<span><span class="co">#&gt; Removed 1 row containing missing values or values outside the scale range</span></span>
+<span><span class="co">#&gt; Removed 3 rows containing missing values or values outside the scale range</span></span>
 <span><span class="co">#&gt; (`geom_col()`).</span></span></code></pre></div>
 <p><img src="cookbook_files/figure-html/stackbar-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
@@ -654,21 +654,21 @@ Science</em></a>.</p></li>
 </h4>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get &amp; format example dataset from ABM validation report GitHub repository</span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">read_csv</span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/CMAP-REPOS/cmap_abm_report/master/data/csv37_tours_tod.csv"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">cat</span> <span class="op">!=</span> <span class="st">"all"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">mutate</span><span class="op">(</span></span>
-<span>    purpose <span class="op">=</span> <span class="fu">fct_rev</span><span class="op">(</span><span class="fu">recode_factor</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">cat</span><span class="op">)</span>,</span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/CMAP-REPOS/cmap_abm_report/master/data/csv37_tours_tod.csv"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">cat</span> <span class="op">!=</span> <span class="st">"all"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>    purpose <span class="op">=</span> <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_rev.html" class="external-link">fct_rev</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/recode.html" class="external-link">recode_factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">cat</span><span class="op">)</span>,</span>
 <span>                                    `work` <span class="op">=</span> <span class="st">"Work"</span>,</span>
 <span>                                    `school` <span class="op">=</span> <span class="st">"School"</span>,</span>
 <span>                                    .default <span class="op">=</span> <span class="st">"Other Purposes"</span>,</span>
 <span>                                    .ordered <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    dep_arr <span class="op">=</span> <span class="fu">recode_factor</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">subgroup</span><span class="op">)</span>,</span>
+<span>    dep_arr <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/recode.html" class="external-link">recode_factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">subgroup</span><span class="op">)</span>,</span>
 <span>                            `Model-Depart` <span class="op">=</span> <span class="st">"Departure"</span>,</span>
 <span>                            `Survey-Depart` <span class="op">=</span> <span class="st">"Departure"</span>,</span>
 <span>                            `Model-Arrive` <span class="op">=</span> <span class="st">"Return"</span>,</span>
 <span>                            `Survey-Arrive` <span class="op">=</span> <span class="st">"Return"</span>,</span>
 <span>                            .ordered <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>    obs_mod <span class="op">=</span> <span class="fu">recode_factor</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">subgroup</span><span class="op">)</span>,</span>
+<span>    obs_mod <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/recode.html" class="external-link">recode_factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">subgroup</span><span class="op">)</span>,</span>
 <span>                            `Model-Depart` <span class="op">=</span> <span class="st">"Modeled"</span>,</span>
 <span>                            `Model-Arrive` <span class="op">=</span> <span class="st">"Modeled"</span>,</span>
 <span>                            `Survey-Depart` <span class="op">=</span> <span class="st">"Observed"</span>,</span>
@@ -738,21 +738,21 @@ or pie charts, they can be constructed with a combination of
 </h4>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create example dataset</span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
 <span>  SECTOR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Stationary energy"</span>, <span class="st">"Transportation"</span>, <span class="st">"Waste"</span><span class="op">)</span>,</span>
 <span>  EMISSIONS <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">81.9</span>, <span class="fl">34.3</span>, <span class="fl">3.2</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span></span>
 <span><span class="co"># Create donut chart</span></span>
-<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">%&gt;%</span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span></span>
 <span>  <span class="co"># Compute temporary variables needed for constructing the donut segments</span></span>
-<span>  <span class="fu">mutate</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>    fraction <span class="op">=</span> <span class="va">EMISSIONS</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">EMISSIONS</span><span class="op">)</span>,</span>
 <span>    xmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html" class="external-link">cumsum</a></span><span class="op">(</span><span class="va">fraction</span><span class="op">)</span>,</span>
-<span>    xmin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">xmax</span>, default <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>    xmin <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">xmax</span>, default <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill<span class="op">=</span><span class="va">SECTOR</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span></span>
@@ -808,13 +808,13 @@ palette that can be applied to the <code>color</code> or
 </h4>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get &amp; format example dataset from ON TO 2050 indicators GitHub repository</span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">read_csv</span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/CMAP-REPOS/ONTO2050-indicators/master/household-income-race-ethnicity/household-income-race-ethnicity.csv"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">as_tibble</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">pivot_longer</span><span class="op">(</span>cols <span class="op">=</span> <span class="fu">starts_with</span><span class="op">(</span><span class="st">"MED_HH_INC"</span><span class="op">)</span>,</span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/CMAP-REPOS/ONTO2050-indicators/master/household-income-race-ethnicity/household-income-race-ethnicity.csv"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span>cols <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"MED_HH_INC"</span><span class="op">)</span>,</span>
 <span>               names_to <span class="op">=</span> <span class="st">"RACE_ETH"</span>,</span>
 <span>               names_prefix <span class="op">=</span> <span class="st">"MED_HH_INC_"</span>,</span>
-<span>               values_to <span class="op">=</span> <span class="st">"MED_HH_INC"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu">mutate</span><span class="op">(</span>RACE_ETH <span class="op">=</span> <span class="fu">recode</span><span class="op">(</span><span class="va">RACE_ETH</span>,</span>
+<span>               values_to <span class="op">=</span> <span class="st">"MED_HH_INC"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>RACE_ETH <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/recode.html" class="external-link">recode</a></span><span class="op">(</span><span class="va">RACE_ETH</span>,</span>
 <span>                           <span class="st">"ALL"</span> <span class="op">=</span> <span class="st">"All"</span>,</span>
 <span>                           <span class="st">"ASIAN"</span> <span class="op">=</span> <span class="st">"Asian"</span>,</span>
 <span>                           <span class="st">"BLACK"</span> <span class="op">=</span> <span class="st">"Black"</span>,</span>
@@ -856,11 +856,23 @@ palette that can be applied to the <code>color</code> or
 <span>  caption <span class="op">=</span> <span class="st">"Source: CMAP analysis of American Community Survey data, 1-year</span></span>
 <span><span class="st">    estimates."</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Removed 5 rows containing missing values or values outside the scale range</span></span>
+<span><span class="co">#&gt; Warning: Removed 10 rows containing missing values or values outside the scale range</span></span>
+<span><span class="co">#&gt; (`geom_line()`).</span></span>
+<span><span class="co">#&gt; Warning: Removed 10 rows containing missing values or values outside the scale range</span></span>
+<span><span class="co">#&gt; (`geom_point_last()`).</span></span>
+<span><span class="co">#&gt; Warning: Removed 15 rows containing missing values or values outside the scale range</span></span>
 <span><span class="co">#&gt; (`geom_text_last()`).</span></span>
-<span><span class="co">#&gt; Removed 5 rows containing missing values or values outside the scale range</span></span>
+<span><span class="co">#&gt; Warning: Removed 10 rows containing missing values or values outside the scale range</span></span>
+<span><span class="co">#&gt; (`geom_line()`).</span></span>
+<span><span class="co">#&gt; Warning: Removed 10 rows containing missing values or values outside the scale range</span></span>
+<span><span class="co">#&gt; (`geom_point_last()`).</span></span>
+<span><span class="co">#&gt; Warning: Removed 15 rows containing missing values or values outside the scale range</span></span>
 <span><span class="co">#&gt; (`geom_text_last()`).</span></span>
-<span><span class="co">#&gt; Removed 5 rows containing missing values or values outside the scale range</span></span>
+<span><span class="co">#&gt; Warning: Removed 10 rows containing missing values or values outside the scale range</span></span>
+<span><span class="co">#&gt; (`geom_line()`).</span></span>
+<span><span class="co">#&gt; Warning: Removed 10 rows containing missing values or values outside the scale range</span></span>
+<span><span class="co">#&gt; (`geom_point_last()`).</span></span>
+<span><span class="co">#&gt; Warning: Removed 15 rows containing missing values or values outside the scale range</span></span>
 <span><span class="co">#&gt; (`geom_text_last()`).</span></span></code></pre></div>
 <p><img src="cookbook_files/figure-html/racepalette-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
@@ -888,7 +900,7 @@ palette that can be applied to the <code>color</code> or
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer>

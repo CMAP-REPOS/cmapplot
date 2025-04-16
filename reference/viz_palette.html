@@ -19,7 +19,7 @@ inspect the various palettes before applying them to plots."><meta property="og:
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.2</span>
       </span>
     </div>
 
@@ -150,37 +150,38 @@ divergent palette offers when used on a continuous scale.</p></li>
 <span class="r-in"><span><span class="co"># Print names and types of all available palettes</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="get_cmapplot_globals.html">get_cmapplot_global</a></span><span class="op">(</span><span class="st">"palettes"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 name       type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1         prosperity   discrete</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2          community   discrete</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        environment   discrete</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4         governance   discrete</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5           mobility   discrete</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6        legislation   discrete</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7             friday   discrete</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8               race   discrete</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9               reds sequential</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10           oranges sequential</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11           yellows sequential</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12            greens sequential</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13             teals sequential</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14             blues sequential</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15           purples sequential</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16             grays sequential</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 yellow_orange_red sequential</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18   green_teal_blue sequential</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19        orange_red sequential</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20     yellow_orange sequential</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21      yellow_green sequential</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22        green_teal sequential</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23         teal_blue sequential</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24        red_purple sequential</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25     yellow_purple  divergent</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26       orange_blue  divergent</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27          red_teal  divergent</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28      purple_green  divergent</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29       blue_yellow  divergent</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30       teal_orange  divergent</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31         green_red  divergent</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1               main   discrete</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2         prosperity   discrete</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3          community   discrete</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        environment   discrete</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5         governance   discrete</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6           mobility   discrete</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7        legislation   discrete</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8             friday   discrete</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9               race   discrete</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10              reds sequential</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11           oranges sequential</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12           yellows sequential</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13            greens sequential</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14             teals sequential</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15             blues sequential</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16           purples sequential</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17             grays sequential</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 yellow_orange_red sequential</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19   green_teal_blue sequential</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20        orange_red sequential</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21     yellow_orange sequential</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22      yellow_green sequential</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23        green_teal sequential</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24         teal_blue sequential</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25        red_purple sequential</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26     yellow_purple  divergent</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27       orange_blue  divergent</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28          red_teal  divergent</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29      purple_green  divergent</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30       blue_yellow  divergent</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31       teal_orange  divergent</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32         green_red  divergent</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Identify the first two colors of the Prosperity Palette</span></span></span>
 <span class="r-in"><span><span class="fu">fetch_pal</span><span class="op">(</span><span class="st">"prosperity"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span></span></span>
@@ -204,7 +205,7 @@ divergent palette offers when used on a continuous scale.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer></div>
