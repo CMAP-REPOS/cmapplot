@@ -2,7 +2,7 @@
 % Please edit documentation in R/geom_text_lastonly_repel.R
 \name{geom_text_lastonly_repel}
 \alias{geom_text_lastonly_repel}
-\title{Text (Last Only) New}
+\title{Text (Last Only) Repel}
 \usage{
 geom_text_lastonly_repel(
   mapping = NULL,
