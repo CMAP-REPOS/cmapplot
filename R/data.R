@@ -159,12 +159,12 @@
 
 
 
-#' Transit ridership in the Chicago region, 1980-2019
+#' Transit ridership in the Chicago region, 1980-2024
 #'
 #' A test dataset containing 1980-2019 transit ridership for the three service
 #' boards that provide transit in Northeastern Illinois.
 #'
-#' @format A tibble. 200 rows and 3 variables
+#' @format A tibble. 225 rows and 3 variables
 #' \describe{
 #'    \item{year}{Double. Year of data}
 #'    \item{system}{Char. Name of system (includes CTA bus, CTA rail, Metra, Pace, and Pace ADA)}
