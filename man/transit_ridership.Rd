@@ -3,9 +3,9 @@
 \docType{data}
 \name{transit_ridership}
 \alias{transit_ridership}
-\title{Transit ridership in the Chicago region, 1980-2019}
+\title{Transit ridership in the Chicago region, 1980-2024}
 \format{
-A tibble. 200 rows and 3 variables
+A tibble. 225 rows and 3 variables
 \describe{
    \item{year}{Double. Year of data}
    \item{system}{Char. Name of system (includes CTA bus, CTA rail, Metra, Pace, and Pace ADA)}
