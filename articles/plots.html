@@ -6,27 +6,24 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Creating CMAP-themed plots • cmapplot</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<!-- favicons --><link rel="icon" type="image/png" sizes="48x48" href="../favicon-48x48.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Creating CMAP-themed plots">
-<meta property="og:description" content="cmapplot">
-<meta property="og:image" content="https://cmap-repos.github.io/cmapplot/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -40,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cmapplot</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.3</span>
       </span>
     </div>
 
@@ -52,7 +49,7 @@
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
@@ -81,7 +78,7 @@
 <li>
   <a href="https://github.com/CMAP-REPOS/cmapplot/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul>
@@ -92,7 +89,7 @@
 </div>
 <!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
@@ -100,7 +97,7 @@
       <h1 data-toc-skip>Creating CMAP-themed plots</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/CMAP-REPOS/cmapplot/blob/HEAD/vignettes/plots.Rmd" class="external-link"><code>vignettes/plots.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/CMAP-REPOS/cmapplot/blob/positron-fix/vignettes/plots.Rmd" class="external-link"><code>vignettes/plots.Rmd</code></a></small>
       <div class="hidden name"><code>plots.Rmd</code></div>
 
     </div>
@@ -215,7 +212,7 @@ of your right-most x axis label, you may need to expand this value
 beyond it’s default. These <code>consts</code> can be modified in the
 <code>overrides</code> argument:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1980"</span>, <span class="st">"1990"</span>, <span class="st">"2000"</span>, <span class="st">"2010"</span>, <span class="st">"A very long label"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<code class="sourceCode R"><span><span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1980"</span>, <span class="st">"1990"</span>, <span class="st">"2000"</span>, <span class="st">"2010"</span>, <span class="st">"2020"</span>, <span class="st">"A very long label"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>ylab <span class="op">=</span> <span class="st">"Annual Ridership (Millions)"</span>,</span>
 <span>             hline <span class="op">=</span> <span class="fl">200</span>,</span>
 <span>             overrides <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>margin_panel_r <span class="op">=</span> <span class="fl">50</span>, <span class="co"># the most likely override in theme_cmap()</span></span>
@@ -254,18 +251,16 @@ of rectangles (and text, if desired) representing US economic
 recessions. Similar to the <code>hline</code> example above,
 <code><a href="../reference/geom_recessions.html">geom_recessions()</a></code> should be added before the plot’s primary
 geom (<code><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line()</a></code>) so that lines are drawn on top of
-recession rectangles. A complementary <code><a href="../reference/geom_recessions.html">geom_pandemics()</a></code>
-function allows for similar portrayals of the COVID-19 pandemic and
-other potential future pandemics.</p>
+recession rectangles.</p>
 <p><code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot()</a></code> always draws geoms <em>on top</em> of base plot
 elements like gridlines. The default fill and alpha values for
 <code><a href="../reference/geom_recessions.html">geom_recessions()</a></code> are the most transparent way possible to
 achieve CMAP palette color <code>#002d49</code> when drawn on a white
 background — thus impacting the color of the gridlines as little as
 possible.</p>
-<p>The recession function relies on the National Bureau of Economic
-Research’s definitions of recessions. Details on how to update these
-dates, as well as how to provide your own, can be found in
+<p>This function relies on the National Bureau of Economic Research’s
+definitions of recessions. Details on how to update these dates, as well
+as how to provide your own, can be found in
 <code><a href="../reference/geom_recessions.html">geom_recessions()</a></code> and <code><a href="../reference/update_recessions.html">update_recessions()</a></code>. If
 the most recent recession has not yet been declared over (as is the case
 in June 2021), the function will default to displaying this ongoing
@@ -346,7 +341,7 @@ via <code><a href="../reference/cmap_default_aes.html">apply_cmap_default_aes()<
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cmap_default_aes.html">apply_cmap_default_aes</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Aesthetic defaults overridden in the current session for the following Geoms:</span></span>
-<span><span class="co">#&gt;   Label, Line, Text, TextLast, PointLast, RecessionsText</span></span>
+<span><span class="co">#&gt;   Label, Line, Text, TextLast, TextLastRepel, PointLast, RecessionsText</span></span>
 <span><span class="co">#&gt; To undo this change, run `unapply_cmap_default_aes()`.</span></span>
 <span></span>
 <span><span class="va">q</span></span></code></pre></div>
@@ -378,9 +373,7 @@ modifications that they might want to make via <code>overrides</code> or
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
+      </div>
 
 </div>
 
@@ -388,21 +381,21 @@ modifications that they might want to make via <code>overrides</code> or
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Daniel Comeaux, Sarah Buchhorn, Martin Menninger, Noel Peterson, Greta Ritzenthaler, Matthew Stern, <a href="https://www.cmap.illinois.gov" class="external-link"><img src="https://raw.githubusercontent.com/CMAP-REPOS/cmapplot/c4c111f5dd9c03a005112b552f1c91210752099b/pkgdown/logo/cmap_logo.svg" height="28" alt="Chicago Metropolitan Agency for Planning logo"></a>.</p>
+<p>Developed by Daniel Comeaux, Sarah Buchhorn, Martin Menninger, Noel Peterson, Greta Ritzenthaler, Matthew Stern, Sean Connelly, David Wells, <a href="https://www.cmap.illinois.gov" class="external-link"><img src="https://raw.githubusercontent.com/CMAP-REPOS/cmapplot/c4c111f5dd9c03a005112b552f1c91210752099b/pkgdown/logo/cmap_logo.svg" height="28" alt="Chicago Metropolitan Agency for Planning logo"></a>.</p>
 </div>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
       </footer>
 </div>
 
-  
 
 
-  
+
+
 
   </body>
 </html>
