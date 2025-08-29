@@ -1,6 +1,6 @@
 Package: cmapplot
 Title: CMAP Themes and Color Palettes
-Version: 1.2.2
+Version: 1.2.3
 Authors@R: c(
     person("Daniel", "Comeaux",
            role = c("aut"),
@@ -22,6 +22,9 @@ Authors@R: c(
     person("Sean", "Connelly",
            role = c("aut", "cre"),
            email = "sconnelly@cmap.illinois.gov"),
+    person("David", "Wells",
+           role = "aut",
+           email = "dwells@cmap.illinois.gov"),
     person("Chicago Metropolitan Agency for Planning",
            role = c("cph", "fnd")))
 Description: Provides themes and color scales for 'ggplot2', based on Chicago

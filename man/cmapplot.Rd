@@ -36,6 +36,7 @@ Authors:
   \item Noel Peterson (\href{https://orcid.org/0000-0003-1290-2362}{ORCID})
   \item Greta Ritzenthaler
   \item Matthew Stern (\href{https://orcid.org/0000-0001-9119-2121}{ORCID})
+  \item David Wells \email{dwells@cmap.illinois.gov}
 }
 
 Other contributors:

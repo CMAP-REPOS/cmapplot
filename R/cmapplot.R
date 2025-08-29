@@ -110,7 +110,7 @@
     # ... and check on rstudio graphics
     if (rstudioapi::isAvailable()){
       if(rstudioapi::getVersion() > "1.4"){
-        if(getOption("RStudioGD.backend") != "ragg"){
+        if(getOption("RStudioGD.backend", FALSE) != "ragg"){
           options(RStudioGD.backend = "ragg")
           packageStartupMessage(paste(
             "cmapplot has set RStudio graphics to `ragg` for the current session.",
