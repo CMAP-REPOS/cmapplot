@@ -103,7 +103,6 @@ is less than the maximum.</p>
 <span>  xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,</span>
 <span>  ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,</span>
 <span>  na.rm <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  check_overlap <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  direction <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"y"</span>, <span class="st">"x"</span>, <span class="st">"both"</span><span class="op">)</span>,</span>
 <span>  seed <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -270,6 +269,15 @@ e.g. with <code>scale_x_continuous(expand=expand_scale(mult=0.10))</code> or
 <code>coord_cartesian(xlim = c(min, max))</code>.</p></li>
 </ol><p>Code was mostly copied from the source of <code><a href="https://ggrepel.slowkow.com/reference/geom_text_repel.html" class="external-link">ggrepel::geom_text_repel()</a></code> and
 <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">ggplot2::geom_point()</a></code>.</p>
+    </div>
+    <div id="alignment-with-hjust-or-vjust">
+    <h2>Alignment with <code>hjust</code> or <code>vjust</code></h2>
+
+
+<p>The arguments <code>hjust</code> and <code>vjust</code> are supported, but they only
+control the initial positioning, so repulsive forces may disrupt alignment.
+Alignment with <code>hjust</code> will be preserved if labels only move up and down
+by using <code>direction="y"</code>. For <code>vjust</code>, use <code>direction="x"</code>.</p>
     </div>
 
     <div id="ref-examples">
