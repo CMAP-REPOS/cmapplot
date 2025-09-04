@@ -61,21 +61,23 @@
 #'   geom_text_lastonly(add_points=TRUE, text_aes=list(fontface="bold"), point_aes=list(size=2.5))
 #'
 #' @export
-geom_text_lastonly <- function(mapping = NULL, data = NULL,
-                      stat = "identity", position = NULL,
-                      parse = FALSE,
-                      nudge_x = 0.25,
-                      nudge_y = 0,
-                      check_overlap = FALSE,
-                      na.rm = FALSE,
-                      show.legend = FALSE,
-                      inherit.aes = TRUE,
-                      add_points = FALSE,
-                      text_aes = NULL,
-                      point_aes = NULL,
-                      ...
-                      )
-{
+geom_text_lastonly <- function(
+  mapping = NULL,
+  data = NULL,
+  stat = "identity",
+  position = NULL,
+  parse = FALSE,
+  nudge_x = 0.25,
+  nudge_y = 0,
+  check_overlap = FALSE,
+  na.rm = FALSE,
+  show.legend = FALSE,
+  inherit.aes = TRUE,
+  add_points = FALSE,
+  text_aes = NULL,
+  point_aes = NULL,
+  ...
+) {
   if (is.null(position)) {
     position_lab <- position_nudge(nudge_x, nudge_y)
     position_pt <- position_identity()
@@ -138,22 +140,38 @@ NULL
 #' @usage NULL
 #' @export
 GeomTextLast <- ggproto(
-  "GeomTextLast", Geom,
+  "GeomTextLast",
+  Geom,
   required_aes = c("x", "y"),
 
   default_aes = aes(
-    colour = "black", size = 3.88, angle = 0, hjust = 0, vjust = 0.5,
-    alpha = NA, family = "", fontface = 1, lineheight = 1.2,
+    colour = "black",
+    size = 3.88,
+    angle = 0,
+    hjust = 0,
+    vjust = 0.5,
+    alpha = NA,
+    family = "",
+    fontface = 1,
+    lineheight = 1.2,
     label = NA,
     # Dummy parameters to match named params in GeomPointLast:
-    shape = NA, fill = NA, stroke = NA
+    shape = NA,
+    fill = NA,
+    stroke = NA
   ),
 
-  draw_panel = function(data, panel_params, coord, parse = FALSE,
-                        na.rm = FALSE, check_overlap = FALSE) {
+  draw_panel = function(
+    data,
+    panel_params,
+    coord,
+    parse = FALSE,
+    na.rm = FALSE,
+    check_overlap = FALSE
+  ) {
     # Filter labeled dataset to include maximum x-value only
     x_max <- max(unique(data$x))
-    data <- data[data$x == x_max,]
+    data <- data[data$x == x_max, ]
 
     # Use y-var as label if not otherwise specified
     if (!is.na(data$label[[1]])) {
@@ -175,8 +193,11 @@ GeomTextLast <- ggproto(
 
     textGrob(
       lab,
-      data$x, data$y, default.units = "native",
-      hjust = data$hjust, vjust = data$vjust,
+      data$x,
+      data$y,
+      default.units = "native",
+      hjust = data$hjust,
+      vjust = data$vjust,
       rot = data$angle,
       gp = gpar(
         col = alpha(data$colour, data$alpha),
@@ -199,8 +220,14 @@ compute_just <- function(just, x) {
   outward <- just == "outward"
   just[outward] <- c("right", "middle", "left")[just_dir(x[outward])]
 
-  unname(c(left = 0, center = 0.5, right = 1,
-           bottom = 0, middle = 0.5, top = 1)[just])
+  unname(c(
+    left = 0,
+    center = 0.5,
+    right = 1,
+    bottom = 0,
+    middle = 0.5,
+    top = 1
+  )[just])
 }
 
 just_dir <- function(x, tol = 0.001) {
@@ -216,39 +243,51 @@ just_dir <- function(x, tol = 0.001) {
 #' @usage NULL
 #' @export
 GeomPointLast <- ggproto(
-  "GeomPointLast", Geom,
+  "GeomPointLast",
+  Geom,
   required_aes = c("x", "y"),
   non_missing_aes = c("size", "shape", "colour"),
   default_aes = aes(
-    shape = 19, colour = "black", size = 2.0, fill = NA,
-    alpha = NA, stroke = 0.5,
+    shape = 19,
+    colour = "black",
+    size = 2.0,
+    fill = NA,
+    alpha = NA,
+    stroke = 0.5,
     # Dummy parameters to match named params in GeomTextLast:
-    angle = NA, hjust = NA, vjust = NA, family = NA,
-    fontface = NA, lineheight = NA, label = NA
+    angle = NA,
+    hjust = NA,
+    vjust = NA,
+    family = NA,
+    fontface = NA,
+    lineheight = NA,
+    label = NA
   ),
 
   draw_panel = function(data, panel_params, coord, na.rm = FALSE) {
     # Filter labeled dataset to include maximum x-value only
     x_max <- max(unique(data$x))
-    data <- data[data$x == x_max,]
+    data <- data[data$x == x_max, ]
 
     if (is.character(data$shape)) {
       data$shape <- translate_shape_string(data$shape)
     }
 
     coords <- coord$transform(data, panel_params)
-    ggname("geom_point",
-           pointsGrob(
-             coords$x, coords$y,
-             pch = coords$shape,
-             gp = gpar(
-               col = alpha(coords$colour, coords$alpha),
-               fill = alpha(coords$fill, coords$alpha),
-               # Stroke is added around the outside of the point
-               fontsize = coords$size * .pt + coords$stroke * .stroke / 2,
-               lwd = coords$stroke * .stroke / 2
-             )
-           )
+    ggname(
+      "geom_point",
+      pointsGrob(
+        coords$x,
+        coords$y,
+        pch = coords$shape,
+        gp = gpar(
+          col = alpha(coords$colour, coords$alpha),
+          fill = alpha(coords$fill, coords$alpha),
+          # Stroke is added around the outside of the point
+          fontsize = coords$size * .pt + coords$stroke * .stroke / 2,
+          lwd = coords$stroke * .stroke / 2
+        )
+      )
     )
   },
 
@@ -268,33 +307,33 @@ translate_shape_string <- function(shape_string) {
   }
 
   pch_table <- c(
-    "square open"           = 0,
-    "circle open"           = 1,
-    "triangle open"         = 2,
-    "plus"                  = 3,
-    "cross"                 = 4,
-    "diamond open"          = 5,
-    "triangle down open"    = 6,
-    "square cross"          = 7,
-    "asterisk"              = 8,
-    "diamond plus"          = 9,
-    "circle plus"           = 10,
-    "star"                  = 11,
-    "square plus"           = 12,
-    "circle cross"          = 13,
-    "square triangle"       = 14,
-    "triangle square"       = 14,
-    "square"                = 15,
-    "circle small"          = 16,
-    "triangle"              = 17,
-    "diamond"               = 18,
-    "circle"                = 19,
-    "bullet"                = 20,
-    "circle filled"         = 21,
-    "square filled"         = 22,
-    "diamond filled"        = 23,
-    "triangle filled"       = 24,
-    "triangle down filled"  = 25
+    "square open" = 0,
+    "circle open" = 1,
+    "triangle open" = 2,
+    "plus" = 3,
+    "cross" = 4,
+    "diamond open" = 5,
+    "triangle down open" = 6,
+    "square cross" = 7,
+    "asterisk" = 8,
+    "diamond plus" = 9,
+    "circle plus" = 10,
+    "star" = 11,
+    "square plus" = 12,
+    "circle cross" = 13,
+    "square triangle" = 14,
+    "triangle square" = 14,
+    "square" = 15,
+    "circle small" = 16,
+    "triangle" = 17,
+    "diamond" = 18,
+    "circle" = 19,
+    "bullet" = 20,
+    "circle filled" = 21,
+    "square filled" = 22,
+    "diamond filled" = 23,
+    "triangle filled" = 24,
+    "triangle down filled" = 25
   )
 
   shape_match <- charmatch(shape_string, names(pch_table))
@@ -309,12 +348,20 @@ translate_shape_string <- function(shape_string) {
     collapsed_names <- sprintf("\n* '%s'", bad_string[1:min(5, n_bad)])
 
     more_problems <- if (n_bad > 5) {
-      sprintf("\n* ... and %d more problem%s", n_bad - 5, ifelse(n_bad > 6, "s", ""))
+      sprintf(
+        "\n* ... and %d more problem%s",
+        n_bad - 5,
+        ifelse(n_bad > 6, "s", "")
+      )
     } else {
       ""
     }
 
-    rlang::abort(glue::glue("Can't find shape name:", collapsed_names, more_problems))
+    rlang::abort(glue::glue(
+      "Can't find shape name:",
+      collapsed_names,
+      more_problems
+    ))
   }
 
   if (any(nonunique_strings)) {
@@ -323,22 +370,33 @@ translate_shape_string <- function(shape_string) {
 
     n_matches <- vapply(
       bad_string[1:min(5, n_bad)],
-      function(shape_string) sum(grepl(paste0("^", shape_string), names(pch_table))),
+      function(shape_string) {
+        sum(grepl(paste0("^", shape_string), names(pch_table)))
+      },
       integer(1)
     )
 
     collapsed_names <- sprintf(
       "\n* '%s' partially matches %d shape names",
-      bad_string[1:min(5, n_bad)], n_matches
+      bad_string[1:min(5, n_bad)],
+      n_matches
     )
 
     more_problems <- if (n_bad > 5) {
-      sprintf("\n* ... and %d more problem%s", n_bad - 5, ifelse(n_bad > 6, "s", ""))
+      sprintf(
+        "\n* ... and %d more problem%s",
+        n_bad - 5,
+        ifelse(n_bad > 6, "s", "")
+      )
     } else {
       ""
     }
 
-    rlang::abort(glue::glue("Shape names must be unambiguous:", collapsed_names, more_problems))
+    rlang::abort(glue::glue(
+      "Shape names must be unambiguous:",
+      collapsed_names,
+      more_problems
+    ))
   }
 
   unname(pch_table[shape_match])

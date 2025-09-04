@@ -49,7 +49,6 @@ Imports:
     gridtext,
     ggrepel,
     lubridate,
-    magrittr,
     purrr,
     ragg,
     Rcpp,
@@ -58,7 +57,8 @@ Imports:
     scales,
     stringr,
     systemfonts,
-    tibble
+    tibble,
+    withr
 Suggests:
     knitr,
     rmarkdown,

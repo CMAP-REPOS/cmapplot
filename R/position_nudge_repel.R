@@ -1,3 +1,5 @@
+#' Position Nudge Repel
+#'
 #' Nudge labels a fixed distance from points
 #'
 #' \code{position_nudge_repel} is useful for adjusting the starting
@@ -6,12 +8,6 @@
 #' @family position adjustments
 #' @param x,y Amount of horizontal and vertical distance to move. Same units
 #'   as the data on the x and y axes.
-#'
-#' @keywords internal
-#'
-#' @noRd
-#'
-#' @export
 #'
 #' @examples
 #'
@@ -66,19 +62,17 @@
 #'     nudge_y = c(0.1, 0.2, -0.1, -0.2)
 #'   )
 #'
-position_nudge_repel <- function(x = 0, y = 0) {
-  ggproto(NULL, PositionNudgeRepel,
-    x = x,
-    y = y
-  )
-}
-
-#' @rdname ggrepel
 #' @format NULL
 #' @usage NULL
 #' @keywords internal
 #' @export
-PositionNudgeRepel <- ggproto("PositionNudgeRepel", Position,
+position_nudge_repel <- function(x = 0, y = 0) {
+  ggproto(NULL, PositionNudgeRepel, x = x, y = y)
+}
+
+PositionNudgeRepel <- ggproto(
+  "PositionNudgeRepel",
+  Position,
   x = 0,
   y = 0,
 
@@ -92,7 +86,9 @@ PositionNudgeRepel <- ggproto("PositionNudgeRepel", Position,
     # transform only the dimensions for which non-zero nudging is requested
     if (any(params$x != 0)) {
       if (any(params$y != 0)) {
-        data <- transform_position(data, function(x) x + params$x, function(y) y + params$y)
+        data <- transform_position(data, function(x) x + params$x, function(y) {
+          y + params$y
+        })
       } else {
         data <- transform_position(data, function(x) x + params$x, NULL)
       }

@@ -24,7 +24,6 @@ geom_text_lastonly_repel(
   xlim = c(NA, NA),
   ylim = c(NA, NA),
   na.rm = FALSE,
-  check_overlap = FALSE,
   direction = c("y", "x", "both"),
   seed = NA,
   verbose = FALSE,
@@ -144,6 +143,14 @@ e.g. with \code{scale_x_continuous(expand=expand_scale(mult=0.10))} or
 Code was mostly copied from the source of \code{ggrepel::geom_text_repel()} and
 \code{ggplot2::geom_point()}.
 }
+\section{Alignment with \code{hjust} or \code{vjust}}{
+
+The arguments \code{hjust} and \code{vjust} are supported, but they only
+control the initial positioning, so repulsive forces may disrupt alignment.
+Alignment with \code{hjust} will be preserved if labels only move up and down
+by using \code{direction="y"}. For \code{vjust}, use \code{direction="x"}.
+}
+
 \examples{
 
 library(tidyverse)
