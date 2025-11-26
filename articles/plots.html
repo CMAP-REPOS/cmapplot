@@ -139,7 +139,7 @@ ggplot2’s default theme (<code><a href="https://ggplot2.tidyverse.org/referenc
 <span>                     limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">575</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plots_files/figure-html/initial-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="plots_files/figure-html/initial-1.png" class="r-plt" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="the-cmap-theme">The CMAP theme<a class="anchor" aria-label="anchor" href="#the-cmap-theme"></a>
@@ -150,8 +150,22 @@ ggplot2’s default theme (<code><a href="https://ggplot2.tidyverse.org/referenc
 <p>To add basic CMAP design elements to the plot, add
 <code><a href="../reference/theme_cmap.html">theme_cmap()</a></code> like you would any other ggplot2 theme.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plots_files/figure-html/basic-1.png" width="672" style="display: block; margin: auto;"></p>
+<code class="sourceCode R"><span><span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: The `size` argument of `element_line()` is deprecated as of ggplot2 3.4.0.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Please use the `linewidth` argument instead.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">cmapplot</span> package.</span></span>
+<span><span class="co">#&gt;   Please report the issue at <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/CMAP-REPOS/cmapplot/issues&gt;</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span>
+<span><span class="co">#&gt; Warning: The `size` argument of `element_rect()` is deprecated as of ggplot2 3.4.0.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Please use the `linewidth` argument instead.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">cmapplot</span> package.</span></span>
+<span><span class="co">#&gt;   Please report the issue at <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/CMAP-REPOS/cmapplot/issues&gt;</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span></code></pre></div>
+<p><img src="plots_files/figure-html/basic-1.png" class="r-plt" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="built-in-modifiers">Built-in modifiers<a class="anchor" aria-label="anchor" href="#built-in-modifiers"></a>
@@ -178,8 +192,15 @@ order they are added to the plot. This ordering allows the
 <code class="sourceCode R"><span><span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>ylab <span class="op">=</span> <span class="st">"Annual Ridership (Millions)"</span>,</span>
 <span>               hline <span class="op">=</span> <span class="fl">200</span>, <span class="co"># may not be immediately visible</span></span>
 <span>               legend.max.columns <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plots_files/figure-html/mods1-1.png" width="672" style="display: block; margin: auto;"></p>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Please use `linewidth` instead.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">cmapplot</span> package.</span></span>
+<span><span class="co">#&gt;   Please report the issue at <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/CMAP-REPOS/cmapplot/issues&gt;</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span></code></pre></div>
+<p><img src="plots_files/figure-html/mods1-1.png" class="r-plt" width="672" style="display: block; margin: auto;"></p>
 <p><code><a href="../reference/theme_cmap.html">theme_cmap()</a></code> also allows users to easily add tick marks
 on the x- and/or the y-axes, using the argument <code>axisticks</code>.
 Note that here, some additional manipulation of the y-axis scale is
@@ -194,7 +215,7 @@ reasons).</p>
 <span>                     expand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>ylab <span class="op">=</span> <span class="st">"Annual Ridership (Millions)"</span>,</span>
 <span>             axisticks <span class="op">=</span> <span class="st">"x"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plots_files/figure-html/mods2-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="plots_files/figure-html/mods2-1.png" class="r-plt" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="overriding-plotting-defaults">Overriding plotting defaults<a class="anchor" aria-label="anchor" href="#overriding-plotting-defaults"></a>
@@ -218,7 +239,7 @@ beyond it’s default. These <code>consts</code> can be modified in the
 <span>             overrides <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>margin_panel_r <span class="op">=</span> <span class="fl">50</span>, <span class="co"># the most likely override in theme_cmap()</span></span>
 <span>                              lwd_strongline <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plots_files/figure-html/overrides-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="plots_files/figure-html/overrides-1.png" class="r-plt" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="further-theme-modifications">Further theme modifications<a class="anchor" aria-label="anchor" href="#further-theme-modifications"></a>
@@ -234,7 +255,7 @@ black to light gray.</p>
 <code class="sourceCode R"><span><span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>ylab <span class="op">=</span> <span class="st">"Annual Ridership (Millions)"</span>,</span>
 <span>               panel.grid.major.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_line</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"light gray"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plots_files/figure-html/mods3-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="plots_files/figure-html/mods3-1.png" class="r-plt" width="672" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div class="section level2">
@@ -276,7 +297,7 @@ by setting <code>show_ongoing = FALSE</code>.</p>
 <span>  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>ylab <span class="op">=</span> <span class="st">"Annual Ridership (Millions)"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">q</span></span></code></pre></div>
-<p><img src="plots_files/figure-html/recessions-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="plots_files/figure-html/recessions-1.png" class="r-plt" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="label-and-highlight-final-data-point">Label and highlight final data point<a class="anchor" aria-label="anchor" href="#label-and-highlight-final-data-point"></a>
@@ -300,7 +321,7 @@ describes a number of methods to account for this.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html" class="external-link">coord_cartesian</a></span><span class="op">(</span>clip <span class="op">=</span> <span class="st">"off"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">q</span></span></code></pre></div>
-<p><img src="plots_files/figure-html/textlast-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="plots_files/figure-html/textlast-1.png" class="r-plt" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="abbreviating-years-in-date-axes">Abbreviating years in date axes<a class="anchor" aria-label="anchor" href="#abbreviating-years-in-date-axes"></a>
@@ -323,7 +344,7 @@ in <code><a href="../reference/abbr_years.html">?abbr_years</a></code>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu"><a href="../reference/abbr_years.html">abbr_years</a></span><span class="op">(</span>full_by_year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2000</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plots_files/figure-html/abbr_years-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="plots_files/figure-html/abbr_years-1.png" class="r-plt" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="applying-cmap-default-aesthetics">Applying CMAP default aesthetics<a class="anchor" aria-label="anchor" href="#applying-cmap-default-aesthetics"></a>
@@ -341,11 +362,11 @@ via <code><a href="../reference/cmap_default_aes.html">apply_cmap_default_aes()<
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cmap_default_aes.html">apply_cmap_default_aes</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Aesthetic defaults overridden in the current session for the following Geoms:</span></span>
-<span><span class="co">#&gt;   Label, Line, Text, TextLast, TextLastRepel, PointLast, RecessionsText</span></span>
+<span><span class="co">#&gt;   Label, Line, Text, TextLast, TextLastRepel, PointLast, RecessionsText, PandemicsText</span></span>
 <span><span class="co">#&gt; To undo this change, run `unapply_cmap_default_aes()`.</span></span>
 <span></span>
 <span><span class="va">q</span></span></code></pre></div>
-<p><img src="plots_files/figure-html/aes-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="plots_files/figure-html/aes-1.png" class="r-plt" width="672" style="display: block; margin: auto;"></p>
 <p>It is important to note that this change is “sticky” for the duration
 of the session, but you can reverse the change with
 <code><a href="../reference/cmap_default_aes.html">unapply_cmap_default_aes()</a></code>. This function will revert to
@@ -367,7 +388,7 @@ modifications that they might want to make via <code>overrides</code> or
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>ylab <span class="op">=</span> <span class="st">"Annual Ridership (Millions)"</span>,</span>
 <span>             debug <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="plots_files/figure-html/debug-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="plots_files/figure-html/debug-1.png" class="r-plt" width="672" style="display: block; margin: auto;"></p>
 </div>
   </div>
 
@@ -386,7 +407,7 @@ modifications that they might want to make via <code>overrides</code> or
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer>

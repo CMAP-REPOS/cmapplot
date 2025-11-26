@@ -205,11 +205,25 @@ can be helpful but is not ideal for finished graphics.</p>
 <span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span></span>
 <span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
 <span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span>
+<span><span class="co">#&gt; Warning: The `size` argument of `element_line()` is deprecated as of ggplot2 3.4.0.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Please use the `linewidth` argument instead.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">cmapplot</span> package.</span></span>
+<span><span class="co">#&gt;   Please report the issue at <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/CMAP-REPOS/cmapplot/issues&gt;</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span>
+<span><span class="co">#&gt; Warning: The `size` argument of `element_rect()` is deprecated as of ggplot2 3.4.0.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Please use the `linewidth` argument instead.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">cmapplot</span> package.</span></span>
+<span><span class="co">#&gt;   Please report the issue at <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/CMAP-REPOS/cmapplot/issues&gt;</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span>
 <span><span class="co">#&gt; Warning: This manual palette can handle a maximum of 5 values. You have</span></span>
 <span><span class="co">#&gt; supplied 6</span></span>
 <span><span class="co">#&gt; Warning: Removed 11 rows containing missing values or values outside the scale range</span></span>
 <span><span class="co">#&gt; (`geom_line()`).</span></span></code></pre></div>
-<p><img src="colors_files/figure-html/color_discrete-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="colors_files/figure-html/color_discrete-1.png" class="r-plt" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="raceethnicity-scale">Race/ethnicity scale<a class="anchor" aria-label="anchor" href="#raceethnicity-scale"></a>
@@ -240,7 +254,7 @@ specified in the race palette, no arguments have to be provided.</p>
 <span>                 other <span class="op">=</span> <span class="st">"Other"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>show.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># Legend is redundant in this example</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Percent employed in specialized traded clusters, by race"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="colors_files/figure-html/color_race-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="colors_files/figure-html/color_race-1.png" class="r-plt" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="continuous-scales">Continuous scales<a class="anchor" aria-label="anchor" href="#continuous-scales"></a>
@@ -266,7 +280,7 @@ the divergence begins (default is zero).</p>
 <span>  <span class="fu"><a href="../reference/cmap_fill_continuous.html">cmap_color_continuous</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"red_teal"</span>, middle <span class="op">=</span> <span class="fl">50</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Wage percentiles for key clusters"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="colors_files/figure-html/color_continuous-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="colors_files/figure-html/color_continuous-1.png" class="r-plt" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="highlighting-categories">Highlighting categories<a class="anchor" aria-label="anchor" href="#highlighting-categories"></a>
@@ -293,7 +307,7 @@ vector of values into the the <code>value</code> argument. See
 <span>                      value <span class="op">=</span> <span class="st">"metra"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/theme_cmap.html">theme_cmap</a></span><span class="op">(</span>show.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># Legend is redundant in this example</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="st">"Annual passenger trips by service, in millions"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="colors_files/figure-html/color_highlight-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="colors_files/figure-html/color_highlight-1.png" class="r-plt" width="672" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div class="section level2">
@@ -310,11 +324,11 @@ with <code><a href="../reference/viz_palette.html">viz_palette()</a></code> and 
 </h3>
 <p>Use these palettes with <code><a href="../reference/cmap_fill_discrete.html">cmap_fill_discrete()</a></code> or
 <code><a href="../reference/cmap_fill_discrete.html">cmap_color_discrete()</a></code>:
-<img src="colors_files/figure-html/show_discrete-1.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_discrete-2.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_discrete-3.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_discrete-4.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_discrete-5.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_discrete-6.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_discrete-7.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_discrete-8.png" width="672" style="display: block; margin: auto;"></p>
+<img src="colors_files/figure-html/show_discrete-1.png" class="r-plt" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_discrete-2.png" class="r-plt" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_discrete-3.png" class="r-plt" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_discrete-4.png" class="r-plt" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_discrete-5.png" class="r-plt" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_discrete-6.png" class="r-plt" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_discrete-7.png" class="r-plt" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_discrete-8.png" class="r-plt" width="672" style="display: block; margin: auto;"></p>
 <p>The race palette is a special discrete palette, which should be used
 with the specific functions <code><a href="../reference/cmap_fill_race.html">cmap_fill_race()</a></code> or
 <code><a href="../reference/cmap_fill_race.html">cmap_color_race()</a></code>:
-<img src="colors_files/figure-html/show_discrete_palettes-1.png" width="672" style="display: block; margin: auto;"></p>
+<img src="colors_files/figure-html/show_discrete_palettes-1.png" class="r-plt" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="sequential-palettes">Sequential palettes<a class="anchor" aria-label="anchor" href="#sequential-palettes"></a>
@@ -322,13 +336,13 @@ with the specific functions <code><a href="../reference/cmap_fill_race.html">cma
 <p>Use these palettes with
 <code><a href="../reference/cmap_fill_continuous.html">cmap_fill_continuous()</a></code>/<code><a href="../reference/cmap_fill_continuous.html">cmap_color_continuous()</a></code>
 or <code><a href="../reference/cmap_fill_discrete.html">cmap_fill_discrete()</a></code>/<code><a href="../reference/cmap_fill_discrete.html">cmap_color_discrete()</a></code>.
-<img src="colors_files/figure-html/show_sequential-1.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-2.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-3.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-4.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-5.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-6.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-7.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-8.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-9.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-10.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-11.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-12.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-13.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-14.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-15.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-16.png" width="672" style="display: block; margin: auto;"></p>
+<img src="colors_files/figure-html/show_sequential-1.png" class="r-plt" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-2.png" class="r-plt" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-3.png" class="r-plt" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-4.png" class="r-plt" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-5.png" class="r-plt" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-6.png" class="r-plt" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-7.png" class="r-plt" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-8.png" class="r-plt" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-9.png" class="r-plt" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-10.png" class="r-plt" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-11.png" class="r-plt" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-12.png" class="r-plt" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-13.png" class="r-plt" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-14.png" class="r-plt" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-15.png" class="r-plt" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_sequential-16.png" class="r-plt" width="672" style="display: block; margin: auto;"></p>
 <p>If you use a sequential palette for a discrete scale, the package
 will automatically choose colors from across the selected gradient and
 interpolate additional ones if needed. For example, the
 <code>blues</code> palette is shown below, interpolating nine colors
 from the initial palette list of seven.</p>
-<p><img src="colors_files/figure-html/show_sequential_discrete-1.png" width="672" style="display: block; margin: auto;"></p>
+<p><img src="colors_files/figure-html/show_sequential_discrete-1.png" class="r-plt" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="divergent-palettes">Divergent palettes<a class="anchor" aria-label="anchor" href="#divergent-palettes"></a>
@@ -338,7 +352,7 @@ from the initial palette list of seven.</p>
 or <code><a href="../reference/cmap_fill_discrete.html">cmap_fill_discrete()</a></code>/<code><a href="../reference/cmap_fill_discrete.html">cmap_color_discrete()</a></code>.
 Using these palettes for a discrete scale will behave similarly to the
 discrete use of <code>blues</code> shown above.
-<img src="colors_files/figure-html/show_diverent-1.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_diverent-2.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_diverent-3.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_diverent-4.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_diverent-5.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_diverent-6.png" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_diverent-7.png" width="672" style="display: block; margin: auto;"></p>
+<img src="colors_files/figure-html/show_diverent-1.png" class="r-plt" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_diverent-2.png" class="r-plt" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_diverent-3.png" class="r-plt" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_diverent-4.png" class="r-plt" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_diverent-5.png" class="r-plt" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_diverent-6.png" class="r-plt" width="672" style="display: block; margin: auto;"><img src="colors_files/figure-html/show_diverent-7.png" class="r-plt" width="672" style="display: block; margin: auto;"></p>
 </div>
 </div>
   </div>
@@ -358,7 +372,7 @@ discrete use of <code>blues</code> shown above.
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer>
