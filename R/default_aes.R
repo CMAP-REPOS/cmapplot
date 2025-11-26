@@ -6,12 +6,12 @@
 #' This list's names MUST equal `cmapplot_globals$geoms_that_change`
 #'
 #' @noRd
-init_cmap_default_aes <- function () {
+init_cmap_default_aes <- function() {
   defaults <- list(
     Label = list(
       family = cmapplot_globals$font$strong$family,
       fontface = ifelse(cmapplot_globals$font$strong$face == "bold", 2, 1),
-      size = cmapplot_globals$fsize$M/ggplot2::.pt, # pt-to-mm conversion
+      size = cmapplot_globals$fsize$M / ggplot2::.pt, # pt-to-mm conversion
       colour = cmapplot_globals$colors$blackish
     ),
     Line = list(
@@ -20,19 +20,19 @@ init_cmap_default_aes <- function () {
     Text = list(
       family = cmapplot_globals$font$strong$family,
       fontface = ifelse(cmapplot_globals$font$strong$face == "bold", 2, 1),
-      size = cmapplot_globals$fsize$M/ggplot2::.pt, # pt-to-mm conversion
+      size = cmapplot_globals$fsize$M / ggplot2::.pt, # pt-to-mm conversion
       colour = cmapplot_globals$colors$blackish
     ),
     TextLast = list(
       family = cmapplot_globals$font$strong$family,
       fontface = ifelse(cmapplot_globals$font$strong$face == "bold", 2, 1),
-      size = cmapplot_globals$fsize$M/ggplot2::.pt, # pt-to-mm conversion
+      size = cmapplot_globals$fsize$M / ggplot2::.pt, # pt-to-mm conversion
       colour = cmapplot_globals$colors$blackish
     ),
     TextLastRepel = list(
       family = cmapplot_globals$font$strong$family,
       fontface = ifelse(cmapplot_globals$font$strong$face == "bold", 2, 1),
-      size = cmapplot_globals$fsize$M/ggplot2::.pt, # pt-to-mm conversion
+      size = cmapplot_globals$fsize$M / ggplot2::.pt, # pt-to-mm conversion
       colour = cmapplot_globals$colors$blackish
     ),
     PointLast = list(
@@ -41,20 +41,28 @@ init_cmap_default_aes <- function () {
     RecessionsText = list(
       family = cmapplot_globals$font$regular$family,
       fontface = ifelse(cmapplot_globals$font$regular$face == "bold", 2, 1),
-      size = cmapplot_globals$fsize$S/ggplot2::.pt, # pt-to-mm conversion
+      size = cmapplot_globals$fsize$S / ggplot2::.pt, # pt-to-mm conversion
+      colour = cmapplot_globals$colors$blackish
+    ),
+    PandemicsText = list(
+      family = cmapplot_globals$font$regular$family,
+      fontface = ifelse(cmapplot_globals$font$regular$face == "bold", 2, 1),
+      size = cmapplot_globals$fsize$S / ggplot2::.pt, # pt-to-mm conversion
       colour = cmapplot_globals$colors$blackish
     )
   )
 
   # Return this list only if it lines up with `geoms_that_change`.
   # Otherwise, throw an error.
-  if( setequal(names(defaults), cmapplot_globals$geoms_that_change) ){
+  if (setequal(names(defaults), cmapplot_globals$geoms_that_change)) {
     return(defaults)
   } else {
-    stop("DEV ISSUE: programmed list of `default_aes` does not line up with
-         `cmapplot_globals$geoms_that_change`.", call. = FALSE)
+    stop(
+      "DEV ISSUE: programmed list of `default_aes` does not line up with
+         `cmapplot_globals$geoms_that_change`.",
+      call. = FALSE
+    )
   }
-
 }
 
 #' Fetch and set aesthetic defaults
@@ -121,15 +129,16 @@ NULL
 #'   the current session
 #'
 #' @export
-apply_cmap_default_aes <- function (quietly = FALSE) {
-
+apply_cmap_default_aes <- function(quietly = FALSE) {
   set_default_aes(cmapplot_globals$default_aes_cmap)
 
   if (!quietly) {
     message(
-      paste0("Aesthetic defaults overridden in the current session for the following Geoms:",
-            "\n  ", paste(cmapplot_globals$geoms_that_change, collapse = ", "),
-            "\nTo undo this change, run `unapply_cmap_default_aes()`."
+      paste0(
+        "Aesthetic defaults overridden in the current session for the following Geoms:",
+        "\n  ",
+        paste(cmapplot_globals$geoms_that_change, collapse = ", "),
+        "\nTo undo this change, run `unapply_cmap_default_aes()`."
       )
     )
   }
@@ -140,20 +149,19 @@ apply_cmap_default_aes <- function (quietly = FALSE) {
 #'   when \code{cmapplot} was first loaded
 #'
 #' @export
-unapply_cmap_default_aes <- function (quietly = FALSE) {
-
+unapply_cmap_default_aes <- function(quietly = FALSE) {
   set_default_aes(cmapplot_globals$default_aes_cached)
 
   if (!quietly) {
     message(
-      paste0("Aesthetic defaults reset to values cached when pkg `cmapplot` was first loaded for Geoms:",
-            "\n  ", paste(cmapplot_globals$geoms_that_change, collapse = ", ")
+      paste0(
+        "Aesthetic defaults reset to values cached when pkg `cmapplot` was first loaded for Geoms:",
+        "\n  ",
+        paste(cmapplot_globals$geoms_that_change, collapse = ", ")
       )
     )
   }
 }
-
-
 
 
 #' Fetch `default_aes` from select geoms
@@ -163,17 +171,15 @@ unapply_cmap_default_aes <- function (quietly = FALSE) {
 #'
 #' @importFrom purrr map
 #' @noRd
-fetch_current_default_aes <- function () {
-
+fetch_current_default_aes <- function() {
   purrr::map(
     cmapplot_globals$geoms_that_change,
-    function (geom) {
+    function(geom) {
       get(paste0("Geom", geom))$default_aes
     }
   ) %>%
     rlang::set_names(cmapplot_globals$geoms_that_change)
 }
-
 
 
 #' Set `default_aes` for select geoms
@@ -186,14 +192,10 @@ fetch_current_default_aes <- function () {
 #'
 #' @importFrom purrr walk2
 #' @noRd
-set_default_aes <- function (values) {
-
+set_default_aes <- function(values) {
   purrr::walk2(
     cmapplot_globals$geoms_that_change,
     values,
     ggplot2::update_geom_defaults
   )
 }
-
-
-
