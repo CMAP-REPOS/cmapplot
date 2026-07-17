@@ -156,7 +156,7 @@ theme_cmap <- function(
   if(!is.null(hline)){
     add_to_obj(ggplot2::geom_hline(
       yintercept = hline,
-      size = gg_lwd_convert(consts$lwd_strongline),
+      linewidth = gg_lwd_convert(consts$lwd_strongline),
       color = cmapplot_globals$colors$blackish))
   }
 
@@ -164,7 +164,7 @@ theme_cmap <- function(
   if(!is.null(vline)){
     add_to_obj(ggplot2::geom_vline(
       xintercept = vline,
-      size = gg_lwd_convert(consts$lwd_strongline),
+      linewidth = gg_lwd_convert(consts$lwd_strongline),
       color = cmapplot_globals$colors$blackish))
   }
 
@@ -184,35 +184,35 @@ theme_cmap <- function(
   # horizontal gridlines, if specified
   if (grepl("h", gridlines)) {
     attr[["panel.grid.major.y"]] <- ggplot2::element_line(
-      size = gg_lwd_convert(consts$lwd_gridline),
+      linewidth = gg_lwd_convert(consts$lwd_gridline),
       color = cmapplot_globals$colors$blackish)
   }
 
   # vertical gridlines, if specified
   if (grepl("v", gridlines)) {
     attr[["panel.grid.major.x"]] <- ggplot2::element_line(
-      size = gg_lwd_convert(consts$lwd_gridline),
+      linewidth = gg_lwd_convert(consts$lwd_gridline),
       color = cmapplot_globals$colors$blackish)
   }
 
   # x axis line, if specified
   if (grepl("x", axislines)) {
     attr[["axis.line.x"]] <- ggplot2::element_line(
-      size = gg_lwd_convert(consts$lwd_gridline),
+      linewidth = gg_lwd_convert(consts$lwd_gridline),
       color = cmapplot_globals$colors$blackish)
   }
 
   # y axis line, if specified
   if (grepl("y", axislines)) {
     attr[["axis.line.y"]] <- ggplot2::element_line(
-      size = gg_lwd_convert(consts$lwd_gridline),
+      linewidth = gg_lwd_convert(consts$lwd_gridline),
       color = cmapplot_globals$colors$blackish)
   }
 
   # x axis ticks, if specified
   if (grepl("x", axisticks)) {
     attr[["axis.ticks.x"]] <- ggplot2::element_line(
-      size = gg_lwd_convert(consts$lwd_gridline),
+      linewidth = gg_lwd_convert(consts$lwd_gridline),
       color = cmapplot_globals$colors$blackish)
 
     attr[["axis.ticks.length.x"]] <- unit(consts$length_ticks,"bigpts")
@@ -221,7 +221,7 @@ theme_cmap <- function(
   # y axis ticks, if specified
   if (grepl("y", axisticks)) {
     attr[["axis.ticks.y"]] <- ggplot2::element_line(
-      size = gg_lwd_convert(consts$lwd_gridline),
+      linewidth = gg_lwd_convert(consts$lwd_gridline),
       color = cmapplot_globals$colors$blackish)
 
     attr[["axis.ticks.length.y"]] <- unit(consts$length_ticks,"bigpts")
@@ -262,18 +262,18 @@ theme_cmap_base <- function(consts = cmapplot_globals$consts,
     # building blocks
     line = element_line(
       colour = cmapplot_globals$colors$blackish,
-      size = gg_lwd_convert(consts$lwd_gridline),
+      linewidth = gg_lwd_convert(consts$lwd_gridline),
       linetype = 1, lineend = "butt",
       inherit.blank = TRUE),
 
     rect = element_rect(
       fill = NA, colour = ifelse(debug, "blue", NA),
-      size = 0.5, linetype = 1,
+      linewidth = 0.5, linetype = 1,
       inherit.blank = TRUE),
 
     text = element_text(
       family = cmapplot_globals$font$regular$family,
-      face = cmapplot_globals$fgiont$regular$face,
+      face = cmapplot_globals$font$regular$face,
       size = cmapplot_globals$fsize$M,
       color = cmapplot_globals$colors$blackish,
       lineheight = 0.9, hjust = 0.5, vjust = 0.5, angle = 0,

@@ -289,7 +289,7 @@ NULL
 #' @export
 GeomRecessions <- ggproto(
   "GeomRecessions", Geom,
-  default_aes = aes(colour = NA, alpha = 0.11, size = 0.5, linetype = 1, na.rm = TRUE),
+  default_aes = aes(colour = NA, alpha = 0.11, linewidth = 0.5, linetype = 1, na.rm = TRUE),
 
   required_aes = c("xformat", "ymin", "ymax", "show_ongoing", "recess_table" ,"fill"),
 
@@ -344,7 +344,7 @@ GeomRecessions <- ggproto(
         gp = gpar(
           col = coords$colour,
           fill = alpha(coords$fill, coords$alpha),
-          lwd = coords$size * .pt,
+          lwd = coords$linewidth * .pt,
           lty = coords$linetype,
           linejoin = linejoin,
           # `lineend` is a workaround for Windows and intentionally kept unexposed
