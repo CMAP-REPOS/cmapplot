@@ -107,10 +107,18 @@
                 light = list(family = cmapplot_globals$preferred_font$light, face = "plain")),
            envir = cmapplot_globals)
 
-    # ... and check on rstudio graphics
-    if (rstudioapi::isAvailable()){
-      if(rstudioapi::getVersion() > "1.4"){
-        if(getOption("RStudioGD.backend", FALSE) != "ragg"){
+    # ... and set up the graphics backend so Whitney renders in the plot window.
+    # Detect the IDE via environment variables rather than rstudioapi: Positron
+    # ships a partial rstudioapi shim, so isAvailable() returns TRUE there and
+    # getVersion() can error outside RStudio. RStudio sets RSTUDIO=1; Positron
+    # sets POSITRON_VERSION.
+    in_rstudio <- Sys.getenv("RSTUDIO") == "1"
+    in_positron <- Sys.getenv("POSITRON_VERSION") != ""
+
+    if (in_rstudio) {
+      # RStudio >= 1.4 can render registered fonts via the ragg backend.
+      if (rstudioapi::isAvailable() && rstudioapi::getVersion() > "1.4") {
+        if (!identical(getOption("RStudioGD.backend"), "ragg")) {
           options(RStudioGD.backend = "ragg")
           packageStartupMessage(paste(
             "cmapplot has set RStudio graphics to `ragg` for the current session.",
@@ -123,12 +131,19 @@
           "cmapplot requires RStudio v1.4 or greater to use Whitney fonts",
           "in the R plots window.\nPlease update RStudio."))
       }
-    # If using vanilla R, encourage RStudio installation
+    } else if (in_positron) {
+      # Positron's graphics device automatically uses ragg when it is installed.
+      # ragg is a hard dependency of cmapplot, so no backend option is needed.
+      packageStartupMessage(
+        "cmapplot will use Positron's graphics device to render Whitney fonts."
+      )
+    # If using vanilla R (no supported IDE), note the limitation.
     } else {
       packageStartupMessage(paste(
-        "cmapplot requires RStudio to use Whitney fonts in the R plots window.\n   ",
-        "Please install RStudio. <https://www.rstudio.com>"))
+        "cmapplot renders Whitney fonts in the plot window when run in RStudio or Positron.\n   ",
+        "In plain R, use finalize_plot()'s export modes to produce graphics with Whitney fonts."))
     }
+
   # Otherwise, notify user
   } else {
     packageStartupMessage(
