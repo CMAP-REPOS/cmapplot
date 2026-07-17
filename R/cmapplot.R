@@ -42,13 +42,25 @@
     whitney_paths <- dplyr::filter(systemfonts::system_fonts(), family == "Whitney")
     whitney_paths <- whitney_paths[["path"]]
 
-    # On some OSX systems (e.g. pkgdown GHA VM) system_fonts() cannot find fonts
-    # installed in the user fonts directory. In any case where system_fonts()
-    # sees no Whitney fonts, if `user_dir` exists, it too is checked for fonts.
-    user_dir <- paste0(Sys.getenv("HOME"), "/Library/Fonts")
-    if(length(whitney_paths) == 0 & dir.exists(user_dir)){
-      whitney_paths <- list.files(user_dir, full.names = TRUE)
-      whitney_paths <- grep("Whitney-", whitney_paths, value = TRUE)
+    # On some systems (e.g. the pkgdown GHA VM) system_fonts() cannot find fonts
+    # installed in a user fonts directory. Where system_fonts() finds no Whitney
+    # fonts, also search the platform's user font directories directly:
+    #   macOS:   ~/Library/Fonts
+    #   Windows: %LOCALAPPDATA%/Microsoft/Windows/Fonts
+    #   Linux:   ~/.local/share/fonts and ~/.fonts
+    if(length(whitney_paths) == 0){
+      user_font_dirs <- c(
+        file.path(Sys.getenv("HOME"), "Library", "Fonts"),
+        file.path(Sys.getenv("LOCALAPPDATA"), "Microsoft", "Windows", "Fonts"),
+        file.path(Sys.getenv("HOME"), ".local", "share", "fonts"),
+        file.path(Sys.getenv("HOME"), ".fonts")
+      )
+      user_font_dirs <- user_font_dirs[dir.exists(user_font_dirs)]
+      if(length(user_font_dirs) > 0){
+        whitney_paths <- grep("Whitney-",
+                              list.files(user_font_dirs, full.names = TRUE),
+                              value = TRUE)
+      }
     }
 
     # Register preferred fonts using the paths found above. This will only be
