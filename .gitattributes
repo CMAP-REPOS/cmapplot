@@ -1,0 +1,29 @@
+# Normalize line endings across platforms.
+# Store text files with LF in the repo; check them out with LF everywhere.
+* text=auto eol=lf
+
+# Explicit text files
+*.R          text eol=lf
+*.Rmd        text eol=lf
+*.Rd         text eol=lf
+*.md         text eol=lf
+*.Rproj      text eol=lf
+*.yaml       text eol=lf
+*.yml        text eol=lf
+*.csv        text eol=lf
+DESCRIPTION  text eol=lf
+NAMESPACE    text eol=lf
+LICENSE      text eol=lf
+.gitignore   text eol=lf
+.Rbuildignore text eol=lf
+
+# Binary files (never touch line endings)
+*.rda   binary
+*.RData binary
+*.rds   binary
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.ico   binary
+*.svg   binary
+*.pdf   binary
