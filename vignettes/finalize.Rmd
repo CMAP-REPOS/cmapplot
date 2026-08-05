@@ -61,8 +61,7 @@ As you are preparing the plot, you will likely want to view it within R. Do this
 ```{r finalize1, fig.width=11, out.width="100%"}
 finalize_plot(plot = p,
               title = "Annual unlinked passenger trips (in millions)",
-              caption = "Source: Chicago Metropolitan Agency for Planning
-                analysis of Regional Transportation Authority data")
+              caption = "Source: Chicago Metropolitan Agency for Planning analysis of Regional Transportation Authority data")
 ```
 
 ### Exporting a plot
@@ -94,8 +93,7 @@ finalize_plot(plot = p,
 ```{r finalize2, eval=TRUE, echo=FALSE, message=FALSE}
 finalize_plot(plot = p,
               title = "Annual unlinked passenger trips (in millions)",
-              caption = "Source: Chicago Metropolitan Agency for Planning
-                analysis of Regional Transportation Authority data")
+              caption = "Source: Chicago Metropolitan Agency for Planning analysis of Regional Transportation Authority data")
 ```
 
 
@@ -111,8 +109,7 @@ In addition to setting the plot's `height` and `width`, `finalize_plot()` has a 
 # A modified finalized plot
 finalize_plot(plot = p,
               title = "Annual unlinked passenger trips (in millions)",
-              caption = "Source: Chicago Metropolitan Agency for Planning
-                analysis of Regional Transportation Authority data",
+              caption = "Source: Chicago Metropolitan Agency for Planning analysis of Regional Transportation Authority data",
               sidebar_width = 1.8,
               caption_align = 1,
               fill_bg = "cornsilk")
@@ -126,8 +123,7 @@ One special case of a top-level position adjustment is removing the sidebar alto
 # A finalized line graph, with no sidebar
 finalize_plot(plot = p,
               title = "Annual unlinked passenger trips (in millions)",
-              caption = "Source: Chicago Metropolitan Agency for Planning
-                analysis of Regional Transportation Authority data",
+              caption = "Source: Chicago Metropolitan Agency for Planning analysis of Regional Transportation Authority data",
               sidebar_width = 0)
 ```
 
@@ -139,11 +135,7 @@ The title and caption blocks take HTML formatting tags, which you can use to man
 # A finalized line graph, with text tweaks
 finalize_plot(plot = p,
               title = "Annual <b>unlinked</b> passenger trips<br><i>(in millions)</i>",
-              caption = 'Source: <b><span style="color: purple;"><i>Chicago
-                Metropolitan Agency for Planning</i></span> analysis of
-                <i>RTA<sup>1</sup></i> data.</b>
-                <br><br>
-                <i><sup>1</sup> Regional Transportation Authority</i>')
+              caption = 'Source: <b><span style="color: purple;"><i>Chicago Metropolitan Agency for Planning</i></span> analysis of <i>RTA<sup>1</sup></i> data.</b><br><br><i><sup>1</sup> Regional Transportation Authority</i>')
 ```
 
 ## Advanced customization 
@@ -156,8 +148,7 @@ finalize_plot(plot = p,
 # A debugged finalized plot
 finalize_plot(plot = p,
               title = "Annual unlinked passenger trips (in millions)",
-              caption = "Source: Chicago Metropolitan Agency for Planning
-                analysis of Regional Transportation Authority data",
+              caption = "Source: Chicago Metropolitan Agency for Planning analysis of Regional Transportation Authority data",
               debug = TRUE)
 ```
 
@@ -171,8 +162,7 @@ The [Many, many margins] section of this article describes most of these `consts
 # A finalized plot with some formatting overrides
 finalize_plot(plot = p,
               title = "Annual unlinked passenger trips (in millions)",
-              caption = "Source: Chicago Metropolitan Agency for Planning
-                analysis of Regional Transportation Authority data",
+              caption = "Source: Chicago Metropolitan Agency for Planning analysis of Regional Transportation Authority data",
               debug = TRUE,
               overrides = list(margin_title_b = 30, 
                                margin_sidebar_l = 10,
@@ -187,8 +177,7 @@ By default, `finalize_plot()` will attempt to extract legend from the ggplot and
 # A finalized plot with an un-modified legend
 finalize_plot(plot = p,
               title = "Annual unlinked passenger trips (in millions)",
-              caption = "Source: Chicago Metropolitan Agency for Planning
-                analysis of Regional Transportation Authority data",
+              caption = "Source: Chicago Metropolitan Agency for Planning analysis of Regional Transportation Authority data",
               debug = TRUE,
               legend_shift = FALSE)
 ```
