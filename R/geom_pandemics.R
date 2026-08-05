@@ -27,15 +27,6 @@
 #'  Defaults to \code{FALSE}.
 #'@param rect_aes,text_aes Named list, additional aesthetics to send to the
 #'  rectangle and text geoms, respectively.
-#'@param update_pandemics Logical or data frame. \code{FALSE}, the default,
-#'  relies on the package's built in pandemics table, which was last updated in
-#'  March 2021 and is loaded into the \code{sysdata.R} file located in the
-#'  \code{R} directory. \code{TRUE} calls the function
-#'  \code{update_pandemics}, which attempts to fetch the current pandemics
-#'  table from the NBER website. A custom data table of pandemics can also be
-#'  passed to this argument, but it must be structured identically to the
-#'  five-column data table described in the the documentation file for the
-#'  function \code{update_pandemics}.
 #'@param show_ongoing Logical. \code{TRUE}, the default, will display an ongoing
 #'  Pandemic that does not yet have a defined end date. If an ongoing Pandemic
 #'  exists, it will be displayed as extending through the maximum extent of the
@@ -120,7 +111,6 @@ geom_pandemics <- function(
   show.legend = FALSE,
   rect_aes = NULL,
   text_aes = NULL,
-  update_pandemics = FALSE,
   show_ongoing = TRUE,
   ...
 ) {
@@ -191,7 +181,7 @@ geom_pandemics <- function(
       list(
         values = c("Pandemic" = fill),
         if (show.legend) {
-          guide = "fill"
+          guide <- "fill"
         }
       )
     )
