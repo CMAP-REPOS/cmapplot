@@ -16,7 +16,6 @@ geom_pandemics(
   show.legend = FALSE,
   rect_aes = NULL,
   text_aes = NULL,
-  update_Pandemics = FALSE,
   show_ongoing = TRUE,
   ...
 )
@@ -53,16 +52,6 @@ Defaults to \code{FALSE}.}
 \item{rect_aes, text_aes}{Named list, additional aesthetics to send to the
 rectangle and text geoms, respectively.}
 
-\item{update_Pandemics}{Logical or data frame. \code{FALSE}, the default,
-relies on the package's built in Pandemics table, which was last updated in
-March 2021 and is loaded into the \code{sysdata.R} file located in the
-\code{R} directory. \code{TRUE} calls the function
-\code{update_Pandemics}, which attempts to fetch the current Pandemics
-table from the NBER website. A custom data table of Pandemics can also be
-passed to this argument, but it must be structured identically to the
-five-column data table described in the the documentation file for the
-function \code{update_Pandemics}.}
-
 \item{show_ongoing}{Logical. \code{TRUE}, the default, will display an ongoing
 Pandemic that does not yet have a defined end date. If an ongoing Pandemic
 exists, it will be displayed as extending through the maximum extent of the
@@ -73,7 +62,7 @@ from the graph.}
 }
 \description{
 \code{geom_pandemics} returns one or two ggplot geoms that add rectangles
-representing Pandemics to a plot. It will either return only rectangles or,
+representing pandemics to a plot. It will either return only rectangles or,
 by default, both rectangles and text identifying each Pandemic.
 }
 \section{Important notes}{
@@ -88,7 +77,7 @@ by default, both rectangles and text identifying each Pandemic.
 }
 
 \section{Default color}{
- The CMAP color palette gray used for Pandemics is
+ The CMAP color palette gray used for pandemics is
  \code{#e3e8eb}. The rectangle geom has default fill and alpha values of
  \code{#002d49} and \code{0.11} built into the function. These replicate the
  palette color at the highest possible transparency. This is done because
@@ -108,7 +97,7 @@ by default, both rectangles and text identifying each Pandemic.
  versions of GeomRect and GeomText, respectively. The only variations to each
  occur in \code{default_aes}, \code{required_aes}, and \code{setup_data}
  arguments. These variations allow the the primary dataframe (specified in
- \code{ggplot(data = XXX)}) to filter the Pandemics displayed.
+ \code{ggplot(data = XXX)}) to filter the pandemics displayed.
 }
 
 \examples{

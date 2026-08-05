@@ -127,21 +127,22 @@
 #'  \url{https://ggplot2.tidyverse.org/articles/extending-ggplot2.html} }
 #'
 #'@export
-geom_recessions <- function(xformat = "numeric",
-                            text = TRUE,
-                            label = " Recession",
-                            ymin = -Inf,
-                            ymax = Inf,
-                            fill = "#002d49",
-                            text_nudge_x = 0.2,
-                            text_nudge_y = 0,
-                            show.legend = FALSE,
-                            rect_aes = NULL,
-                            text_aes = NULL,
-                            update_recessions = FALSE,
-                            show_ongoing = TRUE,
-                            ...) {
-
+geom_recessions <- function(
+  xformat = "numeric",
+  text = TRUE,
+  label = " Recession",
+  ymin = -Inf,
+  ymax = Inf,
+  fill = "#002d49",
+  text_nudge_x = 0.2,
+  text_nudge_y = 0,
+  show.legend = FALSE,
+  rect_aes = NULL,
+  text_aes = NULL,
+  update_recessions = FALSE,
+  show_ongoing = TRUE,
+  ...
+) {
   # build recessions table for use in function, but hide it in a list
   # because of ggplot's requirement that parameters be of length 1
   recess_table <- list(build_recessions(update_recessions))
@@ -196,24 +197,30 @@ geom_recessions <- function(xformat = "numeric",
     # apply the fill color to values where fill="Recession". Push this to the legend if called for.
     do.call(
       scale_fill_manual,
-      list(values = c("Recession" = fill), if (show.legend) {guide = "legend"})
+      list(
+        values = c("Recession" = fill),
+        if (show.legend) {
+          guide <- "legend"
+        }
+      )
     )
   )
-
 }
 
 
 # internal function used to define recessions table for use
-build_recessions <- function(update_recessions){
-  if(is.logical(update_recessions)){
+build_recessions <- function(update_recessions) {
+  if (is.logical(update_recessions)) {
     # if TRUE
-    if(update_recessions){
+    if (update_recessions) {
       message("Trying to update recessions...")
       updated_recessions <- suppressWarnings(update_recessions(quietly = TRUE))
 
       # If updated_recessions is returned as NULL, use the default table
       if (is.null(updated_recessions)) {
-        message("Could not update recessions. Using built-in recessions table...")
+        message(
+          "Could not update recessions. Using built-in recessions table..."
+        )
         return(recessions)
       }
 
@@ -223,16 +230,20 @@ build_recessions <- function(update_recessions){
     } else {
       return(recessions)
     }
-  # if DATAFRAME
-  }else if(is.data.frame(update_recessions)){
+    # if DATAFRAME
+  } else if (is.data.frame(update_recessions)) {
     # confirm that table has correct structure
-    if(!identical(update_recessions[NA,][1,], recessions[NA,][1,])){
-      message("Recession table may not have correct format (See `?update_recessions`). Attempting anyway...")
+    if (!identical(update_recessions[NA, ][1, ], recessions[NA, ][1, ])) {
+      message(
+        "Recession table may not have correct format (See `?update_recessions`). Attempting anyway..."
+      )
     }
     return(update_recessions)
-  # OTHERWISE
-  }else{
-    message("`update_recessions` must be TRUE, FALSE, or a data frame. Using built-in recessions table...")
+    # OTHERWISE
+  } else {
+    message(
+      "`update_recessions` must be TRUE, FALSE, or a data frame. Using built-in recessions table..."
+    )
     return(recessions)
   }
 }
@@ -240,7 +251,7 @@ build_recessions <- function(update_recessions){
 #' @importFrom lubridate decimal_date
 
 # Internal function designed to filter the built-in recessions table
-filter_recessions <- function(min, max, xformat, show_ongoing, recess_table){
+filter_recessions <- function(min, max, xformat, show_ongoing, recess_table) {
   # Bind local variables to function
   end_num <- start_num <- end_date <- start_date <- end <- start <- ongoing <- NULL
 
@@ -248,22 +259,30 @@ filter_recessions <- function(min, max, xformat, show_ongoing, recess_table){
   recess_table <- recess_table[[1]]
 
   # Filtering out ongoing recessions if specified
-  if (!show_ongoing) {recess_table <- dplyr::filter(recess_table, ongoing == F)}
+  if (!show_ongoing) {
+    recess_table <- dplyr::filter(recess_table, ongoing == F)
+  }
 
   # use xformat to create correct "start" and "end" vars...
   if (xformat == "date") {
     # ... by renaming existing date fields (for date axis)
-    recessions <- dplyr::rename(recess_table, start = start_date, end = end_date)
+    recessions <- dplyr::rename(
+      recess_table,
+      start = start_date,
+      end = end_date
+    )
   } else {
     # ... or by creating decimal dates (for numeric axis)
     if (xformat != "numeric") {
-      warning("geom_recessions currently only supports x axes in the numeric and date formats. Using numeric.")
+      warning(
+        "geom_recessions currently only supports x axes in the numeric and date formats. Using numeric."
+      )
     }
     recessions <- dplyr::mutate(
       recess_table,
       start = lubridate::decimal_date(start_date),
       end = lubridate::decimal_date(end_date)
-      )
+    )
   }
 
   # Remove recessions outside of range
@@ -291,15 +310,25 @@ GeomRecessions <- ggproto(
   "GeomRecessions", Geom,
   default_aes = aes(colour = NA, alpha = 0.11, linewidth = 0.5, linetype = 1, na.rm = TRUE),
 
-  required_aes = c("xformat", "ymin", "ymax", "show_ongoing", "recess_table" ,"fill"),
+  required_aes = c(
+    "xformat",
+    "ymin",
+    "ymax",
+    "show_ongoing",
+    "recess_table",
+    "fill"
+  ),
 
   # replace `data` with `recessions`, filtered by `data`
   setup_data = function(data, params) {
     #filter recessions based on date parameters from `data` and return it. This overwrites `data`.
-    data <- filter_recessions(min = min(data$x), max = max(data$x),
-                              xformat = params$xformat,
-                              show_ongoing = params$show_ongoing,
-                              recess_table = params$recess_table)
+    data <- filter_recessions(
+      min = min(data$x),
+      max = max(data$x),
+      xformat = params$xformat,
+      show_ongoing = params$show_ongoing,
+      recess_table = params$recess_table
+    )
 
     # set up data for GeomRect
     data <- dplyr::transmute(
@@ -319,15 +348,15 @@ GeomRecessions <- ggproto(
 
   # remainder untouched from `geom_rect`:
   draw_panel = function(self, data, panel_params, coord, linejoin = "mitre") {
-
     if (!coord$is_linear()) {
       aesthetics <- setdiff(
-        names(data), c("x", "y", "xmin", "xmax", "ymin", "ymax")
+        names(data),
+        c("x", "y", "xmin", "xmax", "ymin", "ymax")
       )
 
       polys <- lapply(split(data, seq_len(nrow(data))), function(row) {
         poly <- rect_to_poly(row$xmin, row$xmax, row$ymin, row$ymax)
-        aes <- new_data_frame(row[aesthetics])[rep(1,5), ]
+        aes <- new_data_frame(row[aesthetics])[rep(1, 5), ]
 
         GeomPolygon$draw_panel(cbind(poly, aes), panel_params, coord)
       })
@@ -351,7 +380,7 @@ GeomRecessions <- ggproto(
           # as an argument. (c.f. https://github.com/tidyverse/ggplot2/issues/3037#issuecomment-457504667)
           lineend = if (identical(linejoin, "round")) "round" else "square"
         )
-      ))
+      )
     }
   },
 
@@ -364,24 +393,37 @@ GeomRecessions <- ggproto(
 #' @usage NULL
 #' @export
 GeomRecessionsText <- ggproto(
-  "GeomRecessionsText", Geom,
+  "GeomRecessionsText",
+  Geom,
 
-  required_aes = c("xformat", "label",  "show_ongoing", "recess_table", "y"),
+  required_aes = c("xformat", "label", "show_ongoing", "recess_table", "y"),
 
   default_aes = aes(
-    colour = "black", size = 3.88, alpha = NA, family = "", fontface = 1, lineheight = 1.2,
-    xformat = NULL, angle = 270, parse = FALSE,
-    check_overlap = FALSE, na.rm = TRUE,
-    hjust = "left", vjust = "bottom"
+    colour = "black",
+    size = 3.88,
+    alpha = NA,
+    family = "",
+    fontface = 1,
+    lineheight = 1.2,
+    xformat = NULL,
+    angle = 270,
+    parse = FALSE,
+    check_overlap = FALSE,
+    na.rm = TRUE,
+    hjust = "left",
+    vjust = "bottom"
   ),
 
   # replace `data` with `recessions`, filtered by `data`
   setup_data = function(data, params) {
     #filter recessions based on date parameters from `data` and return it. This overwrites `data`.
-    data <- filter_recessions(min = min(data$x), max = max(data$x),
-                              xformat = params$xformat,
-                              show_ongoing = params$show_ongoing,
-                              recess_table = params$recess_table)
+    data <- filter_recessions(
+      min = min(data$x),
+      max = max(data$x),
+      xformat = params$xformat,
+      show_ongoing = params$show_ongoing,
+      recess_table = params$recess_table
+    )
 
     # set up data for GeomRect
     data <- dplyr::transmute(
@@ -396,8 +438,14 @@ GeomRecessionsText <- ggproto(
   },
 
   # remainder untouched from `geom_text`:
-  draw_panel = function(data, panel_params, coord, parse = FALSE,
-                        na.rm = FALSE, check_overlap = FALSE) {
+  draw_panel = function(
+    data,
+    panel_params,
+    coord,
+    parse = FALSE,
+    na.rm = FALSE,
+    check_overlap = FALSE
+  ) {
     lab <- data$label
     if (parse) {
       lab <- parse_safe(as.character(lab))
@@ -413,8 +461,11 @@ GeomRecessionsText <- ggproto(
 
     textGrob(
       lab,
-      data$x, data$y, default.units = "native",
-      hjust = data$hjust, vjust = data$vjust,
+      data$x,
+      data$y,
+      default.units = "native",
+      hjust = data$hjust,
+      vjust = data$vjust,
       rot = data$angle,
       gp = gpar(
         col = alpha(data$colour, data$alpha),
@@ -467,11 +518,10 @@ GeomRecessionsText <- ggproto(
 #' }
 #'
 #'@export
-update_recessions <- function(url = NULL, quietly = FALSE){
-
+update_recessions <- function(url = NULL, quietly = FALSE) {
   # Use default URL if user does not override
   if (is_null(url) | missing(url)) {
-    url <- "http://data.nber.org/data/cycles/20210719_cycle_dates_pasted.csv"
+    url <- "https://data.nber.org/cycles/business_cycle_dates.json"
   }
 
   # locally bind variable names
@@ -479,47 +529,56 @@ update_recessions <- function(url = NULL, quietly = FALSE){
 
   return(
     # attempt to download and format recessions table
-    tryCatch({
-      recessions <- read.csv(url) %>%
-        # drop first row trough
-        dplyr::slice(-1) %>%
-        # convert peaks and troughs...
-        dplyr::mutate(
-          # ...to R dates
-          start_date = as.Date(peak),
-          end_date = as.Date(trough),
-          # ... and clean char strings
-          start_char = format(start_date, "%b %Y"),
-          end_char = format(end_date, "%b %Y")) %>%
-        # confirm ascending and create row number
-        dplyr::arrange(start_date) %>%
-        mutate(index = row_number()) %>%
-        mutate(
-          # Flag unfinished recessions
-          ongoing = case_when(
-            is.na(end_date) & index == max(.$index) ~ T,
-            TRUE ~ F),
-          # set ongoing recession to arbitrary future date
-          end_date = case_when(
-            ongoing ~ as.Date("2500-01-01"),
-            TRUE ~ end_date),
-          # mark ongoing recession in char field
-          end_char = case_when(
-            ongoing ~ "Ongoing",
-            TRUE ~ end_char)
+    tryCatch(
+      {
+        recessions <- jsonlite::fromJSON(url) %>%
+          # drop first row trough
+          dplyr::slice(-1) %>%
+          # convert peaks and troughs...
+          dplyr::mutate(
+            # ...to R dates
+            start_date = as.Date(peak),
+            end_date = as.Date(trough),
+            # ... and clean char strings
+            start_char = format(start_date, "%b %Y"),
+            end_char = format(end_date, "%b %Y")
           ) %>%
-        # clean up
-        select(start_char, end_char, start_date, end_date, ongoing)
+          # confirm ascending and create row number
+          dplyr::arrange(start_date) %>%
+          mutate(index = row_number()) %>%
+          mutate(
+            # Flag unfinished recessions
+            ongoing = case_when(
+              is.na(end_date) & index == max(.$index) ~ T,
+              TRUE ~ F
+            ),
+            # set ongoing recession to arbitrary future date
+            end_date = case_when(
+              ongoing ~ as.Date("2500-01-01"),
+              TRUE ~ end_date
+            ),
+            # mark ongoing recession in char field
+            end_char = case_when(
+              ongoing ~ "Ongoing",
+              TRUE ~ end_char
+            )
+          ) %>%
+          # clean up
+          select(start_char, end_char, start_date, end_date, ongoing)
 
-      if (!quietly) {message("Successfully fetched from NBER")}
+        if (!quietly) {
+          message("Successfully fetched from NBER")
+        }
 
-      # Return recessions
-      recessions
-    },
-    error = function(cond){
-      if (!quietly) message("WARNING: Fetch or processing failed. `NULL` returned.")
-      return(NULL)
-    }
+        # Return recessions
+        recessions
+      },
+      error = function(cond) {
+        if (!quietly) {
+          message("WARNING: Fetch or processing failed. `NULL` returned.")
+        }
+        return(NULL)
+      }
     )
   )
 }
