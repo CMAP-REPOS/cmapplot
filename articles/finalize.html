@@ -97,7 +97,7 @@
       <h1 data-toc-skip>Finalizing and exporting CMAP-themed plots</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/CMAP-REPOS/cmapplot/blob/fix/linewidth/vignettes/finalize.Rmd" class="external-link"><code>vignettes/finalize.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/CMAP-REPOS/cmapplot/blob/chore/normalize-line-endings/vignettes/finalize.Rmd" class="external-link"><code>vignettes/finalize.Rmd</code></a></small>
       <div class="hidden name"><code>finalize.Rmd</code></div>
 
     </div>
@@ -140,8 +140,7 @@ RStudio’s default plotting window.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>plot <span class="op">=</span> <span class="va">p</span>,</span>
 <span>              title <span class="op">=</span> <span class="st">"Annual unlinked passenger trips (in millions)"</span>,</span>
-<span>              caption <span class="op">=</span> <span class="st">"Source: Chicago Metropolitan Agency for Planning</span></span>
-<span><span class="st">                analysis of Regional Transportation Authority data"</span><span class="op">)</span></span></code></pre></div>
+<span>              caption <span class="op">=</span> <span class="st">"Source: Chicago Metropolitan Agency for Planning analysis of Regional Transportation Authority data"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="finalize_files/figure-html/finalize1-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
@@ -206,8 +205,7 @@ page.</p>
 <code class="sourceCode R"><span><span class="co"># A modified finalized plot</span></span>
 <span><span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>plot <span class="op">=</span> <span class="va">p</span>,</span>
 <span>              title <span class="op">=</span> <span class="st">"Annual unlinked passenger trips (in millions)"</span>,</span>
-<span>              caption <span class="op">=</span> <span class="st">"Source: Chicago Metropolitan Agency for Planning</span></span>
-<span><span class="st">                analysis of Regional Transportation Authority data"</span>,</span>
+<span>              caption <span class="op">=</span> <span class="st">"Source: Chicago Metropolitan Agency for Planning analysis of Regional Transportation Authority data"</span>,</span>
 <span>              sidebar_width <span class="op">=</span> <span class="fl">1.8</span>,</span>
 <span>              caption_align <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>              fill_bg <span class="op">=</span> <span class="st">"cornsilk"</span><span class="op">)</span></span></code></pre></div>
@@ -228,8 +226,7 @@ margins</a> for more on this.</p>
 <code class="sourceCode R"><span><span class="co"># A finalized line graph, with no sidebar</span></span>
 <span><span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>plot <span class="op">=</span> <span class="va">p</span>,</span>
 <span>              title <span class="op">=</span> <span class="st">"Annual unlinked passenger trips (in millions)"</span>,</span>
-<span>              caption <span class="op">=</span> <span class="st">"Source: Chicago Metropolitan Agency for Planning</span></span>
-<span><span class="st">                analysis of Regional Transportation Authority data"</span>,</span>
+<span>              caption <span class="op">=</span> <span class="st">"Source: Chicago Metropolitan Agency for Planning analysis of Regional Transportation Authority data"</span>,</span>
 <span>              sidebar_width <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></code></pre></div>
 <p><img src="finalize_files/figure-html/finalize4-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
 </div>
@@ -242,11 +239,7 @@ use to manually set line breaks and apply other font formatting.</p>
 <code class="sourceCode R"><span><span class="co"># A finalized line graph, with text tweaks</span></span>
 <span><span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>plot <span class="op">=</span> <span class="va">p</span>,</span>
 <span>              title <span class="op">=</span> <span class="st">"Annual &lt;b&gt;unlinked&lt;/b&gt; passenger trips&lt;br&gt;&lt;i&gt;(in millions)&lt;/i&gt;"</span>,</span>
-<span>              caption <span class="op">=</span> <span class="st">'Source: &lt;b&gt;&lt;span style="color: purple;"&gt;&lt;i&gt;Chicago</span></span>
-<span><span class="st">                Metropolitan Agency for Planning&lt;/i&gt;&lt;/span&gt; analysis of</span></span>
-<span><span class="st">                &lt;i&gt;RTA&lt;sup&gt;1&lt;/sup&gt;&lt;/i&gt; data.&lt;/b&gt;</span></span>
-<span><span class="st">                &lt;br&gt;&lt;br&gt;</span></span>
-<span><span class="st">                &lt;i&gt;&lt;sup&gt;1&lt;/sup&gt; Regional Transportation Authority&lt;/i&gt;'</span><span class="op">)</span></span></code></pre></div>
+<span>              caption <span class="op">=</span> <span class="st">'Source: &lt;b&gt;&lt;span style="color: purple;"&gt;&lt;i&gt;Chicago Metropolitan Agency for Planning&lt;/i&gt;&lt;/span&gt; analysis of &lt;i&gt;RTA&lt;sup&gt;1&lt;/sup&gt;&lt;/i&gt; data.&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;i&gt;&lt;sup&gt;1&lt;/sup&gt; Regional Transportation Authority&lt;/i&gt;'</span><span class="op">)</span></span></code></pre></div>
 <p><img src="finalize_files/figure-html/finalize5-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
 </div>
 </div>
@@ -265,8 +258,7 @@ finished graphic and how they relate to one another. Setting
 <code class="sourceCode R"><span><span class="co"># A debugged finalized plot</span></span>
 <span><span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>plot <span class="op">=</span> <span class="va">p</span>,</span>
 <span>              title <span class="op">=</span> <span class="st">"Annual unlinked passenger trips (in millions)"</span>,</span>
-<span>              caption <span class="op">=</span> <span class="st">"Source: Chicago Metropolitan Agency for Planning</span></span>
-<span><span class="st">                analysis of Regional Transportation Authority data"</span>,</span>
+<span>              caption <span class="op">=</span> <span class="st">"Source: Chicago Metropolitan Agency for Planning analysis of Regional Transportation Authority data"</span>,</span>
 <span>              debug <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="finalize_files/figure-html/finalize6-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
 </div>
@@ -291,8 +283,7 @@ learn more about all possible overrides, see
 <code class="sourceCode R"><span><span class="co"># A finalized plot with some formatting overrides</span></span>
 <span><span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>plot <span class="op">=</span> <span class="va">p</span>,</span>
 <span>              title <span class="op">=</span> <span class="st">"Annual unlinked passenger trips (in millions)"</span>,</span>
-<span>              caption <span class="op">=</span> <span class="st">"Source: Chicago Metropolitan Agency for Planning</span></span>
-<span><span class="st">                analysis of Regional Transportation Authority data"</span>,</span>
+<span>              caption <span class="op">=</span> <span class="st">"Source: Chicago Metropolitan Agency for Planning analysis of Regional Transportation Authority data"</span>,</span>
 <span>              debug <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>              overrides <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>margin_title_b <span class="op">=</span> <span class="fl">30</span>, </span>
 <span>                               margin_sidebar_l <span class="op">=</span> <span class="fl">10</span>,</span>
@@ -315,8 +306,7 @@ the legend from the plot.</p>
 <code class="sourceCode R"><span><span class="co"># A finalized plot with an un-modified legend</span></span>
 <span><span class="fu"><a href="../reference/finalize_plot.html">finalize_plot</a></span><span class="op">(</span>plot <span class="op">=</span> <span class="va">p</span>,</span>
 <span>              title <span class="op">=</span> <span class="st">"Annual unlinked passenger trips (in millions)"</span>,</span>
-<span>              caption <span class="op">=</span> <span class="st">"Source: Chicago Metropolitan Agency for Planning</span></span>
-<span><span class="st">                analysis of Regional Transportation Authority data"</span>,</span>
+<span>              caption <span class="op">=</span> <span class="st">"Source: Chicago Metropolitan Agency for Planning analysis of Regional Transportation Authority data"</span>,</span>
 <span>              debug <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>              legend_shift <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="finalize_files/figure-html/finalize8-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
