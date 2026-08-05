@@ -83,18 +83,19 @@
 #' }
 #'@export
 theme_cmap <- function(
-  xlab = NULL, ylab = NULL,
-  hline = NULL, vline = NULL,
+  xlab = NULL,
+  ylab = NULL,
+  hline = NULL,
+  vline = NULL,
   gridlines = c("h", "v", "hv", "none"),
   axislines = c("none", "x", "y", "xy"),
-  axisticks = c("none","x","y","xy"),
+  axisticks = c("none", "x", "y", "xy"),
   show.legend = TRUE,
   legend.max.columns = NULL,
   debug = FALSE,
   overrides = list(),
   ...
 ) {
-
   # Initialization --------------------------------------------------
 
   # Generate an explicit message to user if Whitney font family is not available
@@ -121,7 +122,7 @@ theme_cmap <- function(
   # Create a helper function to more easily add items to the obj list
   # This is just a shorthand for:
   # obj <- append(obj, [item] )
-  add_to_obj <- function(newitem){
+  add_to_obj <- function(newitem) {
     obj <<- append(get("obj", parent.frame()), list(newitem))
     NULL
   }
@@ -132,99 +133,110 @@ theme_cmap <- function(
   attr <- list()
 
   # x label, if specified
-  if(!is.null(xlab)){
+  if (!is.null(xlab)) {
     attr[["axis.title.x"]] <- ggplot2::element_text(
       margin = ggplot2::margin(t = consts$half_line / 2),
       vjust = 1,
-      inherit.blank = FALSE)
+      inherit.blank = FALSE
+    )
 
     add_to_obj(ggplot2::xlab(xlab))
   }
 
   # y label, if specified
-  if(!is.null(ylab)){
+  if (!is.null(ylab)) {
     attr[["axis.title.y"]] <- ggplot2::element_text(
       angle = 90,
       margin = ggplot2::margin(r = consts$half_line / 2),
       vjust = 1,
-      inherit.blank = FALSE)
+      inherit.blank = FALSE
+    )
 
     add_to_obj(ggplot2::ylab(ylab))
   }
 
   # x origin line, if specified
-  if(!is.null(hline)){
+  if (!is.null(hline)) {
     add_to_obj(ggplot2::geom_hline(
       yintercept = hline,
-      size = gg_lwd_convert(consts$lwd_strongline),
-      color = cmapplot_globals$colors$blackish))
+      linewidth = gg_lwd_convert(consts$lwd_strongline),
+      color = cmapplot_globals$colors$blackish
+    ))
   }
 
   # y origin line, if specified
-  if(!is.null(vline)){
+  if (!is.null(vline)) {
     add_to_obj(ggplot2::geom_vline(
       xintercept = vline,
-      size = gg_lwd_convert(consts$lwd_strongline),
-      color = cmapplot_globals$colors$blackish))
+      linewidth = gg_lwd_convert(consts$lwd_strongline),
+      color = cmapplot_globals$colors$blackish
+    ))
   }
 
   # set legend column max, if specified
-  if (!is.null(legend.max.columns)){
-      # set for legend based on either "fill" or "col" to reflect different geom structures
-      add_to_obj(ggplot2::guides(
-        fill = guide_legend(ncol = legend.max.columns),
-        col  = guide_legend(ncol = legend.max.columns)))
+  if (!is.null(legend.max.columns)) {
+    # set for legend based on either "fill" or "col" to reflect different geom structures
+    add_to_obj(ggplot2::guides(
+      fill = guide_legend(ncol = legend.max.columns),
+      col = guide_legend(ncol = legend.max.columns)
+    ))
   }
 
   # hide legend if specified
-  if (!show.legend){
+  if (!show.legend) {
     attr[["legend.position"]] <- "none"
   }
 
   # horizontal gridlines, if specified
   if (grepl("h", gridlines)) {
     attr[["panel.grid.major.y"]] <- ggplot2::element_line(
-      size = gg_lwd_convert(consts$lwd_gridline),
-      color = cmapplot_globals$colors$blackish)
+      linewidth = gg_lwd_convert(consts$lwd_gridline),
+      color = cmapplot_globals$colors$blackish
+    )
   }
 
   # vertical gridlines, if specified
   if (grepl("v", gridlines)) {
     attr[["panel.grid.major.x"]] <- ggplot2::element_line(
-      size = gg_lwd_convert(consts$lwd_gridline),
-      color = cmapplot_globals$colors$blackish)
+      linewidth = gg_lwd_convert(consts$lwd_gridline),
+      color = cmapplot_globals$colors$blackish
+    )
   }
 
   # x axis line, if specified
   if (grepl("x", axislines)) {
     attr[["axis.line.x"]] <- ggplot2::element_line(
-      size = gg_lwd_convert(consts$lwd_gridline),
-      color = cmapplot_globals$colors$blackish)
+      linewidth = gg_lwd_convert(consts$lwd_gridline),
+      color = cmapplot_globals$colors$blackish
+    )
   }
 
   # y axis line, if specified
   if (grepl("y", axislines)) {
     attr[["axis.line.y"]] <- ggplot2::element_line(
-      size = gg_lwd_convert(consts$lwd_gridline),
-      color = cmapplot_globals$colors$blackish)
+      linewidth = gg_lwd_convert(consts$lwd_gridline),
+      color = cmapplot_globals$colors$blackish
+    )
   }
 
   # x axis ticks, if specified
   if (grepl("x", axisticks)) {
     attr[["axis.ticks.x"]] <- ggplot2::element_line(
-      size = gg_lwd_convert(consts$lwd_gridline),
-      color = cmapplot_globals$colors$blackish)
+      linewidth = gg_lwd_convert(consts$lwd_gridline),
+      color = cmapplot_globals$colors$blackish
+    )
 
-    attr[["axis.ticks.length.x"]] <- unit(consts$length_ticks,"bigpts")
+    attr[["axis.ticks.length.x"]] <- unit(consts$length_ticks, "bigpts")
   }
 
   # y axis ticks, if specified
   if (grepl("y", axisticks)) {
     attr[["axis.ticks.y"]] <- ggplot2::element_line(
-      size = gg_lwd_convert(consts$lwd_gridline),
-      color = cmapplot_globals$colors$blackish)
+      linewidth = gg_lwd_convert(consts$lwd_gridline),
+      color = cmapplot_globals$colors$blackish
+    )
 
-    attr[["axis.ticks.length.y"]] <- unit(consts$length_ticks,"bigpts")
+    attr[["axis.ticks.length.y"]] <- unit(consts$length_ticks, "bigpts")
   }
 
   # Construct theme elements -----------------------------------------
@@ -234,13 +246,13 @@ theme_cmap <- function(
 
   # add `attr` theme elements to the list in a new `ggplot2::theme()` object,
   # so that they override `theme_cmap_base()` if needed
-  if(length(attr) > 0) {
+  if (length(attr) > 0) {
     add_to_obj(do.call(theme, attr))
   }
 
   # add extra theme arguments to a new `ggplot2::theme()` object,
   # so that they override any previous theme arguments
-  if(length(list(...)) > 0) {
+  if (length(list(...)) > 0) {
     add_to_obj(do.call(theme, list(...)))
   }
 
@@ -249,113 +261,137 @@ theme_cmap <- function(
 }
 
 
-
-
 # this is a complete theme built from scratch.
 # it is modeled off of `ggplot2::theme_grey()`
-theme_cmap_base <- function(consts = cmapplot_globals$consts,
-                            debug = FALSE
-) {
-
+theme_cmap_base <- function(consts = cmapplot_globals$consts, debug = FALSE) {
   t <- theme(
-
     # building blocks
     line = element_line(
       colour = cmapplot_globals$colors$blackish,
-      size = gg_lwd_convert(consts$lwd_gridline),
-      linetype = 1, lineend = "butt",
-      inherit.blank = TRUE),
+      linewidth = gg_lwd_convert(consts$lwd_gridline),
+      linetype = 1,
+      lineend = "butt",
+      inherit.blank = TRUE
+    ),
 
     rect = element_rect(
-      fill = NA, colour = ifelse(debug, "blue", NA),
-      size = 0.5, linetype = 1,
-      inherit.blank = TRUE),
+      fill = NA,
+      colour = ifelse(debug, "blue", NA),
+      linewidth = 0.5,
+      linetype = 1,
+      inherit.blank = TRUE
+    ),
 
     text = element_text(
       family = cmapplot_globals$font$regular$family,
-      face = cmapplot_globals$fgiont$regular$face,
+      face = cmapplot_globals$font$regular$face,
       size = cmapplot_globals$fsize$M,
       color = cmapplot_globals$colors$blackish,
-      lineheight = 0.9, hjust = 0.5, vjust = 0.5, angle = 0,
-      margin = margin(), debug = debug,
-      inherit.blank = TRUE),
+      lineheight = 0.9,
+      hjust = 0.5,
+      vjust = 0.5,
+      angle = 0,
+      margin = margin(),
+      debug = debug,
+      inherit.blank = TRUE
+    ),
 
     # axis
-    axis.line =          element_blank(),
-    axis.line.x =        NULL,
-    axis.line.y =        NULL,
-    axis.text =          element_text(family = cmapplot_globals$font$light$family,
-                                      face = cmapplot_globals$font$light$face,
-                                      size = cmapplot_globals$fsize$M),
-    axis.text.x =        element_text(margin = margin(t = consts$half_line / 2), vjust = 1),
-    axis.text.x.top =    element_text(margin = margin(b = consts$half_line / 2), vjust = 0),
-    axis.text.y =        element_text(margin = margin(r = consts$half_line / 2), hjust = 1),
-    axis.text.y.right =  element_text(margin = margin(l = consts$half_line / 2), hjust = 0),
-    axis.ticks =         element_blank(),
-    axis.ticks.length =  unit(0, "pt"), # determines space btwn axis text & panel even when ticks are off
+    axis.line = element_blank(),
+    axis.line.x = NULL,
+    axis.line.y = NULL,
+    axis.text = element_text(
+      family = cmapplot_globals$font$light$family,
+      face = cmapplot_globals$font$light$face,
+      size = cmapplot_globals$fsize$M
+    ),
+    axis.text.x = element_text(
+      margin = margin(t = consts$half_line / 2),
+      vjust = 1
+    ),
+    axis.text.x.top = element_text(
+      margin = margin(b = consts$half_line / 2),
+      vjust = 0
+    ),
+    axis.text.y = element_text(
+      margin = margin(r = consts$half_line / 2),
+      hjust = 1
+    ),
+    axis.text.y.right = element_text(
+      margin = margin(l = consts$half_line / 2),
+      hjust = 0
+    ),
+    axis.ticks = element_blank(),
+    axis.ticks.length = unit(0, "pt"), # determines space btwn axis text & panel even when ticks are off
     axis.ticks.length.x = NULL,
     axis.ticks.length.x.top = NULL,
     axis.ticks.length.x.bottom = NULL,
     axis.ticks.length.y = NULL,
     axis.ticks.length.y.left = NULL,
     axis.ticks.length.y.right = NULL,
-    axis.title =         element_blank(),
+    axis.title = element_blank(),
 
-    legend.background =  NULL,
-    legend.spacing.x =   grid::unit(consts$half_line, "bigpts"),
-    legend.spacing.y =   grid::unit(consts$margin_legend_i, "bigpts"),
-    legend.margin =      margin(l = 0 - consts$half_line),
-    legend.key =         element_blank(),
-    legend.key.size =    grid::unit(cmapplot_globals$fsize$M, "pt"), # use pts, not bigpts, to match fontsize
-    legend.key.height =  NULL,
-    legend.key.width =   NULL,
-    legend.text =        NULL,
-    legend.text.align =  0,
-    legend.title =       element_blank(),
-    legend.position =    "left",
-    legend.direction =   "vertical",
+    legend.background = NULL,
+    legend.spacing.x = grid::unit(consts$half_line, "bigpts"),
+    legend.spacing.y = grid::unit(consts$margin_legend_i, "bigpts"),
+    legend.margin = margin(l = 0 - consts$half_line),
+    legend.key = element_blank(),
+    legend.key.size = grid::unit(cmapplot_globals$fsize$M, "pt"), # use pts, not bigpts, to match fontsize
+    legend.key.height = NULL,
+    legend.key.width = NULL,
+    legend.text = NULL,
+    legend.text.align = 0,
+    legend.title = element_blank(),
+    legend.position = "left",
+    legend.direction = "vertical",
     legend.justification = "left",
-    legend.box =         "vertical",
-    legend.box.margin =  margin(0, 0, 0, 0),
+    legend.box = "vertical",
+    legend.box.margin = margin(0, 0, 0, 0),
     legend.box.background = element_rect(
       fill = NA,
-      colour = ifelse(debug, "blue", NA)), # this should inherit from rect when NULL but it doesnt
-    legend.box.just =    "left",
+      colour = ifelse(debug, "blue", NA)
+    ), # this should inherit from rect when NULL but it doesnt
+    legend.box.just = "left",
     legend.box.spacing = grid::unit(consts$margin_legend_b, "bigpts"),
 
-    panel.background =   NULL,
-    panel.border =       element_blank(),
-    panel.grid =         element_blank(),
-    panel.spacing =      unit(consts$half_line * 2, "bigpts"),
-    panel.spacing.x =    NULL,
-    panel.spacing.y =    NULL,
-    panel.ontop    =     FALSE,
+    panel.background = NULL,
+    panel.border = element_blank(),
+    panel.grid = element_blank(),
+    panel.spacing = unit(consts$half_line * 2, "bigpts"),
+    panel.spacing.x = NULL,
+    panel.spacing.y = NULL,
+    panel.ontop = FALSE,
 
-    strip.background =   NULL,
-    strip.text =         element_text(hjust = 0),
-    strip.text.x =       NULL,
-    strip.text.y =       element_text(angle = -90),
-    strip.text.y.left =  element_text(angle = 90),
-    strip.placement =    "inside",
-    strip.placement.x =  NULL,
-    strip.placement.y =  NULL,
+    strip.background = NULL,
+    strip.text = element_text(hjust = 0),
+    strip.text.x = NULL,
+    strip.text.y = element_text(angle = -90),
+    strip.text.y.left = element_text(angle = 90),
+    strip.placement = "inside",
+    strip.placement.x = NULL,
+    strip.placement.y = NULL,
     strip.switch.pad.grid = unit(consts$half_line / 2, "bigpts"),
     strip.switch.pad.wrap = unit(consts$half_line / 2, "bigpts"),
 
-
-    plot.background =    element_blank(),
-    plot.title =         element_text(family = cmapplot_globals$font$strong$family,
-                                      face = cmapplot_globals$font$strong$face,
-                                      size = cmapplot_globals$fsize$L,
-                                      hjust = 0, vjust = 1,
-                                      margin = margin(b = consts$half_line)),
+    plot.background = element_blank(),
+    plot.title = element_text(
+      family = cmapplot_globals$font$strong$family,
+      face = cmapplot_globals$font$strong$face,
+      size = cmapplot_globals$fsize$L,
+      hjust = 0,
+      vjust = 1,
+      margin = margin(b = consts$half_line)
+    ),
     plot.title.position = "panel",
-    plot.subtitle =      element_blank(),
-    plot.caption =       element_text(family = cmapplot_globals$font$light$family,
-                                      face = cmapplot_globals$font$light$face,
-                                      size = cmapplot_globals$fsize$S,
-                                      hjust = 1, vjust = 1,
-                                      margin = margin(t = consts$half_line)),
+    plot.subtitle = element_blank(),
+    plot.caption = element_text(
+      family = cmapplot_globals$font$light$family,
+      face = cmapplot_globals$font$light$face,
+      size = cmapplot_globals$fsize$S,
+      hjust = 1,
+      vjust = 1,
+      margin = margin(t = consts$half_line)
+    ),
     plot.caption.position = "panel",
     plot.tag = element_blank(),
     plot.margin = margin(3, consts$margin_panel_r, 3, 3, "bigpts"),

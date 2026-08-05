@@ -48,6 +48,7 @@ Imports:
     gridExtra,
     gridtext,
     ggrepel,
+    jsonlite,
     lubridate,
     purrr,
     ragg,

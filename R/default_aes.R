@@ -15,7 +15,7 @@ init_cmap_default_aes <- function() {
       colour = cmapplot_globals$colors$blackish
     ),
     Line = list(
-      size = gg_lwd_convert(cmapplot_globals$consts$lwd_plotline)
+      linewidth = gg_lwd_convert(cmapplot_globals$consts$lwd_plotline)
     ),
     Text = list(
       family = cmapplot_globals$font$strong$family,
