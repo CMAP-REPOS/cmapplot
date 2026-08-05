@@ -342,9 +342,9 @@ theme_cmap_base <- function(consts = cmapplot_globals$consts, debug = FALSE) {
     legend.text = NULL,
     legend.text.align = 0,
     legend.title = element_blank(),
-    legend.position = "left",
-    legend.direction = "vertical",
-    legend.justification = "left",
+    legend.position = "top",
+    legend.direction = "horizontal",
+    legend.justification = "center",
     legend.box = "vertical",
     legend.box.margin = margin(0, 0, 0, 0),
     legend.box.background = element_rect(
