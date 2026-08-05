@@ -256,6 +256,14 @@ finalize_plot <- function(plot = NULL,
     caption <- input_caption
   }
 
+  # gridtext parses `title` and `caption` as markdown. A newline followed by
+  # indentation is read as an indented code block (an unsupported <pre> tag),
+  # which errors in textbox_grob(). Collapse any newline plus surrounding
+  # spaces/tabs to a single space so multi-line strings (often indented in
+  # source code) render as continuous text. Use <br> for explicit line breaks.
+  title   <- gsub("[ \t]*\n[ \t]*", " ", title)
+  caption <- gsub("[ \t]*\n[ \t]*", " ", caption)
+
   # Build necessary grobs -----------------------------------------------------
   grobs <- list()
 
