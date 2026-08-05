@@ -30,6 +30,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Sean Connelly \email{sconnelly@cmap.illinois.gov}
   \item Daniel Comeaux (\href{https://orcid.org/0000-0002-8412-9092}{ORCID})
   \item Sarah Buchhorn
   \item Martin Menninger \email{mmenninger@cmap.illinois.gov}
