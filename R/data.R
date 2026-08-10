@@ -170,7 +170,7 @@
 #'    \item{system}{Char. Name of system (includes CTA bus, CTA rail, Metra, Pace, and Pace ADA)}
 #'    \item{ridership}{Double. Annual unlinked passenger trips in millions}
 #' }
-#' @source Regional Transportation Authority \url{http://www.rtams.org/rtams/systemRidership.jsp}
+#' @source Regional Transportation Authority \url{https://www.rtams.org/media/resources/annual-system-ridership-figures}
 #'
 #' @examples
 #' # A line graph
@@ -194,7 +194,7 @@
 #'    \item{number_of_veh}{Char. Number of vehicles owned by household}
 #'    \item{pct}{Numeric. Share of households with the given number of vehicles (values between 0 and 1)}
 #' }
-#' @source CMAP Travel Inventory Survey Data Summary  \url{https://www.cmap.illinois.gov/documents/10180/77659/Travel+Inventory+Survey+Data+Summary_weighted_V2.pdf/d4b33cdd-1c44-4322-b32f-2f54b85207cb}
+#' @source CMAP 2018-19 My Daily Travel Final Survey Report (Table 23)  \url{https://www.arcgis.com/home/item.html?id=2e0719dce2c34eeea81039eca35def80#overview}
 #'
 #' @examples
 #' # A stacked bar chart
