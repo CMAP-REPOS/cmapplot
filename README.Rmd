@@ -36,7 +36,7 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.path = "man/figures/README-",
   fig.width = 7,
-  fig.asp = 400/670,
+  fig.asp = 400 / 670,
   fig.retina = 4,
   fig.align = "center",
   dev = "ragg_png"
@@ -73,7 +73,7 @@ Run the following to install or update cmapplot:
 
 ```{r install, eval=FALSE, message=FALSE, warning=FALSE}
 ## Install current version from GitHub
-devtools::install_github("CMAP-REPOS/cmapplot", build_vignettes=TRUE)
+devtools::install_github("CMAP-REPOS/cmapplot", build_vignettes = TRUE)
 
 ## Then load the package as you would any other
 library(cmapplot)
@@ -91,15 +91,13 @@ To install on macOS, users must install [XQuartz](https://www.xquartz.org) befor
 The function `theme_cmap()` returns a complete ggplot2 theme that can be added to a ggplot code block (similar to `ggplot2::theme_minimal()` or `ggplot2::theme_bw()`). Additionally, `theme_cmap()` accepts a variety of arguments to additionally customize the theme output. CMAP color functions apply colors from the CMAP color palette to the plot.
 
 ```{r theme, message=FALSE}
-ggplot(data = pop_and_laborforce_by_age, 
-       aes(x = value,
-           y = interaction(year, variable, sep = " "),
-           fill = age)) +
+ggplot(
+  data = pop_and_laborforce_by_age,
+  aes(x = value, y = interaction(year, variable, sep = " "), fill = age)
+) +
   geom_col(position = position_stack(reverse = TRUE)) +
   scale_x_continuous(labels = scales::percent) +
-  theme_cmap(xlab = "Percent",
-             gridlines = "v",
-             vline = 0) +
+  theme_cmap(xlab = "Percent", gridlines = "v", vline = 0) +
   cmap_fill_discrete(palette = "environment")
 ```
 
@@ -109,9 +107,12 @@ ggplot(data = pop_and_laborforce_by_age,
 The function `finalize_plot()` places a ggplot within a frame defined by CMAP design standards. It provides a variety of customization options via arguments, and allows for in-R viewing and/or exporting in various formats.
 
 ```{r finalize, message=FALSE}
-finalize_plot(title = "Regional population and labor force participation",
-              caption = "Data from the American Community Survey",
-              width = 7, height = 4.25)
+finalize_plot(
+  title = "Regional population and labor force participation",
+  caption = "Data from the American Community Survey",
+  width = 7,
+  height = 4.25
+)
 ```
 
 
