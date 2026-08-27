@@ -10,3 +10,6 @@ Rplots.pdf
 vignettes/*.png
 /doc/
 /Meta/
+
+/.quarto/
+**/*.quarto_ipynb
