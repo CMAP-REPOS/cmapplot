@@ -65,29 +65,28 @@
 #'  \code{ggplot(data = XXX)}) to filter the pandemics displayed.
 #'
 #' @examples
-#' grp_goods <- dplyr::filter(grp_over_time, category == "Goods-Producing")
-#' grp_goods <- dplyr::mutate(grp_goods, year2 = as.Date(lubridate::date_decimal(year)))
+#' ridership <- dplyr::mutate(transit_ridership, year2 = as.Date(lubridate::date_decimal(year)))
 #'
 #' # INTEGER X AXIS:
-#' ggplot(grp_over_time, aes(x = year, y = realgrp, color = cluster)) +
+#' ggplot(ridership, aes(x = year, y = ridership, color = system)) +
 #'   geom_pandemics() +
 #'   geom_line() +
 #'   scale_x_continuous("Year") +
 #'   theme_minimal()
 #'
 #' # DATE X AXIS:
-#' ggplot(data = grp_goods,
-#' mapping = aes(x = year2, y = realgrp, color = cluster)) +
+#' ggplot(data = ridership,
+#' mapping = aes(x = year2, y = ridership, color = system)) +
 #'   geom_pandemics(xformat = "date") +
 #'   geom_line() +
 #'   scale_x_date("Year") +
 #'   theme_minimal()
 #'
 #' # MODIFIED AESTHETICS:
-#' ggplot(grp_over_time, aes(x = year, y = realgrp)) +
+#' ggplot(ridership, aes(x = year, y = ridership)) +
 #'   geom_pandemics(show.legend = TRUE, fill = "blue", text = FALSE,
 #'                   rect_aes = list(alpha = 1, color = "red")) +
-#'   geom_line(aes(color = cluster)) +
+#'   geom_line(aes(color = system)) +
 #'   scale_x_continuous("Year") +
 #'   theme_minimal()
 #'
@@ -117,7 +116,9 @@ geom_pandemics <- function(
   # build pandemics table for use in function, but hide it in a list --> tweak Recessions data as basis
   # because of ggplot's requirement that parameters be of length 1
   pandemic_table <- list(
-    cmapplot::update_recessions(quietly = TRUE) |>
+    recessions |> # changed this from update_recessions to avoid 403 error, at least for testing purposes.
+      # could leave like this and maintain update_recessions() as a package maintainer function but not something run by ordinary users.
+      # could also take the update_recessions=FALSE approach from geom_recessions()
       dplyr::filter(start_date == "2020-02-01") |>
       # Alter dates to CMAP understanding of period
       dplyr::mutate(
